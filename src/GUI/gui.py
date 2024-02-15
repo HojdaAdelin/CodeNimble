@@ -1,3 +1,4 @@
+from typing import Any, Tuple
 import customtkinter as ct
 from CTkMenuBar import *
 from ctypes import byref, sizeof, c_int, windll
@@ -40,6 +41,7 @@ class MainWindow(ct.CTk):
         view_drop = CustomDropdownMenu(widget=view, padx=-135, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
         view_drop.add_option(option="Zoom in")
         view_drop.add_option(option="Zoom out")
+
         # General configuration
         ct.set_default_color_theme("dark-blue")
         self.title("CodeNimble")
@@ -52,7 +54,3 @@ class MainWindow(ct.CTk):
             35,
             byref(c_int(tb_color)),
             sizeof(c_int))
-
-if __name__ == "__main__":
-    window = MainWindow()
-    window.mainloop()
