@@ -5,34 +5,30 @@ class TextBox(ct.CTkTextbox):
     def __init__(self, master, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.pack(side="right", fill="both", expand=True)
-        self.configure(fg_color="#222222", wrap='none', font=("Helvetica", 20))
-        self.linenumbers = TextLineNumbers(master, width=110)
-        self.linenumbers.configure(bg="#222222")
+        self.configure(fg_color="#222222", wrap='none', font=("Helvetica", 18))
+        self.linenumbers = TextLineNumbers(master, width=5, height=self.cget("height"))
+        self.linenumbers.configure(background="#333333", foreground="white", font=("Helvetica", 28))
         self.linenumbers.attach(self)
         self.linenumbers.pack(side="left", fill="y")
-
     def update_line_numbers(self, *args):
         self.linenumbers.redraw()
 
-class TextLineNumbers(tk.Canvas):
+class TextLineNumbers(tk.Text):
     def __init__(self, *args, **kwargs):
-        tk.Canvas.__init__(self, *args, **kwargs, highlightthickness=0)
+        super().__init__(*args, **kwargs)
         self.textwidget = None
-        self.font = kwargs.get("font", ("Helvetica", 28))  # Fontul implicit
+        self.config(state="disabled", pady=10)  # Adăugăm un padding în partea de sus
 
     def attach(self, text_widget):
         self.textwidget = text_widget
 
     def redraw(self, *args):
-        self.delete("all")
+        self.config(state="normal")  # Activăm textul pentru a putea fi modificat
+        self.delete("1.0", "end")
         i = self.textwidget.index("@0,0")
-        while True:
-            dline = self.textwidget.dlineinfo(i)
-            if dline is None:
-                break
-            y = dline[1]
-            linenum = str(i).split('.')[0]
-            x = self.winfo_width() - 2  # Calculați coordonata x folosind lățimea canvas-ului
-            self.create_text(x, y, anchor="ne", text=linenum, fill="#888888", font=self.font)  # Specificați fontul aici
-            i = self.textwidget.index("%s+1line" % i)
-    
+        line_count = int(self.textwidget.index("end-1c").split('.')[0])
+        for linenum in range(1, line_count + 1):
+            self.insert("end", str(linenum) + "\n")
+        self.config(state="disabled")  # Redăm textul inactiv pentru a-l face doar pentru vizualizare
+        self.tag_add("right", "1.0", "end")  # Adăugăm un tag pentru a alinia textul la dreapta
+        self.tag_config("right", justify="right")  # Configurăm tagul pentru aliniere la dreapta
