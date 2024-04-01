@@ -1,46 +1,71 @@
-import customtkinter as ct
 import tkinter as tk
+import customtkinter as ct
 
-class TextBox(ct.CTkTextbox):
+class ScrollText(tk.Frame):
     def __init__(self, master, *args, **kwargs):
-        super().__init__(master, *args, **kwargs)
-        self.vertical_scrollbar = ct.CTkScrollbar(master, command=self.multi_scroll)
-        self.vertical_scrollbar.pack(side="right", fill="y")
-        self.pack(side="right", fill="both", expand=True)
-        self.configure(fg_color="#222222", wrap='none', font=("Helvetica", 18))
-        self.linenumbers = TextLineNumbers(master, width=50, height=self.cget("height"))
-        self.linenumbers.configure(fg_color="#333333", font=("Helvetica", 18), corner_radius=0, pady=5)
-        self.linenumbers.attach(self)
-        self.linenumbers._scrollbars_activated = False
-        self._scrollbars_activated = False
-        self.linenumbers.pack(side="left", fill="y")
-        self.configure(yscrollcommand=self.vertical_scrollbar.set)
-        self.linenumbers.configure(yscrollcommand=self.vertical_scrollbar.set)
-    def update_line_numbers(self, *args):
-        self.linenumbers.redraw()
-    def multi_scroll(self, *args):
-        self.yview(*args)
-        self.linenumbers.yview(*args)
-class TextLineNumbers(ct.CTkTextbox):
+        tk.Frame.__init__(self, *args, **kwargs)
+        self.text = tk.Text(self, bg='#2b2b2b', foreground="#d1dce8", 
+                            insertbackground='white',
+                            selectbackground="#4d4d4d", font=("Arial", 28))
+        self.configure(bg="#2b2b2b")
+        self.scrollbar = ct.CTkScrollbar(self.text, orientation=tk.VERTICAL, command=self.text.yview)
+        self.text.configure(yscrollcommand=self.scrollbar.set)
+
+        self.numberLines = TextLineNumbers(self, width=110, bg='#313335')
+        self.numberLines.attach(self.text)
+
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
+        self.text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+
+        self.text.bind("<Key>", self.onPressDelay)
+        self.text.bind("<Button-1>", self.numberLines.redraw)
+        self.scrollbar.bind("<Button-1>", self.onScrollPress)
+        self.text.bind("<MouseWheel>", self.onPressDelay)
+
+    def onScrollPress(self, *args):
+        self.scrollbar.bind("<B1-Motion>", self.numberLines.redraw)
+
+    def onScrollRelease(self, *args):
+        self.scrollbar.unbind("<B1-Motion>", self.numberLines.redraw)
+
+    def onPressDelay(self, *args):
+        self.after(2, self.numberLines.redraw)
+
+    def get(self, *args, **kwargs):
+        return self.text.get(*args, **kwargs)
+
+    def insert(self, *args, **kwargs):
+        return self.text.insert(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        return self.text.delete(*args, **kwargs)
+
+    def index(self, *args, **kwargs):
+        return self.text.index(*args, **kwargs)
+
+    def redraw(self):
+        self.numberLines.redraw()
+
+class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        tk.Canvas.__init__(self, *args, **kwargs, highlightthickness=0)
         self.textwidget = None
-        self.configure(state="disabled")  # Configurăm textul ca fiind dezactivat pentru a fi doar pentru vizualizare
+        self.font = ("Arial", 28)  # Setăm fontul pentru numerele de linii
 
     def attach(self, text_widget):
         self.textwidget = text_widget
 
     def redraw(self, *args):
-        self.configure(state="normal")  # Activăm textul pentru a putea fi modificat
-        self.delete("1.0", "end")
-
-        # Obținem dimensiunea maximă a unui număr de linie
-        max_linenum_width = len(str(self.textwidget.index("end").split(".")[0]))
+        
+        self.delete("all")
 
         i = self.textwidget.index("@0,0")
-        line_count = int(self.textwidget.index("end-1c").split('.')[0])
-        for linenum in range(1, line_count + 1):
-            self.insert("end", str(linenum).rjust(max_linenum_width) + "\n")  # Aliniem la dreapta numărul de linie
-            self.tag_add("right", f"{linenum}.0", f"{linenum}.end")  # Adăugăm tagul pentru aliniere la dreapta
-            self.tag_config("right", justify="right")  # Configurăm tagul pentru aliniere la dreapta
-        self.configure(state="disabled")  # Redăm textul inactiv pentru a-l face doar pentru vizualizare
+        while True:
+            dline = self.textwidget.dlineinfo(i)
+            if dline is None: break
+            y = dline[1]
+            linenum = str(i).split(".")[0]
+            # Creăm textul pentru numărul de linie și aplicăm configurația de font
+            self.create_text(2, y, anchor="nw", text=linenum, fill="#606366", font=self.font)
+            i = self.textwidget.index("%s+1line" % i)

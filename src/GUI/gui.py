@@ -6,7 +6,6 @@ from ctypes import byref, sizeof, c_int, windll
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         # Main menu
         menu = CTkMenuBar(self, bg_color="#333333")
         home = menu.add_cascade("Home")
