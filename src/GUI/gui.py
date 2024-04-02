@@ -3,6 +3,15 @@ import customtkinter as ct
 from CTkMenuBar import *
 from ctypes import byref, sizeof, c_int, windll
 
+import sys
+import os
+
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+sys.path.append(parent_dir)
+
+from MainMenu import misc
+
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -17,7 +26,7 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Version")
         home_drop.add_option(option="Change log")
         home_drop.add_option(option="Source")
-        home_drop.add_option(option="Exit")
+        home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
 
         file_drop = CustomDropdownMenu(widget=file, padx=-55, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
         file_drop.add_option(option="New window")
