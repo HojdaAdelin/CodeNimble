@@ -9,25 +9,42 @@ def version_info():
     version_window = ctk.CTkToplevel()
     version_window.title("CodeNimble - Version")
 
-    w = 300 # width for the Tk root
-    h = 200 # height for the Tk root
+    w = 300 
+    h = 200 
 
-    # get screen width and height
-    ws = version_window.winfo_screenwidth() # width of the screen
-    hs = version_window.winfo_screenheight() # height of the screen
+    ws = version_window.winfo_screenwidth()
+    hs = version_window.winfo_screenheight()
 
-    # calculate x and y coordinates for the Tk root window
     x = (ws/2+500) - (w/2)
     y = (hs/2+200) - (h/2)
 
-    # set the dimensions of the screen 
-    # and where it is placed
     version_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
     #version_window.geometry('300x200')
     
     version_window.resizable(False, False)
     version_window.configure(fg_color = "#2b2b2b")
-    # Adaugă un Label cu textul versiunii
+    
     version_label = ctk.CTkLabel(version_window, text="Version: BETA 1.0", font=("Arial", 20), text_color="white")
     version_label.pack(pady=80)
 
+def changelog_inf():
+    changelog_window = ctk.CTkToplevel()
+    changelog_window.title("CodeNimble - Version")
+
+    w = 500 
+    h = 400 
+
+    ws = changelog_window.winfo_screenwidth()
+    hs = changelog_window.winfo_screenheight()
+
+    x = (ws/2+500) - (w/2)
+    y = (hs/2+200) - (h/2)
+
+    changelog_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    #version_window.geometry('300x200')
+    
+    changelog_window.resizable(False, False)
+    changelog_window.configure(fg_color = "#2b2b2b")
+
+    version_label = ctk.CTkLabel(changelog_window, text="Version: BETA 1.0", font=("Arial", 20), text_color="white")
+    version_label.pack(pady=10)
