@@ -23,7 +23,7 @@ class MainWindow(ct.CTk):
         view = menu.add_cascade("View")
 
         home_drop = CustomDropdownMenu(widget=home, padx=-5, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
-        home_drop.add_option(option="Version")
+        home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log")
         home_drop.add_option(option="Source")
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
