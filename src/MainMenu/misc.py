@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+import webbrowser
 
 def exit_application(root):
     root.quit() 
@@ -48,3 +49,6 @@ def changelog_inf():
 
     version_label = ctk.CTkLabel(changelog_window, text="Version: BETA 1.0", font=("Arial", 20), text_color="white")
     version_label.pack(pady=10)
+
+def open_links(url):
+    webbrowser.open(url)
