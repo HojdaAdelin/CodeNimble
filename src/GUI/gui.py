@@ -11,11 +11,15 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from MainMenu import misc
+from MainMenu import file_menu
+from GUI import textbox
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
         # Main menu
+        scroll = textbox.ScrollText(self)
         menu = CTkMenuBar(self, bg_color="#333333")
         home = menu.add_cascade("Home")
         file = menu.add_cascade("File")
@@ -29,9 +33,9 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
 
         file_drop = CustomDropdownMenu(widget=file, padx=-55, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
-        file_drop.add_option(option="New window")
-        file_drop.add_option(option="New")
-        file_drop.add_option(option="Open")
+        #file_drop.add_option(option="New window", command=lambda:file_menu.new_window())
+        file_drop.add_option(option="New",command=lambda:file_menu.new_file(scroll.text, scroll))
+        file_drop.add_option(option="Open",command=lambda:file_menu.open_file(scroll.text, scroll))
         file_drop.add_option(option="Save")
         file_drop.add_option(option="Save as")
 
@@ -49,6 +53,11 @@ class MainWindow(ct.CTk):
         view_drop = CustomDropdownMenu(widget=view, padx=-135, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
         view_drop.add_option(option="Zoom in")
         view_drop.add_option(option="Zoom out")
+
+        # TextBox
+        scroll.pack(fill="both", expand=True)
+        scroll.text.focus()
+        self.after(200, scroll.redraw())
 
         # General configuration
         ct.set_default_color_theme("dark-blue")
