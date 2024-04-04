@@ -12,6 +12,7 @@ sys.path.append(parent_dir)
 
 from MainMenu import misc
 from MainMenu import file_menu
+from MainMenu import edit_menu
 from GUI import textbox
 
 class MainWindow(ct.CTk):
@@ -38,10 +39,10 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Open",command=lambda:file_menu.open_file(scroll.text, scroll))
         file_drop.add_option(option="Save",command=lambda:file_menu.save_file(scroll.text))
         file_drop.add_option(option="Save as",command=lambda:file_menu.save_as_file(scroll.text))
-
+ 
         edit_drop = CustomDropdownMenu(widget=edit, padx=-95, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
-        edit_drop.add_option(option="Undo")
-        edit_drop.add_option(option="Redo")
+        edit_drop.add_option(option="Undo", command=lambda:edit_menu.undo_text(scroll.text, scroll))
+        edit_drop.add_option(option="Redo", command=lambda:edit_menu.redo_text(scroll.text, scroll))
         edit_drop.add_option(option="Cut")
         edit_drop.add_option(option="Copy")
         edit_drop.add_option(option="Paste")
