@@ -30,7 +30,7 @@ def version_info():
 
 def changelog_inf():
     changelog_window = ctk.CTkToplevel()
-    changelog_window.title("CodeNimble - Version")
+    changelog_window.title("CodeNimble - Change log")
 
     w = 500 
     h = 400 
