@@ -10,12 +10,17 @@ sys.path.append(parent_dir)
 
 from Config import check
 
-font_size = check.get_config_value("zoom")
+#font_size = check.get_config_value("zoom")
 
 class ScrollText(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
         
+        font_size = check.get_config_value("zoom")
+
+        if font_size is None:
+            font_size = 28
+
         self.text = tk.Text(self, bg='#2b2b2b', foreground="#d1dce8", 
                             insertbackground='white',
                             selectbackground="#4d4d4d", font=("Arial", font_size),
@@ -66,7 +71,8 @@ class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
         tk.Canvas.__init__(self, *args, **kwargs, highlightthickness=0)
         self.textwidget = None
-        self.font = ("Arial", font_size)  # Setăm fontul pentru numerele de linii
+        font_size = check.get_config_value("zoom")
+        self.font = ("Arial", font_size) 
 
     def attach(self, text_widget):
         self.textwidget = text_widget

@@ -1,0 +1,1 @@
+pyinstaller --noconfirm --onefile -w --onedir --windowed --add-data "C:/Users/adeli/AppData/Local/Programs/Python/Python311/Lib/site-packages/customtkinter;customtkinter/"  src/main.py

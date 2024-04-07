@@ -1,2 +1,5 @@
 test/
 *.cfg
+*.spec
+build/
+dist

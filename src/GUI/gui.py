@@ -24,7 +24,7 @@ class MainWindow(ct.CTk):
         scroll = textbox.ScrollText(self)
         menu = CTkMenuBar(self, bg_color="#333333")
         home = menu.add_cascade("Home")
-        file = menu.add_cascade("File")
+        file_m = menu.add_cascade("File")
         edit = menu.add_cascade("Edit")
         view = menu.add_cascade("View")
 
@@ -34,7 +34,7 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Source",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble"))
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
 
-        file_drop = CustomDropdownMenu(widget=file, padx=-55, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
+        file_drop = CustomDropdownMenu(widget=file_m, padx=-55, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
         #file_drop.add_option(option="New window", command=lambda:file_menu.new_window())
         file_drop.add_option(option="New",command=lambda:file_menu.new_file(scroll.text, scroll))
         file_drop.add_option(option="Open",command=lambda:file_menu.open_file(scroll.text, scroll))
@@ -62,7 +62,7 @@ class MainWindow(ct.CTk):
         self.after(200, scroll.redraw())
 
         # General configuration
-        ct.set_default_color_theme("dark-blue")
+        #ct.set_default_color_theme("dark-blue")
         self.title("CodeNimble")
         self.geometry("1200x700")
         # Title bar color handle
