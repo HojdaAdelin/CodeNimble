@@ -1,12 +1,24 @@
 import tkinter as tk
 import customtkinter as ct
 
+import sys
+import os
+
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+sys.path.append(parent_dir)
+
+from Config import check
+
+font_size = check.get_config_value("zoom")
+
 class ScrollText(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
+        
         self.text = tk.Text(self, bg='#2b2b2b', foreground="#d1dce8", 
                             insertbackground='white',
-                            selectbackground="#4d4d4d", font=("Arial", 28),
+                            selectbackground="#4d4d4d", font=("Arial", font_size),
                             undo=True, maxundo=-1, autoseparators=True)
         self.configure(bg="#2b2b2b")
         self.scrollbar = ct.CTkScrollbar(self.text, orientation=tk.VERTICAL, command=self.text.yview)
@@ -47,12 +59,14 @@ class ScrollText(tk.Frame):
 
     def redraw(self):
         self.numberLines.redraw()
+        self.font_size = check.get_config_value("zoom")
+        self.text.configure(font=("Arial", self.font_size))
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
         tk.Canvas.__init__(self, *args, **kwargs, highlightthickness=0)
         self.textwidget = None
-        self.font = ("Arial", 28)  # Setăm fontul pentru numerele de linii
+        self.font = ("Arial", font_size)  # Setăm fontul pentru numerele de linii
 
     def attach(self, text_widget):
         self.textwidget = text_widget
@@ -60,7 +74,7 @@ class TextLineNumbers(tk.Canvas):
     def redraw(self, *args):
         
         self.delete("all")
-
+        self.font = ("Aial", check.get_config_value("zoom"))
         i = self.textwidget.index("@0,0")
         while True:
             dline = self.textwidget.dlineinfo(i)
@@ -70,3 +84,4 @@ class TextLineNumbers(tk.Canvas):
             # Creăm textul pentru numărul de linie și aplicăm configurația de font
             self.create_text(2, y, anchor="nw", text=linenum, fill="#606366", font=self.font)
             i = self.textwidget.index("%s+1line" % i)
+        

@@ -9,5 +9,7 @@ sys.path.append(parent_dir)
 
 from Config import check
 
-def zoom_in():
-    check.update_config_file("in", 1)
+def zoom_in(root):
+    ante_size = check.get_config_value("zoom")
+    check.update_config_file("zoom", int(ante_size) + 4)
+    root.redraw()

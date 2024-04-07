@@ -39,3 +39,16 @@ def update_config_file(func, val):
         
     except Exception as e:
         pass
+
+def get_config_value(func):
+    file_name = "config.cfg"
+    try:
+        with open(file_name, "r") as file:
+            for line in file:
+                if line.startswith(func + ":"):
+                    # Extrage valoarea din linie
+                    value = line.split(":")[1].strip()
+                    return value
+        
+    except Exception as e:
+        pass

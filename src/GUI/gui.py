@@ -53,7 +53,7 @@ class MainWindow(ct.CTk):
         edit_drop.add_option(option="Replace")
 
         view_drop = CustomDropdownMenu(widget=view, padx=-135, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
-        view_drop.add_option(option="Zoom in", command=lambda:view_menu.zoom_in())
+        view_drop.add_option(option="Zoom in", command=lambda:view_menu.zoom_in(scroll))
         view_drop.add_option(option="Zoom out")
 
         # TextBox
