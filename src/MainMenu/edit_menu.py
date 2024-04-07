@@ -40,4 +40,6 @@ def delete_text(text, root):
         pass
 
 def select_all(text):
-    pass
+    text.tag_add(tk.SEL, "1.0", tk.END)
+    text.mark_set(tk.INSERT, "1.0")
+    text.see(tk.INSERT)
