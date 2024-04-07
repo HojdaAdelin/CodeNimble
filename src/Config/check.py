@@ -15,3 +15,27 @@ def create_config_file():
             pass
     except FileExistsError:
         pass
+
+def pre_write_config():
+    try:
+        with open("config.cfg", "w") as file:
+            file.write("zoom: 28")
+    except Exception as e:
+        pass
+
+def update_config_file(func, val):
+    file_name = "config.cfg"
+    try:
+        with open(file_name, "r") as file:
+            lines = file.readlines()
+
+        with open(file_name, "w") as file:
+            for line in lines:
+                if line.startswith(func + ":"):
+                    # Găsim linia care conține funcția și actualizăm valoarea
+                    file.write(f"{func}: {val}\n")
+                else:
+                    file.write(line)
+        
+    except Exception as e:
+        pass
