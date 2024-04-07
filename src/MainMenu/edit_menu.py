@@ -29,3 +29,15 @@ def cut_text(text, root):
     copy_text(text, root)
     text.delete(tk.SEL_FIRST, tk.SEL_LAST)
     root.redraw()
+
+def delete_text(text, root):
+    try:
+        start_index = text.index(tk.SEL_FIRST)
+        end_index = text.index(tk.SEL_LAST)
+        text.delete(start_index, end_index)
+        root.redraw()
+    except tk.TclError:
+        pass
+
+def select_all(text):
+    pass

@@ -46,7 +46,7 @@ class MainWindow(ct.CTk):
         edit_drop.add_option(option="Cut", command=lambda:edit_menu.cut_text(scroll.text, scroll))
         edit_drop.add_option(option="Copy", command=lambda:edit_menu.copy_text(scroll.text, scroll))
         edit_drop.add_option(option="Paste", command=lambda:edit_menu.paste_text(scroll.text, scroll))
-        edit_drop.add_option(option="Delete")
+        edit_drop.add_option(option="Delete",command=lambda:edit_menu.delete_text(scroll.text, scroll))
         edit_drop.add_option(option="Select all")
         edit_drop.add_option(option="Find")
         edit_drop.add_option(option="Replace")
