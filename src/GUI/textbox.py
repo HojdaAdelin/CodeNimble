@@ -24,7 +24,7 @@ class ScrollText(tk.Frame):
         self.text = tk.Text(self, bg='#2b2b2b', foreground="#d1dce8", 
                             insertbackground='white',
                             selectbackground="#4d4d4d", font=("Arial", font_size),
-                            undo=True, maxundo=-1, autoseparators=True)
+                            undo=True, maxundo=-1, autoseparators=True, borderwidth=0)
         self.configure(bg="#2b2b2b")
         self.scrollbar = ct.CTkScrollbar(self.text, orientation=tk.VERTICAL, command=self.text.yview)
         self.text.configure(yscrollcommand=self.scrollbar.set)

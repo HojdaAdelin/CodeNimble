@@ -15,6 +15,7 @@ from MainMenu import file_menu
 from MainMenu import edit_menu
 from MainMenu import view_menu
 from GUI import textbox
+from GUI import statusbar
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -27,7 +28,6 @@ class MainWindow(ct.CTk):
         file_m = menu.add_cascade("File")
         edit = menu.add_cascade("Edit")
         view = menu.add_cascade("View")
-
         home_drop = CustomDropdownMenu(widget=home, padx=-5, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4)
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
@@ -58,9 +58,10 @@ class MainWindow(ct.CTk):
 
         # TextBox
         scroll.pack(fill="both", expand=True)
+        statusbar.StatusBar(self, text="Ok")
         scroll.text.focus()
         self.after(200, scroll.redraw())
-
+        self.configure(border_color = "red")
         # General configuration
         #ct.set_default_color_theme("dark-blue")
         self.title("CodeNimble")
