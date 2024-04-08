@@ -21,3 +21,5 @@ def zoom_out(root):
         check.update_config_file("zoom", int(ante_size) - 4)
     
     root.redraw()
+
+

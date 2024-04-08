@@ -19,7 +19,7 @@ def create_config_file():
 def pre_write_config():
     try:
         with open("config.cfg", "w") as file:
-            file.write("zoom: 28")
+            file.write("zoom: 28\nstatus_bar: 1")
     except Exception as e:
         pass
 

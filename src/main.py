@@ -1,7 +1,5 @@
 from GUI.gui import *
 from Config.check import *
-import customtkinter as ct
-import tkinter as tk
 
 if __name__ == "__main__":
     config = check_config_file()
