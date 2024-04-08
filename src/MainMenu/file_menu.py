@@ -106,3 +106,11 @@ def custom_file():
         # Adaugă un buton "Create" pentru a crea fișierul
         create_button = ctk.CTkButton(version_window, text="Create", command=create_file)
         create_button.pack()
+
+        # Funcție pentru a reseta version_window_opened la False după ce închidem fereastra
+        def on_closing():
+            global version_window_opened
+            version_window_opened = False
+            version_window.destroy()
+
+        version_window.protocol("WM_DELETE_WINDOW", on_closing)

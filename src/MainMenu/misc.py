@@ -25,13 +25,19 @@ def version_info():
         y = (hs/2+200) - (h/2)
 
         version_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        #version_window.geometry('300x200')
-
         version_window.resizable(False, False)
         version_window.configure(fg_color = "#2b2b2b")
 
         version_label = ctk.CTkLabel(version_window, text="Version: BETA 1.0", font=("Arial", 20), text_color="white")
         version_label.pack(pady=80)
+
+        # Funcție pentru a reseta version_window_opened la False după ce închidem fereastra
+        def on_closing():
+            global version_window_opened
+            version_window_opened = False
+            version_window.destroy()
+
+        version_window.protocol("WM_DELETE_WINDOW", on_closing)
 
 def changelog_inf():
     global changelog_window_opened
@@ -50,13 +56,19 @@ def changelog_inf():
         y = (hs/2+200) - (h/2)
 
         changelog_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        #version_window.geometry('300x200')
-
         changelog_window.resizable(False, False)
         changelog_window.configure(fg_color = "#2b2b2b")
 
         version_label = ctk.CTkLabel(changelog_window, text="Version: BETA 1.0", font=("Arial", 20), text_color="white")
         version_label.pack(pady=10)
+
+        # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
+        def on_closing():
+            global changelog_window_opened
+            changelog_window_opened = False
+            changelog_window.destroy()
+
+        changelog_window.protocol("WM_DELETE_WINDOW", on_closing)
 
 def open_links(url):
     webbrowser.open(url)
