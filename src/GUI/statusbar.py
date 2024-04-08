@@ -16,3 +16,5 @@ class StatusBar(tk.Frame):
 
     def set_status(self, text):
         self.text.set(text)
+    def update_text(self, new_text):
+        self.text.set(new_text)

@@ -23,13 +23,16 @@ class MainWindow(ct.CTk):
         super().__init__(*args, **kwargs)
         
         # Main menu
+        statusbar_instance = statusbar.StatusBar(self, text="")
+
+
         scroll = textbox.ScrollText(self)
         menu = CTkMenuBar(self, bg_color="#333333")
         home = menu.add_cascade("Home")
         file_m = menu.add_cascade("File")
         edit = menu.add_cascade("Edit")
         view = menu.add_cascade("View")
-        home_drop = CustomDropdownMenu(widget=home, padx=-5, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray")
+        home_drop = CustomDropdownMenu(widget=home, padx=-5, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
         home_drop.add_option(option="Source",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble"))
@@ -38,14 +41,14 @@ class MainWindow(ct.CTk):
 
         # Config values
     
-        file_drop = CustomDropdownMenu(widget=file_m, padx=-55, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray")
+        file_drop = CustomDropdownMenu(widget=file_m, padx=-55, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
         #file_drop.add_option(option="New window", command=lambda:file_menu.new_window())
-        file_drop.add_option(option="New",command=lambda:file_menu.new_file(scroll.text, scroll))
+        file_drop.add_option(option="New", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open",command=lambda:file_menu.open_file(scroll.text, scroll))
         file_drop.add_option(option="Save",command=lambda:file_menu.save_file(scroll.text))
         file_drop.add_option(option="Save as",command=lambda:file_menu.save_as_file(scroll.text))
  
-        edit_drop = CustomDropdownMenu(widget=edit, padx=-95, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray")
+        edit_drop = CustomDropdownMenu(widget=edit, padx=-95, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
         edit_drop.add_option(option="Undo", command=lambda:edit_menu.undo_text(scroll.text, scroll))
         edit_drop.add_option(option="Redo", command=lambda:edit_menu.redo_text(scroll.text, scroll))
         edit_drop.add_separator()
@@ -58,7 +61,7 @@ class MainWindow(ct.CTk):
         edit_drop.add_option(option="Find")
         edit_drop.add_option(option="Replace")
 
-        view_drop = CustomDropdownMenu(widget=view, padx=-135, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray")
+        view_drop = CustomDropdownMenu(widget=view, padx=-135, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
         view_drop.add_option(option="Zoom in", command=lambda:view_menu.zoom_in(scroll))
         view_drop.add_option(option="Zoom out", command=lambda:view_menu.zoom_out(scroll))
         
@@ -69,7 +72,6 @@ class MainWindow(ct.CTk):
         self.after(200, scroll.redraw())
         self.configure(border_color = "red")
         # General configuration
-        statusbar.StatusBar(self, text="")
         #ct.set_default_color_theme("dark-blue")
         self.title("CodeNimble")
         self.geometry("1200x700")

@@ -4,14 +4,17 @@ from tkinter import filedialog
 # Definim o variabilă globală pentru a ține numele fișierului deschis
 opened_filename = None
 
-def new_file(text, window):
+def new_file(text, window, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
 
-    # Resetează numele fișierului deschis anterior
     opened_filename = None
 
     text.delete("1.0", tk.END)
     window.redraw()
+
+    # Actualizează textul status barului
+    status_bar.update_text("New File")
+
 
 def open_file(text, window):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
