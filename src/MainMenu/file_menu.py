@@ -16,7 +16,7 @@ def new_file(text, window, status_bar):
     status_bar.update_text("New File")
 
 
-def open_file(text, window):
+def open_file(text, window, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
 
     filename = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
@@ -30,8 +30,10 @@ def open_file(text, window):
             text.delete("1.0", tk.END) 
             text.insert("1.0", file_content) 
             window.redraw()
+        status_bar.update_text("Opened: " + filename)
+    
 
-def save_file(text):
+def save_file(text, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
 
     if opened_filename:
@@ -39,11 +41,12 @@ def save_file(text):
 
         with open(opened_filename, "w") as file:
             file.write(content)
+        status_bar.update_text("Saved: " + opened_filename)
     else:
         # Dacă nu există un fișier deschis anterior, apelăm funcția save_as_file()
         save_as_file(text)
 
-def save_as_file(text):
+def save_as_file(text, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
 
     content = text.get("1.0", tk.END)
@@ -55,3 +58,4 @@ def save_as_file(text):
 
         with open(filename, "w") as file:
             file.write(content)
+        status_bar.update_text("Saved: " + opened_filename)
