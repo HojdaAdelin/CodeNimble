@@ -68,7 +68,7 @@ def custom_file():
 
     if not version_window_opened:
         version_window_opened = True
-        version_window = ctk.CTkToplevel()
+        version_window = ctk.CTk()
         version_window.title("CodeNimble - New File")
 
         w = 300 
@@ -82,6 +82,7 @@ def custom_file():
 
         version_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
         version_window.resizable(False, False)
+        version_window.iconbitmap("images/logo.ico")
         version_window.configure(fg_color = "#2b2b2b")
 
         # Adaugă un Entry în fereastra version_window
@@ -114,3 +115,4 @@ def custom_file():
             version_window.destroy()
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
+        version_window.mainloop()

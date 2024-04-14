@@ -75,6 +75,7 @@ class MainWindow(ct.CTk):
         # General configuration
         #ct.set_default_color_theme("dark-blue")
         self.title("CodeNimble")
+        self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")
         # Title bar color handle
         HWND = windll.user32.GetParent(self.winfo_id())

@@ -12,7 +12,7 @@ def version_info():
     global version_window_opened
     if not version_window_opened:
         version_window_opened = True
-        version_window = ctk.CTkToplevel()
+        version_window = ctk.CTk()
         version_window.title("CodeNimble - Version")
 
         w = 300 
@@ -25,6 +25,7 @@ def version_info():
         y = (hs/2+200) - (h/2)
 
         version_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
+        version_window.iconbitmap("images/logo.ico")
         version_window.resizable(False, False)
         version_window.configure(fg_color = "#2b2b2b")
 
@@ -38,13 +39,15 @@ def version_info():
             version_window.destroy()
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
+        version_window.mainloop()
 
 def changelog_inf():
     global changelog_window_opened
     if not changelog_window_opened:
         changelog_window_opened = True
-        changelog_window = ctk.CTkToplevel()
+        changelog_window = ctk.CTk()
         changelog_window.title("CodeNimble - Change log")
+        changelog_window.iconbitmap("images/logo.ico")
 
         w = 500 
         h = 400 
@@ -69,6 +72,7 @@ def changelog_inf():
             changelog_window.destroy()
 
         changelog_window.protocol("WM_DELETE_WINDOW", on_closing)
+        changelog_window.mainloop()
 
 def open_links(url):
     webbrowser.open(url)
