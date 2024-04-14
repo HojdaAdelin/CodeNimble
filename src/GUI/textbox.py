@@ -24,15 +24,17 @@ class ScrollText(tk.Frame):
         self.text = tk.Text(self, bg='#2b2b2b', foreground="#d1dce8", 
                             insertbackground='white',
                             selectbackground="#4d4d4d", font=("Arial", font_size),
-                            undo=True, maxundo=-1, autoseparators=True, borderwidth=0)
+                            undo=True, maxundo=-1, autoseparators=True, borderwidth=0, wrap="none")
         self.configure(bg="#2b2b2b")
         self.scrollbar = ct.CTkScrollbar(self.text, orientation=tk.VERTICAL, command=self.text.yview)
-        self.text.configure(yscrollcommand=self.scrollbar.set)
+        self.scrollhor = ct.CTkScrollbar(self.text, orientation=tk.HORIZONTAL, command=self.text.xview)
+        self.text.configure(yscrollcommand=self.scrollbar.set, xscrollcommand=self.scrollhor.set)
 
         self.numberLines = TextLineNumbers(self, width=110, bg='#313335')
         self.numberLines.attach(self.text)
 
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
         self.text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
