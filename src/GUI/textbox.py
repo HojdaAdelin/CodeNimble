@@ -30,7 +30,7 @@ class ScrollText(tk.Frame):
         self.scrollhor = ct.CTkScrollbar(self.text, orientation=tk.HORIZONTAL, command=self.text.xview)
         self.text.configure(yscrollcommand=self.scrollbar.set, xscrollcommand=self.scrollhor.set)
 
-        self.numberLines = TextLineNumbers(self, width=110, bg='#313335')
+        self.numberLines = TextLineNumbers(self, width=4*int(check.get_config_value("zoom")), bg='#313335')
         self.numberLines.attach(self.text)
 
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -73,23 +73,23 @@ class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
         tk.Canvas.__init__(self, *args, **kwargs, highlightthickness=0)
         self.textwidget = None
-        font_size = check.get_config_value("zoom")
-        self.font = ("Arial", font_size) 
+        self.font_size = check.get_config_value("zoom")
 
     def attach(self, text_widget):
         self.textwidget = text_widget
 
     def redraw(self, *args):
-        
         self.delete("all")
-        self.font = ("Aial", check.get_config_value("zoom"))
+        self.font_size = check.get_config_value("zoom")
+        self.font = ("Arial", self.font_size)
+        self.configure(width=4 * int(self.font_size))   # Redefinește lățimea liniei pe baza dimensiunii fontului
         i = self.textwidget.index("@0,0")
         while True:
             dline = self.textwidget.dlineinfo(i)
-            if dline is None: break
+            if dline is None:
+                break
             y = dline[1]
             linenum = str(i).split(".")[0]
-            # Creăm textul pentru numărul de linie și aplicăm configurația de font
+            # Creează textul pentru numărul de linie și aplică configurația de font
             self.create_text(2, y, anchor="nw", text=linenum, fill="#606366", font=self.font)
             i = self.textwidget.index("%s+1line" % i)
-        
