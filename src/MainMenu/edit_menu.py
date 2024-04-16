@@ -154,6 +154,7 @@ def replace_text(scroll_text):
             search_text = find_box.get().strip()
             if search_text:
                 start_index = "1.0"
+                scroll_text.tag_remove("found", "1.0", tk.END)
                 while True:
                     start_index = scroll_text.search(search_text, start_index, tk.END)
                     if not start_index:
@@ -162,7 +163,7 @@ def replace_text(scroll_text):
                     scroll_text.tag_add("found", start_index, end_index)
                     scroll_text.tag_configure("found", background="gray")
                     start_index = end_index
-        
+
         def replace():
             search_text = find_box.get().strip()
             replace_text = replace_box.get().strip()
@@ -176,6 +177,7 @@ def replace_text(scroll_text):
                     scroll_text.delete(start_index, end_index)
                     scroll_text.insert(start_index, replace_text)
                     start_index = end_index
+                    break  # Ieșiți din bucla după ce ați înlocuit primul cuvânt găsit
 
         find_button.configure(command=find)
         replace_button.configure(command=replace)
