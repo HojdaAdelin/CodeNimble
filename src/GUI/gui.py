@@ -60,7 +60,7 @@ class MainWindow(ct.CTk):
         edit_drop.add_option(option="Select all", command=lambda:edit_menu.select_all(scroll.text))
         edit_drop.add_separator()
         edit_drop.add_option(option="Find", command=lambda:edit_menu.find_text(scroll.text))
-        edit_drop.add_option(option="Replace")
+        edit_drop.add_option(option="Replace", command=lambda:edit_menu.replace_text(scroll.text))
 
         view_drop = CustomDropdownMenu(widget=view, padx=-135, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
         view_drop.add_option(option="Zoom in", command=lambda:view_menu.zoom_in(scroll))
