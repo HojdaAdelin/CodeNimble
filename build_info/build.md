@@ -1,1 +1,1 @@
-pyinstaller --noconfirm --onefile -w --onedir --windowed -i "images/logo.ico" --add-data "images/logo.ico;images/" --add-data "C:/Users/adeli/AppData/Local/Programs/Python/Python311/Lib/site-packages/customtkinter;customtkinter/"  src/main.py
+pyinstaller --noconfirm --onefile -w --onedir --windowed -i "images/logo.ico" --add-data "images/logo.ico;images/" --add-data "[Path to customtkinter library];customtkinter/"  src/main.py

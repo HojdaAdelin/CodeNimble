@@ -3,3 +3,4 @@ test/
 *.spec
 build/
 dist
+build_info/self_build.txt
