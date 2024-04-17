@@ -1,6 +1,6 @@
 import tkinter as tk
 import customtkinter as ct
-
+import re
 import sys
 import os
 
@@ -70,25 +70,78 @@ class ScrollText(tk.Frame):
         self.font_size = check.get_config_value("zoom")
         self.text.configure(font=("Arial", self.font_size))
     def highlight_syntax(self):
-        # Șterge toate tag-urile "keyword" pentru a evita păstrarea evidențierii sintaxei pentru textul modificat
-        self.text.tag_remove("keyword", "1.0", tk.END)
+        # Definirea culorilor pentru evidențierea sintaxei
+        keyword_colors = {
+            "keyword1": "#2d5f9c",  # Culorea pentru primul grup de cuvinte cheie
+            "keyword2": "#cc6600",  # Culorea pentru al doilea grup de cuvinte cheie
+            "keyword3": "#0e72b5",
+            "keyword4": "#8f5c14",
+            "keyword5": "#3f8a16",
+            "comment_line": "#008000",  # Verde pentru comentarii de linie
+            "comment_block": "#008000"  # Verde pentru comentarii de bloc
+        }
 
-        # Evidențiază sintaxa în întregul text
-        self.text.tag_configure("keyword", foreground="blue")
+        # Șterge toate tag-urile pentru a evita păstrarea evidențierii sintaxei pentru textul modificat
+        for tag in self.text.tag_names():
+            self.text.tag_remove(tag, "1.0", tk.END)
 
-        # Lista de cuvinte cheie
-        keywords = ["int", "float", "double", "char", "if", "else", "for", "while", "return"]  # Adaugă aici alte cuvinte cheie
+        # Definește tag-uri pentru fiecare grup de cuvinte cheie și pentru comentarii
+        for keyword_group, color in keyword_colors.items():
+            self.text.tag_configure(keyword_group, foreground=color)
 
-        # Parcurge fiecare cuvânt cheie și caută-l în text
-        for keyword in keywords:
-            start_index = "1.0"
-            while True:
-                start_index = self.text.search(keyword, start_index, tk.END, regexp=True)
-                if not start_index:
-                    break
-                end_index = self.text.index(f"{start_index}+{len(keyword)}c")
-                self.text.tag_add("keyword", start_index, end_index)
-                start_index = end_index
+        # Lista de cuvinte cheie pentru fiecare grup
+        keywords = {
+            "keyword1": ["int", "float", "double", "char", "if", "else", "for", "while", "return", "do"],
+            "keyword2": ["struct", "class", "public", "private", "protected"],
+            "keyword3": ["{", "}", "\\[", "\\]", "\\(", "\\)"],
+            "keyword4": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+            "keyword5": [re.escape("\""), re.escape("/"), re.escape("/*"), re.escape("*/")]
+        }
+
+        # Parcurge fiecare grup de cuvinte cheie și caută-le în text
+        for keyword_group, keyword_list in keywords.items():
+            for keyword in keyword_list:
+                start_index = "1.0"
+                while True:
+                    start_index = self.text.search(keyword, start_index, tk.END, regexp=True)
+                    if not start_index:
+                        break
+                    end_index = self.text.index(f"{start_index}+{len(keyword)}c")
+                    self.text.tag_add(keyword_group, start_index, end_index)
+                    start_index = end_index
+
+        # Evidențiază comentariile de linie
+        self.highlight_line_comments()
+
+        # Evidențiază comentariile de bloc
+        self.highlight_block_comments()
+
+    def highlight_line_comments(self):
+        # Identifică comentariile de linie și evidențiază întreaga linie în verde
+        start_index = "1.0"
+        while True:
+            start_index = self.text.search("//", start_index, tk.END, regexp=True)
+            if not start_index:
+                break
+            end_index = self.text.index(f"{start_index} lineend")
+            self.text.tag_add("comment_line", start_index, end_index)
+            start_index = end_index
+
+
+    def highlight_block_comments(self):
+        # Identifică comentariile de bloc și evidențiază întregul bloc în verde
+        start_index = "1.0"
+        while True:
+            start_index = self.text.search("/\\*", start_index, tk.END, regexp=True)
+            if not start_index:
+                break
+            end_index = self.text.search("\\*/", start_index, tk.END, regexp=True)
+            if not end_index:
+                break
+            end_index = self.text.index(f"{end_index}+2c")
+            self.text.tag_add("comment_block", start_index, end_index)
+            start_index = end_index
+
 
 
 
