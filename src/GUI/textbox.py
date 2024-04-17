@@ -42,6 +42,7 @@ class ScrollText(tk.Frame):
         self.text.bind("<Button-1>", self.numberLines.redraw)
         self.scrollbar.bind("<Button-1>", self.onScrollPress)
         self.text.bind("<MouseWheel>", self.onPressDelay)
+        self.text.bind("<KeyRelease>", lambda event: self.highlight_syntax())
 
     def onScrollPress(self, *args):
         self.scrollbar.bind("<B1-Motion>", self.numberLines.redraw)
@@ -68,6 +69,28 @@ class ScrollText(tk.Frame):
         self.numberLines.redraw()
         self.font_size = check.get_config_value("zoom")
         self.text.configure(font=("Arial", self.font_size))
+    def highlight_syntax(self):
+        # Șterge toate tag-urile "keyword" pentru a evita păstrarea evidențierii sintaxei pentru textul modificat
+        self.text.tag_remove("keyword", "1.0", tk.END)
+
+        # Evidențiază sintaxa în întregul text
+        self.text.tag_configure("keyword", foreground="blue")
+
+        # Lista de cuvinte cheie
+        keywords = ["int", "float", "double", "char", "if", "else", "for", "while", "return"]  # Adaugă aici alte cuvinte cheie
+
+        # Parcurge fiecare cuvânt cheie și caută-l în text
+        for keyword in keywords:
+            start_index = "1.0"
+            while True:
+                start_index = self.text.search(keyword, start_index, tk.END, regexp=True)
+                if not start_index:
+                    break
+                end_index = self.text.index(f"{start_index}+{len(keyword)}c")
+                self.text.tag_add("keyword", start_index, end_index)
+                start_index = end_index
+
+
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
