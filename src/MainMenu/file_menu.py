@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog
 import customtkinter as ctk
+import os
 
 # Definim o variabilă globală pentru a ține numele fișierului deschis
 opened_filename = None
@@ -118,4 +119,9 @@ def custom_file():
         version_window.mainloop()
 
 def return_file():
-    return opened_filename
+    global opened_filename
+    
+    if opened_filename:
+        return os.path.splitext(opened_filename)[1] 
+    else:
+        return ".txt"  

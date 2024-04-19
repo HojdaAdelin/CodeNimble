@@ -9,6 +9,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
+from MainMenu import file_menu
 
 #font_size = check.get_config_value("zoom")
 
@@ -42,7 +43,7 @@ class ScrollText(tk.Frame):
         self.text.bind("<Button-1>", self.numberLines.redraw)
         self.scrollbar.bind("<Button-1>", self.onScrollPress)
         self.text.bind("<MouseWheel>", self.onPressDelay)
-        self.text.bind("<KeyRelease>", lambda event: self.highlight_syntax())
+        self.text.bind("<KeyRelease>", lambda event: self.redraw())
 
     def onScrollPress(self, *args):
         self.scrollbar.bind("<B1-Motion>", self.numberLines.redraw)
@@ -66,7 +67,8 @@ class ScrollText(tk.Frame):
         return self.text.index(*args, **kwargs)
 
     def redraw(self):
-        self.highlight_syntax()
+        if (file_menu.return_file() == ".cpp"):
+            self.highlight_syntax()
         self.numberLines.redraw()
         self.font_size = check.get_config_value("zoom")
         self.text.configure(font=("Consolas", self.font_size))
