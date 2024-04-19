@@ -16,7 +16,7 @@ def version_info():
         version_window.title("CodeNimble - Version")
 
         w = 300 
-        h = 200 
+        h = 150 
 
         ws = version_window.winfo_screenwidth()
         hs = version_window.winfo_screenheight()
@@ -29,8 +29,8 @@ def version_info():
         version_window.resizable(False, False)
         version_window.configure(fg_color = "#2b2b2b")
 
-        version_label = ctk.CTkLabel(version_window, text="Version: BETA 1.0", font=("Arial", 20), text_color="white")
-        version_label.pack(pady=80)
+        version_label = ctk.CTkLabel(version_window, text="Version: 1.0", font=("Arial", 20), text_color="white")
+        version_label.pack(pady=50)
 
         # Funcție pentru a reseta version_window_opened la False după ce închidem fereastra
         def on_closing():
@@ -62,8 +62,10 @@ def changelog_inf():
         changelog_window.resizable(False, False)
         changelog_window.configure(fg_color = "#2b2b2b")
 
-        version_label = ctk.CTkLabel(changelog_window, text="Version: BETA 1.0", font=("Arial", 20), text_color="white")
+        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.0", font=("Arial", 20), text_color="white")
         version_label.pack(pady=10)
+        content_label = ctk.CTkLabel(changelog_window, text="• text highlighted\n• resize version window", font=("Arial", 20), text_color="white")
+        content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
         def on_closing():
