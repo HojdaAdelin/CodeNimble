@@ -116,3 +116,6 @@ def custom_file():
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
+
+def return_file():
+    return opened_filename

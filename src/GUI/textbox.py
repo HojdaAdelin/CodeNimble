@@ -72,14 +72,17 @@ class ScrollText(tk.Frame):
         self.text.configure(font=("Consolas", self.font_size))
     def highlight_syntax(self):
         # Definirea culorilor pentru evidențierea sintaxei
+        
         keyword_colors = {
             "keyword1": "#0e72b5",
-            "keyword2": "#d1dce8",
+            "keyword2": "#573e9c",
             "keyword3": "#d1dce8",
-            "keyword4": "#2d5f9c",  # Culorea pentru primul grup de cuvinte cheie
-            "keyword5": "#cc6600",  # Culorea pentru al doilea grup de cuvinte cheie
-            "keyword6": "#8f5c14",
-            "keyword7": "#3f8a16",
+            "keyword4": "#d1dce8",
+            "keyword5": "#2d5f9c",  # Culorea pentru primul grup de cuvinte cheie
+            "keyword6": "#cc6600",  # Culorea pentru al doilea grup de cuvinte cheie
+            "keyword7": "#8f5c14",
+            "keyword8": "#7cafcf",
+            "keyword9": "#3f8a16",
             "comment_line": "#008000",  # Verde pentru comentarii de linie
             "comment_block": "#008000",  # Verde pentru comentarii de bloc
             "string": "#008000",
@@ -98,13 +101,15 @@ class ScrollText(tk.Frame):
         # Lista de cuvinte cheie pentru fiecare grup
         keywords = {
             "keyword1": ["{", "}", "\\[", "\\]", "\\(", "\\)"],
-            "keyword2": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
+            "keyword2": ["\\<", "\\>", "\\=", "\\%", "\\+", "\\-", "\\*"],
+            "keyword3": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
                         "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ";"],
-            "keyword3": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
-            "keyword4": ["int", "float", "double", "char", "if", "else", "for", "while", "return", "do"],
-            "keyword5": ["struct", "class", "public", "private", "protected"],
-            "keyword6": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-            "keyword7": [re.escape("\""), re.escape("//"), re.escape("/*"), re.escape("*/"), re.escape("\'")]
+            "keyword4": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
+            "keyword5": ["int", "float", "double", "char", "if", "else", "for", "while", "return", "do", "string", "const", "using"],
+            "keyword6": ["struct", "class", "public", "private", "protected"],
+            "keyword7": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+            "keyword8": ["void"],
+            "keyword9": [re.escape("\""), re.escape("//"), re.escape("/*"), re.escape("*/"), re.escape("\'")],
             
         }
 
