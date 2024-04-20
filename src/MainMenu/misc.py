@@ -64,7 +64,7 @@ def changelog_inf():
 
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.0", font=("Arial", 20), text_color="white")
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• text highlighted\n• resize version window\n• exclude text highlighted from any type files except .cpp\n• fix select all", font=("Arial", 20), text_color="white")
+        content_label = ctk.CTkLabel(changelog_window, text="• text highlighted\n• resize version window\n• exclude text highlighted from any type files except .cpp\n• fix select all\n• new menu 'Templates'\n• C++ template\n• clear text", font=("Arial", 20), text_color="white")
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra

@@ -14,6 +14,7 @@ from MainMenu import misc
 from MainMenu import file_menu
 from MainMenu import edit_menu
 from MainMenu import view_menu
+from MainMenu import template_menu
 from GUI import textbox
 from GUI import statusbar
 from Config import check
@@ -32,6 +33,7 @@ class MainWindow(ct.CTk):
         file_m = menu.add_cascade("File")
         edit = menu.add_cascade("Edit")
         view = menu.add_cascade("View")
+        template = menu.add_cascade("Templates")
         home_drop = CustomDropdownMenu(widget=home, padx=-5, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
@@ -57,6 +59,7 @@ class MainWindow(ct.CTk):
         edit_drop.add_option(option="Copy", command=lambda:edit_menu.copy_text(scroll.text, scroll))
         edit_drop.add_option(option="Paste", command=lambda:edit_menu.paste_text(scroll.text, scroll))
         edit_drop.add_option(option="Delete",command=lambda:edit_menu.delete_text(scroll.text, scroll))
+        edit_drop.add_option(option="Clear", command=lambda:edit_menu.clear_text(scroll.text, scroll, statusbar_instance))
         edit_drop.add_option(option="Select all", command=lambda:edit_menu.select_all(scroll.text))
         edit_drop.add_separator()
         edit_drop.add_option(option="Find", command=lambda:edit_menu.find_text(scroll.text))
@@ -66,6 +69,8 @@ class MainWindow(ct.CTk):
         view_drop.add_option(option="Zoom in", command=lambda:view_menu.zoom_in(scroll))
         view_drop.add_option(option="Zoom out", command=lambda:view_menu.zoom_out(scroll))
         
+        template_drop = CustomDropdownMenu(widget=template, padx=-175, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
+        template_drop.add_option(option="C++", command=lambda:template_menu.cpp_template(scroll.text, scroll, statusbar_instance))
         # TextBox
         scroll.pack(fill="both", expand=True)
         

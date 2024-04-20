@@ -184,3 +184,8 @@ def replace_text(scroll_text):
 
         replace_window.protocol("WM_DELETE_WINDOW", on_closing)
         replace_window.mainloop()
+
+def clear_text(text, root, status):
+    text.delete("1.0", tk.END)
+    root.redraw()
+    status.update_text("Clear text")
