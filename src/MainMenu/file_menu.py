@@ -125,3 +125,20 @@ def return_file():
         return os.path.splitext(opened_filename)[1] 
     else:
         return ".txt"  
+
+def create_file(text):
+    global opened_filename
+
+    filename = "template.cpp"  # Numele de fișier implicit
+
+    # Verifică dacă fișierul cu numele implicit există deja
+    count = 1
+    while os.path.exists(filename):
+        filename = f"template{count}.cpp"
+        count += 1
+
+    # Creează fișierul .cpp și deschide-l pentru scriere
+    with open(filename, "w") as file:
+        file.write(text)
+    # Actualizează variabila globală opened_filename
+    opened_filename = filename
