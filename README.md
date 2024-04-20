@@ -3,7 +3,7 @@ Code Nimble is a light code editor dedicated for competitive programming.
 
 # Images
 
-<img src="images/ss1.png">
+<img src="images/ss.png">
 
 # Build
 
