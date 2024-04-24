@@ -46,8 +46,8 @@ def get_config_value(func):
         with open(file_name, "r") as file:
             for line in file:
                 if line.startswith(func + ":"):
-                    # Extrage valoarea din linie
-                    value = line.split(":")[1].strip()
+                    # Extrage valoarea din linie și o converteste la întreg
+                    value = int(line.split(":")[1].strip())
                     return value
         
     except Exception as e:

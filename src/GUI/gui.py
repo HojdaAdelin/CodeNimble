@@ -34,6 +34,8 @@ class MainWindow(ct.CTk):
         edit = menu.add_cascade("Edit")
         view = menu.add_cascade("View")
         template = menu.add_cascade("Templates")
+        textures = menu.add_cascade("Textures")
+
         home_drop = CustomDropdownMenu(widget=home, padx=-5, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
@@ -71,14 +73,22 @@ class MainWindow(ct.CTk):
         
         template_drop = CustomDropdownMenu(widget=template, padx=-175, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
         template_drop.add_option(option="C++", command=lambda:template_menu.cpp_template(scroll.text, scroll, statusbar_instance))
+        
+        def blue():
+            ct.set_default_color_theme("blue")
+
+        textures_drop = CustomDropdownMenu(widget=textures, padx=-260, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
+        textures_drop.add_option(option="Light theme")
+        textures_drop.add_option(option="Dark theme")
+        textures_drop.add_option(option="Blue theme", command=lambda:blue())
         # TextBox
         scroll.pack(fill="both", expand=True)
         
         scroll.text.focus()
         self.after(200, scroll.redraw())
-        self.configure(border_color = "red")
         # General configuration
-        #ct.set_default_color_theme("dark-blue")
+        ct.set_appearance_mode("dark")
+        ct.set_default_color_theme("themes/dark.json")
         self.title("CodeNimble")
         self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")

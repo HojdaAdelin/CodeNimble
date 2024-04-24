@@ -22,7 +22,7 @@ class ScrollText(tk.Frame):
         if font_size is None:
             font_size = 28
 
-        self.text = tk.Text(self, bg='#2b2b2b', foreground="#d1dce8", 
+        self.text = tk.Text(self,bg="#2b2b2b", foreground="#d1dce8", 
                             insertbackground='white',
                             selectbackground="#4d4d4d", font=("Consolas", font_size),
                             undo=True, maxundo=-1, autoseparators=True, borderwidth=0, wrap="none")
