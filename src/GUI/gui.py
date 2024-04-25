@@ -80,7 +80,7 @@ class MainWindow(ct.CTk):
         textures_drop.add_option(option="Dark theme", command=lambda:themes.dark_theme(menu, home, file_m, edit, view, template, textures,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          statusbar_instance, scroll, self))
-        textures_drop.add_option(option="Blue theme", command=lambda:themes.blue_theme())
+        
         # TextBox
         scroll.pack(fill="both", expand=True)
         
@@ -102,13 +102,19 @@ class MainWindow(ct.CTk):
             themes.light_theme(menu, home, file_m, edit, view, template, textures,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                 statusbar_instance, scroll, self)
-
+        else:
+            themes.dark_theme(menu, home, file_m, edit, view, template, textures,
+                                home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                statusbar_instance, scroll, self)
         # Title bar color handle
         tb_color = 0x333333
         if (check.get_config_value("theme") == 0):
             tb_color = 0x333333
         elif (check.get_config_value("theme") == 1):
             tb_color = 0xFFFFFF
+        else:
+            tb_color = 0x333333
+        
         HWND = windll.user32.GetParent(self.winfo_id())
         windll.dwmapi.DwmSetWindowAttribute(
             HWND,

@@ -74,6 +74,3 @@ def light_theme(menu_bar, cascade1, cascade2,
             35,
             byref(c_int(0xFFFFFF)),
             sizeof(c_int))
-
-def blue_theme():
-    pass
