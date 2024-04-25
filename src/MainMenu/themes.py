@@ -1,11 +1,21 @@
 import tkinter as tk
 import customtkinter as ct
+from ctypes import byref, sizeof, c_int, windll
+
+import sys
+import os
+
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+sys.path.append(parent_dir)
+
+from Config import check
 
 def dark_theme(menu_bar, cascade1, cascade2, 
                cascade3, cascade4, cascade5, cascade6,
                drop1, drop2, drop3, drop4, drop5, drop6,
-               status, text):
-
+               status, text, win):
+    check.update_config_file("theme", 0)
     menu_bar.configure(bg_color="#333333")
     cascade1.configure(hover_color="#4d4d4d", text_color="white")
     cascade2.configure(hover_color="#4d4d4d", text_color="white")
@@ -25,12 +35,19 @@ def dark_theme(menu_bar, cascade1, cascade2,
     text.scrollbar.configure(fg_color="#2b2b2b", button_color="#5c5c5c", button_hover_color="#858585")
     text.scrollhor.configure(fg_color="#2b2b2b", button_color="#5c5c5c", button_hover_color="#858585")
     text.numberLines.configure(bg='#333333')
+    HWND = windll.user32.GetParent(win.winfo_id())
+    windll.dwmapi.DwmSetWindowAttribute(
+            HWND,
+            35,
+            byref(c_int(0x333333)),
+            sizeof(c_int))
 
 def light_theme(menu_bar, cascade1, cascade2, 
                cascade3, cascade4, cascade5, cascade6,
                drop1, drop2, drop3, drop4, drop5, drop6,
                status, text, win):
     
+    check.update_config_file("theme", 1)
     menu_bar.configure(bg_color="white")
     cascade1.configure(hover_color="#ebebeb", text_color="black")
     cascade2.configure(hover_color="#ebebeb", text_color="black")
@@ -51,6 +68,12 @@ def light_theme(menu_bar, cascade1, cascade2,
     text.scrollhor.configure(fg_color="#f0f0f0", button_color="#b0b0b0", button_hover_color="#cccccc")
     text.numberLines.configure(bg='white')
     
+    HWND = windll.user32.GetParent(win.winfo_id())
+    windll.dwmapi.DwmSetWindowAttribute(
+            HWND,
+            35,
+            byref(c_int(0xFFFFFF)),
+            sizeof(c_int))
 
 def blue_theme():
     pass

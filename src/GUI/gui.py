@@ -76,10 +76,10 @@ class MainWindow(ct.CTk):
         textures_drop = CustomDropdownMenu(widget=textures, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
-                                                                                         statusbar_instance, scroll))
+                                                                                         statusbar_instance, scroll, self))
         textures_drop.add_option(option="Dark theme", command=lambda:themes.dark_theme(menu, home, file_m, edit, view, template, textures,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
-                                                                                         statusbar_instance, scroll))
+                                                                                         statusbar_instance, scroll, self))
         textures_drop.add_option(option="Blue theme", command=lambda:themes.blue_theme())
         # TextBox
         scroll.pack(fill="both", expand=True)
@@ -91,6 +91,18 @@ class MainWindow(ct.CTk):
         self.title("CodeNimble")
         self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")
+
+        # Theme
+        current_theme = check.get_config_value("theme")
+        if (current_theme == 0):
+            themes.dark_theme(menu, home, file_m, edit, view, template, textures,
+                                home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                statusbar_instance, scroll, self)
+        elif(current_theme == 1):
+            themes.light_theme(menu, home, file_m, edit, view, template, textures,
+                                home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                statusbar_instance, scroll, self)
+
         # Title bar color handle
         tb_color = 0x333333
         if (check.get_config_value("theme") == 0):
