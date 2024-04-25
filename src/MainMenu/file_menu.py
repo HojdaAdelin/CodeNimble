@@ -3,6 +3,15 @@ from tkinter import filedialog
 import customtkinter as ctk
 import os
 
+import sys
+import os
+
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+sys.path.append(parent_dir)
+
+from Config import check
+
 # Definim o variabilă globală pentru a ține numele fișierului deschis
 opened_filename = None
 
@@ -71,7 +80,14 @@ def custom_file():
         version_window_opened = True
         version_window = ctk.CTk()
         version_window.title("CodeNimble - New File")
-
+        fg_cl = "#2b2b2b"
+        text = "white"
+        if (check.get_config_value("theme") == 0):
+            fg_cl = "#2b2b2b"
+            text = "white"
+        elif (check.get_config_value("theme") == 1):
+            fg_cl = "white"
+            text = "black"
         w = 300 
         h = 100 
 
@@ -84,7 +100,7 @@ def custom_file():
         version_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
         version_window.resizable(False, False)
         version_window.iconbitmap("images/logo.ico")
-        version_window.configure(fg_color = "#2b2b2b")
+        version_window.configure(fg_color = fg_cl)
 
         # Adaugă un Entry în fereastra version_window
         text_box = tk.Entry(version_window, width=25, font=("Arial", 30), bg='#4a4a4a', foreground="#d1dce8", 
