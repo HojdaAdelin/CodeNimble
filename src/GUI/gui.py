@@ -15,6 +15,7 @@ from MainMenu import file_menu
 from MainMenu import edit_menu
 from MainMenu import view_menu
 from MainMenu import template_menu
+from MainMenu import themes
 from GUI import textbox
 from GUI import statusbar
 from Config import check
@@ -22,30 +23,28 @@ from Config import check
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
         # Main menu
         statusbar_instance = statusbar.StatusBar(self, text="")
 
-
         scroll = textbox.ScrollText(self)
         menu = CTkMenuBar(self, bg_color="#333333")
-        home = menu.add_cascade("Home")
-        file_m = menu.add_cascade("File")
-        edit = menu.add_cascade("Edit")
-        view = menu.add_cascade("View")
-        template = menu.add_cascade("Templates")
-        textures = menu.add_cascade("Textures")
+        home = menu.add_cascade("Home", hover_color="#4d4d4d")
+        file_m = menu.add_cascade("File", hover_color="#4d4d4d")
+        edit = menu.add_cascade("Edit", hover_color="#4d4d4d")
+        view = menu.add_cascade("View", hover_color="#4d4d4d")
+        template = menu.add_cascade("Templates", hover_color="#4d4d4d")
+        textures = menu.add_cascade("Textures", hover_color="#4d4d4d")
 
-        home_drop = CustomDropdownMenu(widget=home, padx=-5, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
+        home_drop = CustomDropdownMenu(widget=home, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
         home_drop.add_option(option="Source",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble"))
         home_drop.add_separator()
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
-
+        
         # Config values
     
-        file_drop = CustomDropdownMenu(widget=file_m, padx=-55, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
+        file_drop = CustomDropdownMenu(widget=file_m, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         #file_drop.add_option(option="New window", command=lambda:file_menu.new_window())
         file_drop.add_option(option="New File", command=lambda: file_menu.custom_file())
         file_drop.add_option(option="New", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
@@ -53,7 +52,7 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Save",command=lambda:file_menu.save_file(scroll.text, statusbar_instance))
         file_drop.add_option(option="Save as",command=lambda:file_menu.save_as_file(scroll.text))
  
-        edit_drop = CustomDropdownMenu(widget=edit, padx=-95, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
+        edit_drop = CustomDropdownMenu(widget=edit, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         edit_drop.add_option(option="Undo", command=lambda:edit_menu.undo_text(scroll.text, scroll))
         edit_drop.add_option(option="Redo", command=lambda:edit_menu.redo_text(scroll.text, scroll))
         edit_drop.add_separator()
@@ -67,20 +66,21 @@ class MainWindow(ct.CTk):
         edit_drop.add_option(option="Find", command=lambda:edit_menu.find_text(scroll.text))
         edit_drop.add_option(option="Replace", command=lambda:edit_menu.replace_text(scroll.text))
 
-        view_drop = CustomDropdownMenu(widget=view, padx=-135, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
+        view_drop = CustomDropdownMenu(widget=view, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         view_drop.add_option(option="Zoom in", command=lambda:view_menu.zoom_in(scroll))
         view_drop.add_option(option="Zoom out", command=lambda:view_menu.zoom_out(scroll))
         
-        template_drop = CustomDropdownMenu(widget=template, padx=-175, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
+        template_drop = CustomDropdownMenu(widget=template, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         template_drop.add_option(option="C++", command=lambda:template_menu.cpp_template(scroll.text, scroll, statusbar_instance))
-        
-        def blue():
-            ct.set_default_color_theme("blue")
 
-        textures_drop = CustomDropdownMenu(widget=textures, padx=-260, pady=-25, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="gray",hover_color="#4d4d4d")
-        textures_drop.add_option(option="Light theme")
-        textures_drop.add_option(option="Dark theme")
-        textures_drop.add_option(option="Blue theme", command=lambda:blue())
+        textures_drop = CustomDropdownMenu(widget=textures, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures,
+                                                                                         home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                                                                         statusbar_instance, scroll))
+        textures_drop.add_option(option="Dark theme", command=lambda:themes.dark_theme(menu, home, file_m, edit, view, template, textures,
+                                                                                         home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                                                                         statusbar_instance, scroll))
+        textures_drop.add_option(option="Blue theme", command=lambda:themes.blue_theme())
         # TextBox
         scroll.pack(fill="both", expand=True)
         
@@ -88,15 +88,19 @@ class MainWindow(ct.CTk):
         self.after(200, scroll.redraw())
         # General configuration
         ct.set_appearance_mode("dark")
-        ct.set_default_color_theme("themes/dark.json")
         self.title("CodeNimble")
         self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")
         # Title bar color handle
-        HWND = windll.user32.GetParent(self.winfo_id())
         tb_color = 0x333333
+        if (check.get_config_value("theme") == 0):
+            tb_color = 0x333333
+        elif (check.get_config_value("theme") == 1):
+            tb_color = 0xFFFFFF
+        HWND = windll.user32.GetParent(self.winfo_id())
         windll.dwmapi.DwmSetWindowAttribute(
             HWND,
             35,
             byref(c_int(tb_color)),
             sizeof(c_int))
+

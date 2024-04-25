@@ -212,6 +212,7 @@ class TextLineNumbers(tk.Canvas):
         tk.Canvas.__init__(self, *args, **kwargs, highlightthickness=0)
         self.textwidget = None
         self.font_size = check.get_config_value("zoom")
+        self.text_color = "#606366"
 
     def attach(self, text_widget):
         self.textwidget = text_widget
@@ -229,5 +230,5 @@ class TextLineNumbers(tk.Canvas):
             y = dline[1]
             linenum = str(i).split(".")[0]
             # Creează textul pentru numărul de linie și aplică configurația de font
-            self.create_text(2, y, anchor="nw", text=linenum, fill="#606366", font=self.font)
+            self.create_text(2, y, anchor="nw", text=linenum, fill=self.text_color, font=self.font)
             i = self.textwidget.index("%s+1line" % i)
