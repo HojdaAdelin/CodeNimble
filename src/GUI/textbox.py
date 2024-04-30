@@ -44,6 +44,10 @@ class ScrollText(tk.Frame):
         self.scrollbar.bind("<Button-1>", self.onScrollPress)
         self.text.bind("<MouseWheel>", self.onPressDelay)
         self.text.bind("<KeyRelease>", lambda event: self.redraw())
+        self.text.bind("<Tab>", self.add_tab)
+    def add_tab(self, event):
+            self.text.insert(tk.INSERT, "    ")
+            return 'break'
 
     def onScrollPress(self, *args):
         self.scrollbar.bind("<B1-Motion>", self.numberLines.redraw)
