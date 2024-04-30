@@ -41,6 +41,7 @@ def dark_theme(menu_bar, cascade1, cascade2,
             35,
             byref(c_int(0x333333)),
             sizeof(c_int))
+    text.redraw()
 
 def light_theme(menu_bar, cascade1, cascade2, 
                cascade3, cascade4, cascade5, cascade6,
@@ -74,3 +75,4 @@ def light_theme(menu_bar, cascade1, cascade2,
             35,
             byref(c_int(0xFFFFFF)),
             sizeof(c_int))
+    text.redraw()

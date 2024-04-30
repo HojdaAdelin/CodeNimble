@@ -95,6 +95,23 @@ class ScrollText(tk.Frame):
             "quote": "#008000",
             "include": "#008000"  # culoarea pentru "#"
         }
+        if (check.get_config_value("theme") == 1):
+            keyword_colors = {
+                "keyword1": "#0e72b5",
+                "keyword2": "#573e9c",
+                "keyword3": "black",
+                "keyword4": "black",
+                "keyword5": "#2d5f9c",  # Culorea pentru primul grup de cuvinte cheie
+                "keyword6": "#cc6600",  # Culorea pentru al doilea grup de cuvinte cheie
+                "keyword7": "#8f5c14",
+                "keyword8": "#7cafcf",
+                "keyword9": "#3f8a16",
+                "comment_line": "#008000",  # Verde pentru comentarii de linie
+                "comment_block": "#008000",  # Verde pentru comentarii de bloc
+                "string": "#008000",
+                "quote": "#008000",
+                "include": "#008000"  # culoarea pentru "#"
+            }
 
         # Șterge toate tag-urile pentru a evita păstrarea evidențierii sintaxei pentru textul modificat
         for tag in self.text.tag_names():
