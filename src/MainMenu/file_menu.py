@@ -73,7 +73,7 @@ def save_as_file(text, status_bar):
 
 version_window_opened = False
 
-def custom_file():
+def custom_file(statusbar):
     global version_window_opened
 
     if not version_window_opened:
@@ -120,7 +120,7 @@ def custom_file():
                     filename += ".txt"
                 try:
                     with open(filename, "x") as file:  # Creează fișierul cu numele introdus de utilizator
-                        pass
+                        statusbar.update_text("Created: " + filename)
                 except FileExistsError:
                     pass
 

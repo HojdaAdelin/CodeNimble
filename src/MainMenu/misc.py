@@ -88,7 +88,7 @@ def changelog_inf():
 
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.1", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• New version window height\n• New menu \"Textures\"\n• New main menu hover color\n• Light theme\n• Config for themes\n• New README\n• Fix tab space size\n• Fix themes\n• Changed file type in open dialog", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• New version window height\n• New menu \"Textures\"\n• New main menu hover color\n• Light theme\n• Config for themes\n• New README\n• Fix tab space size\n• Fix themes\n• Changed file type in open dialog\n• New status bar text", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
