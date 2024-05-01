@@ -30,7 +30,7 @@ def new_file(text, window, status_bar):
 def open_file(text, window, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
 
-    filename = filedialog.askopenfilename(filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+    filename = filedialog.askopenfilename(filetypes=[("All files", "*.*")])
 
     if filename:
         opened_filename = filename  # Actualizăm numele fișierului deschis
