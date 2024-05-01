@@ -81,12 +81,15 @@ def custom_file():
         version_window = ctk.CTk()
         version_window.title("CodeNimble - New File")
         fg_cl = "#2b2b2b"
+        text_bg = "#4a4a4a"
         text = "white"
         if (check.get_config_value("theme") == 0):
             fg_cl = "#2b2b2b"
+            text_bg = "#4a4a4a"
             text = "white"
         elif (check.get_config_value("theme") == 1):
             fg_cl = "white"
+            text_bg = "#f0f0f0"
             text = "black"
         w = 300 
         h = 100 
@@ -103,7 +106,7 @@ def custom_file():
         version_window.configure(fg_color = fg_cl)
 
         # Adaugă un Entry în fereastra version_window
-        text_box = tk.Entry(version_window, width=25, font=("Arial", 30), bg='#4a4a4a', foreground="#d1dce8", 
+        text_box = tk.Entry(version_window, width=25, font=("Arial", 30), bg=text_bg, foreground=text, 
                             insertbackground='white',
                             selectbackground="#616161", borderwidth=0)
         text_box.pack(pady=40)
