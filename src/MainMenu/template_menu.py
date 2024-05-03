@@ -63,19 +63,33 @@ int main()
     return 0;
 }"""
 
-def cpp_template(textbox, root, statusbar):
-    # Textul șablonului
-    template_text = """#include <iostream>
-
-int main()
-{
-    std::cout << "Hello World";
-    return 0;
-}"""
-
+def cpp_template(textbox, root, statusbar, op):
+    template_text = """"""
+    ext = ""
+    ext_misc = ""
+    if (op == "cpp"):
+        template_text = cpp_text
+        ext_misc = "C++"
+        ext = ".cpp"
+    elif (op == "c"):
+        template_text = c_text
+        ext_misc = "C"
+        ext = ".c"
+    elif (op == "java"):
+        template_text = java_text
+        ext_misc = "Java"
+        ext = ".java"
+    elif (op == "html"):
+        template_text = html_text
+        ext_misc = "HTML"
+        ext = ".html"
+    elif (op == "com"):
+        template_text = competitive_text
+        ext_misc = "C++ Competitive"
+        ext = ".cpp"
     # Inserarea textului în textbox
     edit_menu.clear_text(textbox, root, statusbar)
     textbox.insert("1.0", template_text)
-    file_menu.create_file(template_text)
-    statusbar.update_text("Used C++ template")
+    file_menu.create_file(template_text, ext)
+    statusbar.update_text("Used " + ext_misc + " template")
     root.redraw()
