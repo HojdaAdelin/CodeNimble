@@ -49,8 +49,10 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="New File", command=lambda: file_menu.custom_file(statusbar_instance))
         file_drop.add_option(option="New", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open",command=lambda:file_menu.open_file(scroll.text, scroll, statusbar_instance))
+        file_drop.add_separator()
         file_drop.add_option(option="Save",command=lambda:file_menu.save_file(scroll.text, statusbar_instance))
         file_drop.add_option(option="Save as",command=lambda:file_menu.save_as_file(scroll.text))
+        file_drop.add_option(option="Save as default file",command=lambda:file_menu.save_as_default(statusbar_instance))
  
         edit_drop = CustomDropdownMenu(widget=edit, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         edit_drop.add_option(option="Undo", command=lambda:edit_menu.undo_text(scroll.text, scroll))
@@ -96,7 +98,11 @@ class MainWindow(ct.CTk):
         self.title("CodeNimble")
         self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")
-
+        # Default file
+        if not hasattr(MainWindow, 'default_file_opened'):
+            file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
+            scroll.redraw()
+            MainWindow.default_file_opened = True
         # Theme
         current_theme = check.get_config_value("theme")
         if (current_theme == 0):

@@ -161,3 +161,54 @@ def create_file(text, ext):
         file.write(text)
     # Actualizează variabila globală opened_filename
     opened_filename = filename
+
+def open_default_file(text, window, status_bar):
+    # Directorul curent
+    current_dir = os.getcwd()
+
+    # Numele fișierului de configurare
+    default_file = "default_file.txt"
+
+    # Calea către fișierul de configurare
+    config_file_path = os.path.join(current_dir, default_file)
+
+    # Verificăm dacă fișierul de configurare există
+    if os.path.exists(config_file_path):
+        # Dacă există, citim locația fișierului curent din fișierul de configurare
+        with open(config_file_path, "r") as file:
+            saved_filename = file.read().strip()
+            # Verificăm dacă locația este validă și dacă există fișierul
+            if os.path.exists(saved_filename):
+                opened_filename = saved_filename  # Actualizăm numele fișierului deschis
+
+                with open(saved_filename, "r") as file:
+                    file_content = file.read()
+
+                    text.delete("1.0", tk.END) 
+                    text.insert("1.0", file_content) 
+                    window.redraw()
+                status_bar.update_text("Opened default file: " + saved_filename)
+                
+                return
+            else:
+                # Dacă locația nu este validă sau fișierul nu există, nu facem nimic
+                pass
+
+def save_as_default(statusbar):
+    global opened_filename
+
+    # Directorul curent
+    current_dir = os.getcwd()
+
+    # Numele fișierului de configurare
+    default_file = "default_file.txt"
+
+    # Calea către fișierul de configurare
+    config_file_path = os.path.join(current_dir, default_file)
+
+    # Verificăm dacă există o locație salvată în variabila globală opened_filename
+    if opened_filename:
+        # Salvăm locația fișierului curent în fișierul de configurare
+        with open(config_file_path, "w") as file:
+            file.write(opened_filename)
+        statusbar.update_text("Saved default file location")
