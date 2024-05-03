@@ -45,7 +45,7 @@ def version_info():
         version_window.resizable(False, False)
         version_window.configure(fg_color = fg_cl)
 
-        version_label = ctk.CTkLabel(version_window, text="Version: 1.1", font=("Arial", 20), text_color=text)
+        version_label = ctk.CTkLabel(version_window, text="Version: 1.2", font=("Arial", 20), text_color=text)
         version_label.pack(pady=25)
 
         # Funcție pentru a reseta version_window_opened la False după ce închidem fereastra
@@ -86,9 +86,9 @@ def changelog_inf():
         changelog_window.resizable(False, False)
         changelog_window.configure(fg_color = fg_cl)
 
-        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.1", font=("Arial", 20), text_color=text)
+        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.2", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• New version window height\n• New menu \"Textures\"\n• New main menu hover color\n• Light theme\n• Config for themes\n• New README\n• Fix tab space size\n• Fix themes\n• Changed file type in open dialog\n• New status bar text\n• Reset zoom", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• ", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
