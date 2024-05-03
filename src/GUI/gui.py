@@ -69,7 +69,8 @@ class MainWindow(ct.CTk):
         view_drop = CustomDropdownMenu(widget=view, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         view_drop.add_option(option="Zoom in", command=lambda:view_menu.zoom_in(scroll))
         view_drop.add_option(option="Zoom out", command=lambda:view_menu.zoom_out(scroll))
-        
+        view_drop.add_option(option="Reset zoom", command=lambda:view_menu.reset_zoom(scroll))
+
         template_drop = CustomDropdownMenu(widget=template, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         template_drop.add_option(option="C++", command=lambda:template_menu.cpp_template(scroll.text, scroll, statusbar_instance))
 

@@ -22,4 +22,6 @@ def zoom_out(root):
     
     root.redraw()
 
-
+def reset_zoom(root):
+    check.update_config_file("zoom", 28)
+    root.redraw()
