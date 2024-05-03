@@ -63,7 +63,7 @@ int main()
     return 0;
 }"""
 
-def cpp_template(textbox, root, statusbar, op):
+def create_template(textbox, root, statusbar, op):
     template_text = """"""
     ext = ""
     ext_misc = ""

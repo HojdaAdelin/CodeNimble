@@ -145,15 +145,15 @@ def return_file():
     else:
         return ".txt"  
 
-def create_file(text):
+def create_file(text, ext):
     global opened_filename
 
-    filename = "template.cpp"  # Numele de fișier implicit
+    filename = "template" + ext  # Numele de fișier implicit
 
     # Verifică dacă fișierul cu numele implicit există deja
     count = 1
     while os.path.exists(filename):
-        filename = f"template{count}.cpp"
+        filename = f"template{count}" + ext
         count += 1
 
     # Creează fișierul .cpp și deschide-l pentru scriere
