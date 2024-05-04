@@ -142,7 +142,7 @@ def replace_text(scroll_text):
             text_bg = "#f0f0f0"
             text = "black"
         w = 500 
-        h = 100 
+        h = 140 
 
         ws = replace_window.winfo_screenwidth()
         hs = replace_window.winfo_screenheight()
@@ -173,9 +173,12 @@ def replace_text(scroll_text):
         replace_box = tk.Entry(replace_frame, width=25, font=("Arial", 30), bg=text_bg, foreground=text, 
                             insertbackground='white',
                             selectbackground="#616161", borderwidth=0)
-        replace_box.pack(side="left")        
+        replace_box.pack(side="left")       
         replace_button = ctk.CTkButton(replace_frame, text="Replace")
         replace_button.pack(side="right", padx=(10, 0))
+        replace_all_button = ctk.CTkButton(replace_window, text="Replace all")
+        replace_all_button.pack(side="right", padx=(10, 38), pady=(10, 0)) 
+        
 
         # Funcție pentru a reseta replace_window_opened la False după ce închidem fereastra
         def on_closing():
@@ -211,9 +214,24 @@ def replace_text(scroll_text):
                     scroll_text.insert(start_index, replace_text)
                     start_index = end_index
                     break  # Ieșiți din bucla după ce ați înlocuit primul cuvânt găsit
+        
+        def replace_all():
+            search_text = find_box.get().strip()
+            replace_text = replace_box.get().strip()
+            if search_text and replace_text:
+                start_index = "1.0"
+                while True:
+                    start_index = scroll_text.search(search_text, start_index, tk.END)
+                    if not start_index:
+                        break
+                    end_index = f"{start_index}+{len(search_text)}c"
+                    scroll_text.delete(start_index, end_index)
+                    scroll_text.insert(start_index, replace_text)
+                    start_index = end_index
 
         find_button.configure(command=find)
         replace_button.configure(command=replace)
+        replace_all_button.configure(command=replace_all)
 
         replace_window.protocol("WM_DELETE_WINDOW", on_closing)
         replace_window.mainloop()
