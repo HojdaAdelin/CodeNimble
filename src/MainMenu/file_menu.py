@@ -213,3 +213,10 @@ def save_as_default(statusbar):
         with open(config_file_path, "w") as file:
             file.write(opened_filename)
         statusbar.update_text("Saved default file location")
+
+def delete_file(file_name, statusbar):
+    try:
+        os.remove(file_name)
+        statusbar.update_text("Removed default file")
+    except OSError as e:
+        pass
