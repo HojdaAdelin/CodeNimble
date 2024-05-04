@@ -99,6 +99,7 @@ class MainWindow(ct.CTk):
         self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")
         # Default file
+        
         if not hasattr(MainWindow, 'default_file_opened'):
             file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
             scroll.redraw()

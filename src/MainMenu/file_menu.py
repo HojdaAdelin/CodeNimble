@@ -163,6 +163,7 @@ def create_file(text, ext):
     opened_filename = filename
 
 def open_default_file(text, window, status_bar):
+    global opened_filename
     # Directorul curent
     current_dir = os.getcwd()
 
