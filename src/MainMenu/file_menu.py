@@ -55,7 +55,7 @@ def save_file(text, status_bar):
         status_bar.update_text("Saved: " + opened_filename)
     else:
         # Dacă nu există un fișier deschis anterior, apelăm funcția save_as_file()
-        save_as_file(text)
+        save_as_file(text, status_bar)
 
 def save_as_file(text, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală

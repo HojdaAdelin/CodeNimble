@@ -94,6 +94,7 @@ class MainWindow(ct.CTk):
         
         scroll.text.focus()
         self.after(200, scroll.redraw())
+        scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")
