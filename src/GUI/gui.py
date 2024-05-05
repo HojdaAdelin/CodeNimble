@@ -51,7 +51,7 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Open                          Ctrl+O",command=lambda:file_menu.open_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_separator()
         file_drop.add_option(option="Save                           Ctrl+S",command=lambda:file_menu.save_file(scroll.text, statusbar_instance))
-        file_drop.add_option(option="Save as             Ctrl+Shift+S",command=lambda:file_menu.save_as_file(scroll.text))
+        file_drop.add_option(option="Save as             Ctrl+Shift+S",command=lambda:file_menu.save_as_file(scroll.text, statusbar_instance))
         file_drop.add_option(option="Save as default file",command=lambda:file_menu.save_as_default(statusbar_instance))
         file_drop.add_option(option="Remove default file",command=lambda:file_menu.delete_file("default_file.txt",statusbar_instance))
  
@@ -95,6 +95,12 @@ class MainWindow(ct.CTk):
         scroll.text.focus()
         self.after(200, scroll.redraw())
         scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))
+        scroll.text.bind("<Control-o>", lambda event: file_menu.open_file(scroll.text, scroll, statusbar_instance))
+        scroll.text.bind("<Control-s>", lambda event: file_menu.save_file(scroll.text, statusbar_instance))
+        scroll.text.bind("<Control-Shift-s>", lambda event: file_menu.save_as_file(scroll.text, statusbar_instance))
+        scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))
+        scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))
+
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")
