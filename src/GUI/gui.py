@@ -103,7 +103,8 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-x>", lambda event: edit_menu.cut_text(scroll.text, scroll))
         scroll.text.bind("<Control-d>", lambda event: edit_menu.delete_text(scroll.text, scroll))
         scroll.text.bind("<Control-Alt-c>", lambda event: edit_menu.clear_text(scroll.text, scroll, statusbar_instance))
-
+        scroll.text.bind("<Control-=>", lambda event: view_menu.zoom_in(scroll))
+        scroll.text.bind("<Control-minus>", lambda event: view_menu.zoom_out(scroll))
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")

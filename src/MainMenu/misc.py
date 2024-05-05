@@ -88,7 +88,7 @@ def changelog_inf():
 
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.2", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• New templates: C, Java, Html, C++ Competitive\n• Save default file location\n• Remove default file\n• Replace all\n• Fix save as file", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• New templates: C, Java, Html, C++ Competitive\n• Save default file location\n• Remove default file\n• Replace all\n• Fix save as file\n• Binds", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
