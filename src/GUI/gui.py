@@ -98,8 +98,11 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-o>", lambda event: file_menu.open_file(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-s>", lambda event: file_menu.save_file(scroll.text, statusbar_instance))
         scroll.text.bind("<Control-Shift-s>", lambda event: file_menu.save_as_file(scroll.text, statusbar_instance))
-        scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))
-        scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))
+        scroll.text.bind("<Control-z>", lambda event: edit_menu.undo_text(scroll.text, scroll))
+        scroll.text.bind("<Control-y>", lambda event: edit_menu.redo_text(scroll.text, scroll))
+        scroll.text.bind("<Control-x>", lambda event: edit_menu.cut_text(scroll.text, scroll))
+        scroll.text.bind("<Control-d>", lambda event: edit_menu.delete_text(scroll.text, scroll))
+        scroll.text.bind("<Control-Alt-c>", lambda event: edit_menu.clear_text(scroll.text, scroll, statusbar_instance))
 
         # General configuration
         ct.set_appearance_mode("dark")
