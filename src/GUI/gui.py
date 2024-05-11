@@ -39,6 +39,7 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
         home_drop.add_option(option="Source",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble"))
+        home_drop.add_option(option="Report bugs",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble/issues"))
         home_drop.add_separator()
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
         
