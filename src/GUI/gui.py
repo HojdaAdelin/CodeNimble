@@ -2,6 +2,7 @@ from typing import Any, Tuple
 import customtkinter as ct
 from CTkMenuBar import *
 from ctypes import byref, sizeof, c_int, windll
+import tkinter as tk
 
 import sys
 import os
@@ -74,6 +75,8 @@ class MainWindow(ct.CTk):
         view_drop.add_option(option="Zoom in                        Ctrl+ =", command=lambda:view_menu.zoom_in(scroll))
         view_drop.add_option(option="Zoom out                      Ctrl+ -", command=lambda:view_menu.zoom_out(scroll))
         view_drop.add_option(option="Reset zoom", command=lambda:view_menu.reset_zoom(scroll))
+        view_drop.add_separator()
+        view_drop.add_option(option="Fullscreen                        F11", command=lambda:view_menu.toggle_fullscreen(self))
 
         template_drop = CustomDropdownMenu(widget=template, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         template_drop.add_option(option="C++", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "cpp"))
@@ -106,6 +109,8 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-Alt-c>", lambda event: edit_menu.clear_text(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-=>", lambda event: view_menu.zoom_in(scroll))
         scroll.text.bind("<Control-minus>", lambda event: view_menu.zoom_out(scroll))
+        scroll.text.bind("<F11>", lambda event: view_menu.toggle_fullscreen(self))
+        
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")

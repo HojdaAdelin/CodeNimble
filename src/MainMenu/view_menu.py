@@ -25,3 +25,9 @@ def zoom_out(root):
 def reset_zoom(root):
     check.update_config_file("zoom", 28)
     root.redraw()
+
+def toggle_fullscreen(window):
+    if window.state() == "zoomed":
+        window.state("normal")
+    else:
+        window.state("zoomed")
