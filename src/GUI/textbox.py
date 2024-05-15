@@ -11,27 +11,21 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import file_menu
 
-#font_size = check.get_config_value("zoom")
-
 class ScrollText(tk.Frame):
     def __init__(self, master, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        
-        font_size = check.get_config_value("zoom")
 
-        if font_size is None:
-            font_size = 28
+        font_size = check.get_config_value("zoom") or 28
 
-        self.text = tk.Text(self,bg="#2b2b2b", foreground="#d1dce8", 
-                            insertbackground='white',
+        self.text = tk.Text(self, bg="#2b2b2b", foreground="#d1dce8", insertbackground='white',
                             selectbackground="#4d4d4d", font=("Consolas", font_size),
-                            undo=True, maxundo=-1, autoseparators=True, borderwidth=0, wrap="none")
+                            undo=True, autoseparators=True, borderwidth=0, wrap="none")
         self.configure(bg="#2b2b2b")
         self.scrollbar = ct.CTkScrollbar(self.text, orientation=tk.VERTICAL, command=self.text.yview)
         self.scrollhor = ct.CTkScrollbar(self.text, orientation=tk.HORIZONTAL, command=self.text.xview)
         self.text.configure(yscrollcommand=self.scrollbar.set, xscrollcommand=self.scrollhor.set)
 
-        self.numberLines = TextLineNumbers(self, width=4*int(check.get_config_value("zoom")), bg='#313335')
+        self.numberLines = TextLineNumbers(self, width=4 * font_size, bg='#313335')
         self.numberLines.attach(self.text)
 
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -45,9 +39,11 @@ class ScrollText(tk.Frame):
         self.text.bind("<MouseWheel>", self.onPressDelay)
         self.text.bind("<KeyRelease>", lambda event: self.redraw())
         self.text.bind("<Tab>", self.add_tab)
+        self.text.bind("<Control-a>", self.select_all)
+
     def add_tab(self, event):
-            self.text.insert(tk.INSERT, "    ")
-            return 'break'
+        self.text.insert(tk.INSERT, "    ")
+        return 'break'
 
     def onScrollPress(self, *args):
         self.scrollbar.bind("<B1-Motion>", self.numberLines.redraw)
@@ -71,93 +67,115 @@ class ScrollText(tk.Frame):
         return self.text.index(*args, **kwargs)
 
     def redraw(self):
-        if (file_menu.return_file() == ".cpp"):
+        if file_menu.return_file() == ".cpp":
             self.highlight_syntax()
         self.numberLines.redraw()
-        self.font_size = check.get_config_value("zoom")
-        self.text.configure(font=("Consolas", self.font_size))
-    def highlight_syntax(self):
-        # Definirea culorilor pentru evidențierea sintaxei
-        
-        keyword_colors = {
-            "keyword1": "#0e72b5",
-            "keyword2": "#573e9c",
-            "keyword3": "white",
-            "keyword4": "#2d5f9c",  # Culorea pentru primul grup de cuvinte cheie
-            "keyword5": "#cc6600",  # Culorea pentru al doilea grup de cuvinte cheie
-            "keyword6": "#8f5c14",
-            "keyword7": "#7cafcf",
-            "keyword8": "#3f8a16",
-            "comment_line": "#008000",  # Verde pentru comentarii de linie
-            "comment_block": "#008000",  # Verde pentru comentarii de bloc
-            "string": "#008000",
-            "quote": "#008000",
-            "include": "#008000"  # culoarea pentru "#"
-        }
-        if (check.get_config_value("theme") == 1):
-            keyword_colors = {
-                "keyword1": "#0e72b5",
-                "keyword2": "#573e9c",
-                "keyword3": "black",
-                "keyword4": "#2d5f9c",  # Culorea pentru primul grup de cuvinte cheie
-                "keyword5": "#cc6600",  # Culorea pentru al doilea grup de cuvinte cheie
-                "keyword6": "#8f5c14",
-                "keyword7": "#7cafcf",
-                "keyword8": "#3f8a16",
-                "comment_line": "#008000",  # Verde pentru comentarii de linie
-                "comment_block": "#008000",  # Verde pentru comentarii de bloc
-                "string": "#008000",
-                "quote": "#008000",
-                "include": "#008000"  # culoarea pentru "#"
-            }
+        font_size = check.get_config_value("zoom")
+        self.text.configure(font=("Consolas", font_size))
 
-        # Șterge toate tag-urile pentru a evita păstrarea evidențierii sintaxei pentru textul modificat
+    def highlight_syntax(self):
+        theme = check.get_config_value("theme")
+        keyword_colors = self.get_keyword_colors(theme)
+
         for tag in self.text.tag_names():
             self.text.tag_remove(tag, "1.0", tk.END)
 
-        # Definește tag-uri pentru fiecare grup de cuvinte cheie și pentru comentarii
         for keyword_group, color in keyword_colors.items():
             self.text.tag_configure(keyword_group, foreground=color)
 
-        # Lista de cuvinte cheie pentru fiecare grup
-        keywords = {
-            "keyword1": ["{", "}", "\\[", "\\]", "\\(", "\\)"],
-            "keyword2": ["\\<", "\\>", "\\=", "\\%", "\\+", "\\-", "\\*", "!"],
-            "keyword3": [";"],
-            "keyword4": ["int", "float", "double", "char", "if", "else", "for", "while", "return", "do", "string", "const", "using"],
-            "keyword5": ["struct", "class", "public", "private", "protected"],
-            "keyword6": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
-            "keyword7": ["void"],
-            "keyword8": [re.escape("\""), re.escape("//"), re.escape("/*"), re.escape("*/"), re.escape("\'")],
-            
-        }
+        keywords = self.get_keywords()
 
-        # Parcurge fiecare grup de cuvinte cheie și caută-le în text
+        # Highlight keywords
         for keyword_group, keyword_list in keywords.items():
             for keyword in keyword_list:
                 start_index = "1.0"
                 while True:
-                    start_index = self.text.search(keyword, start_index, tk.END, regexp=True)
+                    start_index = self.text.search(r'\b{}\b'.format(keyword), start_index, tk.END, regexp=True)
                     if not start_index:
                         break
                     end_index = self.text.index(f"{start_index}+{len(keyword)}c")
                     self.text.tag_add(keyword_group, start_index, end_index)
                     start_index = end_index
 
-        # Evidențiază comentariile de linie
+        # Highlight special characters individually
+        special_characters = self.get_special_characters()
+        for char, tag in special_characters.items():
+            self.highlight_character(char, tag)
+
         self.highlight_line_comments()
-
-        # Evidențiază comentariile de bloc
         self.highlight_block_comments()
-
         self.highlight_strings()
-
         self.highlight_quotes()
-
         self.highlight_include()
 
+    def get_keyword_colors(self, theme):
+        dark_theme = {
+            "keyword1": "#0e72b5",  # Cuvinte cheie (ex: int, float, etc.)
+            "keyword2": "#573e9c",  # Acces specifiers (ex: public, private, etc.)
+            "keyword3": "#4d50a1",
+            "special_char": "#7eade0",    # Numere și alte cuvinte cheie
+            "comment_line": "#008000",  # Comentarii
+            "comment_block": "#008000", # Comentarii bloc
+            "string": "#008000",    # Șiruri de caractere
+            "quote": "#008000",     # Caractere între ghilimele simple
+            "include": "#008000",   # Directive include 
+        }
+
+        light_theme = {
+            "keyword1": "#0e72b5",
+            "keyword2": "#573e9c",
+            "keyword3": "#4d50a1",
+            "special_char": "#7eade0",
+            "comment_line": "#008000",
+            "comment_block": "#008000",
+            "string": "#008000",
+            "quote": "#008000",
+            "include": "#008000"
+        }
+
+        return dark_theme if theme == 0 else light_theme
+
+    def get_keywords(self):
+        return {
+            "keyword1": ["int", "float", "double", "char", "if", "else", "for", "while", "return", "do", "string", "const", "using"],
+            "keyword2": ["struct", "class", "public", "private", "protected"],
+            "keyword3": ["void"]
+        }
+
+    def get_special_characters(self):
+        return {
+            "{": "special_char",
+            "}": "special_char",
+            "[": "special_char",
+            "]": "special_char",
+            "(": "special_char",
+            ")": "special_char",
+            "<": "special_char",
+            ">": "special_char",
+            "=": "special_char",
+            "%": "special_char",
+            "+": "special_char",
+            "-": "special_char",
+            "*": "special_char",
+            "!": "special_char",
+            ";": "special_char",
+            ":": "special_char",
+            "0": "keyword3",
+            "1": "keyword3", "2": "keyword3", "3": "keyword3", "4": "keyword3", "5": "keyword3", 
+            "6": "keyword3", "7": "keyword3", "8": "keyword3", "9": "keyword3"
+        }
+
+    def highlight_character(self, character, tag):
+        start_index = "1.0"
+        while True:
+            start_index = self.text.search(re.escape(character), start_index, tk.END, regexp=True)
+            if not start_index:
+                break
+            end_index = self.text.index(f"{start_index}+1c")
+            self.text.tag_add(tag, start_index, end_index)
+            start_index = end_index
+
     def highlight_include(self):
-        # Identifică caracterul "#" și evidențiază textul după el în altă culoare
         start_index = "1.0"
         while True:
             start_index = self.text.search("#", start_index, tk.END, regexp=True)
@@ -167,22 +185,19 @@ class ScrollText(tk.Frame):
             self.text.tag_add("include", start_index, end_index)
             start_index = end_index
 
-
-
     def highlight_line_comments(self):
-        # Identifică comentariile de linie și evidențiază întreaga linie în verde
         start_index = "1.0"
         while True:
             start_index = self.text.search("//", start_index, tk.END, regexp=True)
             if not start_index:
                 break
-            end_index = self.text.index(f"{start_index} lineend")
+            end_index = self.text.search("\n", start_index, tk.END, regexp=True)
+            if not end_index:
+                end_index = self.text.index(tk.END)
             self.text.tag_add("comment_line", start_index, end_index)
             start_index = end_index
 
-
     def highlight_block_comments(self):
-        # Identifică comentariile de bloc și evidențiază întregul bloc în verde
         start_index = "1.0"
         while True:
             start_index = self.text.search("/\\*", start_index, tk.END, regexp=True)
@@ -190,39 +205,36 @@ class ScrollText(tk.Frame):
                 break
             end_index = self.text.search("\\*/", start_index, tk.END, regexp=True)
             if not end_index:
-                break
-            end_index = self.text.index(f"{end_index}+2c")
+                end_index = self.text.index(tk.END)
+            end_index = self.text.index(f"{end_index}+2c")  # Adjust the end index to include the "*/"
             self.text.tag_add("comment_block", start_index, end_index)
-            start_index = end_index
+            start_index = end_index + "+1c"
+
 
     def highlight_strings(self):
-        # Identifică textul între ghilimele și evidențiază-l în altă culoare
-        start_index = "1.0"
-        while True:
-            start_index = self.text.search("\"", start_index, tk.END, regexp=True)
-            if not start_index:
-                break
-            end_index = self.text.search("\"", f"{start_index}+1c", tk.END, regexp=True)
-            if not end_index:
-                break
-            end_index = self.text.index(f"{end_index}+1c")
-            self.text.tag_add("string", start_index, end_index)
-            start_index = end_index
+        self.highlight_pattern("\"", "string", "\"", offset=1)
 
     def highlight_quotes(self):
-        # Identifică textul între ghilimele simple și evidențiază-l în altă culoare
+        self.highlight_pattern("'", "quote", "'", offset=1)
+
+    def highlight_pattern(self, start_pattern, tag, end_pattern, offset=0):
         start_index = "1.0"
         while True:
-            start_index = self.text.search("'", start_index, tk.END, regexp=True)
+            start_index = self.text.search(start_pattern, start_index, tk.END, regexp=True)
             if not start_index:
                 break
-            end_index = self.text.search("'", f"{start_index}+1c", tk.END, regexp=True)
+            end_index = self.text.search(end_pattern, f"{start_index}+{offset}c", tk.END, regexp=True)
             if not end_index:
                 break
             end_index = self.text.index(f"{end_index}+1c")
-            self.text.tag_add("quote", start_index, end_index)
+            self.text.tag_add(tag, start_index, end_index)
             start_index = end_index
 
+    def select_all(self, event):
+        self.text.tag_add(tk.SEL, "1.0", tk.END)
+        self.text.mark_set(tk.INSERT, "1.0")
+        self.text.see(tk.INSERT)
+        return 'break'
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
@@ -238,7 +250,7 @@ class TextLineNumbers(tk.Canvas):
         self.delete("all")
         self.font_size = check.get_config_value("zoom")
         self.font = ("Consolas", self.font_size)
-        self.configure(width=4 * int(self.font_size))   # Redefinește lățimea liniei pe baza dimensiunii fontului
+        self.configure(width=4 * int(self.font_size))
         i = self.textwidget.index("@0,0")
         while True:
             dline = self.textwidget.dlineinfo(i)
@@ -246,6 +258,5 @@ class TextLineNumbers(tk.Canvas):
                 break
             y = dline[1]
             linenum = str(i).split(".")[0]
-            # Creează textul pentru numărul de linie și aplică configurația de font
             self.create_text(2, y, anchor="nw", text=linenum, fill=self.text_color, font=self.font)
-            i = self.textwidget.index("%s+1line" % i)
+            i = self.textwidget.index(f"{i}+1line")
