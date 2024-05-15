@@ -90,12 +90,13 @@ class ScrollText(tk.Frame):
             for keyword in keyword_list:
                 start_index = "1.0"
                 while True:
-                    start_index = self.text.search(r'\b{}\b'.format(keyword), start_index, tk.END, regexp=True)
+                    start_index = self.text.search(r'\m{}\M'.format(re.escape(keyword)), start_index, tk.END, regexp=True)
                     if not start_index:
                         break
-                    end_index = self.text.index(f"{start_index}+{len(keyword)}c")
+                    end_index = self.text.index(f"{start_index}+{len(keyword)}c wordend")
                     self.text.tag_add(keyword_group, start_index, end_index)
                     start_index = end_index
+
 
         # Highlight special characters individually
         special_characters = self.get_special_characters()
@@ -110,9 +111,9 @@ class ScrollText(tk.Frame):
 
     def get_keyword_colors(self, theme):
         dark_theme = {
-            "keyword1": "#0e72b5",  # Cuvinte cheie (ex: int, float, etc.)
-            "keyword2": "#573e9c",  # Acces specifiers (ex: public, private, etc.)
-            "keyword3": "#4d50a1",
+            "keyword1": "#00b7ff",  # Cuvinte cheie (ex: int, float, etc.)
+            "keyword2": "#144478",  # Acces specifiers (ex: public, private, etc.)
+            "keyword3": "#00b7ff",
             "special_char": "#7eade0",    # Numere și alte cuvinte cheie
             "comment_line": "#008000",  # Comentarii
             "comment_block": "#008000", # Comentarii bloc
@@ -122,9 +123,9 @@ class ScrollText(tk.Frame):
         }
 
         light_theme = {
-            "keyword1": "#0e72b5",
-            "keyword2": "#573e9c",
-            "keyword3": "#4d50a1",
+            "keyword1": "#00b7ff",
+            "keyword2": "#144478",
+            "keyword3": "#00b7ff",
             "special_char": "#7eade0",
             "comment_line": "#008000",
             "comment_block": "#008000",
