@@ -39,7 +39,6 @@ class ScrollText(tk.Frame):
         self.text.bind("<MouseWheel>", self.onPressDelay)
         self.text.bind("<KeyRelease>", lambda event: self.redraw())
         self.text.bind("<Tab>", self.add_tab)
-        self.text.bind("<Control-a>", self.select_all)
 
     def add_tab(self, event):
         self.text.insert(tk.INSERT, "    ")
@@ -67,11 +66,23 @@ class ScrollText(tk.Frame):
         return self.text.index(*args, **kwargs)
 
     def redraw(self):
+        # Salvăm starea selecției
+        if self.text.tag_ranges(tk.SEL):
+            selection_start = self.text.index(tk.SEL_FIRST)
+            selection_end = self.text.index(tk.SEL_LAST)
+        else:
+            selection_start = None
+            selection_end = None
+
         if file_menu.return_file() == ".cpp":
             self.highlight_syntax()
         self.numberLines.redraw()
         font_size = check.get_config_value("zoom")
         self.text.configure(font=("Consolas", font_size))
+
+        # Restabilim selecția textului dacă există
+        if selection_start and selection_end:
+            self.text.tag_add(tk.SEL, selection_start, selection_end)
 
     def highlight_syntax(self):
         theme = check.get_config_value("theme")
@@ -231,11 +242,7 @@ class ScrollText(tk.Frame):
             self.text.tag_add(tag, start_index, end_index)
             start_index = end_index
 
-    def select_all(self, event):
-        self.text.tag_add(tk.SEL, "1.0", tk.END)
-        self.text.mark_set(tk.INSERT, "1.0")
-        self.text.see(tk.INSERT)
-        return 'break'
+
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
