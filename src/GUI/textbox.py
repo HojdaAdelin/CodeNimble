@@ -39,6 +39,11 @@ class ScrollText(tk.Frame):
         self.text.bind("<MouseWheel>", self.onPressDelay)
         self.text.bind("<KeyRelease>", lambda event: self.redraw())
         self.text.bind("<Tab>", self.add_tab)
+        
+        # Bindings pentru completarea automată a parantezelor
+        self.text.bind("(", self.insert_parentheses)
+        self.text.bind("[", self.insert_brackets)
+        self.text.bind("{", self.insert_braces)
 
     def add_tab(self, event):
         self.text.insert(tk.INSERT, "    ")
@@ -242,7 +247,21 @@ class ScrollText(tk.Frame):
             self.text.tag_add(tag, start_index, end_index)
             start_index = end_index
 
+    # Metodele pentru inserarea parantezelor și mutarea cursorului între ele
+    def insert_parentheses(self, event):
+        self.text.insert(tk.INSERT, "()")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
+        return "break"
 
+    def insert_brackets(self, event):
+        self.text.insert(tk.INSERT, "[]")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
+        return "break"
+
+    def insert_braces(self, event):
+        self.text.insert(tk.INSERT, "{}")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
+        return "break"
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
