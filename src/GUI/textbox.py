@@ -45,6 +45,9 @@ class ScrollText(tk.Frame):
         self.text.bind("[", self.insert_brackets)
         self.text.bind("{", self.insert_braces)
 
+        # Binding pentru ștergerea parantezelor pereche
+        self.text.bind("<BackSpace>", self.handle_backspace)
+
     def add_tab(self, event):
         self.text.insert(tk.INSERT, "    ")
         return 'break'
@@ -262,6 +265,18 @@ class ScrollText(tk.Frame):
         self.text.insert(tk.INSERT, "{}")
         self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
         return "break"
+
+    def handle_backspace(self, event):
+        cursor_index = self.text.index(tk.INSERT)
+        previous_char = self.text.get(f"{cursor_index} -1c", cursor_index)
+        next_char = self.text.get(cursor_index, f"{cursor_index} +1c")
+
+        if previous_char in "({[" and next_char in ")}]":
+            # Verificăm dacă nu există conținut între paranteze
+            if self.text.get(f"{cursor_index} -1c", f"{cursor_index} +1c") in ["()", "{}", "[]"]:
+                self.text.delete(f"{cursor_index} -1c", f"{cursor_index} +1c")
+                return "break"
+        return
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):

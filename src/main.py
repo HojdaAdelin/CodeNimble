@@ -7,5 +7,6 @@ if __name__ == "__main__":
         create_config_file()
         pre_write_config()
         
+        
     window = MainWindow()
     window.mainloop()
