@@ -39,7 +39,7 @@ class ScrollText(tk.Frame):
         self.text.bind("<MouseWheel>", self.onPressDelay)
         self.text.bind("<KeyRelease>", lambda event: self.redraw())
         self.text.bind("<Tab>", self.add_tab)
-        
+
         # Bindings pentru completarea automată a parantezelor
         self.text.bind("(", self.insert_parentheses)
         self.text.bind("[", self.insert_brackets)
@@ -47,6 +47,9 @@ class ScrollText(tk.Frame):
 
         # Binding pentru ștergerea parantezelor pereche
         self.text.bind("<BackSpace>", self.handle_backspace)
+
+        # Binding pentru enter
+        self.text.bind("<Return>", self.handle_return)
 
     def add_tab(self, event):
         self.text.insert(tk.INSERT, "    ")
@@ -278,6 +281,20 @@ class ScrollText(tk.Frame):
                 return "break"
         return
 
+    def handle_return(self, event):
+        # Preluăm poziția curentă a cursorului
+        cursor_index = self.text.index(tk.INSERT)
+        current_line = self.text.get(f"{cursor_index} linestart", cursor_index)
+        
+        # Determinăm poziția primului caracter non-spațiu
+        leading_spaces = len(current_line) - len(current_line.lstrip())
+        
+        # Inserăm noua linie cu indentare corespunzătoare
+        self.text.insert(cursor_index, "\n" + " " * leading_spaces)
+        
+        # Oprim comportamentul implicit al tastelor de return
+        return "break"
+
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
         tk.Canvas.__init__(self, *args, **kwargs, highlightthickness=0)
@@ -302,3 +319,5 @@ class TextLineNumbers(tk.Canvas):
             linenum = str(i).split(".")[0]
             self.create_text(2, y, anchor="nw", text=linenum, fill=self.text_color, font=self.font)
             i = self.textwidget.index(f"{i}+1line")
+
+# Restul codului rămâne neschimbat

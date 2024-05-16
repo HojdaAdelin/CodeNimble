@@ -11,7 +11,7 @@ from Config import check
 
 def zoom_in(root):
     ante_size = check.get_config_value("zoom")
-    if (int(ante_size) + 4 < 40):
+    if (int(ante_size) + 4 < 52):
         check.update_config_file("zoom", int(ante_size) + 4)
     root.redraw()
 
