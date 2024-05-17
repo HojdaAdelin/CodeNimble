@@ -282,18 +282,67 @@ class ScrollText(tk.Frame):
         return
 
     def handle_return(self, event):
+        # Verificăm dacă fișierul curent are extensia .cpp
+        if file_menu.return_file() != ".cpp":
+            # Inserăm o nouă linie cu indentare corespunzătoare fără autocompletare
+            cursor_index = self.text.index(tk.INSERT)
+            current_line = self.text.get(f"{cursor_index} linestart", cursor_index)
+            leading_spaces = len(current_line) - len(current_line.lstrip())
+            indent = " " * leading_spaces
+            self.text.insert(cursor_index, "\n" + indent)
+            return "break"
+        
         # Preluăm poziția curentă a cursorului
         cursor_index = self.text.index(tk.INSERT)
         current_line = self.text.get(f"{cursor_index} linestart", cursor_index)
         
         # Determinăm poziția primului caracter non-spațiu
         leading_spaces = len(current_line) - len(current_line.lstrip())
-        
-        # Inserăm noua linie cu indentare corespunzătoare
-        self.text.insert(cursor_index, "\n" + " " * leading_spaces)
+        indent = " " * leading_spaces
+
+        # Verificăm dacă linia curentă conține un cuvânt cheie specific, în format cu litere mari
+        keyword_map = {
+            "DO": f"do {{\n{indent}\n{indent}}} while();",
+            "FOR": f"for (int i = ; i <= ; i++) {{\n{indent}\n{indent}}}",
+            "WHILE": f"while () {{\n{indent}\n{indent}}}",
+            "IF": f"if () {{\n{indent}\n{indent}}}"
+        }
+
+        stripped_line = current_line.strip()
+        if stripped_line in keyword_map:
+            # Inserăm template-ul corespunzător și poziționăm cursorul
+            self.text.delete(f"{cursor_index} linestart", cursor_index)
+            self.text.insert(f"{cursor_index} linestart", indent + keyword_map[stripped_line])
+            new_cursor_index = self.get_new_cursor_index(stripped_line, cursor_index, indent)
+            self.text.mark_set(tk.INSERT, new_cursor_index)
+            return "break"
+
+        # Inserăm o nouă linie cu indentare corespunzătoare
+        self.text.insert(cursor_index, "\n" + indent)
         
         # Oprim comportamentul implicit al tastelor de return
         return "break"
+
+    def get_new_cursor_index(self, keyword, cursor_index, indent):
+        line_index = self.text.index(cursor_index + "linestart")
+        if keyword == "DO":
+            while_pos = self.text.search("while();", line_index, tk.END)
+            if while_pos:
+                return f"{while_pos} - 1c"
+        elif keyword == "FOR":
+            for_pos = self.text.search("for (int i = ", line_index, tk.END)
+            if for_pos:
+                return f"{for_pos} + 13c"
+        elif keyword == "WHILE":
+            while_pos = self.text.search("while ()", line_index, tk.END)
+            if while_pos:
+                return f"{while_pos} + 7c"
+        elif keyword == "IF":
+            if_pos = self.text.search("if ()", line_index, tk.END)
+            if if_pos:
+                return f"{if_pos} + 4c"
+        return cursor_index
+
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
@@ -304,7 +353,7 @@ class TextLineNumbers(tk.Canvas):
 
     def attach(self, text_widget):
         self.textwidget = text_widget
-
+    
     def redraw(self, *args):
         self.delete("all")
         self.font_size = check.get_config_value("zoom")
