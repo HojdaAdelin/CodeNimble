@@ -46,7 +46,7 @@ def version_info():
         version_window.resizable(False, False)
         version_window.configure(fg_color = fg_cl)
 
-        current_version_label = ctk.CTkLabel(version_window, text="Current version: 1.2", font=("Arial", 20), text_color=text)
+        current_version_label = ctk.CTkLabel(version_window, text="Current version: 1.3", font=("Arial", 20), text_color=text)
         current_version_label.pack(pady=(25,0))
         version_label = ctk.CTkLabel(version_window, text="Latest version: "+get_version.get_latest_version_from_github("HojdaAdelin", "CodeNimble"), font=("Arial", 20), text_color=text)
         version_label.pack(pady=0)
@@ -88,9 +88,9 @@ def changelog_inf():
         changelog_window.resizable(False, False)
         changelog_window.configure(fg_color = fg_cl)
 
-        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.2", font=("Arial", 20), text_color=text)
+        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.3", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• New templates: C, Java, Html, C++ Competitive\n• Save default file location\n• Remove default file\n• Replace all\n• Fix save as file\n• Binds\n• Report bugs\n• Fullscreen\n• Fix text highlighted lag\n• Fix coloring multiple char after (, [, etc\n• Remake text highlighted\n• Fix select all when using .cpp\n• Fix undo problem in textbox\n• Autocomplete parenthesis\n• Shortcuts for: IF, DO, WHILE, FOR\n• Get latest version", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• Utility menu", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra

@@ -36,6 +36,7 @@ class MainWindow(ct.CTk):
         view = menu.add_cascade("View", hover_color="#4d4d4d")
         template = menu.add_cascade("Templates", hover_color="#4d4d4d")
         textures = menu.add_cascade("Textures", hover_color="#4d4d4d")
+        utility = menu.add_cascade("Utility", hover_color="#4d4d4d")
 
         home_drop = CustomDropdownMenu(widget=home, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
@@ -87,13 +88,17 @@ class MainWindow(ct.CTk):
         template_drop.add_option(option="C++ Competitive", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "com"))
 
         textures_drop = CustomDropdownMenu(widget=textures, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
-        textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures,
+        textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                                                                         utility_drop,
                                                                                          statusbar_instance, scroll, self))
-        textures_drop.add_option(option="Dark theme", command=lambda:themes.dark_theme(menu, home, file_m, edit, view, template, textures,
+        textures_drop.add_option(option="Dark theme", command=lambda:themes.dark_theme(menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                                                                         utility_drop,
                                                                                          statusbar_instance, scroll, self))
         
+        utility_drop = CustomDropdownMenu(widget=utility, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        utility_drop.add_option(option="Ok")
         # TextBox
         scroll.pack(fill="both", expand=True)
         
@@ -127,15 +132,21 @@ class MainWindow(ct.CTk):
         current_theme = check.get_config_value("theme")
         if (current_theme == 0):
             themes.dark_theme(menu, home, file_m, edit, view, template, textures,
+                                utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                utility_drop,
                                 statusbar_instance, scroll, self)
         elif(current_theme == 1):
             themes.light_theme(menu, home, file_m, edit, view, template, textures,
+                                utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                utility_drop,
                                 statusbar_instance, scroll, self)
         else:
             themes.dark_theme(menu, home, file_m, edit, view, template, textures,
+                                utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                utility_drop,
                                 statusbar_instance, scroll, self)
         # Title bar color handle
         tb_color = 0x333333
