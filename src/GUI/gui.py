@@ -20,6 +20,7 @@ from MainMenu import themes
 from GUI import textbox
 from GUI import statusbar
 from Config import check
+from API import get_version
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):

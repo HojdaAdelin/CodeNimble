@@ -13,6 +13,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
+from API import get_version
 
 def exit_application(root):
     root.quit() 
@@ -32,7 +33,7 @@ def version_info():
             fg_cl = "white"
             text = "black"
         w = 300 
-        h = 80 
+        h = 100 
 
         ws = version_window.winfo_screenwidth()
         hs = version_window.winfo_screenheight()
@@ -45,9 +46,10 @@ def version_info():
         version_window.resizable(False, False)
         version_window.configure(fg_color = fg_cl)
 
-        version_label = ctk.CTkLabel(version_window, text="Version: 1.2", font=("Arial", 20), text_color=text)
-        version_label.pack(pady=25)
-
+        current_version_label = ctk.CTkLabel(version_window, text="Current version: 1.2", font=("Arial", 20), text_color=text)
+        current_version_label.pack(pady=(25,0))
+        version_label = ctk.CTkLabel(version_window, text="Latest version: "+get_version.get_latest_version_from_github("HojdaAdelin", "CodeNimble"), font=("Arial", 20), text_color=text)
+        version_label.pack(pady=0)
         # Funcție pentru a reseta version_window_opened la False după ce închidem fereastra
         def on_closing():
             global version_window_opened
@@ -74,7 +76,7 @@ def changelog_inf():
             fg_cl = "white"
             text = "black"
         w = 500 
-        h = 400 
+        h = 500 
 
         ws = changelog_window.winfo_screenwidth()
         hs = changelog_window.winfo_screenheight()
@@ -88,7 +90,7 @@ def changelog_inf():
 
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.2", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• New templates: C, Java, Html, C++ Competitive\n• Save default file location\n• Remove default file\n• Replace all\n• Fix save as file\n• Binds\n• Report bugs\n• Fullscreen\n• Fix text highlighted lag\n• Fix coloring multiple char after (, [, etc\n• Remake text highlighted\n• Fix select all when using .cpp\n• Fix undo problem in textbox\n• Autocomplete parenthesis\n• Shortcuts for: IF, DO, WHILE, FOR", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• New templates: C, Java, Html, C++ Competitive\n• Save default file location\n• Remove default file\n• Replace all\n• Fix save as file\n• Binds\n• Report bugs\n• Fullscreen\n• Fix text highlighted lag\n• Fix coloring multiple char after (, [, etc\n• Remake text highlighted\n• Fix select all when using .cpp\n• Fix undo problem in textbox\n• Autocomplete parenthesis\n• Shortcuts for: IF, DO, WHILE, FOR\n• Get latest version", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
