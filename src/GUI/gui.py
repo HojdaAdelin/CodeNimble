@@ -21,6 +21,7 @@ from GUI import textbox
 from GUI import statusbar
 from Config import check
 from API import get_version
+from MainMenu import run
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -98,7 +99,7 @@ class MainWindow(ct.CTk):
                                                                                          statusbar_instance, scroll, self))
         
         utility_drop = CustomDropdownMenu(widget=utility, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
-        utility_drop.add_option(option="Ok")
+        utility_drop.add_option(option="Run", command=lambda:run.run_cpp_file())
         # TextBox
         scroll.pack(fill="both", expand=True)
         

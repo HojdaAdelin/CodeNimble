@@ -220,3 +220,7 @@ def delete_file(file_name, statusbar):
         statusbar.update_text("Removed default file")
     except OSError as e:
         pass
+
+def current_file():
+    global opened_filename
+    return opened_filename
