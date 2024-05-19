@@ -11,7 +11,7 @@ from API import get_version
 class StatusBar(tk.Frame):
     def __init__(self, master, text="", font_size=28, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
-        self.current_version = "1.3"
+        self.current_version = "1.1"
         self.latest_version = get_version.get_latest_version_from_github("HojdaAdelin", "CodeNimble")
         self.text = tk.StringVar(value=text)
         self.configure(bg="#333333")

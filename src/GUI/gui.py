@@ -31,15 +31,15 @@ class MainWindow(ct.CTk):
 
         scroll = textbox.ScrollText(self)
         menu = CTkMenuBar(self, bg_color="#333333")
-        home = menu.add_cascade("Home", hover_color="#4d4d4d")
-        file_m = menu.add_cascade("File", hover_color="#4d4d4d")
-        edit = menu.add_cascade("Edit", hover_color="#4d4d4d")
-        view = menu.add_cascade("View", hover_color="#4d4d4d")
-        template = menu.add_cascade("Templates", hover_color="#4d4d4d")
-        textures = menu.add_cascade("Textures", hover_color="#4d4d4d")
-        utility = menu.add_cascade("Utility", hover_color="#4d4d4d")
+        home = menu.add_cascade("Home", hover_color="#4d4d4d", font=("", 18))
+        file_m = menu.add_cascade("File", hover_color="#4d4d4d", font=("", 18))
+        edit = menu.add_cascade("Edit", hover_color="#4d4d4d", font=("", 18))
+        view = menu.add_cascade("View", hover_color="#4d4d4d", font=("", 18))
+        template = menu.add_cascade("Templates", hover_color="#4d4d4d", font=("", 18))
+        textures = menu.add_cascade("Textures", hover_color="#4d4d4d", font=("", 18))
+        utility = menu.add_cascade("Utility", hover_color="#4d4d4d", font=("", 18))
 
-        home_drop = CustomDropdownMenu(widget=home, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        home_drop = CustomDropdownMenu(widget=home, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
         home_drop.add_option(option="Source",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble"))
@@ -49,7 +49,7 @@ class MainWindow(ct.CTk):
         
         # Config values
     
-        file_drop = CustomDropdownMenu(widget=file_m, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        file_drop = CustomDropdownMenu(widget=file_m, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         #file_drop.add_option(option="New window", command=lambda:file_menu.new_window())
         file_drop.add_option(option="New File", command=lambda: file_menu.custom_file(statusbar_instance))
         file_drop.add_option(option="New                            Ctrl+N", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
@@ -60,7 +60,7 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Save as default file",command=lambda:file_menu.save_as_default(statusbar_instance))
         file_drop.add_option(option="Remove default file",command=lambda:file_menu.delete_file("default_file.txt",statusbar_instance))
  
-        edit_drop = CustomDropdownMenu(widget=edit, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        edit_drop = CustomDropdownMenu(widget=edit, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         edit_drop.add_option(option="Undo                           Ctrl+Z", command=lambda:edit_menu.undo_text(scroll.text, scroll))
         edit_drop.add_option(option="Redo                           Ctrl+Y", command=lambda:edit_menu.redo_text(scroll.text, scroll))
         edit_drop.add_separator()
@@ -68,27 +68,27 @@ class MainWindow(ct.CTk):
         edit_drop.add_option(option="Copy                           Ctrl+C", command=lambda:edit_menu.copy_text(scroll.text, scroll))
         edit_drop.add_option(option="Paste                          Ctrl+V", command=lambda:edit_menu.paste_text(scroll.text, scroll))
         edit_drop.add_option(option="Delete                         Ctrl+D",command=lambda:edit_menu.delete_text(scroll.text, scroll))
-        edit_drop.add_option(option="Clear                     Ctrl+Alt+C", command=lambda:edit_menu.clear_text(scroll.text, scroll, statusbar_instance))
+        edit_drop.add_option(option="Clear                    Ctrl+Alt+C", command=lambda:edit_menu.clear_text(scroll.text, scroll, statusbar_instance))
         edit_drop.add_option(option="Select all                     Ctrl+A", command=lambda:edit_menu.select_all(scroll.text))
         edit_drop.add_separator()
-        edit_drop.add_option(option="Find", command=lambda:edit_menu.find_text(scroll.text))
-        edit_drop.add_option(option="Replace", command=lambda:edit_menu.replace_text(scroll.text))
+        edit_drop.add_option(option="Find                             Ctrl+F", command=lambda:edit_menu.find_text(scroll.text))
+        edit_drop.add_option(option="Replace                      Ctrl+H", command=lambda:edit_menu.replace_text(scroll.text))
 
-        view_drop = CustomDropdownMenu(widget=view, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        view_drop = CustomDropdownMenu(widget=view, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         view_drop.add_option(option="Zoom in                        Ctrl+ =", command=lambda:view_menu.zoom_in(scroll))
         view_drop.add_option(option="Zoom out                      Ctrl+ -", command=lambda:view_menu.zoom_out(scroll))
         view_drop.add_option(option="Reset zoom", command=lambda:view_menu.reset_zoom(scroll))
         view_drop.add_separator()
         view_drop.add_option(option="Fullscreen                        F11", command=lambda:view_menu.toggle_fullscreen(self))
 
-        template_drop = CustomDropdownMenu(widget=template, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        template_drop = CustomDropdownMenu(widget=template, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         template_drop.add_option(option="C++", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "cpp"))
         template_drop.add_option(option="C", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "c"))
         template_drop.add_option(option="Java", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "java"))
         template_drop.add_option(option="Html", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "html"))
         template_drop.add_option(option="C++ Competitive", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "com"))
 
-        textures_drop = CustomDropdownMenu(widget=textures, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        textures_drop = CustomDropdownMenu(widget=textures, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
@@ -98,7 +98,7 @@ class MainWindow(ct.CTk):
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self))
         
-        utility_drop = CustomDropdownMenu(widget=utility, bg_color="#333333", font=("", 14), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
+        utility_drop = CustomDropdownMenu(widget=utility, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         utility_drop.add_option(option="Run", command=lambda:run.run_cpp_file())
         # TextBox
         scroll.pack(fill="both", expand=True)
@@ -116,6 +116,8 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-Alt-c>", lambda event: edit_menu.clear_text(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-=>", lambda event: view_menu.zoom_in(scroll))
         scroll.text.bind("<Control-minus>", lambda event: view_menu.zoom_out(scroll))
+        scroll.text.bind("<Control-f>", lambda event: edit_menu.find_text(scroll.text))
+        scroll.text.bind("<Control-h>", lambda event:edit_menu.replace_text(scroll.text))
         scroll.text.bind("<F11>", lambda event: view_menu.toggle_fullscreen(self))
         
         # General configuration
@@ -164,4 +166,3 @@ class MainWindow(ct.CTk):
             35,
             byref(c_int(tb_color)),
             sizeof(c_int))
-
