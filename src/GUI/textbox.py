@@ -51,6 +51,9 @@ class ScrollText(tk.Frame):
         # Binding pentru enter
         self.text.bind("<Return>", self.handle_return)
 
+        # Binding pentru Ctrl+Backspace
+        self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
+
     def add_tab(self, event):
         self.text.insert(tk.INSERT, "    ")
         return 'break'
@@ -343,6 +346,20 @@ class ScrollText(tk.Frame):
                 return f"{if_pos} + 4c"
         return cursor_index
 
+    def handle_ctrl_backspace(self, event):
+        cursor_index = self.text.index(tk.INSERT)
+        line_start = self.text.index(f"{cursor_index} linestart")
+        text_before_cursor = self.text.get(line_start, cursor_index)
+
+        if text_before_cursor.isspace():
+            self.text.delete(line_start, cursor_index)
+        else:
+            words = re.split(r'(\s+)', text_before_cursor)
+            if words[-1].isspace():
+                self.text.delete(f"{cursor_index} - {len(words[-2])}c", cursor_index)
+            else:
+                self.text.delete(f"{cursor_index} - {len(words[-1])}c", cursor_index)
+        return "break"
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
