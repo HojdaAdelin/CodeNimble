@@ -52,7 +52,7 @@ class MainWindow(ct.CTk):
     
         file_drop = CustomDropdownMenu(widget=file_m, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         #file_drop.add_option(option="New window", command=lambda:file_menu.new_window())
-        file_drop.add_option(option="New File", command=lambda: file_menu.custom_file(statusbar_instance))
+        file_drop.add_option(option="New File", command=lambda: file_menu.custom_file(statusbar_instance, treeview_frame))
         file_drop.add_option(option="New                            Ctrl+N", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open                          Ctrl+O",command=lambda:file_menu.open_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open Folder               Ctrl+K",command=lambda:file_menu.open_folder(treeview_frame, statusbar_instance))

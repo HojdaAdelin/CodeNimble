@@ -78,3 +78,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
             return os.path.join(parent_path, self.treeview.item(parent_node, "text"))
         else:
             return self.treeview.item(node, "text")
+    
+    def reload_treeview(self):
+        self.populate_treeview(os.getcwd())
