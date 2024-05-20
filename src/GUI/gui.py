@@ -22,14 +22,15 @@ from GUI import statusbar
 from Config import check
 from API import get_version
 from MainMenu import run
+from GUI import treeview
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Main menu
         statusbar_instance = statusbar.StatusBar(self, text="")
-
         scroll = textbox.ScrollText(self)
+        treeview_frame = treeview.TreeviewFrame(self, os.path.expanduser("~"))
         menu = CTkMenuBar(self, bg_color="#333333")
         home = menu.add_cascade("Home", hover_color="#4d4d4d", font=("", 18))
         file_m = menu.add_cascade("File", hover_color="#4d4d4d", font=("", 18))
@@ -92,14 +93,16 @@ class MainWindow(ct.CTk):
         textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
-                                                                                         statusbar_instance, scroll, self))
+                                                                                         statusbar_instance, scroll, self, treeview_frame))
         textures_drop.add_option(option="Dark theme", command=lambda:themes.dark_theme(menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
-                                                                                         statusbar_instance, scroll, self))
+                                                                                         statusbar_instance, scroll, self, treeview_frame))
         
         utility_drop = CustomDropdownMenu(widget=utility, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         utility_drop.add_option(option="Run", command=lambda:run.run_cpp_file())
+        # Treeview
+        treeview_frame.pack(side="left", fill="y")
         # TextBox
         scroll.pack(fill="both", expand=True)
         
@@ -138,19 +141,22 @@ class MainWindow(ct.CTk):
                                 utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                 utility_drop,
-                                statusbar_instance, scroll, self)
+                                statusbar_instance, scroll, self, treeview_frame)
+            
         elif(current_theme == 1):
             themes.light_theme(menu, home, file_m, edit, view, template, textures,
                                 utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                 utility_drop,
-                                statusbar_instance, scroll, self)
+                                statusbar_instance, scroll, self, treeview_frame)
+            
         else:
             themes.dark_theme(menu, home, file_m, edit, view, template, textures,
                                 utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                 utility_drop,
-                                statusbar_instance, scroll, self)
+                                statusbar_instance, scroll, self, treeview_frame)
+            
         # Title bar color handle
         tb_color = 0x333333
         if (check.get_config_value("theme") == 0):

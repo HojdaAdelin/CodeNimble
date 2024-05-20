@@ -16,7 +16,7 @@ def dark_theme(menu_bar, cascade1, cascade2,
                cascade7,
                drop1, drop2, drop3, drop4, drop5, drop6,
                drop7,
-               status, text, win):
+               status, text, win, tree):
     check.update_config_file("theme", 0)
     menu_bar.configure(bg_color="#333333")
     cascade1.configure(hover_color="#4d4d4d", text_color="white")
@@ -40,6 +40,7 @@ def dark_theme(menu_bar, cascade1, cascade2,
     text.scrollbar.configure(fg_color="#2b2b2b", button_color="#5c5c5c", button_hover_color="#858585")
     text.scrollhor.configure(fg_color="#2b2b2b", button_color="#5c5c5c", button_hover_color="#858585")
     text.numberLines.configure(bg='#333333')
+    win.configure(fg_color="#333333")
     HWND = windll.user32.GetParent(win.winfo_id())
     windll.dwmapi.DwmSetWindowAttribute(
             HWND,
@@ -48,12 +49,23 @@ def dark_theme(menu_bar, cascade1, cascade2,
             sizeof(c_int))
     text.redraw()
 
+    tree.treestyle.configure(
+            "Treeview",
+            background="#333333",  # Schimba culoarea de fundal
+            fieldbackground="#333333",
+            foreground = "white",
+            bordercolor = "#333333"   # Schimba culoarea textului
+        )
+    tree.treestyle.map('Treeview', 
+                           background=[('selected', "#858585")],
+                           foreground=[('selected', "white")])
+
 def light_theme(menu_bar, cascade1, cascade2, 
                cascade3, cascade4, cascade5, cascade6,
                cascade7,
                drop1, drop2, drop3, drop4, drop5, drop6,
                drop7,
-               status, text, win):
+               status, text, win, tree):
     
     check.update_config_file("theme", 1)
     menu_bar.configure(bg_color="white")
@@ -77,7 +89,7 @@ def light_theme(menu_bar, cascade1, cascade2,
     text.scrollbar.configure(fg_color="#f0f0f0", button_color="#b0b0b0", button_hover_color="#cccccc")
     text.scrollhor.configure(fg_color="#f0f0f0", button_color="#b0b0b0", button_hover_color="#cccccc")
     text.numberLines.configure(bg='white')
-    
+    win.configure(fg_color="white")
     HWND = windll.user32.GetParent(win.winfo_id())
     windll.dwmapi.DwmSetWindowAttribute(
             HWND,
@@ -85,3 +97,14 @@ def light_theme(menu_bar, cascade1, cascade2,
             byref(c_int(0xFFFFFF)),
             sizeof(c_int))
     text.redraw()
+
+    tree.treestyle.configure(
+            "Treeview",
+            background="white",  # Schimba culoarea de fundal
+            fieldbackground="white",
+            foreground = "black",
+            bordercolor = "white"  # Schimba culoarea textului
+        )
+    tree.treestyle.map('Treeview', 
+                           background=[('selected', "#ebebeb")],
+                           foreground=[('selected', "black")])
