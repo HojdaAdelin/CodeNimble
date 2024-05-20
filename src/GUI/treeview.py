@@ -27,7 +27,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
         master.bind("<<TreeviewSelect>>", lambda event: master.focus_set())
 
         # Create Treeview with just the tree column
-        self.treeview = ttk.Treeview(self, show="tree", height=20)
+        self.treeview = ttk.Treeview(self, show="tree", height=20, style="Treeview")
         self.treeview.pack(fill="both", expand=True)
 
         # Configure the column width
@@ -39,6 +39,9 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<<TreeviewOpen>>", self.on_open)
 
     def populate_treeview(self, path):
+        # Clear all items in the treeview before populating it with new items
+        self.treeview.delete(*self.treeview.get_children())
+
         abspath = os.path.abspath(path)
         root_node = self.treeview.insert('', 'end', text=abspath, open=True)  # No values
         self.process_directory(root_node, abspath)
@@ -59,14 +62,14 @@ class TreeviewFrame(customtkinter.CTkFrame):
         parent_path = self.get_parent_path(node)
         abspath = os.path.join(parent_path, self.treeview.item(node, "text"))
 
-        # Check if the node is already populated
-        if self.treeview.get_children(node):
-            # Remove dummy node if present
-            if len(self.treeview.get_children(node)) == 1 and self.treeview.item(self.treeview.get_children(node)[0], "text") == "":
-                self.treeview.delete(self.treeview.get_children(node)[0])
+        # Clear the existing children of the node
+        children = self.treeview.get_children(node)
+        if children:
+            self.treeview.delete(*children)
 
-            # Populate the node with actual content
-            self.process_directory(node, abspath)
+        # Populate the node with actual content
+        self.process_directory(node, abspath)
+
 
     def get_parent_path(self, node):
         parent_node = self.treeview.parent(node)
