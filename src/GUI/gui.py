@@ -123,6 +123,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-f>", lambda event: edit_menu.find_text(scroll.text))
         scroll.text.bind("<Control-h>", lambda event:edit_menu.replace_text(scroll.text))
         scroll.text.bind("<F11>", lambda event: view_menu.toggle_fullscreen(self))
+        scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance))
         
         # General configuration
         ct.set_appearance_mode("dark")

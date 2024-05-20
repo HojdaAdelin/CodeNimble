@@ -50,32 +50,12 @@ def open_folder(treeview, status_bar):
     folder_path = filedialog.askdirectory()
     
     if folder_path:
+        
         opened_filename = folder_path
         
-        # Șterge toate elementele din Treeview
-        treeview.delete(*treeview.get_children())
+        treeview.populate_treeview(folder_path)
         
-        # Populează Treeview-ul cu conținutul directorului selectat
-        populate_treeview(treeview, folder_path)
-        
-        # Actualizează textul status barului
         status_bar.update_text("Opened folder: " + folder_path)
-
-def populate_treeview(treeview, path):
-    abspath = os.path.abspath(path)
-    root_node = treeview.insert('', 'end', text=abspath, open=True)  # No values
-    process_directory(treeview, root_node, abspath)
-
-def process_directory(treeview, parent, path):
-    try:
-        for item in os.listdir(path):
-            abspath = os.path.join(path, item)
-            isdir = os.path.isdir(abspath)
-            node = treeview.insert(parent, 'end', text=item, open=False)  # No values
-            if isdir:
-                treeview.insert(node, 'end')  # Add a dummy child to make the node expandable
-    except PermissionError:
-        pass
 
 
 def save_file(text, status_bar):
