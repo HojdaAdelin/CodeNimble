@@ -12,8 +12,9 @@ sys.path.append(parent_dir)
 
 from Config import check
 
-# Definim o variabilă globală pentru a ține numele fișierului deschis
+# Definim o variabilă globală pentru a ține numele fișierului deschis și folderul deschis
 opened_filename = None
+opened_folder_path = None
 
 def new_file(text, window, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
@@ -42,21 +43,26 @@ def open_file(text, window, status_bar):
             text.insert("1.0", file_content) 
             window.redraw()
         status_bar.update_text("Opened: " + filename)
-    
+
 def open_folder(treeview, status_bar):
     global opened_filename
-    
-    # Deschide dialogul pentru selectarea unui director
+    global opened_folder_path
+
     folder_path = filedialog.askdirectory()
     
     if folder_path:
-        
-        opened_filename = folder_path
-        
+        opened_folder_path = folder_path  # Salvăm calea folderului deschis
         treeview.populate_treeview(folder_path)
-        
         status_bar.update_text("Opened folder: " + folder_path)
+        treeview.pack(side="left", fill="y")  # Arătăm TreeView când se deschide un folder
 
+def close_folder(treeview):
+    global opened_filename
+    global opened_folder_path
+
+    if opened_folder_path:
+        opened_folder_path = None  # Resetăm calea folderului deschis
+        treeview.pack_forget()  # Ascundem TreeView
 
 def save_file(text, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
@@ -73,10 +79,12 @@ def save_file(text, status_bar):
 
 def save_as_file(text, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
+    global opened_folder_path
 
     content = text.get("1.0", tk.END)
     filename = filedialog.asksaveasfilename(defaultextension=".txt",
-                                             filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+                                             filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
+                                             initialdir=opened_folder_path if opened_folder_path else os.getcwd())
 
     if filename:
         opened_filename = filename  # Actualizăm numele fișierului deschis
@@ -85,10 +93,13 @@ def save_as_file(text, status_bar):
             file.write(content)
         status_bar.update_text("Saved: " + opened_filename)
 
+
 version_window_opened = False
 
 def custom_file(statusbar, tree):
     global version_window_opened
+    global opened_folder_path
+    global opened_filename
 
     if not version_window_opened:
         version_window_opened = True
@@ -127,15 +138,23 @@ def custom_file(statusbar, tree):
 
         # Funcția care se activează la apăsarea butonului "Create"
         def create_file():
+            global opened_folder_path
+            global opened_filename
+
             filename = text_box.get().strip()  # Obține textul introdus de utilizator
             if filename:
                 # Adaugă extensia .txt dacă utilizatorul nu a furnizat nicio extensie
                 if not "." in filename:
                     filename += ".txt"
                 try:
-                    with open(filename, "x") as file:  # Creează fișierul cu numele introdus de utilizator
-                        statusbar.update_text("Created: " + filename)
-                        tree.reload_treeview()
+                    if opened_folder_path:
+                        filepath = os.path.join(opened_folder_path, filename)
+                    else:
+                        filepath = filename
+                    with open(filepath, "x") as file:  # Creează fișierul cu numele introdus de utilizator
+                        opened_filename = filepath  # Actualizăm variabila globală opened_filename
+                        statusbar.update_text("Created: " + filepath)
+                        tree.reload_treeview(opened_folder_path if opened_folder_path else os.getcwd())
                 except FileExistsError:
                     pass
 
@@ -151,6 +170,8 @@ def custom_file(statusbar, tree):
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
+
+
 
 def return_file():
     global opened_filename
