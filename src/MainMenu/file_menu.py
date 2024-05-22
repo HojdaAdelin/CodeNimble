@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import Menu
 from tkinter import filedialog
 import customtkinter as ctk
 import os
@@ -11,6 +12,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
+from MainMenu import edit_menu
 
 # Definim o variabilă globală pentru a ține numele fișierului deschis și folderul deschis
 opened_filename = None
@@ -250,12 +252,18 @@ def save_as_default(statusbar):
             file.write(opened_filename)
         statusbar.update_text("Saved default file location")
 
-def delete_file(file_name, statusbar):
+def delete_file(file_name, statusbar, text, root):
+    global opened_filename  # Specificăm că vrem să folosim variabila globală
+
     try:
         os.remove(file_name)
-        statusbar.update_text("Removed default file")
+        statusbar.update_text("Removed: " + file_name)
+        if opened_filename == file_name:
+            opened_filename = None  # Setăm opened_filename la None dacă fișierul șters este fișierul deschis
+            
     except OSError as e:
         pass
+
 
 def current_file():
     global opened_filename

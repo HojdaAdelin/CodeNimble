@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import Menu
 from tkinter import ttk
 import customtkinter
 import sys
@@ -30,16 +31,21 @@ class TreeviewFrame(customtkinter.CTkFrame):
             "Treeview",
             highlightthickness=0,
             borderwidth=0,
-            font=('Consolas', 20),
-            rowheight=30
+            font=('Consolas', 24),
+            rowheight=35
         )
         self.treestyle.map('Treeview', background=[('selected', self.bg_color)], foreground=[('selected', self.selected_color)])
         master.bind("<<TreeviewSelect>>", lambda event: master.focus_set())
 
         self.treeview = ttk.Treeview(self, show="tree", height=20, style="Treeview")
         self.treeview.pack(fill="both", expand=True)
-        self.treeview.column("#0", width=500, stretch=tk.YES)
+        self.treeview.column("#0", width=550, stretch=tk.YES)
         self.treeview.bind("<Double-1>", self.on_double_click)
+
+        self.menu = tk.Menu(self, tearoff=0, font=("", 20), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
+        self.menu.add_command(label="Delete File", command=self.delete_selected_file)
+
+        self.treeview.bind("<Button-3>", self.show_context_menu)
 
         if root_directory:
             self.populate_treeview(root_directory)
@@ -71,6 +77,30 @@ class TreeviewFrame(customtkinter.CTkFrame):
         if children:
             self.treeview.delete(*children)
         self.process_directory(node, abspath)
+
+    def show_context_menu(self, event):
+        item = self.treeview.identify_row(event.y)
+        if item:
+            abspath = self.get_absolute_path(item)
+            if os.path.isfile(abspath):
+                self.treeview.selection_set(item)
+                self.menu.post(event.x_root, event.y_root)
+
+
+    def get_absolute_path(self, node):
+        parent_path = self.get_parent_path(node)
+        return os.path.join(parent_path, self.treeview.item(node, "text"))
+
+    def delete_selected_file(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+            if os.path.isfile(abspath):
+                file_menu.delete_file(abspath, self.status, self.text, self.root)
+                self.treeview.delete(node)
+                self.text.delete("1.0", tk.END)
+                self.root.redraw()
 
     def get_parent_path(self, node):
         parent_node = self.treeview.parent(node)
