@@ -260,3 +260,38 @@ def delete_file(file_name, statusbar):
 def current_file():
     global opened_filename
     return opened_filename
+
+def update_path(new_path, new_opened_file):
+    global opened_filename
+    global opened_folder_path
+    opened_filename = new_opened_file
+    opened_folder_path = new_path
+
+def insert_text(text, textbox):
+    textbox.delete("1.0", tk.END)
+    textbox.insert("1.0", text)
+
+def open_file_by_path(textbox, status_bar, path):
+  global opened_filename
+
+  if path:
+    
+    if os.path.exists(path):
+      try:
+        
+        with open(path, "r") as file:
+          file_content = file.read()
+
+        opened_filename = path
+
+        textbox.delete("1.0", tk.END)
+
+        textbox.insert(tk.END, file_content)
+
+        status_bar.update_text("Opened: " + path)
+      except FileNotFoundError:
+        
+        status_bar.update_text("File not found: " + path)
+    else:
+      
+      status_bar.update_text("Invalid file path: " + path)

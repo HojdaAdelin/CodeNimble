@@ -30,7 +30,7 @@ class MainWindow(ct.CTk):
         # Main menu
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self)
-        treeview_frame = treeview.TreeviewFrame(self)
+        treeview_frame = treeview.TreeviewFrame(self, scroll.text, statusbar_instance, scroll)
         menu = CTkMenuBar(self, bg_color="#333333")
         home = menu.add_cascade("Home", hover_color="#4d4d4d", font=("", 18))
         file_m = menu.add_cascade("File", hover_color="#4d4d4d", font=("", 18))
