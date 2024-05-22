@@ -87,7 +87,7 @@ def changelog_inf():
         changelog_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
         changelog_window.resizable(False, False)
         changelog_window.configure(fg_color = fg_cl)
-
+        
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.3", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
         content_label = ctk.CTkLabel(changelog_window, text="• Utility menu\n• Run code\n• Bind for Ctrl+Backspace\n• New version available notify in status bar\n• Binds for replace & find\n• Treeview\n• Open folder\n• Close folder", font=("Arial", 20), text_color=text)

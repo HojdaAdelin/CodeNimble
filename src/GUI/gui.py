@@ -104,10 +104,9 @@ class MainWindow(ct.CTk):
         utility_drop = CustomDropdownMenu(widget=utility, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         utility_drop.add_option(option="Run", command=lambda:run.run_cpp_file())
         # Treeview
-        treeview_frame.pack_forget()
         # TextBox
+        treeview_frame.pack_forget()
         scroll.pack(fill="both", expand=True, side="right")
-        
         scroll.text.focus()
         self.after(200, scroll.redraw())
         scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))

@@ -11,8 +11,12 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import file_menu
 
+global ante_font
+ante_font = check.get_config_value("zoom")
+
 class ScrollText(tk.Frame):
     def __init__(self, master, *args, **kwargs):
+        global ante_font
         tk.Frame.__init__(self, *args, **kwargs)
 
         font_size = check.get_config_value("zoom") or 28
@@ -21,7 +25,7 @@ class ScrollText(tk.Frame):
                             selectbackground="#4d4d4d", font=("Consolas", font_size),
                             undo=True, autoseparators=True, borderwidth=0, wrap="none")
         self.configure(bg="#2b2b2b")
-        self.scrollbar = ct.CTkScrollbar(self.text, orientation=tk.VERTICAL, command=self.text.yview)
+        self.scrollbar = ct.CTkScrollbar(self, orientation=tk.VERTICAL, command=self.text.yview)
         self.scrollhor = ct.CTkScrollbar(self.text, orientation=tk.HORIZONTAL, command=self.text.xview)
         self.text.configure(yscrollcommand=self.scrollbar.set, xscrollcommand=self.scrollhor.set)
 
@@ -80,6 +84,7 @@ class ScrollText(tk.Frame):
         return self.text.index(*args, **kwargs)
 
     def redraw(self):
+        global ante_font
         # Salvăm starea selecției
         if self.text.tag_ranges(tk.SEL):
             selection_start = self.text.index(tk.SEL_FIRST)
@@ -92,7 +97,9 @@ class ScrollText(tk.Frame):
             self.highlight_syntax()
         self.numberLines.redraw()
         font_size = check.get_config_value("zoom")
-        self.text.configure(font=("Consolas", font_size))
+        if font_size != ante_font:
+            ante_font = font_size
+            self.text.configure(font=("Consolas", font_size))
 
         # Restabilim selecția textului dacă există
         if selection_start and selection_end:
