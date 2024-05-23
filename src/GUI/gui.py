@@ -103,7 +103,7 @@ class MainWindow(ct.CTk):
                                                                                          statusbar_instance, scroll, self, treeview_frame))
         
         utility_drop = CustomDropdownMenu(widget=utility, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
-        utility_drop.add_option(option="Run", command=lambda:run.run_cpp_file())
+        utility_drop.add_option(option="Run                         F5", command=lambda:run.run_cpp_file())
         # Treeview
         # TextBox
         treeview_frame.pack_forget()
@@ -126,6 +126,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<F11>", lambda event: view_menu.toggle_fullscreen(self))
         scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance))
         scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame))
+        scroll.text.bind("<F5>", lambda event:run.run_cpp_file())
 
         # General configuration
         ct.set_appearance_mode("dark")
