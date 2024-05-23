@@ -48,6 +48,8 @@ def dark_theme(menu_bar, cascade1, cascade2,
             byref(c_int(0x333333)),
             sizeof(c_int))
     text.redraw()
+    text.pack_forget()
+    text.pack(fill="both", expand=True, side="right")
 
     tree.treestyle.configure(
             "Treeview",
@@ -97,6 +99,8 @@ def light_theme(menu_bar, cascade1, cascade2,
             byref(c_int(0xFFFFFF)),
             sizeof(c_int))
     text.redraw()
+    text.pack_forget()
+    text.pack(fill="both", expand=True, side="right")
 
     tree.treestyle.configure(
             "Treeview",

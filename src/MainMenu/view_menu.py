@@ -16,6 +16,9 @@ def zoom_in(root):
     if (int(ante_size) + 4 < 52):
         check.update_config_file("zoom", int(ante_size) + 4)
     root.redraw()
+    root.pack_forget()
+    root.pack(fill="both", expand=True, side="right")
+
 
 def zoom_out(root):
     ante_size = check.get_config_value("zoom")
@@ -23,10 +26,14 @@ def zoom_out(root):
         check.update_config_file("zoom", int(ante_size) - 4)
     
     root.redraw()
+    root.pack_forget()
+    root.pack(fill="both", expand=True, side="right")
 
 def reset_zoom(root):
     check.update_config_file("zoom", 28)
     root.redraw()
+    root.pack_forget()
+    root.pack(fill="both", expand=True, side="right")
 
 def toggle_fullscreen(window):
     if window.state() == "zoomed":
