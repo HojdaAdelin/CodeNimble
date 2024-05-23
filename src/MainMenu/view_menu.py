@@ -8,6 +8,8 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
+from GUI.treeview import TreeviewFrame
+
 
 def zoom_in(root):
     ante_size = check.get_config_value("zoom")
@@ -31,3 +33,10 @@ def toggle_fullscreen(window):
         window.state("normal")
     else:
         window.state("zoomed")
+
+def hide_unhide_treeview(treeview_frame: TreeviewFrame):
+
+    if treeview_frame.winfo_ismapped():  # Verificăm dacă TreeviewFrame-ul este vizibil
+        treeview_frame.pack_forget()  # Dacă da, îl ascundem
+    else:
+        treeview_frame.pack(fill="both", expand=True) 

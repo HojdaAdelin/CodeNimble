@@ -82,7 +82,8 @@ class MainWindow(ct.CTk):
         view_drop.add_option(option="Zoom out                      Ctrl+ -", command=lambda:view_menu.zoom_out(scroll))
         view_drop.add_option(option="Reset zoom", command=lambda:view_menu.reset_zoom(scroll))
         view_drop.add_separator()
-        view_drop.add_option(option="Fullscreen                        F11", command=lambda:view_menu.toggle_fullscreen(self))
+        view_drop.add_option(option="Fullscreen                         F11", command=lambda:view_menu.toggle_fullscreen(self))
+        view_drop.add_option(option="Treeview                       Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame))
 
         template_drop = CustomDropdownMenu(widget=template, bg_color="#333333", font=("", 18), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         template_drop.add_option(option="C++", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "cpp"))
@@ -124,7 +125,8 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-h>", lambda event:edit_menu.replace_text(scroll.text))
         scroll.text.bind("<F11>", lambda event: view_menu.toggle_fullscreen(self))
         scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance))
-        
+        scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame))
+
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")

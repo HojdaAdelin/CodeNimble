@@ -56,6 +56,7 @@ def open_folder(treeview, status_bar):
         opened_folder_path = folder_path  # Salvăm calea folderului deschis
         treeview.populate_treeview(folder_path)
         status_bar.update_text("Opened folder: " + folder_path)
+        treeview.pack_forget()
         treeview.pack(side="left", fill="y")  # Arătăm TreeView când se deschide un folder
 
 def close_folder(treeview):
