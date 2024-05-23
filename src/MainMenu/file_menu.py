@@ -275,6 +275,10 @@ def update_path(new_path, new_opened_file):
     opened_filename = new_opened_file
     opened_folder_path = new_path
 
+def update_file_path(new_path):
+    global opened_filename
+    opened_filename = new_path
+
 def insert_text(text, textbox):
     textbox.delete("1.0", tk.END)
     textbox.insert("1.0", text)

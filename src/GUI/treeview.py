@@ -4,6 +4,7 @@ from tkinter import ttk
 import customtkinter
 import sys
 import os
+import shutil
 
 current_dir = os.path.dirname(__file__)
 parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
@@ -15,12 +16,12 @@ customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
 
 class TreeviewFrame(customtkinter.CTkFrame):
-    def __init__(self, master, text, statusbar,root, root_directory=None, *args, **kwargs):
+    def __init__(self, master, text, statusbar, root, root_directory=None, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         
-        self.text=text
+        self.text = text
         self.status = statusbar
-        self.root=root
+        self.root = root
         self.bg_color = self._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkFrame"]["fg_color"])
         self.text_color = self._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkLabel"]["text_color"])
         self.selected_color = self._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkButton"]["fg_color"])
@@ -46,6 +47,11 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.menu.add_command(label="Delete File", command=self.delete_selected_file)
 
         self.treeview.bind("<Button-3>", self.show_context_menu)
+        self.treeview.bind("<ButtonPress-1>", self.on_start_drag)
+        self.treeview.bind("<B1-Motion>", self.on_drag)
+        self.treeview.bind("<ButtonRelease-1>", self.on_drop)
+
+        self.drag_data = {"item": None, "x": 0, "y": 0}
 
         if root_directory:
             self.populate_treeview(root_directory)
@@ -85,7 +91,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
             if os.path.isfile(abspath):
                 self.treeview.selection_set(item)
                 self.menu.post(event.x_root, event.y_root)
-
 
     def get_absolute_path(self, node):
         parent_path = self.get_parent_path(node)
@@ -139,3 +144,49 @@ class TreeviewFrame(customtkinter.CTkFrame):
     def treeview_open_file(self, path):
         file_menu.open_file_by_path(self.text, self.status, path)
         self.root.redraw()
+
+    def on_start_drag(self, event):
+        '''Begining drag of an object'''
+        # record the item and its location
+        item = self.treeview.identify_row(event.y)
+        if item:
+            self.drag_data["item"] = item
+            self.drag_data["x"] = event.x
+            self.drag_data["y"] = event.y
+
+    def on_drag(self, event):
+        '''Handle dragging of an object'''
+        pass  # No need to do anything here
+
+    def on_drop(self, event):
+        '''End drag of an object'''
+        # get the item being dragged
+        item = self.drag_data["item"]
+        if item:
+            # get the target item
+            target = self.treeview.identify_row(event.y)
+            if target and target != item:
+                abspath_source = self.get_absolute_path(item)
+                abspath_target = self.get_absolute_path(target)
+
+                # check if target is a directory
+                if os.path.isdir(abspath_target):
+                    new_path = os.path.join(abspath_target, os.path.basename(abspath_source))
+                    try:
+                        shutil.move(abspath_source, new_path)
+                        self.treeview.delete(item)
+                        
+                        # Remove duplicates by clearing and re-populating target directory
+                        self.treeview.delete(*self.treeview.get_children(target))
+                        self.process_directory(target, abspath_target)
+
+                        # Check if the opened file is inside the moved directory and update its path
+                        if file_menu.opened_filename.startswith(abspath_source):
+                            new_opened_filename = file_menu.opened_filename.replace(abspath_source, new_path, 1)
+                            file_menu.update_file_path(new_opened_filename)
+
+                    except Exception as e:
+                        pass
+
+        # reset drag data
+        self.drag_data = {"item": None, "x": 0, "y": 0}
