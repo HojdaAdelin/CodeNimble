@@ -36,6 +36,12 @@ class TreeviewFrame(customtkinter.CTkFrame):
             rowheight=35
         )
         self.treestyle.map('Treeview', background=[('selected', self.bg_color)], foreground=[('selected', self.selected_color)])
+        
+        self.treestyle.configure("Treeview.Heading", font=('Consolas', 24), rowheight=35)
+        self.treestyle.map("Treeview", background=[('selected', self.bg_color)], foreground=[('selected', self.selected_color)])
+        self.treestyle.configure("Treeview.Dragged", background='#ffcccb')
+        self.treestyle.configure("Treeview.Hover", background='#add8e6')
+        
         master.bind("<<TreeviewSelect>>", lambda event: master.focus_set())
 
         self.treeview = ttk.Treeview(self, show="tree", height=20, style="Treeview")
@@ -52,6 +58,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<ButtonRelease-1>", self.on_drop)
 
         self.drag_data = {"item": None, "x": 0, "y": 0}
+        self.hovered_item = None  # Track the currently hovered item
 
         if root_directory:
             self.populate_treeview(root_directory)
@@ -153,10 +160,26 @@ class TreeviewFrame(customtkinter.CTkFrame):
             self.drag_data["item"] = item
             self.drag_data["x"] = event.x
             self.drag_data["y"] = event.y
+            # Add "dragged" tag to the item being dragged
+            self.treeview.item(item, tags=("dragged",))
+            self.treestyle.configure("Treeview.Item", font=('Consolas', 28), background=self.bg_color)
 
     def on_drag(self, event):
         '''Handle dragging of an object'''
-        pass  # No need to do anything here
+        target = self.treeview.identify_row(event.y)
+        if target and target != self.drag_data["item"]:
+            # Check if the target item is a folder
+            if os.path.isdir(self.get_absolute_path(target)):
+                # Remove "hover" tag from the previously hovered item
+                if self.hovered_item:
+                    self.treeview.item(self.hovered_item, tags=())
+                # Add "hover" tag to the target item
+                self.treeview.item(target, tags=("hover",))
+                self.hovered_item = target
+
+                # Apply the hover effect using the Treeview style
+                self.treestyle.configure("Treeview.Item", background=self.bg_color)
+                self.treeview.tag_configure("hover", background="#add8e6")  # Light blue for hover effect
 
     def on_drop(self, event):
         '''End drag of an object'''
@@ -184,6 +207,10 @@ class TreeviewFrame(customtkinter.CTkFrame):
                         if file_menu.opened_filename.startswith(abspath_source):
                             new_opened_filename = file_menu.opened_filename.replace(abspath_source, new_path, 1)
                             file_menu.update_file_path(new_opened_filename)
+
+                        # Reset hover effect
+                        self.treeview.item(target, tags=())
+                        self.hovered_item = None
 
                     except Exception as e:
                         pass
