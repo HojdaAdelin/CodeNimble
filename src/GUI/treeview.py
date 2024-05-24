@@ -32,12 +32,12 @@ class TreeviewFrame(customtkinter.CTkFrame):
             "Treeview",
             highlightthickness=0,
             borderwidth=0,
-            font=('Consolas', 24),
-            rowheight=35
+            font=('Consolas', 28),
+            rowheight=45
         )
         self.treestyle.map('Treeview', background=[('selected', self.bg_color)], foreground=[('selected', self.selected_color)])
         
-        self.treestyle.configure("Treeview.Heading", font=('Consolas', 24), rowheight=35)
+        self.treestyle.configure("Treeview.Heading", font=('Consolas', 28), rowheight=45)
         self.treestyle.map("Treeview", background=[('selected', self.bg_color)], foreground=[('selected', self.selected_color)])
         self.treestyle.configure("Treeview.Dragged", background='#ffcccb')
         self.treestyle.configure("Treeview.Hover", background='#add8e6')
@@ -46,7 +46,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
 
         self.treeview = ttk.Treeview(self, show="tree", height=20, style="Treeview")
         self.treeview.pack(fill="both", expand=True)
-        self.treeview.column("#0", width=550, stretch=tk.YES)
+        self.treeview.column("#0", width=600, stretch=tk.YES)
         self.treeview.bind("<Double-1>", self.on_double_click)
 
         self.menu = tk.Menu(self, tearoff=0, font=("", 20), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
