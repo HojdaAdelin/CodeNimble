@@ -49,8 +49,11 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.column("#0", width=600, stretch=tk.YES)
         self.treeview.bind("<Double-1>", self.on_double_click)
 
-        self.menu = tk.Menu(self, tearoff=0, font=("", 20), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
+        self.menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.menu.add_command(label="Delete File", command=self.delete_selected_file)
+
+        self.folder_menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
+        self.folder_menu.add_command(label="Add File", command=self.add_file) 
 
         self.treeview.bind("<Button-3>", self.show_context_menu)
         self.treeview.bind("<ButtonPress-1>", self.on_start_drag)
@@ -98,6 +101,9 @@ class TreeviewFrame(customtkinter.CTkFrame):
             if os.path.isfile(abspath):
                 self.treeview.selection_set(item)
                 self.menu.post(event.x_root, event.y_root)
+            else:
+                self.treeview.selection_set(item)
+                self.folder_menu.post(event.x_root, event.y_root)
 
     def get_absolute_path(self, node):
         parent_path = self.get_parent_path(node)
@@ -217,3 +223,20 @@ class TreeviewFrame(customtkinter.CTkFrame):
 
         # reset drag data
         self.drag_data = {"item": None, "x": 0, "y": 0}
+    
+    def get_current_treeview_path(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            return self.get_absolute_path(node)
+        return os.getcwd()  # Returnează directorul de lucru curent dacă nu este selectat niciun element
+
+
+    def add_file(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+            file_menu.custom_file(self.status, self, abspath)
+
+                

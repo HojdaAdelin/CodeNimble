@@ -99,7 +99,7 @@ def save_as_file(text, status_bar):
 
 version_window_opened = False
 
-def custom_file(statusbar, tree):
+def custom_file(statusbar, tree, custom_path=None):
     global version_window_opened
     global opened_folder_path
     global opened_filename
@@ -150,14 +150,18 @@ def custom_file(statusbar, tree):
                 if not "." in filename:
                     filename += ".txt"
                 try:
-                    if opened_folder_path:
+                    if custom_path:
+                        filepath = os.path.join(custom_path, filename)
+                    elif opened_folder_path:
                         filepath = os.path.join(opened_folder_path, filename)
                     else:
                         filepath = filename
                     with open(filepath, "x") as file:  # Creează fișierul cu numele introdus de utilizator
-                        opened_filename = filepath  # Actualizăm variabila globală opened_filename
+                        if custom_path is None:
+                            opened_filename = filepath  # Actualizăm variabila globală opened_filename
                         statusbar.update_text("Created: " + filepath)
                         tree.reload_treeview(opened_folder_path if opened_folder_path else os.getcwd())
+                            
                 except FileExistsError:
                     pass
 
@@ -270,10 +274,8 @@ def current_file():
     global opened_filename
     return opened_filename
 
-def update_path(new_path, new_opened_file):
-    global opened_filename
+def update_path(new_path):
     global opened_folder_path
-    opened_filename = new_opened_file
     opened_folder_path = new_path
 
 def update_file_path(new_path):
@@ -308,3 +310,8 @@ def open_file_by_path(textbox, status_bar, path):
     else:
       
       status_bar.update_text("Invalid file path: " + path)
+
+
+def return_current_path():
+    global opened_folder_path
+    return opened_folder_path
