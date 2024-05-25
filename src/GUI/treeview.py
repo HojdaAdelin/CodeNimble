@@ -238,5 +238,4 @@ class TreeviewFrame(customtkinter.CTkFrame):
             node = selected_item[0]
             abspath = self.get_absolute_path(node)
             file_menu.custom_file(self.status, self, abspath)
-
-                
+           

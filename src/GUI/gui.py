@@ -62,7 +62,7 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Save as             Ctrl+Shift+S",command=lambda:file_menu.save_as_file(scroll.text, statusbar_instance))
         file_drop.add_option(option="Save as default file",command=lambda:file_menu.save_as_default(statusbar_instance))
         file_drop.add_option(option="Remove default file",command=lambda:file_menu.delete_file("default_file.txt",statusbar_instance))
- 
+        
         edit_drop = CustomDropdownMenu(widget=edit, bg_color="#333333", font=("", 20), corner_radius=4, separator_color="#b0b0b0",hover_color="#4d4d4d")
         edit_drop.add_option(option="Undo                           Ctrl+Z", command=lambda:edit_menu.undo_text(scroll.text, scroll))
         edit_drop.add_option(option="Redo                           Ctrl+Y", command=lambda:edit_menu.redo_text(scroll.text, scroll))
@@ -139,6 +139,7 @@ class MainWindow(ct.CTk):
             file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
             scroll.redraw()
             MainWindow.default_file_opened = True
+
         # Theme
         current_theme = check.get_config_value("theme")
         if (current_theme == 0):

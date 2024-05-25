@@ -1,6 +1,7 @@
 import tkinter as tk
 import customtkinter as ctk
 import webbrowser
+from ctypes import byref, sizeof, c_int, windll
 
 version_window_opened = False
 changelog_window_opened = False
@@ -56,6 +57,21 @@ def version_info():
             version_window_opened = False
             version_window.destroy()
 
+        tb_color = 0x333333
+        if (check.get_config_value("theme") == 0):
+            tb_color = 0x333333
+        elif (check.get_config_value("theme") == 1):
+            tb_color = 0xFFFFFF
+        else:
+            tb_color = 0x333333
+        
+        HWND = windll.user32.GetParent(version_window.winfo_id())
+        windll.dwmapi.DwmSetWindowAttribute(
+            HWND,
+            35,
+            byref(c_int(tb_color)),
+            sizeof(c_int))
+
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
 
@@ -90,7 +106,7 @@ def changelog_inf():
         
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.3", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Utility menu\n• Run code\n• Bind for Ctrl+Backspace\n• New version available notify in status bar\n• Binds for replace & find\n• Treeview\n• Open folder\n• Close folder\n• Open files from treeview\n• Delete files from Treeview\n• Move files & folders in treeview\n• Toggle treeview\n• Fix zoom\n• Bind for Run\n• Add file in treeview folders", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• Utility menu\n• Run code\n• Bind for Ctrl+Backspace\n• New version available notify in status bar\n• Binds for replace & find\n• Treeview\n• Open folder\n• Close folder\n• Open files from treeview\n• Delete files from Treeview\n• Move files & folders in treeview\n• Toggle treeview\n• Fix zoom\n• Bind for Run\n• Add file in treeview folders\n• Change all windows title bars", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
@@ -98,6 +114,21 @@ def changelog_inf():
             global changelog_window_opened
             changelog_window_opened = False
             changelog_window.destroy()
+
+        tb_color = 0x333333
+        if (check.get_config_value("theme") == 0):
+            tb_color = 0x333333
+        elif (check.get_config_value("theme") == 1):
+            tb_color = 0xFFFFFF
+        else:
+            tb_color = 0x333333
+        
+        HWND = windll.user32.GetParent(changelog_window.winfo_id())
+        windll.dwmapi.DwmSetWindowAttribute(
+            HWND,
+            35,
+            byref(c_int(tb_color)),
+            sizeof(c_int))
 
         changelog_window.protocol("WM_DELETE_WINDOW", on_closing)
         changelog_window.mainloop()

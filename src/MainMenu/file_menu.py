@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import Menu
 from tkinter import filedialog
 import customtkinter as ctk
+from ctypes import byref, sizeof, c_int, windll
 import os
 
 import sys
@@ -175,6 +176,21 @@ def custom_file(statusbar, tree, custom_path=None):
             version_window_opened = False
             version_window.destroy()
 
+        tb_color = 0x333333
+        if (check.get_config_value("theme") == 0):
+            tb_color = 0x333333
+        elif (check.get_config_value("theme") == 1):
+            tb_color = 0xFFFFFF
+        else:
+            tb_color = 0x333333
+        
+        HWND = windll.user32.GetParent(version_window.winfo_id())
+        windll.dwmapi.DwmSetWindowAttribute(
+            HWND,
+            35,
+            byref(c_int(tb_color)),
+            sizeof(c_int))
+
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
 
@@ -310,7 +326,6 @@ def open_file_by_path(textbox, status_bar, path):
     else:
       
       status_bar.update_text("Invalid file path: " + path)
-
 
 def return_current_path():
     global opened_folder_path

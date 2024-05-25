@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+from ctypes import byref, sizeof, c_int, windll
 
 find_window_opened = False
 replace_window_opened = False
@@ -120,6 +121,21 @@ def find_text(scroll_text):
             find_window_opened = False
             find_window.destroy()
 
+        tb_color = 0x333333
+        if (check.get_config_value("theme") == 0):
+            tb_color = 0x333333
+        elif (check.get_config_value("theme") == 1):
+            tb_color = 0xFFFFFF
+        else:
+            tb_color = 0x333333
+        
+        HWND = windll.user32.GetParent(find_window.winfo_id())
+        windll.dwmapi.DwmSetWindowAttribute(
+            HWND,
+            35,
+            byref(c_int(tb_color)),
+            sizeof(c_int))
+
         find_window.protocol("WM_DELETE_WINDOW", on_closing)
         find_window.mainloop()
 
@@ -232,6 +248,21 @@ def replace_text(scroll_text):
         find_button.configure(command=find)
         replace_button.configure(command=replace)
         replace_all_button.configure(command=replace_all)
+
+        tb_color = 0x333333
+        if (check.get_config_value("theme") == 0):
+            tb_color = 0x333333
+        elif (check.get_config_value("theme") == 1):
+            tb_color = 0xFFFFFF
+        else:
+            tb_color = 0x333333
+        
+        HWND = windll.user32.GetParent(replace_window.winfo_id())
+        windll.dwmapi.DwmSetWindowAttribute(
+            HWND,
+            35,
+            byref(c_int(tb_color)),
+            sizeof(c_int))
 
         replace_window.protocol("WM_DELETE_WINDOW", on_closing)
         replace_window.mainloop()
