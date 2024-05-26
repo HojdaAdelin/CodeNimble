@@ -106,7 +106,7 @@ def changelog_inf():
         
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.3", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Utility menu\n• Run code\n• Bind for Ctrl+Backspace\n• New version available notify in status bar\n• Binds for replace & find\n• Treeview\n• Open folder\n• Close folder\n• Open files from treeview\n• Delete files from Treeview\n• Move files & folders in treeview\n• Toggle treeview\n• Fix zoom\n• Bind for Run\n• Add file in treeview folders\n• Change all windows title bars", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• Utility menu\n• Run code\n• Bind for Ctrl+Backspace\n• New version available notify in status bar\n• Binds for replace & find\n• Treeview\n• Open folder\n• Close folder\n• Open files from treeview\n• Delete files from Treeview\n• Move files & folders in treeview\n• Toggle treeview\n• Fix zoom\n• Bind for Run\n• Add file in treeview folders\n• Change all windows title bars\n• Delete folder in treeview", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra

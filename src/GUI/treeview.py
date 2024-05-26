@@ -54,6 +54,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
 
         self.folder_menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.folder_menu.add_command(label="Add File", command=self.add_file) 
+        self.folder_menu.add_command(label="Delete Folder", command=self.delete_selected_folder)
 
         self.treeview.bind("<Button-3>", self.show_context_menu)
         self.treeview.bind("<ButtonPress-1>", self.on_start_drag)
@@ -67,6 +68,29 @@ class TreeviewFrame(customtkinter.CTkFrame):
             self.populate_treeview(root_directory)
 
         self.treeview.bind("<<TreeviewOpen>>", self.on_open)
+
+    def delete_selected_folder(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+
+            if abspath == self.treeview.item(self.treeview.get_children()[0], "text"):
+                self.status.update_text("Cannot delete root folder")
+                return
+
+            if os.path.isdir(abspath):
+                if file_menu.opened_filename and file_menu.opened_filename.startswith(abspath):
+                    file_menu.opened_filename = None
+                    self.text.delete("1.0", tk.END)
+                    self.root.redraw()
+
+                try:
+                    shutil.rmtree(abspath)
+                    self.treeview.delete(node)
+                    self.status.update_text("Deleted folder: " + abspath)
+                except OSError as e:
+                    self.status.update_text("Error deleting folder: " + str(e))
 
     def populate_treeview(self, path):
         self.treeview.delete(*self.treeview.get_children())

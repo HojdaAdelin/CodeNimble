@@ -1,3 +1,4 @@
+import shutil
 import tkinter as tk
 from tkinter import Menu
 from tkinter import filedialog
@@ -330,3 +331,16 @@ def open_file_by_path(textbox, status_bar, path):
 def return_current_path():
     global opened_folder_path
     return opened_folder_path
+
+def delete_folder(folder_path, statusbar, text, root):
+    global opened_filename  # Specificăm că vrem să folosim variabila globală
+
+    try:
+        shutil.rmtree(folder_path)
+        statusbar.update_text("Removed: " + folder_path)
+        if opened_filename and opened_filename.startswith(folder_path):
+            opened_filename = None  # Resetăm opened_filename dacă fișierul deschis se află în folderul șters
+            text.delete("1.0", tk.END)
+            root.redraw()
+    except OSError as e:
+        statusbar.update_text("Error removing folder: " + str(e))
