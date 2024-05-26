@@ -433,3 +433,16 @@ def rename_file(statusbar, tree, path):
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
+
+def opened_file_status():
+    global opened_filename
+    if opened_filename:
+        return True
+    else:
+        return False
+
+def get_content_of_current_file():
+    global opened_filename
+    if opened_filename:
+        with open(opened_filename, 'r', encoding='utf-8') as file:
+            return file.read()

@@ -5,6 +5,7 @@ import customtkinter
 import sys
 import os
 import shutil
+from tkinter import messagebox
 
 current_dir = os.path.dirname(__file__)
 parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
@@ -175,7 +176,24 @@ class TreeviewFrame(customtkinter.CTkFrame):
         if item:
             abspath = self.get_full_path(item)
             if os.path.isfile(abspath):  # Verificăm dacă este un fișier
+                if file_menu.opened_file_status():
+                    opened_filename_text = file_menu.get_content_of_current_file()
+                    current_text = self.text.get("1.0", tk.END)
+                    if opened_filename_text.strip() != current_text.strip():
+                        raspuns = messagebox.askyesno("Warning", "There are unsaved changes. Do you want to save?")
+                        if raspuns:
+                            # Apelăm funcția save_file din file_menu.py pentru a salva modificările
+                            file_menu.save_file(self.text, self.status)
+                            self.text.delete("1.0", tk.END)
+                else:
+                    current_text = self.text.get("1.0", tk.END)
+                    if current_text.strip():
+                        raspuns = messagebox.askyesno("Warning", "There are unsaved changes. Do you want to save?")
+                        if raspuns:
+                            file_menu.save_file(self.text, self.status)
+                            self.text.delete("1.0", tk.END)
                 self.treeview_open_file(abspath)
+
 
     def get_full_path(self, node):
         parent_node = self.treeview.parent(node)
