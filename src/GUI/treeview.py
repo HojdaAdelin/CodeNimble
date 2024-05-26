@@ -51,6 +51,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
 
         self.menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.menu.add_command(label="Delete File", command=self.delete_selected_file)
+        self.menu.add_command(label="Rename File", command=self.rename_selected_file)
 
         self.folder_menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.folder_menu.add_command(label="Add File", command=self.add_file) 
@@ -143,6 +144,15 @@ class TreeviewFrame(customtkinter.CTkFrame):
                 self.treeview.delete(node)
                 self.text.delete("1.0", tk.END)
                 self.root.redraw()
+
+    def rename_selected_file(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+            if os.path.isfile(abspath):
+                file_menu.rename_file(self.status,self,abspath)
+
 
     def get_parent_path(self, node):
         parent_node = self.treeview.parent(node)
@@ -255,15 +265,12 @@ class TreeviewFrame(customtkinter.CTkFrame):
             self.treeview.item(item, tags=())
         self.hovered_item = None
 
-
-    
     def get_current_treeview_path(self):
         selected_item = self.treeview.selection()
         if selected_item:
             node = selected_item[0]
             return self.get_absolute_path(node)
         return os.getcwd()  # Returnează directorul de lucru curent dacă nu este selectat niciun element
-
 
     def add_file(self):
         selected_item = self.treeview.selection()
