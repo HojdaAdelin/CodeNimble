@@ -173,18 +173,20 @@ class TreeviewFrame(customtkinter.CTkFrame):
     def on_drag(self, event):
         '''Handle dragging of an object'''
         target = self.treeview.identify_row(event.y)
+        
+        # Reset hover effect from all items
+        if self.hovered_item:
+            self.treeview.item(self.hovered_item, tags=())
+            self.hovered_item = None
+
         if target and target != self.drag_data["item"]:
             # Check if the target item is a folder
             if os.path.isdir(self.get_absolute_path(target)):
-                # Remove "hover" tag from the previously hovered item
-                if self.hovered_item:
-                    self.treeview.item(self.hovered_item, tags=())
                 # Add "hover" tag to the target item
                 self.treeview.item(target, tags=("hover",))
                 self.hovered_item = target
 
                 # Apply the hover effect using the Treeview style
-                self.treestyle.configure("Treeview.Item", background=self.bg_color)
                 self.treeview.tag_configure("hover", background="#add8e6")  # Light blue for hover effect
 
     def on_drop(self, event):
@@ -214,15 +216,22 @@ class TreeviewFrame(customtkinter.CTkFrame):
                             new_opened_filename = file_menu.opened_filename.replace(abspath_source, new_path, 1)
                             file_menu.update_file_path(new_opened_filename)
 
-                        # Reset hover effect
-                        self.treeview.item(target, tags=())
-                        self.hovered_item = None
-
                     except Exception as e:
                         pass
 
+            # Reset hover effect from all items
+            self.reset_hover_effect()
+
         # reset drag data
         self.drag_data = {"item": None, "x": 0, "y": 0}
+
+    def reset_hover_effect(self):
+        '''Reset hover effect from all items'''
+        for item in self.treeview.get_children():
+            self.treeview.item(item, tags=())
+        self.hovered_item = None
+
+
     
     def get_current_treeview_path(self):
         selected_item = self.treeview.selection()
