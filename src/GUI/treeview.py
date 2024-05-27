@@ -57,6 +57,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.folder_menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.folder_menu.add_command(label="Add File", command=self.add_file) 
         self.folder_menu.add_command(label="Delete Folder", command=self.delete_selected_folder)
+        self.folder_menu.add_command(label="Rename Folder", command=self.rename_folder)
 
         self.treeview.bind("<Button-3>", self.show_context_menu)
         self.treeview.bind("<ButtonPress-1>", self.on_start_drag)
@@ -173,7 +174,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
 
     def on_double_click(self, event):
         item = self.treeview.identify('item', event.x, event.y)
-        if item:
+        if item:    
             abspath = self.get_full_path(item)
             if os.path.isfile(abspath):  # Verificăm dacă este un fișier
                 if file_menu.opened_file_status():
@@ -296,4 +297,10 @@ class TreeviewFrame(customtkinter.CTkFrame):
             node = selected_item[0]
             abspath = self.get_absolute_path(node)
             file_menu.custom_file(self.status, self, abspath)
-           
+    
+    def rename_folder(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+            file_menu.rename_folder(self.status, self, abspath)
