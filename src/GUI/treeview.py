@@ -53,11 +53,13 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.menu.add_command(label="Delete File", command=self.delete_selected_file)
         self.menu.add_command(label="Rename File", command=self.rename_selected_file)
+        self.menu.add_command(label="Open in Explorer", command=self.open_in_explorer)
 
         self.folder_menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.folder_menu.add_command(label="Add File", command=self.add_file) 
         self.folder_menu.add_command(label="Delete Folder", command=self.delete_selected_folder)
         self.folder_menu.add_command(label="Rename Folder", command=self.rename_folder)
+        self.folder_menu.add_command(label="Open in Explorer", command=self.open_in_explorer)
 
         self.treeview.bind("<Button-3>", self.show_context_menu)
         self.treeview.bind("<ButtonPress-1>", self.on_start_drag)
@@ -304,3 +306,13 @@ class TreeviewFrame(customtkinter.CTkFrame):
             node = selected_item[0]
             abspath = self.get_absolute_path(node)
             file_menu.rename_folder(self.status, self, abspath)
+    
+    def open_in_explorer(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+            if os.path.isdir(abspath):
+                os.startfile(abspath)
+            else:
+                os.startfile(os.path.dirname(abspath))
