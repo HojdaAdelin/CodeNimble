@@ -523,3 +523,86 @@ def rename_folder(statusbar, tree, folder_path):
 
         version_windoww.protocol("WM_DELETE_WINDOW", on_closing)
         version_windoww.mainloop()
+
+def add_folder(statusbar, tree, custom_path=None):
+    global version_window_opened
+
+    if not version_window_opened:
+        version_window_opened = True
+        version_window = ctk.CTk()
+        version_window.title("CodeNimble - New Folder")
+        fg_cl = "#2b2b2b"
+        text_bg = "#4a4a4a"
+        text = "white"
+        if check.get_config_value("theme") == 0:
+            fg_cl = "#2b2b2b"
+            text_bg = "#4a4a4a"
+            text = "white"
+        elif check.get_config_value("theme") == 1:
+            fg_cl = "white"
+            text_bg = "#f0f0f0"
+            text = "black"
+        w = 300 
+        h = 100 
+
+        ws = version_window.winfo_screenwidth()
+        hs = version_window.winfo_screenheight()
+
+        x = (ws/2 + 500) - (w/2)
+        y = (hs/2 + 200) - (h/2)
+
+        version_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
+        version_window.resizable(False, False)
+        version_window.iconbitmap("images/logo.ico")
+        version_window.configure(fg_color=fg_cl)
+
+        # Adaugă un Entry în fereastra version_window
+        text_box = tk.Entry(version_window, width=25, font=("Arial", 30), bg=text_bg, foreground=text, 
+                            insertbackground='white',
+                            selectbackground="#616161", borderwidth=0)
+        text_box.pack(pady=40)
+
+        # Funcția care se activează la apăsarea butonului "Create"
+        def create_folder():
+            foldername = text_box.get().strip()  # Obține textul introdus de utilizator
+            if foldername:
+                try:
+                    if custom_path:
+                        folderpath = os.path.join(custom_path, foldername)
+                    elif opened_folder_path:
+                        folderpath = os.path.join(opened_folder_path, foldername)
+                    else:
+                        folderpath = foldername
+                    os.makedirs(folderpath, exist_ok=True)  # Creează folderul cu numele introdus de utilizator
+                    statusbar.update_text("Created folder: " + folderpath)
+                    tree.reload_treeview(opened_folder_path if opened_folder_path else os.getcwd())
+                except Exception as e:
+                    pass
+
+        # Adaugă un buton "Create" pentru a crea folderul
+        create_button = ctk.CTkButton(version_window, text="Create", command=create_folder)
+        create_button.pack()
+
+        # Funcție pentru a reseta version_window_opened la False după ce închidem fereastra
+        def on_closing():
+            global version_window_opened
+            version_window_opened = False
+            version_window.destroy()
+
+        tb_color = 0x333333
+        if check.get_config_value("theme") == 0:
+            tb_color = 0x333333
+        elif check.get_config_value("theme") == 1:
+            tb_color = 0xFFFFFF
+        else:
+            tb_color = 0x333333
+        
+        HWND = windll.user32.GetParent(version_window.winfo_id())
+        windll.dwmapi.DwmSetWindowAttribute(
+            HWND,
+            35,
+            byref(c_int(tb_color)),
+            sizeof(c_int))
+
+        version_window.protocol("WM_DELETE_WINDOW", on_closing)
+        version_window.mainloop()

@@ -53,12 +53,16 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.menu.add_command(label="Delete File", command=self.delete_selected_file)
         self.menu.add_command(label="Rename File", command=self.rename_selected_file)
+        self.menu.add_separator()  
         self.menu.add_command(label="Open in Explorer", command=self.open_in_explorer)
 
         self.folder_menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.folder_menu.add_command(label="Add File", command=self.add_file) 
+        self.folder_menu.add_command(label="Add Folder", command=self.add_folder)
+        self.folder_menu.add_separator()
         self.folder_menu.add_command(label="Delete Folder", command=self.delete_selected_folder)
         self.folder_menu.add_command(label="Rename Folder", command=self.rename_folder)
+        self.folder_menu.add_separator()
         self.folder_menu.add_command(label="Open in Explorer", command=self.open_in_explorer)
 
         self.treeview.bind("<Button-3>", self.show_context_menu)
@@ -197,6 +201,12 @@ class TreeviewFrame(customtkinter.CTkFrame):
                             self.text.delete("1.0", tk.END)
                 self.treeview_open_file(abspath)
 
+    def add_folder(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+            file_menu.add_folder(self.status, self, abspath)
 
     def get_full_path(self, node):
         parent_node = self.treeview.parent(node)
