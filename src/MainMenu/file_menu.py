@@ -449,18 +449,19 @@ def get_content_of_current_file():
 version_windoww = None
 def rename_folder(statusbar, tree, folder_path):
     global version_windoww
+    global opened_filename
+    
     if version_windoww is None:
-        folder_path = folder_path
         version_windoww = ctk.CTk()
         version_windoww.title("CodeNimble - Rename Folder")
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (check.get_config_value("theme") == 0):
+        if check.get_config_value("theme") == 0:
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (check.get_config_value("theme") == 1):
+        elif check.get_config_value("theme") == 1:
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -476,59 +477,49 @@ def rename_folder(statusbar, tree, folder_path):
         version_windoww.geometry('%dx%d+%d+%d' % (w, h, x, y))
         version_windoww.resizable(False, False)
         version_windoww.iconbitmap("images/logo.ico")
-        version_windoww.configure(fg_color = fg_cl)
+        version_windoww.configure(fg_color=fg_cl)
 
-        # Adaugă un Entry în fereastra version_window
         text_box = tk.Entry(version_windoww, width=25, font=("Arial", 30), bg=text_bg, foreground=text, 
-                            insertbackground='white',
-                            selectbackground="#616161", borderwidth=0)
+                            insertbackground='white', selectbackground="#616161", borderwidth=0)
         text_box.pack(pady=40)
 
-        # Funcția care se activează la apăsarea butonului "Rename"
         def rename(folder_path):
-            new_foldername = text_box.get().strip()  # Obține noul nume de folder introdus de utilizator
+            global opened_filename
+
+            new_foldername = text_box.get().strip()
             if new_foldername:
-                # Verifică dacă noul nume nu este același cu cel vechi
                 if new_foldername != os.path.basename(folder_path):
                     new_path = os.path.join(os.path.dirname(folder_path), new_foldername)
                     try:
-                        os.rename(folder_path, new_path)  # Redenumește folderul
+                        os.rename(folder_path, new_path)
                         statusbar.update_text("Renamed folder: " + folder_path + " to " + new_path)
-                        tree.reload_treeview(os.path.dirname(folder_path))  # Reîncarcă arborele de fișiere pentru directorul părinte
-                        # Verifică dacă un fișier deschis se află în acest folder și actualizează calea
-                        if tree.get_current_treeview_path().startswith(folder_path):
-                            tree.reload_treeview(os.path.dirname(folder_path))
-                            tree.text.delete("1.0", tk.END)
-                            tree.root.redraw()
+                        tree.reload_treeview(os.path.dirname(folder_path))
+
+                        if opened_filename and opened_filename.startswith(folder_path):
+                            opened_filename = opened_filename.replace(folder_path, new_path, 1)
+                        
                         folder_path = new_path
-                    
                     except Exception as e:
                         pass
 
-        # Adaugă un buton "Rename" pentru a redenumi folderul
         rename_button = ctk.CTkButton(version_windoww, text="Rename", command=lambda: rename(folder_path))
         rename_button.pack()
 
-        # Funcție pentru a reseta version_window la None după ce fereastra se închide
         def on_closing():
             global version_windoww
             version_windoww.destroy()
             version_windoww = None
 
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if check.get_config_value("theme") == 0:
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif check.get_config_value("theme") == 1:
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333
         
         HWND = windll.user32.GetParent(version_windoww.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        windll.dwmapi.DwmSetWindowAttribute(HWND, 35, byref(c_int(tb_color)), sizeof(c_int))
 
         version_windoww.protocol("WM_DELETE_WINDOW", on_closing)
         version_windoww.mainloop()

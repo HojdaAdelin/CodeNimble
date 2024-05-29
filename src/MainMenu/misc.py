@@ -17,7 +17,6 @@ from Config import check
 from API import get_version
 
 def exit_application(root):
-    root.destroy() 
     root.quit()
 
 def version_info():
