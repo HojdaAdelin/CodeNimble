@@ -16,7 +16,7 @@ def dark_theme(menu_bar, cascade1, cascade2,
                cascade7,
                drop1, drop2, drop3, drop4, drop5, drop6,
                drop7,
-               status, text, win, tree):
+               status, text, win, tree, tree_menu, tree_foldermenu):
     check.update_config_file("theme", 0)
     menu_bar.configure(bg_color="#333333")
     cascade1.configure(hover_color="#4d4d4d", text_color="white")
@@ -61,13 +61,16 @@ def dark_theme(menu_bar, cascade1, cascade2,
     tree.treestyle.map('Treeview', 
                            background=[('selected', "#858585")],
                            foreground=[('selected', "white")])
+    
+    tree_menu.configure(bg="#333333", fg="white", activebackground="#ebebeb", activeforeground="black")
+    tree_foldermenu.configure(bg="#333333", fg="white", activebackground="#ebebeb", activeforeground="black")
 
 def light_theme(menu_bar, cascade1, cascade2, 
                cascade3, cascade4, cascade5, cascade6,
                cascade7,
                drop1, drop2, drop3, drop4, drop5, drop6,
                drop7,
-               status, text, win, tree):
+               status, text, win, tree, tree_menu, tree_foldermenu):
     
     check.update_config_file("theme", 1)
     menu_bar.configure(bg_color="white")
@@ -112,3 +115,6 @@ def light_theme(menu_bar, cascade1, cascade2,
     tree.treestyle.map('Treeview', 
                            background=[('selected', "#ebebeb")],
                            foreground=[('selected', "black")])
+    
+    tree_menu.configure(bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
+    tree_foldermenu.configure(bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
