@@ -48,9 +48,11 @@ def dark_theme(menu_bar, cascade1, cascade2,
             byref(c_int(0x333333)),
             sizeof(c_int))
     text.redraw()
-    text.pack_forget()
-    text.pack(fill="both", expand=True, side="right")
-
+    #text.pack_forget()
+    #text.pack(fill="both", expand=True, side="right")
+    #tree.pack_forget()
+    #tree.pack(fill="both", expand=True)
+    tree.configure(fg_color="#333333")
     tree.treestyle.configure(
             "Treeview",
             background="#333333",  # Schimba culoarea de fundal
@@ -81,6 +83,7 @@ def light_theme(menu_bar, cascade1, cascade2,
     cascade5.configure(hover_color="#ebebeb", text_color="black")
     cascade6.configure(hover_color="#ebebeb", text_color="black")
     cascade7.configure(hover_color="#ebebeb", text_color="black")
+
     drop1.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
     drop2.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
     drop3.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
@@ -102,9 +105,11 @@ def light_theme(menu_bar, cascade1, cascade2,
             byref(c_int(0xFFFFFF)),
             sizeof(c_int))
     text.redraw()
-    text.pack_forget()
-    text.pack(fill="both", expand=True, side="right")
-
+    #text.pack_forget()
+    #text.pack(fill="both", expand=True, side="right")
+    #tree.pack_forget()
+    #tree.pack(fill="both", expand=True)
+    tree.configure(fg_color="white")
     tree.treestyle.configure(
             "Treeview",
             background="white",  # Schimba culoarea de fundal

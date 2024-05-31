@@ -19,19 +19,17 @@ class StatusBar(tk.Frame):
         
         # New version available label
         self.new_version_label = tk.Label(self, text="New version available", font=font, bg="green", fg="black")
-        
+        #self.new_version_label.grid(row=0, column=0, sticky="w")  # Plasează în coloana 0, în stânga
+
         self.status_label = tk.Label(self, textvariable=self.text, anchor="e", padx=40, font=font, bg="#333333", fg="white")
-        self.status_label.pack(side="right", fill="both")
-        
-        self.pack(side="bottom", fill="x")
+        self.status_label.grid(row=0, column=1, sticky="e")  # Plasează în coloana 1, în dreapta
+
+        self.grid_columnconfigure(1, weight=1)  # Permite extinderea status_label pe orizontală
 
         # Check for new version
         if self.latest_version > self.current_version:
-            self.new_version_label.pack(side="left", fill="both")
-
-    def set_status(self, text):
-        self.text.set(text)
-
+            self.new_version_label.grid(row=0, column=0, sticky="w")  # Asigură-te că eticheta pentru noua versiune este afișată
     def update_text(self, new_text):
         self.text.set(new_text)
-
+    def set_status(self, text):
+        self.text.set(text)

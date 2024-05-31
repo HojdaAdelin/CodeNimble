@@ -48,7 +48,7 @@ def open_file(text, window, status_bar):
             window.redraw()
         status_bar.update_text("Opened: " + filename)
 
-def open_folder(treeview, status_bar):
+def open_folder(treeview, status_bar, text):
     global opened_filename
     global opened_folder_path
 
@@ -58,16 +58,20 @@ def open_folder(treeview, status_bar):
         opened_folder_path = folder_path  # Salvăm calea folderului deschis
         treeview.populate_treeview(folder_path)
         status_bar.update_text("Opened folder: " + folder_path)
-        treeview.pack_forget()
-        treeview.pack(side="left", fill="y")  # Arătăm TreeView când se deschide un folder
+        treeview.grid_forget()
+        text.grid_forget()
+        treeview.grid(row=1, column=0,sticky="nsw")  # Arătăm TreeView când se deschide un folder
+        text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
 
-def close_folder(treeview):
+def close_folder(treeview, text):
     global opened_filename
     global opened_folder_path
 
     if opened_folder_path:
         opened_folder_path = None  # Resetăm calea folderului deschis
-        treeview.pack_forget()  # Ascundem TreeView
+        treeview.grid_forget()  # Ascundem TreeView
+        text.grid_forget()
+        text.grid(row=1, column=0,columnspan=2,sticky="nswe")
 
 def save_file(text, status_bar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală

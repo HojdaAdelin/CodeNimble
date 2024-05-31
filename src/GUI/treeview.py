@@ -45,9 +45,13 @@ class TreeviewFrame(customtkinter.CTkFrame):
         
         master.bind("<<TreeviewSelect>>", lambda event: master.focus_set())
 
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+
         self.treeview = ttk.Treeview(self, show="tree", height=20, style="Treeview")
-        self.treeview.pack(fill="both", expand=True)
-        self.treeview.column("#0", width=600, stretch=tk.YES)
+        #self.treeview.pack(fill="both", expand=True)
+        self.treeview.grid(row=0, column=0, sticky="nsew")
+        self.treeview.column("#0", width=600, minwidth=600, stretch=False)
         self.treeview.bind("<Double-1>", self.on_double_click)
 
         self.menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
@@ -70,6 +74,13 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<B1-Motion>", self.on_drag)
         self.treeview.bind("<ButtonRelease-1>", self.on_drop)
 
+        #self.input = customtkinter.CTkTextbox(self, height=100, width=600)
+        #self.output = customtkinter.CTkTextbox(self, height=100, width=600)
+
+        # Ascunde textboxurile inițial
+        #self.input.grid_remove()
+        #self.output.grid_remove()
+        
         self.drag_data = {"item": None, "x": 0, "y": 0}
         self.hovered_item = None  # Track the currently hovered item
 
@@ -106,6 +117,10 @@ class TreeviewFrame(customtkinter.CTkFrame):
         abspath = os.path.abspath(path)
         root_node = self.treeview.insert('', 'end', text=abspath, open=True)
         self.process_directory(root_node, abspath)
+        
+        #if root_node:
+            #self.input.grid(row=1, column=0, sticky="nsew", pady=(0, 10))
+            #self.output.grid(row=2, column=0, sticky="nsew")
 
     def process_directory(self, parent, path):
         try:
@@ -176,7 +191,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.populate_treeview(path)
 
     def hide(self):
-        self.pack_forget()
+        self.grid_forget()
 
     def on_double_click(self, event):
         item = self.treeview.identify('item', event.x, event.y)
