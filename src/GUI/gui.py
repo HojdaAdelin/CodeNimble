@@ -49,7 +49,7 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="New File", command=lambda: file_menu.custom_file(statusbar_instance, treeview_frame))
         file_drop.add_option(option="New                            Ctrl+N", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open                          Ctrl+O",command=lambda:file_menu.open_file(scroll.text, scroll, statusbar_instance))
-        file_drop.add_option(option="Open Folder               Ctrl+K",command=lambda:file_menu.open_folder(treeview_frame, statusbar_instance))
+        file_drop.add_option(option="Open Folder               Ctrl+K",command=lambda:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
         file_drop.add_option(option="Close Folder", command=lambda:file_menu.close_folder(treeview_frame, scroll))
         file_drop.add_separator()
         file_drop.add_option(option="Save                           Ctrl+S",command=lambda:file_menu.save_file(scroll.text, statusbar_instance))

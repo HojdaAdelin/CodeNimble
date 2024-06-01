@@ -93,3 +93,4 @@ def create_template(textbox, root, statusbar, op):
     file_menu.create_file(template_text, ext)
     statusbar.update_text("Used " + ext_misc + " template")
     root.redraw()
+    root.tab_bar.add_tab(file_menu.current_file())

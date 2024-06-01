@@ -43,7 +43,8 @@ def open_file(text, window, status_bar):
             text.delete("1.0", tk.END) 
             text.insert("1.0", file_content) 
             window.redraw()
-        window.tab_bar.add_tab(filename)
+        if not window.tab_bar.check_tab(filename):
+            window.tab_bar.add_tab(filename)
         status_bar.update_text("Opened: " + filename)
 
 def open_folder(treeview, status_bar, text):
