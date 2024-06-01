@@ -10,9 +10,11 @@ sys.path.append(parent_dir)
 
 from Config import check
 from MainMenu import file_menu
+from GUI import filetab
 
 global ante_font
 ante_font = check.get_config_value("zoom")
+
 
 class ScrollText(tk.Frame):
     def __init__(self, master, *args, **kwargs):
@@ -32,6 +34,10 @@ class ScrollText(tk.Frame):
         self.numberLines = TextLineNumbers(self, width=4 * font_size, bg='#313335')
         self.numberLines.attach(self.text)
 
+        self.tab_bar = filetab.TabBar(self, self.text, self.numberLines)
+        self.tab_bar.pack(side=tk.TOP, fill="x")
+        self.tab_bar.add_tab("C:\Projects\CodeNimble\LICENSE")
+        self.tab_bar.add_tab("C:\Projects\CodeNimble\README.md")
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)

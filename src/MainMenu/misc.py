@@ -106,7 +106,7 @@ def changelog_inf():
         
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.4", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• ", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• Tab bar", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
