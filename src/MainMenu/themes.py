@@ -16,7 +16,8 @@ def dark_theme(menu_bar, cascade1, cascade2,
                cascade7,
                drop1, drop2, drop3, drop4, drop5, drop6,
                drop7,
-               status, text, win, tree, tree_menu, tree_foldermenu):
+               status, text, win, tree, tree_menu, tree_foldermenu,
+               tab_bar):
     check.update_config_file("theme", 0)
     menu_bar.configure(bg_color="#333333")
     cascade1.configure(hover_color="#4d4d4d", text_color="white")
@@ -48,17 +49,13 @@ def dark_theme(menu_bar, cascade1, cascade2,
             byref(c_int(0x333333)),
             sizeof(c_int))
     text.redraw()
-    #text.pack_forget()
-    #text.pack(fill="both", expand=True, side="right")
-    #tree.pack_forget()
-    #tree.pack(fill="both", expand=True)
     tree.configure(fg_color="#333333")
     tree.treestyle.configure(
             "Treeview",
-            background="#333333",  # Schimba culoarea de fundal
+            background="#333333", 
             fieldbackground="#333333",
             foreground = "white",
-            bordercolor = "#333333"   # Schimba culoarea textului
+            bordercolor = "#333333" 
         )
     tree.treestyle.map('Treeview', 
                            background=[('selected', "#858585")],
@@ -66,13 +63,15 @@ def dark_theme(menu_bar, cascade1, cascade2,
     
     tree_menu.configure(bg="#333333", fg="white", activebackground="#ebebeb", activeforeground="black")
     tree_foldermenu.configure(bg="#333333", fg="white", activebackground="#ebebeb", activeforeground="black")
-
+    tab_bar.configure(fg_color="#333333")
+    
 def light_theme(menu_bar, cascade1, cascade2, 
                cascade3, cascade4, cascade5, cascade6,
                cascade7,
                drop1, drop2, drop3, drop4, drop5, drop6,
                drop7,
-               status, text, win, tree, tree_menu, tree_foldermenu):
+               status, text, win, tree, tree_menu, tree_foldermenu,
+               tab_bar):
     
     check.update_config_file("theme", 1)
     menu_bar.configure(bg_color="white")
@@ -105,17 +104,13 @@ def light_theme(menu_bar, cascade1, cascade2,
             byref(c_int(0xFFFFFF)),
             sizeof(c_int))
     text.redraw()
-    #text.pack_forget()
-    #text.pack(fill="both", expand=True, side="right")
-    #tree.pack_forget()
-    #tree.pack(fill="both", expand=True)
     tree.configure(fg_color="white")
     tree.treestyle.configure(
             "Treeview",
-            background="white",  # Schimba culoarea de fundal
+            background="white",  
             fieldbackground="white",
             foreground = "black",
-            bordercolor = "white"  # Schimba culoarea textului
+            bordercolor = "white"  
         )
     tree.treestyle.map('Treeview', 
                            background=[('selected', "#ebebeb")],
@@ -123,3 +118,4 @@ def light_theme(menu_bar, cascade1, cascade2,
     
     tree_menu.configure(bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
     tree_foldermenu.configure(bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
+    tab_bar.configure(fg_color="white")

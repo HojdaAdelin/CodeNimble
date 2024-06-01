@@ -90,11 +90,13 @@ class MainWindow(ct.CTk):
         textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
-                                                                                         statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu))
+                                                                                         statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
+                                                                                         scroll.tab_bar))
         textures_drop.add_option(option="Dark theme", command=lambda:themes.dark_theme(menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
-                                                                                         statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu))
+                                                                                         statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
+                                                                                         scroll.tab_bar))
         
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         utility_drop.add_option(option="Run                         F5", command=lambda:run.run_cpp_file())
@@ -149,21 +151,24 @@ class MainWindow(ct.CTk):
                                 utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                 utility_drop,
-                                statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu)
+                                statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
+                                scroll.tab_bar)
             
         elif(current_theme == 1):
             themes.light_theme(menu, home, file_m, edit, view, template, textures,
                                 utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                 utility_drop,
-                                statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu)
+                                statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
+                                scroll.tab_bar)
             
         else:
             themes.dark_theme(menu, home, file_m, edit, view, template, textures,
                                 utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                 utility_drop,
-                                statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu)
+                                statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
+                                scroll.tab_bar)
             
         # Title bar color handle
         tb_color = 0x333333

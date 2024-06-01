@@ -10,7 +10,7 @@ class TabBar(customtkinter.CTkFrame):
         self.buttons = []
 
         # Setați lățimea fixă a frame-ului
-        self.configure(height=30)
+        self.configure(height=30,corner_radius=0)
         self.pack_propagate(False)  # Previne modificarea automată a dimensiunilor frame-ului
 
     def add_tab(self, file_path):
@@ -21,9 +21,10 @@ class TabBar(customtkinter.CTkFrame):
         file_name = os.path.basename(file_path)
 
         tab_button = customtkinter.CTkButton(
-            self, text=file_name, command=lambda: self.show_file_content(file_path), height=30, width=100
+            self, text=file_name, command=lambda: self.show_file_content(file_path), height=30, width=100,
+            corner_radius=0, hover_color="#2c3eb8", fg_color="#374ee6"
         )
-        tab_button.pack(side="left", padx=(5, 0), pady=(5, 5))
+        tab_button.pack(side="left", padx=(0, 2))
 
         self.tabs[file_path] = tab_button
         self.buttons.append(tab_button)
