@@ -103,7 +103,7 @@ class MainWindow(ct.CTk):
         
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self)
-        treeview_frame = treeview.TreeviewFrame(self, scroll.text, statusbar_instance, scroll)
+        treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
         
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)

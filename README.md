@@ -16,3 +16,4 @@ Code Nimble is a light code editor dedicated for competitive programming.
     "Path to customtkinter library"
     3. Open a cmd on the same directory with the project and run the command
     4. Open dist folder and you will see the CodeNimble.exe
+

@@ -17,10 +17,11 @@ customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
 
 class TreeviewFrame(customtkinter.CTkFrame):
-    def __init__(self, master, text, statusbar, root, root_directory=None, *args, **kwargs):
+    def __init__(self, master, scroll, statusbar, root, root_directory=None, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         
-        self.text = text
+        self.text = scroll.text
+        self.scroll = scroll
         self.status = statusbar
         self.root = root
         self.bg_color = self._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkFrame"]["fg_color"])
@@ -196,22 +197,8 @@ class TreeviewFrame(customtkinter.CTkFrame):
         item = self.treeview.identify('item', event.x, event.y)
         if item:    
             abspath = self.get_full_path(item)
-            if os.path.isfile(abspath):  # Verificăm dacă este un fișier
-                if file_menu.opened_file_status():
-                    opened_filename_text = file_menu.get_content_of_current_file()
-                    current_text = self.text.get("1.0", tk.END)
-                    if opened_filename_text.strip() != current_text.strip():
-                        raspuns = messagebox.askyesno("Warning", "There are unsaved changes. Do you want to save?")
-                        if raspuns:
-                            file_menu.save_file(self.text, self.status)
-                            self.text.delete("1.0", tk.END)
-                else:
-                    current_text = self.text.get("1.0", tk.END)
-                    if current_text.strip():
-                        raspuns = messagebox.askyesno("Warning", "There are unsaved changes. Do you want to save?")
-                        if raspuns:
-                            file_menu.save_file(self.text, self.status)
-                            self.text.delete("1.0", tk.END)
+            if os.path.isfile(abspath): 
+                self.scroll.tab_bar.add_tab(abspath)
                 self.treeview_open_file(abspath)
 
     def add_folder(self):

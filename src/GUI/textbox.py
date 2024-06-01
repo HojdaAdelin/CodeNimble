@@ -34,10 +34,8 @@ class ScrollText(tk.Frame):
         self.numberLines = TextLineNumbers(self, width=4 * font_size, bg='#313335')
         self.numberLines.attach(self.text)
 
-        self.tab_bar = filetab.TabBar(self, self.text, self.numberLines)
+        self.tab_bar = filetab.TabBar(self, self.text, self)
         self.tab_bar.pack(side=tk.TOP, fill="x")
-        self.tab_bar.add_tab("C:\Projects\CodeNimble\LICENSE")
-        self.tab_bar.add_tab("C:\Projects\CodeNimble\plate.cpp")
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
