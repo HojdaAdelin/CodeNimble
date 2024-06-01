@@ -23,7 +23,8 @@ class TabBar(customtkinter.CTkFrame):
         self.pack_propagate(False)  # Previne modificarea automată a dimensiunilor frame-ului
 
     def add_tab(self, file_path):
-        if file_path in self.tabs:
+        # Verificați dacă fișierul este deja deschis într-un tab
+        if file_path in self.file_contents:
             return
 
         # Obțineți doar numele fișierului
@@ -39,9 +40,12 @@ class TabBar(customtkinter.CTkFrame):
         self.buttons.append(tab_button)
 
     def show_file_content(self, file_path):
+        if file_path == file_menu.current_file():
+            return
         # Verificăm dacă avem deja conținutul fișierului în dicționarul file_contents
         if file_path in self.file_contents:
             content = self.file_contents[file_path]
+            content = content.rsplit('\n', 1)[0]
         else:
             # Dacă nu, citim conținutul fișierului și îl salvăm în dicționar
             with open(file_path, 'r') as file:
@@ -53,6 +57,11 @@ class TabBar(customtkinter.CTkFrame):
             self.file_contents[ante_path] = self.text_widget.get("1.0", "end")
 
         self.text_widget.delete("1.0", "end")
-        self.text_widget.insert("1.0", content.rsplit('\n', 1)[0])
+        self.text_widget.insert("1.0", content)
         file_menu.update_file_path(file_path)
         self.scroll.redraw()
+    def check_tab(self, file_path):
+        if file_path in self.file_contents:
+            return True
+        else:
+            return False
