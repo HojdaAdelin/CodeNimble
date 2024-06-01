@@ -197,9 +197,9 @@ class TreeviewFrame(customtkinter.CTkFrame):
         item = self.treeview.identify('item', event.x, event.y)
         if item:    
             abspath = self.get_full_path(item)
-            if os.path.isfile(abspath): 
+            if os.path.isfile(abspath):
                 if self.scroll.tab_bar.check_tab(abspath):
-                    return 
+                    return
                 self.scroll.tab_bar.add_tab(abspath)
                 self.treeview_open_file(abspath)
 

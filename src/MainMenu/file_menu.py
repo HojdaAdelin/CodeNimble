@@ -16,7 +16,6 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import edit_menu
 
-
 opened_filename = None
 opened_folder_path = None
 
@@ -44,6 +43,7 @@ def open_file(text, window, status_bar):
             text.delete("1.0", tk.END) 
             text.insert("1.0", file_content) 
             window.redraw()
+        window.tab_bar.add_tab(filename)
         status_bar.update_text("Opened: " + filename)
 
 def open_folder(treeview, status_bar, text):
