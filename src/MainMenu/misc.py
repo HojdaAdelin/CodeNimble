@@ -47,7 +47,7 @@ def version_info():
         version_window.resizable(False, False)
         version_window.configure(fg_color = fg_cl)
 
-        current_version_label = ctk.CTkLabel(version_window, text="Current version: 1.3", font=("Arial", 20), text_color=text)
+        current_version_label = ctk.CTkLabel(version_window, text="Current version: 1.4", font=("Arial", 20), text_color=text)
         current_version_label.pack(pady=(25,0))
         version_label = ctk.CTkLabel(version_window, text="Latest version: "+get_version.get_latest_version_from_github("HojdaAdelin", "CodeNimble"), font=("Arial", 20), text_color=text)
         version_label.pack(pady=0)
@@ -104,9 +104,9 @@ def changelog_inf():
         changelog_window.resizable(False, False)
         changelog_window.configure(fg_color = fg_cl)
         
-        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.3", font=("Arial", 20), text_color=text)
+        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.4", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Utility menu\n• Run code\n• Bind for Ctrl+Backspace\n• New version available notify in status bar\n• Binds for replace & find\n• Treeview\n• Open folder\n• Close folder\n• Open files from treeview\n• Delete files from Treeview\n• Move files & folders in treeview\n• Toggle treeview\n• Fix zoom\n• Bind for Run\n• Add file in treeview folders\n• Change all windows title bars\n• Delete folder in treeview\n• Rename files in treeview\n• Unsaved file management in treeview\n• Rename folder in treeview\n• Open in Explorer function\n• Fix exit function\n• Add folder in treeview", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• ", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra

@@ -16,29 +16,27 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import edit_menu
 
-# Definim o variabilă globală pentru a ține numele fișierului deschis și folderul deschis
+
 opened_filename = None
 opened_folder_path = None
 
 def new_file(text, window, status_bar):
-    global opened_filename  # Specificăm că vrem să folosim variabila globală
-
+    global opened_filename 
     opened_filename = None
 
     text.delete("1.0", tk.END)
     window.redraw()
 
-    # Actualizează textul status barului
     status_bar.update_text("New File")
 
 
 def open_file(text, window, status_bar):
-    global opened_filename  # Specificăm că vrem să folosim variabila globală
+    global opened_filename
 
     filename = filedialog.askopenfilename(filetypes=[("All files", "*.*")])
 
     if filename:
-        opened_filename = filename  # Actualizăm numele fișierului deschis
+        opened_filename = filename 
 
         with open(filename, "r") as file:
             file_content = file.read()
@@ -55,12 +53,12 @@ def open_folder(treeview, status_bar, text):
     folder_path = filedialog.askdirectory()
     
     if folder_path:
-        opened_folder_path = folder_path  # Salvăm calea folderului deschis
+        opened_folder_path = folder_path  
         treeview.populate_treeview(folder_path)
         status_bar.update_text("Opened folder: " + folder_path)
         treeview.grid_forget()
         text.grid_forget()
-        treeview.grid(row=1, column=0,sticky="nsw")  # Arătăm TreeView când se deschide un folder
+        treeview.grid(row=1, column=0,sticky="nsw") 
         text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
 
 def close_folder(treeview, text):
@@ -68,13 +66,13 @@ def close_folder(treeview, text):
     global opened_folder_path
 
     if opened_folder_path:
-        opened_folder_path = None  # Resetăm calea folderului deschis
-        treeview.grid_forget()  # Ascundem TreeView
+        opened_folder_path = None  
+        treeview.grid_forget() 
         text.grid_forget()
         text.grid(row=1, column=0,columnspan=2,sticky="nswe")
 
 def save_file(text, status_bar):
-    global opened_filename  # Specificăm că vrem să folosim variabila globală
+    global opened_filename  
 
     if opened_filename:
         content = text.get("1.0", tk.END)
@@ -83,11 +81,10 @@ def save_file(text, status_bar):
             file.write(content)
         status_bar.update_text("Saved: " + opened_filename)
     else:
-        # Dacă nu există un fișier deschis anterior, apelăm funcția save_as_file()
         save_as_file(text, status_bar)
 
 def save_as_file(text, status_bar):
-    global opened_filename  # Specificăm că vrem să folosim variabila globală
+    global opened_filename  
     global opened_folder_path
 
     content = text.get("1.0", tk.END)
@@ -96,7 +93,7 @@ def save_as_file(text, status_bar):
                                              initialdir=opened_folder_path if opened_folder_path else os.getcwd())
 
     if filename:
-        opened_filename = filename  # Actualizăm numele fișierului deschis
+        opened_filename = filename 
 
         with open(filename, "w") as file:
             file.write(content)

@@ -32,7 +32,6 @@ def update_config_file(func, val):
         with open(file_name, "w") as file:
             for line in lines:
                 if line.startswith(func + ":"):
-                    # Găsim linia care conține funcția și actualizăm valoarea
                     file.write(f"{func}: {val}\n")
                 else:
                     file.write(line)
@@ -46,7 +45,6 @@ def get_config_value(func):
         with open(file_name, "r") as file:
             for line in file:
                 if line.startswith(func + ":"):
-                    # Extrage valoarea din linie și o converteste la întreg
                     value = int(line.split(":")[1].strip())
                     return value
         

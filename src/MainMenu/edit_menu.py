@@ -92,7 +92,6 @@ def find_text(scroll_text):
         find_window.iconbitmap("images/logo.ico")
         find_window.configure(fg_color = fg_cl)
 
-        # Adaugă un Entry în fereastra find_window
         text_box = tk.Entry(find_window, width=25, font=("Arial", 30), bg=text_bg, foreground=text, 
                             insertbackground='white',
                             selectbackground="#616161", borderwidth=0)
@@ -111,11 +110,9 @@ def find_text(scroll_text):
                     scroll_text.tag_configure("found", background="gray")
                     start_index = end_index
         
-        # Adaugă un buton "Find" pentru a găsi textul
         find_button = ctk.CTkButton(find_window, text="Find", command=find)
         find_button.pack()
 
-        # Funcție pentru a reseta find_window_opened la False după ce închidem fereastra
         def on_closing():
             global find_window_opened
             find_window_opened = False
@@ -171,7 +168,6 @@ def replace_text(scroll_text):
         replace_window.iconbitmap("images/logo.ico")
         replace_window.configure(fg_color = fg_cl)
 
-        # Adaugă un Entry în fereastra replace_window pentru căutare
         find_frame = ctk.CTkFrame(replace_window)
         find_frame.pack()
         find_frame.configure(fg_color = fg_cl)
@@ -182,7 +178,6 @@ def replace_text(scroll_text):
         find_button = ctk.CTkButton(find_frame, text="Find")
         find_button.pack(side="right", padx=(10, 0))
 
-        # Adaugă un Entry în fereastra replace_window pentru înlocuire
         replace_frame = ctk.CTkFrame(replace_window)
         replace_frame.pack()
         replace_frame.configure(fg_color = fg_cl)
@@ -196,7 +191,6 @@ def replace_text(scroll_text):
         replace_all_button.pack(side="right", padx=(10, 38), pady=(10, 0)) 
         
 
-        # Funcție pentru a reseta replace_window_opened la False după ce închidem fereastra
         def on_closing():
             global replace_window_opened
             replace_window_opened = False
@@ -229,7 +223,7 @@ def replace_text(scroll_text):
                     scroll_text.delete(start_index, end_index)
                     scroll_text.insert(start_index, replace_text)
                     start_index = end_index
-                    break  # Ieșiți din bucla după ce ați înlocuit primul cuvânt găsit
+                    break  
         
         def replace_all():
             search_text = find_box.get().strip()

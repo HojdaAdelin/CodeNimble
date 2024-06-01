@@ -49,7 +49,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.grid_rowconfigure(0, weight=1)
 
         self.treeview = ttk.Treeview(self, show="tree", height=20, style="Treeview")
-        #self.treeview.pack(fill="both", expand=True)
         self.treeview.grid(row=0, column=0, sticky="nsew")
         self.treeview.column("#0", width=600, minwidth=600, stretch=False)
         self.treeview.bind("<Double-1>", self.on_double_click)
@@ -82,7 +81,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
         #self.output.grid_remove()
         
         self.drag_data = {"item": None, "x": 0, "y": 0}
-        self.hovered_item = None  # Track the currently hovered item
+        self.hovered_item = None 
 
         if root_directory:
             self.populate_treeview(root_directory)
@@ -204,7 +203,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
                     if opened_filename_text.strip() != current_text.strip():
                         raspuns = messagebox.askyesno("Warning", "There are unsaved changes. Do you want to save?")
                         if raspuns:
-                            # Apelăm funcția save_file din file_menu.py pentru a salva modificările
                             file_menu.save_file(self.text, self.status)
                             self.text.delete("1.0", tk.END)
                 else:
@@ -239,59 +237,45 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.root.redraw()
 
     def on_start_drag(self, event):
-        '''Begining drag of an object'''
-        # record the item and its location
         item = self.treeview.identify_row(event.y)
         if item:
             self.drag_data["item"] = item
             self.drag_data["x"] = event.x
             self.drag_data["y"] = event.y
-            # Add "dragged" tag to the item being dragged
             self.treeview.item(item, tags=("dragged",))
             self.treestyle.configure("Treeview.Item", font=('Consolas', 28), background=self.bg_color)
 
     def on_drag(self, event):
-        '''Handle dragging of an object'''
         target = self.treeview.identify_row(event.y)
         
-        # Reset hover effect from all items
         if self.hovered_item:
             self.treeview.item(self.hovered_item, tags=())
             self.hovered_item = None
 
         if target and target != self.drag_data["item"]:
-            # Check if the target item is a folder
             if os.path.isdir(self.get_absolute_path(target)):
-                # Add "hover" tag to the target item
                 self.treeview.item(target, tags=("hover",))
                 self.hovered_item = target
 
-                # Apply the hover effect using the Treeview style
                 self.treeview.tag_configure("hover", background="#add8e6")  # Light blue for hover effect
 
     def on_drop(self, event):
-        '''End drag of an object'''
-        # get the item being dragged
         item = self.drag_data["item"]
         if item:
-            # get the target item
             target = self.treeview.identify_row(event.y)
             if target and target != item:
                 abspath_source = self.get_absolute_path(item)
                 abspath_target = self.get_absolute_path(target)
 
-                # check if target is a directory
                 if os.path.isdir(abspath_target):
                     new_path = os.path.join(abspath_target, os.path.basename(abspath_source))
                     try:
                         shutil.move(abspath_source, new_path)
                         self.treeview.delete(item)
                         
-                        # Remove duplicates by clearing and re-populating target directory
                         self.treeview.delete(*self.treeview.get_children(target))
                         self.process_directory(target, abspath_target)
 
-                        # Check if the opened file is inside the moved directory and update its path
                         if file_menu.opened_filename.startswith(abspath_source):
                             new_opened_filename = file_menu.opened_filename.replace(abspath_source, new_path, 1)
                             file_menu.update_file_path(new_opened_filename)
@@ -299,14 +283,11 @@ class TreeviewFrame(customtkinter.CTkFrame):
                     except Exception as e:
                         pass
 
-            # Reset hover effect from all items
             self.reset_hover_effect()
 
-        # reset drag data
         self.drag_data = {"item": None, "x": 0, "y": 0}
 
     def reset_hover_effect(self):
-        '''Reset hover effect from all items'''
         for item in self.treeview.get_children():
             self.treeview.item(item, tags=())
         self.hovered_item = None
@@ -316,7 +297,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
         if selected_item:
             node = selected_item[0]
             return self.get_absolute_path(node)
-        return os.getcwd()  # Returnează directorul de lucru curent dacă nu este selectat niciun element
+        return os.getcwd() 
 
     def add_file(self):
         selected_item = self.treeview.selection()

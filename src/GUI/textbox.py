@@ -44,18 +44,14 @@ class ScrollText(tk.Frame):
         self.text.bind("<KeyRelease>", lambda event: self.redraw())
         self.text.bind("<Tab>", self.add_tab)
 
-        # Bindings pentru completarea automată a parantezelor
         self.text.bind("(", self.insert_parentheses)
         self.text.bind("[", self.insert_brackets)
         self.text.bind("{", self.insert_braces)
 
-        # Binding pentru ștergerea parantezelor pereche
         self.text.bind("<BackSpace>", self.handle_backspace)
 
-        # Binding pentru enter
         self.text.bind("<Return>", self.handle_return)
 
-        # Binding pentru Ctrl+Backspace
         self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
 
     def add_tab(self, event):
@@ -85,7 +81,6 @@ class ScrollText(tk.Frame):
 
     def redraw(self):
         global ante_font
-        # Salvăm starea selecției
         if self.text.tag_ranges(tk.SEL):
             selection_start = self.text.index(tk.SEL_FIRST)
             selection_end = self.text.index(tk.SEL_LAST)
@@ -101,7 +96,6 @@ class ScrollText(tk.Frame):
             ante_font = font_size
             self.text.configure(font=("Consolas", font_size))
 
-        # Restabilim selecția textului dacă există
         if selection_start and selection_end:
             self.text.tag_add(tk.SEL, selection_start, selection_end)
 
@@ -263,7 +257,6 @@ class ScrollText(tk.Frame):
             self.text.tag_add(tag, start_index, end_index)
             start_index = end_index
 
-    # Metodele pentru inserarea parantezelor și mutarea cursorului între ele
     def insert_parentheses(self, event):
         self.text.insert(tk.INSERT, "()")
         self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
@@ -285,16 +278,13 @@ class ScrollText(tk.Frame):
         next_char = self.text.get(cursor_index, f"{cursor_index} +1c")
 
         if previous_char in "({[" and next_char in ")}]":
-            # Verificăm dacă nu există conținut între paranteze
             if self.text.get(f"{cursor_index} -1c", f"{cursor_index} +1c") in ["()", "{}", "[]"]:
                 self.text.delete(f"{cursor_index} -1c", f"{cursor_index} +1c")
                 return "break"
         return
 
     def handle_return(self, event):
-        # Verificăm dacă fișierul curent are extensia .cpp
         if file_menu.return_file() != ".cpp":
-            # Inserăm o nouă linie cu indentare corespunzătoare fără autocompletare
             cursor_index = self.text.index(tk.INSERT)
             current_line = self.text.get(f"{cursor_index} linestart", cursor_index)
             leading_spaces = len(current_line) - len(current_line.lstrip())
@@ -302,15 +292,12 @@ class ScrollText(tk.Frame):
             self.text.insert(cursor_index, "\n" + indent)
             return "break"
         
-        # Preluăm poziția curentă a cursorului
         cursor_index = self.text.index(tk.INSERT)
         current_line = self.text.get(f"{cursor_index} linestart", cursor_index)
         
-        # Determinăm poziția primului caracter non-spațiu
         leading_spaces = len(current_line) - len(current_line.lstrip())
         indent = " " * leading_spaces
 
-        # Verificăm dacă linia curentă conține un cuvânt cheie specific, în format cu litere mari
         keyword_map = {
             "DO": f"do {{\n{indent}\n{indent}}} while();",
             "FOR": f"for (int i = ; i <= ; i++) {{\n{indent}\n{indent}}}",
@@ -320,17 +307,14 @@ class ScrollText(tk.Frame):
 
         stripped_line = current_line.strip()
         if stripped_line in keyword_map:
-            # Inserăm template-ul corespunzător și poziționăm cursorul
             self.text.delete(f"{cursor_index} linestart", cursor_index)
             self.text.insert(f"{cursor_index} linestart", indent + keyword_map[stripped_line])
             new_cursor_index = self.get_new_cursor_index(stripped_line, cursor_index, indent)
             self.text.mark_set(tk.INSERT, new_cursor_index)
             return "break"
 
-        # Inserăm o nouă linie cu indentare corespunzătoare
         self.text.insert(cursor_index, "\n" + indent)
         
-        # Oprim comportamentul implicit al tastelor de return
         return "break"
 
     def get_new_cursor_index(self, keyword, cursor_index, indent):
@@ -392,5 +376,3 @@ class TextLineNumbers(tk.Canvas):
             linenum = str(i).split(".")[0]
             self.create_text(2, y, anchor="nw", text=linenum, fill=self.text_color, font=self.font)
             i = self.textwidget.index(f"{i}+1line")
-
-# Restul codului rămâne neschimbat

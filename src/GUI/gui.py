@@ -44,11 +44,8 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Report bugs",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble/issues"))
         home_drop.add_separator()
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
-        
-        # Config values
     
         file_drop = CustomDropdownMenu(widget=file_m, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
-        #file_drop.add_option(option="New window", command=lambda:file_menu.new_window())
         file_drop.add_option(option="New File", command=lambda: file_menu.custom_file(statusbar_instance, treeview_frame))
         file_drop.add_option(option="New                            Ctrl+N", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open                          Ctrl+O",command=lambda:file_menu.open_file(scroll.text, scroll, statusbar_instance))
@@ -101,9 +98,7 @@ class MainWindow(ct.CTk):
         
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         utility_drop.add_option(option="Run                         F5", command=lambda:run.run_cpp_file())
-        # Treeview
-        # TextBox
-        #treeview_frame.pack_forget()
+        
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self)
         treeview_frame = treeview.TreeviewFrame(self, scroll.text, statusbar_instance, scroll)
@@ -115,14 +110,13 @@ class MainWindow(ct.CTk):
         menu.grid(row=0, column=0,columnspan=2, sticky="ew")
         scroll.grid(row=1, column=0,columnspan=2,sticky="nswe")
         statusbar_instance.grid(row=2, column=0,columnspan=2, sticky="ew")
-        #scroll.pack(fill="both", expand=True, side="right")
+
         scroll.text.focus()
         self.after(200, scroll.redraw())
         scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-o>", lambda event: file_menu.open_file(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-s>", lambda event: file_menu.save_file(scroll.text, statusbar_instance))
         scroll.text.bind("<Control-Shift-s>", lambda event: file_menu.save_as_file(scroll.text, statusbar_instance))
-        #scroll.text.bind("<Control-z>", lambda event: edit_menu.undo_text(scroll.text, scroll))
         scroll.text.bind("<Control-y>", lambda event: edit_menu.redo_text(scroll.text, scroll))
         scroll.text.bind("<Control-x>", lambda event: edit_menu.cut_text(scroll.text, scroll))
         scroll.text.bind("<Control-d>", lambda event: edit_menu.delete_text(scroll.text, scroll))
