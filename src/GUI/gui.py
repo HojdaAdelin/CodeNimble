@@ -78,6 +78,7 @@ class MainWindow(ct.CTk):
         view_drop.add_separator()
         view_drop.add_option(option="Fullscreen                         F11", command=lambda:view_menu.toggle_fullscreen(self))
         view_drop.add_option(option="Treeview                       Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame))
+        view_drop.add_option(option="Input & Output", command=lambda:view_menu.hide_unhide_input_output(treeview_frame))
 
         template_drop = CustomDropdownMenu(widget=template, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         template_drop.add_option(option="C++", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "cpp"))

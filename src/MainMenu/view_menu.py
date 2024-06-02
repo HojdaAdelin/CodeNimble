@@ -53,3 +53,15 @@ def hide_unhide_treeview(treeview_frame: TreeviewFrame, text):
         text.grid_forget()
         treeview_frame.grid(row=1, column=0, sticky="nsw") 
         text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,0))
+
+def hide_unhide_input_output(tree):
+    if tree.input_label.winfo_ismapped():
+        tree.input_label.grid_forget()
+        tree.output_label.grid_forget()
+        tree.input.grid_forget()
+        tree.output.grid_forget()
+    else:
+        tree.input_label.grid(row=1, column=0, padx=(5, 5))
+        tree.input.grid(row=2, column=0, sticky="nsew", padx=(5, 5))
+        tree.output_label.grid(row=3, column=0, padx=(5, 5))
+        tree.output.grid(row=4, column=0, sticky="nsew", padx=(5, 5))
