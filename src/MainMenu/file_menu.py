@@ -20,6 +20,7 @@ opened_filename = None
 opened_folder_path = None
 
 def new_file(text, window, status_bar):
+
     global opened_filename 
     opened_filename = None
 

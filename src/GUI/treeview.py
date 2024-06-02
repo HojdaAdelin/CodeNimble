@@ -167,6 +167,8 @@ class TreeviewFrame(customtkinter.CTkFrame):
                 self.treeview.delete(node)
                 self.text.delete("1.0", tk.END)
                 self.root.redraw()
+                if self.scroll.tab_bar.check_tab(abspath):
+                    self.scroll.tab_bar.delete_tab(abspath)
 
     def rename_selected_file(self):
         selected_item = self.treeview.selection()
