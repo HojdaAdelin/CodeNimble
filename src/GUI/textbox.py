@@ -11,6 +11,7 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import file_menu
 from GUI import filetab
+from MainMenu import run
 
 global ante_font
 ante_font = check.get_config_value("zoom")
@@ -40,7 +41,7 @@ class ScrollText(tk.Frame):
         self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
         self.text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
-
+    
         self.text.bind("<Key>", self.onPressDelay)
         self.text.bind("<Button-1>", self.numberLines.redraw)
         self.scrollbar.bind("<Button-1>", self.onScrollPress)

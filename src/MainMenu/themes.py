@@ -64,6 +64,10 @@ def dark_theme(menu_bar, cascade1, cascade2,
     tree_menu.configure(bg="#333333", fg="white", activebackground="#ebebeb", activeforeground="black")
     tree_foldermenu.configure(bg="#333333", fg="white", activebackground="#ebebeb", activeforeground="black")
     tab_bar.configure(fg_color="#333333")
+    tree.input_label.configure(text_color="white")
+    tree.output_label.configure(text_color="white")
+    tree.input.configure(fg_color="#2b2b2b", text_color="white")
+    tree.output.configure(fg_color="#2b2b2b", text_color="white")
     
 def light_theme(menu_bar, cascade1, cascade2, 
                cascade3, cascade4, cascade5, cascade6,
@@ -119,3 +123,7 @@ def light_theme(menu_bar, cascade1, cascade2,
     tree_menu.configure(bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
     tree_foldermenu.configure(bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
     tab_bar.configure(fg_color="white")
+    tree.input_label.configure(text_color="black")
+    tree.output_label.configure(text_color="black")
+    tree.input.configure(fg_color="#f0f0f0", text_color="black")
+    tree.output.configure(fg_color="#f0f0f0", text_color="black")

@@ -74,12 +74,10 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<B1-Motion>", self.on_drag)
         self.treeview.bind("<ButtonRelease-1>", self.on_drop)
 
-        #self.input = customtkinter.CTkTextbox(self, height=100, width=600)
-        #self.output = customtkinter.CTkTextbox(self, height=100, width=600)
-
-        # Ascunde textboxurile inițial
-        #self.input.grid_remove()
-        #self.output.grid_remove()
+        self.input_label = customtkinter.CTkLabel(self, text="#Input", font=("", 16))
+        self.input = customtkinter.CTkTextbox(self, height=100, width=290)
+        self.output_label = customtkinter.CTkLabel(self, text="#Output", font=("", 16))
+        self.output = customtkinter.CTkTextbox(self, height=100, width=290)
         
         self.drag_data = {"item": None, "x": 0, "y": 0}
         self.hovered_item = None 
@@ -118,9 +116,11 @@ class TreeviewFrame(customtkinter.CTkFrame):
         root_node = self.treeview.insert('', 'end', text=abspath, open=True)
         self.process_directory(root_node, abspath)
         
-        #if root_node:
-            #self.input.grid(row=1, column=0, sticky="nsew", pady=(0, 10))
-            #self.output.grid(row=2, column=0, sticky="nsew")
+        if root_node:
+            self.input_label.grid(row=1, column=0, padx=(5, 5))
+            self.input.grid(row=2, column=0, sticky="nsew", padx=(5, 5))
+            self.output_label.grid(row=3, column=0, padx=(5, 5))
+            self.output.grid(row=4, column=0, sticky="nsew", padx=(5, 5))
 
     def process_directory(self, parent, path):
         try:

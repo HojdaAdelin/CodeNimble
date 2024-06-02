@@ -36,4 +36,3 @@ def run_cpp_file():
         # Dacă compilarea reușește, rulăm fișierul executabil în cmd
         run_command = f"start cmd /k {executable_name}"
         subprocess.run(run_command, shell=True)
-
