@@ -443,11 +443,15 @@ def opened_file_status():
     else:
         return False
 
-def get_content_of_current_file():
+def get_content_of_current_file(path=None):
     global opened_filename
-    if opened_filename:
-        with open(opened_filename, 'r', encoding='utf-8') as file:
+    if path:
+        with open(path, 'r', encoding='utf-8') as file:
             return file.read()
+    else:
+        if opened_filename:
+            with open(opened_filename, 'r', encoding='utf-8') as file:
+                return file.read()
 version_windoww = None
 def rename_folder(statusbar, tree, folder_path):
     global version_windoww
