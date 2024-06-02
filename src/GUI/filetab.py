@@ -16,22 +16,35 @@ class ClosableTab(customtkinter.CTkFrame):
         self.command = command
         self.close_command = close_command
 
+        self.inactive_bg_color = "#374ee6"
+        self.active_bg_color = "#2c3eb8"
+
         # Set up the main tab button
         self.tab_button = customtkinter.CTkButton(
-            self, text=text, command=self.command, height=30, width=80,
-            corner_radius=0, hover_color="#2c3eb8", fg_color="#374ee6"
+            self, text=text, command=self.command, height=35, width=80,
+            corner_radius=0, hover_color=self.active_bg_color, fg_color=self.inactive_bg_color,
+            font=("", 16)
         )
         self.tab_button.pack(side="left", fill="y")
 
         # Set up the close button
         self.close_button = customtkinter.CTkButton(
-            self, text="x", command=self.close, height=30, width=20,
-            corner_radius=0, hover_color="#b82c2c", fg_color="#e63737"
+            self, text="✕", command=self.close, height=35, width=20,
+            corner_radius=0, hover_color=self.active_bg_color, fg_color=self.inactive_bg_color,
+            font=("", 18)
         )
         self.close_button.pack(side="left", fill="y")
 
     def close(self):
         self.close_command(self)
+
+    def activate(self):
+        self.tab_button.configure(fg_color=self.active_bg_color)
+        self.close_button.configure(fg_color=self.active_bg_color)
+
+    def deactivate(self):
+        self.tab_button.configure(fg_color=self.inactive_bg_color)
+        self.close_button.configure(fg_color=self.inactive_bg_color)
 
 class TabBar(customtkinter.CTkFrame):
     def __init__(self, master, text_widget, scroll, *args, **kwargs):
@@ -40,14 +53,16 @@ class TabBar(customtkinter.CTkFrame):
         self.scroll = scroll
         self.tabs = {}
         self.file_contents = {}
+        self.current_tab = None
 
         # Setați lățimea fixă a frame-ului
-        self.configure(height=30, corner_radius=0)
+        self.configure(height=35, corner_radius=0)
         self.pack_propagate(False)  # Previne modificarea automată a dimensiunilor frame-ului
 
     def add_tab(self, file_path):
         # Verificați dacă fișierul este deja deschis într-un tab
         if file_path in self.tabs:
+            self.show_file_content(file_path)
             return
 
         # Obțineți doar numele fișierului
@@ -65,9 +80,21 @@ class TabBar(customtkinter.CTkFrame):
         self.tabs[file_path] = tab
         self.file_contents[file_path] = file_menu.get_content_of_current_file(file_path)
 
+        # Setează tab-ul nou ca tab activ
+        self.show_file_content(file_path)
+
     def show_file_content(self, file_path):
         if file_path == file_menu.current_file():
             return
+
+        # Deactivate the current tab if there is one
+        if self.current_tab and self.current_tab in self.tabs.values():
+            self.current_tab.deactivate()
+
+        # Activate the new tab
+        self.current_tab = self.tabs[file_path]
+        self.current_tab.activate()
+
         # Verificăm dacă avem deja conținutul fișierului în dicționarul file_contents
         if file_path in self.file_contents:
             content = self.file_contents[file_path]
@@ -122,6 +149,8 @@ class TabBar(customtkinter.CTkFrame):
                     # Dacă nu mai sunt alte taburi, golește text_widget
                     self.text_widget.delete("1.0", "end")
                     file_menu.update_file_path("")  # Resetează calea fișierului curent
+                    self.current_tab = None
             self.scroll.redraw()
+
     def check_tab(self, file_path):
         return file_path in self.tabs
