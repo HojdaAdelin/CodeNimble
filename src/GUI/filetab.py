@@ -152,5 +152,25 @@ class TabBar(customtkinter.CTkFrame):
                     self.current_tab = None
             self.scroll.redraw()
 
+    def delete_tab(self, file_path):
+        if file_path in self.tabs:
+            # Șterge tabul fără a cere confirmare pentru salvare
+            self.tabs[file_path].destroy()
+            del self.tabs[file_path]
+            del self.file_contents[file_path]
+
+            # Actualizează conținutul text_widget doar dacă tabul închis era cel deschis
+            if self.current_tab and self.current_tab == self.tabs.get(file_path):
+                if self.tabs:
+                    # Dacă mai sunt alte taburi, deschide primul tab
+                    first_file_path = next(iter(self.tabs))
+                    self.show_file_content(first_file_path)
+                else:
+                    # Dacă nu mai sunt alte taburi, golește text_widget
+                    self.text_widget.delete("1.0", "end")
+                    file_menu.update_file_path("")  # Resetează calea fișierului curent
+                    self.current_tab = None
+            self.scroll.redraw()
+
     def check_tab(self, file_path):
         return file_path in self.tabs
