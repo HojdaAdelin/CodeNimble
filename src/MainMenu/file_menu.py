@@ -18,6 +18,8 @@ from MainMenu import edit_menu
 
 opened_filename = None
 opened_folder_path = None
+opened_input = None
+opened_output = None
 
 def new_file(text, window, status_bar):
 
@@ -613,3 +615,37 @@ def add_folder(statusbar, tree, custom_path=None):
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
+
+def open_input(tree):
+    global opened_input
+
+    filename = filedialog.askopenfilename(filetypes=[("All files", "*.*")])
+
+    if filename:
+        opened_input = filename 
+
+        with open(filename, "r") as file:
+            file_content = file.read()
+            tree.input.delete("1.0", tk.END) 
+            tree.input.insert("1.0", file_content) 
+
+def open_output(tree):
+    global opened_output
+
+    filename = filedialog.askopenfilename(filetypes=[("All files", "*.*")])
+
+    if filename:
+        opened_output = filename 
+
+        with open(filename, "r") as file:
+            file_content = file.read()
+            tree.output.delete("1.0", tk.END) 
+            tree.output.insert("1.0", file_content) 
+        
+def return_input():
+    global opened_input
+    return opened_input
+
+def return_output():
+    global opened_output
+    return opened_output

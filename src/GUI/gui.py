@@ -49,6 +49,9 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="New File", command=lambda: file_menu.custom_file(statusbar_instance, treeview_frame))
         file_drop.add_option(option="New                            Ctrl+N", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open                          Ctrl+O",command=lambda:file_menu.open_file(scroll.text, scroll, statusbar_instance))
+        file_drop.add_option(option="Open Input",command=lambda:file_menu.open_input(treeview_frame))
+        file_drop.add_option(option="Open Output",command=lambda:file_menu.open_output(treeview_frame))
+        
         file_drop.add_option(option="Open Folder               Ctrl+K",command=lambda:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
         file_drop.add_option(option="Close Folder", command=lambda:file_menu.close_folder(treeview_frame, scroll))
         file_drop.add_separator()
@@ -77,7 +80,7 @@ class MainWindow(ct.CTk):
         view_drop.add_option(option="Reset zoom", command=lambda:view_menu.reset_zoom(scroll))
         view_drop.add_separator()
         view_drop.add_option(option="Fullscreen                         F11", command=lambda:view_menu.toggle_fullscreen(self))
-        view_drop.add_option(option="Treeview                       Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame))
+        view_drop.add_option(option="Treeview                       Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame, scroll))
         view_drop.add_option(option="Input & Output", command=lambda:view_menu.hide_unhide_input_output(treeview_frame))
 
         template_drop = CustomDropdownMenu(widget=template, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
