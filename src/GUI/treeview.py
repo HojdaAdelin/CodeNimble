@@ -77,7 +77,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.input_label = customtkinter.CTkLabel(self, text="#Input", font=("", 16))
         self.input = customtkinter.CTkTextbox(self, height=100, width=290)
         self.output_label = customtkinter.CTkLabel(self, text="#Output", font=("", 16))
-        self.output = customtkinter.CTkTextbox(self, height=100, width=290)
+        self.output = customtkinter.CTkTextbox(self, height=100, width=290, state="disabled")
         
         self.drag_data = {"item": None, "x": 0, "y": 0}
         self.hovered_item = None 

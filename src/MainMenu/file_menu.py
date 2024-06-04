@@ -628,6 +628,7 @@ def open_input(tree):
             file_content = file.read()
             tree.input.delete("1.0", tk.END) 
             tree.input.insert("1.0", file_content) 
+            tree.input_label.configure(text=filename)
 
 def open_output(tree):
     global opened_output
@@ -639,8 +640,11 @@ def open_output(tree):
 
         with open(filename, "r") as file:
             file_content = file.read()
+            tree.output.configure(state="normal")
             tree.output.delete("1.0", tk.END) 
-            tree.output.insert("1.0", file_content) 
+            tree.output.insert("1.0", file_content)
+            tree.output.configure(state="disabled")
+            tree.output_label.configure(text=filename) 
         
 def return_input():
     global opened_input
