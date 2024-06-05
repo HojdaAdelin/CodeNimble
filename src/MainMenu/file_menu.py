@@ -628,7 +628,7 @@ def open_input(tree):
             file_content = file.read()
             tree.input.delete("1.0", tk.END) 
             tree.input.insert("1.0", file_content) 
-            tree.input_label.configure(text=filename)
+            tree.input_label.configure(text=os.path.basename(filename))
 
 def open_output(tree, path=None):
     global opened_output
@@ -640,7 +640,7 @@ def open_output(tree, path=None):
             tree.output.delete("1.0", tk.END) 
             tree.output.insert("1.0", file_content)
             tree.output.configure(state="disabled")
-            tree.output_label.configure(text=path) 
+            tree.output_label.configure(text=os.path.basename(path)) 
         return
 
     filename = filedialog.askopenfilename(filetypes=[("All files", "*.*")])
@@ -654,7 +654,7 @@ def open_output(tree, path=None):
             tree.output.delete("1.0", tk.END) 
             tree.output.insert("1.0", file_content)
             tree.output.configure(state="disabled")
-            tree.output_label.configure(text=filename) 
+            tree.output_label.configure(text=os.path.basename(filename)) 
 
 def save_input(tree):
     global opened_input
