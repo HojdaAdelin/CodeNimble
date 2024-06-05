@@ -8,3 +8,5 @@ build_info/self_build.md
 template.cpp
 *.log
 *.exe
+template.in
+template.out

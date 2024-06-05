@@ -616,8 +616,16 @@ def add_folder(statusbar, tree, custom_path=None):
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
 
-def open_input(tree):
+def open_input(tree, path=None):
     global opened_input
+    if path:
+        opened_input = path
+        with open(path, "r") as file:
+            file_content = file.read()
+            tree.input.delete("1.0", tk.END) 
+            tree.input.insert("1.0", file_content)
+            tree.input_label.configure(text=os.path.basename(path)) 
+        return
 
     filename = filedialog.askopenfilename(filetypes=[("All files", "*.*")])
 
@@ -634,6 +642,7 @@ def open_output(tree, path=None):
     global opened_output
 
     if path:
+        opened_output = path
         with open(path, "r") as file:
             file_content = file.read()
             tree.output.configure(state="normal")

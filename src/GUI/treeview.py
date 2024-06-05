@@ -57,6 +57,9 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.menu.add_command(label="Delete File", command=self.delete_selected_file)
         self.menu.add_command(label="Rename File", command=self.rename_selected_file)
+        self.menu.add_separator()
+        self.menu.add_command(label="Open as Input", command=self.open_input)
+        self.menu.add_command(label="Open as Output", command=self.open_output)
         self.menu.add_separator()  
         self.menu.add_command(label="Open in Explorer", command=self.open_in_explorer)
 
@@ -86,6 +89,22 @@ class TreeviewFrame(customtkinter.CTkFrame):
             self.populate_treeview(root_directory)
 
         self.treeview.bind("<<TreeviewOpen>>", self.on_open)
+
+    def open_input(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+            if os.path.isfile(abspath):
+                file_menu.open_input(self, abspath)
+
+    def open_output(self):
+        selected_item = self.treeview.selection()
+        if selected_item:
+            node = selected_item[0]
+            abspath = self.get_absolute_path(node)
+            if os.path.isfile(abspath):
+                file_menu.open_output(self, abspath)
 
     def delete_selected_folder(self):
         selected_item = self.treeview.selection()
