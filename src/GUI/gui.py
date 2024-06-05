@@ -50,6 +50,7 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="New                            Ctrl+N", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open                          Ctrl+O",command=lambda:file_menu.open_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_option(option="Open Input",command=lambda:file_menu.open_input(treeview_frame))
+        file_drop.add_option(option="Save Input",command=lambda:file_menu.save_input(treeview_frame))
         file_drop.add_option(option="Open Output",command=lambda:file_menu.open_output(treeview_frame))
         
         file_drop.add_option(option="Open Folder               Ctrl+K",command=lambda:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
@@ -135,7 +136,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
         scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll))
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame))
-
+        treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")

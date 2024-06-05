@@ -655,7 +655,16 @@ def open_output(tree, path=None):
             tree.output.insert("1.0", file_content)
             tree.output.configure(state="disabled")
             tree.output_label.configure(text=filename) 
-        
+
+def save_input(tree):
+    global opened_input
+    if opened_input:
+        content = tree.input.get("1.0", tk.END)
+        with open(opened_input, "w") as file:
+            file.write(content)
+    else:
+        open_input(tree)
+
         
 def return_input():
     global opened_input
