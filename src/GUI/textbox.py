@@ -55,10 +55,23 @@ class ScrollText(tk.Frame):
         #self.text.bind('<FocusOut>', self.hide_suggestions)  # Hide suggestions when focus is lost
         self.suggestions.bind('<<ListboxSelect>>', self.on_suggestion_select)
         self.suggestions.bind('<Motion>', self.on_mouse_motion)
-        self.keywords = ['auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else',
-                         'enum', 'extern', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long', 'register', 'restrict',
-                         'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned',
-                         'void', 'volatile', 'while', 'using', 'namespace', 'std']
+        self.keywords = [
+                'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else',
+                'enum', 'extern', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long', 'register', 'restrict',
+                'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned',
+                'void', 'volatile', 'while', 'using', 'namespace', 'std', 'vector', 'set', 'map', 'unordered_map',
+                'queue', 'priority_queue', 'stack', 'list', 'deque', 'algorithm', 'iterator', 'utility', 'functional',
+                'numeric', 'limits', 'memory', 'shared_ptr', 'unique_ptr', 'make_shared', 'make_unique', 'move',
+                'swap', 'typeid', 'type_traits', 'function', 'bind', 'placeholders', 'tuple', 'array', 'bitset',
+                'complex', 'valarray', 'future', 'promise', 'thread', 'mutex', 'condition_variable', 'chrono',
+                'ratio', 'random', 'atomic', 'filesystem', 'ratio', 'complex', 'valarray', 'new', 'delete',
+                'template', 'typename', 'bool', 'catch', 'class', 'const_cast', 'dynamic_cast', 'explicit', 'export',
+                'friend', 'mutable', 'namespace', 'operator', 'private', 'protected', 'public', 'reinterpret_cast',
+                'static_assert', 'static_cast', 'throw', 'try', 'typeid', 'typename', 'virtual', 'wchar_t',
+                'and', 'and_eq', 'asm', 'bitand', 'bitor', 'compl', 'not', 'not_eq', 'or', 'or_eq', 'xor', 'xor_eq',
+                'true', 'false'
+            ]
+
 
         self.text.bind('<Up>', self.on_up_key)
         self.text.bind('<Down>', self.on_down_key)
@@ -121,7 +134,7 @@ class ScrollText(tk.Frame):
     def on_keyrelease_all(self, event):
         if file_menu.return_file() == ".cpp":
             if event.widget == self.text:
-                if event.keysym in ('Up', 'Down', 'Left', 'Right', 'Return', 'Tab', 'space', "enter"):
+                if event.keysym in ('Up', 'Down', 'Left', 'Right', 'Return', 'Tab', 'space', "enter", "Backspace"):
                     self.hide_suggestions()  # Ascunde sugestiile la apăsarea acestor taste
                     return  # Sari peste tastele săgeți, Enter, Tab și spațiu
 
