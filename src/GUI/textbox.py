@@ -50,6 +50,8 @@ class ScrollText(tk.Frame):
         self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
         self.text.bind('<Tab>', self.on_tab)
         self.text.bind('<space>', self.hide_suggestions)  # Hide suggestions on space
+        self.text.bind("<Escape>", self.hide_suggestions)
+        self.suggestions.bind("<Escape>", self.hide_suggestions)
         #self.text.bind('<FocusOut>', self.hide_suggestions)  # Hide suggestions when focus is lost
         self.suggestions.bind('<<ListboxSelect>>', self.on_suggestion_select)
         self.suggestions.bind('<Motion>', self.on_mouse_motion)
@@ -119,13 +121,20 @@ class ScrollText(tk.Frame):
     def on_keyrelease_all(self, event):
         if file_menu.return_file() == ".cpp":
             if event.widget == self.text:
-                if event.keysym in ('Up', 'Down', 'Left', 'Right', 'Return', 'Tab', 'space'):
-                    self.hide_suggestions()  # Hide suggestions on these keys
-                    return  # Skip arrow keys, return, tab, and space keys
+                if event.keysym in ('Up', 'Down', 'Left', 'Right', 'Return', 'Tab', 'space', "enter"):
+                    self.hide_suggestions()  # Ascunde sugestiile la apăsarea acestor taste
+                    return  # Sari peste tastele săgeți, Enter, Tab și spațiu
 
+                # Verifică dacă a fost apăsată tasta "Escape" și oprește afișarea sugestiilor
+                if event.keysym == "Escape":
+                    self.hide_suggestions()
+                    return
+
+                # Actualizează sugestiile doar dacă nu a fost apăsată tasta "Escape"
                 self.update_suggestions()
 
     def update_suggestions(self):
+        
         typed_word = self.get_current_word()
         if typed_word:
             matching_keywords = [kw for kw in self.keywords if kw.startswith(typed_word)]
