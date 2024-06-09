@@ -43,13 +43,15 @@ class ScrollText(tk.Frame):
         self.text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
         # Autocompletare
-        self.suggestions = tk.Listbox(self, width=25, height=5, font=("", 32))
-        self.suggestions.bind('<Double-Button-1>', self.on_suggestion_click)
+        self.suggestions = tk.Listbox(self, width=25, height=5, font=("", check.get_config_value("zoom")))
+        self.suggestions.bind('<Button-1>', self.on_suggestion_click)
         self.suggestions.bind('<FocusOut>', self.hide_suggestions)
         self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
         self.text.bind('<Tab>', self.on_tab)
         self.text.bind('<space>', self.hide_suggestions)  # Hide suggestions on space
-        self.text.bind('<FocusOut>', self.hide_suggestions)  # Hide suggestions when focus is lost
+        #self.text.bind('<FocusOut>', self.hide_suggestions)  # Hide suggestions when focus is lost
+        self.suggestions.bind('<<ListboxSelect>>', self.on_suggestion_select)
+        self.suggestions.bind('<Motion>', self.on_mouse_motion)
         self.keywords = ['auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else',
                          'enum', 'extern', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long', 'register', 'restrict',
                          'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned',
@@ -71,6 +73,18 @@ class ScrollText(tk.Frame):
         self.text.bind("<Return>", self.handle_return)
 
         self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
+
+    def on_suggestion_select(self, event):
+        selected_index = self.suggestions.curselection()
+        if selected_index:
+            selected_text = self.suggestions.get(selected_index)
+            self.insert_suggestion(selected_text)
+
+    def on_mouse_motion(self, event):
+        widget = event.widget
+        widget.focus()
+        widget.select_clear(0, tk.END)
+        widget.select_set(widget.nearest(event.y))
 
     def on_keyrelease_all(self, event):
         if file_menu.return_file() == ".cpp":
@@ -187,6 +201,7 @@ class ScrollText(tk.Frame):
         if font_size != ante_font:
             ante_font = font_size
             self.text.configure(font=("Consolas", font_size))
+            self.suggestions.configure(font=("", font_size))
 
         if selection_start and selection_end:
             self.text.tag_add(tk.SEL, selection_start, selection_end)
