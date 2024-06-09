@@ -43,6 +43,7 @@ class ScrollText(tk.Frame):
         self.text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
         # Autocompletare
+        
         self.suggestions = tk.Listbox(self, width=25, height=5, font=("", check.get_config_value("zoom")))
         self.suggestions.bind('<Button-1>', self.on_suggestion_click)
         self.suggestions.bind('<FocusOut>', self.hide_suggestions)
@@ -57,6 +58,8 @@ class ScrollText(tk.Frame):
                          'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned',
                          'void', 'volatile', 'while', 'using', 'namespace', 'std']
 
+        self.text.bind('<Up>', self.on_up_key)
+        self.text.bind('<Down>', self.on_down_key)
         self.text.bind("<Key>", self.onPressDelay)
         self.text.bind("<Button-1>", self.numberLines.redraw)
         self.scrollbar.bind("<Button-1>", self.onScrollPress)
@@ -73,6 +76,33 @@ class ScrollText(tk.Frame):
         self.text.bind("<Return>", self.handle_return)
 
         self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
+
+    def on_up_key(self, event):
+        if self.suggestions.winfo_ismapped():
+            if self.suggestions.curselection():
+                index = self.suggestions.curselection()[0]
+                if index > 0:
+                    self.suggestions.select_clear(0, tk.END)
+                    self.suggestions.select_set(index - 1)
+                    self.suggestions.see(index - 1)
+                    self.suggestions.focus_set()  # Setează focusul înapoi pe lista de sugestii
+            return 'break'
+        else:
+            return None
+
+    def on_down_key(self, event):
+        if self.suggestions.winfo_ismapped():
+    
+            if self.suggestions.curselection():
+                index = self.suggestions.curselection()[0]
+                if index < self.suggestions.size() - 1:
+                    self.suggestions.select_clear(0, tk.END)
+                    self.suggestions.select_set(index + 1)
+                    self.suggestions.see(index + 1)
+                    self.suggestions.focus_set()  # Setează focusul înapoi pe lista de sugestii
+            return 'break'
+        else:
+            return None
 
     def on_suggestion_select(self, event):
         selected_index = self.suggestions.curselection()
