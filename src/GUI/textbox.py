@@ -41,7 +41,20 @@ class ScrollText(tk.Frame):
         self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
         self.text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
-    
+
+        # Autocompletare
+        self.suggestions = tk.Listbox(self, width=25, height=5, font=("", 32))
+        self.suggestions.bind('<Double-Button-1>', self.on_suggestion_click)
+        self.suggestions.bind('<FocusOut>', self.hide_suggestions)
+        self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
+        self.text.bind('<Tab>', self.on_tab)
+        self.text.bind('<space>', self.hide_suggestions)  # Hide suggestions on space
+        self.text.bind('<FocusOut>', self.hide_suggestions)  # Hide suggestions when focus is lost
+        self.keywords = ['auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else',
+                         'enum', 'extern', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long', 'register', 'restrict',
+                         'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned',
+                         'void', 'volatile', 'while', 'using', 'namespace', 'std']
+
         self.text.bind("<Key>", self.onPressDelay)
         self.text.bind("<Button-1>", self.numberLines.redraw)
         self.scrollbar.bind("<Button-1>", self.onScrollPress)
@@ -59,9 +72,82 @@ class ScrollText(tk.Frame):
 
         self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
 
+    def on_keyrelease_all(self, event):
+        if file_menu.return_file() == ".cpp":
+            if event.widget == self.text:
+                if event.keysym in ('Up', 'Down', 'Left', 'Right', 'Return', 'Tab', 'space'):
+                    self.hide_suggestions()  # Hide suggestions on these keys
+                    return  # Skip arrow keys, return, tab, and space keys
+
+                self.update_suggestions()
+
+    def update_suggestions(self):
+        typed_word = self.get_current_word()
+        if typed_word:
+            matching_keywords = [kw for kw in self.keywords if kw.startswith(typed_word)]
+            if matching_keywords:
+                self.show_suggestions(matching_keywords)
+            else:
+                self.hide_suggestions()
+        else:
+            self.hide_suggestions()
+
+    def get_current_word(self):
+        try:
+            cursor_index = self.index(tk.INSERT)
+            line_start = self.index(f'{cursor_index} linestart')
+            current_line_text = self.get(line_start, cursor_index)
+            return current_line_text.split()[-1] if current_line_text else ''
+        except IndexError:
+            return ''
+
+    def show_suggestions(self, suggestions):
+        self.suggestions.delete(0, tk.END)
+        for suggestion in suggestions:
+            self.suggestions.insert(tk.END, suggestion)
+        cursor_index = self.text.index(tk.INSERT)
+        cursor_position = self.text.bbox(cursor_index)
+        if cursor_position:
+            x, y, width, height = cursor_position
+            self.suggestions.place(x=x+(4 * check.get_config_value("zoom")), y=y+80+(check.get_config_value("zoom")))
+            self.suggestions.select_set(0)
+
+    def hide_suggestions(self, event=None):
+        self.suggestions.place_forget()
+
+    def on_suggestion_click(self, event):
+        selected_suggestion = self.suggestions.get(tk.ACTIVE)
+        if selected_suggestion:
+            self.insert_suggestion(selected_suggestion)
+        self.hide_suggestions()
+
+    def on_tab(self, event):
+        if self.suggestions.size() > 0:
+            first_suggestion = self.suggestions.get(0)
+            self.insert_suggestion(first_suggestion)
+            self.hide_suggestions()
+            return 'break'  # This prevents the default behavior of the Tab key
+        return None
+
+    def insert_suggestion(self, suggestion):
+        current_word = self.get_current_word()
+        cursor_index = self.index(tk.INSERT)
+        # Calculate the start index of the current word
+        start_index = f'{cursor_index} - {len(current_word)}c'
+        # Delete the current word
+        self.text.delete(start_index, cursor_index)
+        # Insert the suggestion
+        self.text.insert(cursor_index, suggestion)
+
     def add_tab(self, event):
-        self.text.insert(tk.INSERT, "    ")
-        return 'break'
+        if self.suggestions.size() > 0:
+            first_suggestion = self.suggestions.get(0)
+            self.insert_suggestion(first_suggestion)
+            self.hide_suggestions()
+            return 'break'
+        else:
+            self.text.insert(tk.INSERT, "    ")
+            return 'break'
 
     def onScrollPress(self, *args):
         self.scrollbar.bind("<B1-Motion>", self.numberLines.redraw)
@@ -95,6 +181,7 @@ class ScrollText(tk.Frame):
 
         if file_menu.return_file() == ".cpp":
             self.highlight_syntax()
+            self.update_suggestions()
         self.numberLines.redraw()
         font_size = check.get_config_value("zoom")
         if font_size != ante_font:
