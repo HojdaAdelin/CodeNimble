@@ -41,6 +41,7 @@ def dark_theme(menu_bar, cascade1, cascade2,
     text.scrollbar.configure(fg_color="#2b2b2b", button_color="#5c5c5c", button_hover_color="#858585")
     text.scrollhor.configure(fg_color="#2b2b2b", button_color="#5c5c5c", button_hover_color="#858585")
     text.numberLines.configure(bg='#333333')
+    text.suggestions.configure(bg='#333333', fg="white",selectbackground='#4d4d4d', selectforeground='white')
     win.configure(fg_color="#333333")
     HWND = windll.user32.GetParent(win.winfo_id())
     windll.dwmapi.DwmSetWindowAttribute(
@@ -100,6 +101,7 @@ def light_theme(menu_bar, cascade1, cascade2,
     text.scrollbar.configure(fg_color="#f0f0f0", button_color="#b0b0b0", button_hover_color="#cccccc")
     text.scrollhor.configure(fg_color="#f0f0f0", button_color="#b0b0b0", button_hover_color="#cccccc")
     text.numberLines.configure(bg='white')
+    text.suggestions.configure(bg='white', fg="black",selectbackground='#ebebeb', selectforeground='black')
     win.configure(fg_color="white")
     HWND = windll.user32.GetParent(win.winfo_id())
     windll.dwmapi.DwmSetWindowAttribute(
