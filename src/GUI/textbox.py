@@ -197,6 +197,7 @@ class ScrollText(tk.Frame):
             first_suggestion = self.suggestions.get(0)
             self.insert_suggestion(first_suggestion)
             self.hide_suggestions()
+            self.text.focus_set()
             return 'break'
         else:
             self.text.insert(tk.INSERT, "    ")

@@ -279,7 +279,7 @@ def save_as_default(statusbar):
             file.write(opened_filename)
         statusbar.update_text("Saved default file location")
 
-def delete_file(file_name, statusbar, text, root):
+def delete_file(file_name, statusbar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
 
     try:
