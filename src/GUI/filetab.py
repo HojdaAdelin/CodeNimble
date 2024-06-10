@@ -55,6 +55,9 @@ class TabBar(customtkinter.CTkFrame):
         self.file_contents = {}
         self.current_tab = None
 
+        self.text_widget.bind("<Control-Tab>", self.next_tab)
+        self.text_widget.bind("<Control-Shift-Tab>", self.previous_tab)
+        self.text_widget.bind("<<NotebookTabChanged>>", self.on_tab_changed)
         # Setați lățimea fixă a frame-ului
         self.configure(height=35, corner_radius=0)
         self.pack_propagate(False)  # Previne modificarea automată a dimensiunilor frame-ului
@@ -112,6 +115,7 @@ class TabBar(customtkinter.CTkFrame):
         self.text_widget.insert("1.0", content)
         file_menu.update_file_path(file_path)
         self.scroll.redraw()
+        self.text_widget.focus_set()
 
     def close_tab(self, file_path):
         if file_path in self.tabs:
@@ -174,3 +178,26 @@ class TabBar(customtkinter.CTkFrame):
 
     def check_tab(self, file_path):
         return file_path in self.tabs
+    
+    def next_tab(self, event=None):
+        if not self.tabs:
+            return
+        
+        current_index = list(self.tabs.values()).index(self.current_tab)
+        next_index = (current_index + 1) % len(self.tabs)
+        next_file_path = list(self.tabs.keys())[next_index]
+        self.show_file_content(next_file_path)
+        self.text_widget.focus_set()
+
+    def previous_tab(self, event=None):
+        if not self.tabs:
+            return
+        
+        current_index = list(self.tabs.values()).index(self.current_tab)
+        previous_index = (current_index - 1) % len(self.tabs)
+        previous_file_path = list(self.tabs.keys())[previous_index]
+        self.show_file_content(previous_file_path)
+        self.text_widget.focus_set()
+
+    def on_tab_changed(self, event):
+        self.text_widget.focus_set()
