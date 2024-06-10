@@ -66,7 +66,7 @@ class ScrollText(tk.Frame):
                 'complex', 'valarray', 'future', 'promise', 'thread', 'mutex', 'condition_variable', 'chrono',
                 'ratio', 'random', 'atomic', 'filesystem', 'ratio', 'complex', 'valarray', 'new', 'delete',
                 'template', 'typename', 'bool', 'catch', 'class', 'const_cast', 'dynamic_cast', 'explicit', 'export',
-                'friend', 'mutable', 'namespace', 'operator', 'private', 'protected', 'public', 'reinterpret_cast',
+                'friend', 'mutable', 'operator', 'private', 'protected', 'public', 'reinterpret_cast',
                 'static_assert', 'static_cast', 'throw', 'try', 'typeid', 'typename', 'virtual', 'wchar_t',
                 'and', 'and_eq', 'asm', 'bitand', 'bitor', 'compl', 'not', 'not_eq', 'or', 'or_eq', 'xor', 'xor_eq',
                 'true', 'false'
