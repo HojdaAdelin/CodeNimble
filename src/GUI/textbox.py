@@ -18,10 +18,10 @@ ante_font = check.get_config_value("zoom")
 
 
 class ScrollText(tk.Frame):
-    def __init__(self, master, *args, **kwargs):
+    def __init__(self, master, status, *args, **kwargs):
         global ante_font
         tk.Frame.__init__(self, *args, **kwargs)
-
+        self.statusbar = status
         font_size = check.get_config_value("zoom") or 28
 
         self.text = tk.Text(self, bg="#2b2b2b", foreground="#d1dce8", insertbackground='white',
@@ -250,6 +250,7 @@ class ScrollText(tk.Frame):
             self.highlight_syntax()
             self.update_suggestions()
         self.numberLines.redraw()
+        self.statusbar.update_stats(self.text)
         font_size = check.get_config_value("zoom")
         if font_size != ante_font:
             ante_font = font_size

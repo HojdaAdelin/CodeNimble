@@ -108,7 +108,7 @@ class MainWindow(ct.CTk):
         utility_drop.add_option(option="Run                         F5", command=lambda:run.run_cpp_file(treeview_frame))
         
         statusbar_instance = statusbar.StatusBar(self, text="")
-        scroll = textbox.ScrollText(self)
+        scroll = textbox.ScrollText(self, statusbar_instance)
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
         
         self.grid_columnconfigure(0, weight=1)

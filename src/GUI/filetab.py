@@ -16,7 +16,7 @@ class ClosableTab(customtkinter.CTkFrame):
         self.command = command
         self.close_command = close_command
 
-        self.inactive_bg_color = "#374ee6"
+        self.inactive_bg_color = "#3252a8"
         self.active_bg_color = "#2c3eb8"
 
         # Set up the main tab button
