@@ -35,6 +35,13 @@ class ClosableTab(customtkinter.CTkFrame):
         )
         self.close_button.pack(side="left", fill="y")
 
+        # Add mouse events for dragging
+        self.tab_button.bind("<ButtonPress-1>", self.on_start_drag)
+        self.tab_button.bind("<B1-Motion>", self.on_drag)
+        self.tab_button.bind("<ButtonRelease-1>", self.on_drop)
+
+        self._drag_data = {"x": 0, "item": None}
+
     def close(self):
         self.close_command(self)
 
@@ -45,6 +52,19 @@ class ClosableTab(customtkinter.CTkFrame):
     def deactivate(self):
         self.tab_button.configure(fg_color=self.inactive_bg_color)
         self.close_button.configure(fg_color=self.inactive_bg_color)
+
+    def on_start_drag(self, event):
+        self._drag_data["item"] = self
+        self._drag_data["x"] = event.x_root - self.winfo_x()
+
+    def on_drag(self, event):
+        delta_x = (event.x_root - self._drag_data["x"]) / 2
+        self.place(x=delta_x, y=0)
+
+    def on_drop(self, event):
+        self._drag_data["item"] = None
+        self.master.reorder_tabs()
+
 
 class TabBar(customtkinter.CTkFrame):
     def __init__(self, master, text_widget, scroll, *args, **kwargs):
@@ -201,3 +221,14 @@ class TabBar(customtkinter.CTkFrame):
 
     def on_tab_changed(self, event):
         self.text_widget.focus_set()
+
+    def reorder_tabs(self):
+        tab_positions = []
+        for tab in self.tabs.values():
+            tab_positions.append((tab.winfo_x(), tab))
+
+        tab_positions.sort()
+
+        for pos, tab in tab_positions:
+            tab.pack_forget()
+            tab.pack(side="left", padx=(0, 2))
