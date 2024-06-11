@@ -61,7 +61,9 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Save as             Ctrl+Shift+S",command=lambda:file_menu.save_as_file(scroll.text, statusbar_instance))
         file_drop.add_option(option="Save as default file",command=lambda:file_menu.save_as_default(statusbar_instance))
         file_drop.add_option(option="Remove default file",command=lambda:file_menu.remove_default_file(statusbar_instance))
-        
+        file_drop.add_option(option="Save as default folder", command=lambda:file_menu.save_as_default_folder(statusbar_instance))
+        file_drop.add_option(option="Remove default folder", command=lambda:file_menu.remove_default_folder(statusbar_instance))
+
         edit_drop = CustomDropdownMenu(widget=edit, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         edit_drop.add_option(option="Undo                           Ctrl+Z", command=lambda:edit_menu.undo_text(scroll.text, scroll))
         edit_drop.add_option(option="Redo                           Ctrl+Y", command=lambda:edit_menu.redo_text(scroll.text, scroll))
@@ -153,6 +155,9 @@ class MainWindow(ct.CTk):
             #MainWindow.default_file_opened = True
         if not check.get_config_value("default_file") == "0":
             file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
+
+        if not check.get_config_value("default_folder") == "0":
+            file_menu.open_folder(treeview_frame, statusbar_instance, scroll, check.get_config_value("default_folder"))
 
         # Theme
         current_theme = check.get_config_value("theme")

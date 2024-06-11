@@ -50,9 +50,19 @@ def open_file(text, window, status_bar):
             window.tab_bar.add_tab(filename)
         status_bar.update_text("Opened: " + filename)
 
-def open_folder(treeview, status_bar, text):
+def open_folder(treeview, status_bar, text, path=None):
     global opened_filename
     global opened_folder_path
+
+    if path:
+        opened_folder_path = path
+        treeview.populate_treeview(opened_folder_path)
+        status_bar.update_text("Opened folder: " + opened_folder_path)
+        treeview.grid_forget()
+        text.grid_forget()
+        treeview.grid(row=1, column=0,sticky="nsw") 
+        text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
+        return 
 
     folder_path = filedialog.askdirectory()
     
@@ -651,3 +661,15 @@ def return_output():
 def remove_default_file(status):
     check.update_config_file("default_file", 0)
     status.update_text("Removed default file")
+
+def save_as_default_folder(status):
+    global opened_folder_path
+    if opened_folder_path:
+        check.update_config_file("default_folder", opened_folder_path)
+        status.update_text("Saved default folder location")
+    else:
+        status.update_text("No files are opened!")
+
+def remove_default_folder(status):
+    check.update_config_file("default_folder", 0)
+    status.update_text("Removed default folder")
