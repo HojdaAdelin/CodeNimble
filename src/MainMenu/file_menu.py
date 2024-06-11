@@ -75,15 +75,17 @@ def open_folder(treeview, status_bar, text, path=None):
         treeview.grid(row=1, column=0,sticky="nsw") 
         text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
 
-def close_folder(treeview, text):
+def close_folder(treeview_frame, text):
     global opened_filename
     global opened_folder_path
 
     if opened_folder_path:
         opened_folder_path = None  
-        treeview.grid_forget() 
+        treeview_frame.clear_treeview()  # Clear the content of the Treeview
+        treeview_frame.grid_forget()  # Hide the TreeviewFrame
         text.grid_forget()
-        text.grid(row=1, column=0,columnspan=2,sticky="nswe")
+        text.grid(row=1, column=0, columnspan=2, sticky="nswe")
+
 
 def save_file(text, status_bar):
     global opened_filename  
@@ -668,7 +670,7 @@ def save_as_default_folder(status):
         check.update_config_file("default_folder", opened_folder_path)
         status.update_text("Saved default folder location")
     else:
-        status.update_text("No files are opened!")
+        status.update_text("No folder is opened!")
 
 def remove_default_folder(status):
     check.update_config_file("default_folder", 0)

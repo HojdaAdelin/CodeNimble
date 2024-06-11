@@ -332,3 +332,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
                 os.startfile(abspath)
             else:
                 os.startfile(os.path.dirname(abspath))
+
+    def clear_treeview(self):
+        self.treeview.delete(*self.treeview.get_children())
