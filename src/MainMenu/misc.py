@@ -28,10 +28,10 @@ def version_info():
         version_window.title("CodeNimble - Version")
         fg_cl = "#2b2b2b"
         text = "white"
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             fg_cl = "#2b2b2b"
             text = "white"
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             fg_cl = "white"
             text = "black"
         w = 300 
@@ -59,9 +59,9 @@ def version_info():
             version_window.destroy()
 
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333
@@ -86,10 +86,10 @@ def changelog_inf():
         changelog_window.iconbitmap("images/logo.ico")
         fg_cl = "#2b2b2b"
         text = "white"
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             fg_cl = "#2b2b2b"
             text = "white"
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             fg_cl = "white"
             text = "black"
         w = 500 
@@ -117,9 +117,9 @@ def changelog_inf():
             changelog_window.destroy()
 
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333
@@ -147,10 +147,10 @@ def guide():
         
         fg_cl = "#2b2b2b"
         text = "white"
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             fg_cl = "#2b2b2b"
             text = "white"
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             fg_cl = "white"
             text = "black"
 
@@ -178,9 +178,9 @@ def guide():
             guide_window.destroy()
 
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333

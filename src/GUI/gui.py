@@ -160,7 +160,7 @@ class MainWindow(ct.CTk):
             file_menu.open_folder(treeview_frame, statusbar_instance, scroll, check.get_config_value("default_folder"))
 
         # Theme
-        current_theme = check.get_config_value("theme")
+        current_theme = int(check.get_config_value("theme"))
         if (current_theme == 0):
             themes.dark_theme(menu, home, file_m, edit, view, template, textures,
                                 utility,
@@ -187,9 +187,9 @@ class MainWindow(ct.CTk):
             
         # Title bar color handle
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333

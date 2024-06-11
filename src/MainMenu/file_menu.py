@@ -130,11 +130,11 @@ def custom_file(statusbar, tree, custom_path=None):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -195,9 +195,9 @@ def custom_file(statusbar, tree, custom_path=None):
             version_window.destroy()
 
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333
@@ -337,11 +337,11 @@ def rename_file(statusbar, tree, path):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -399,9 +399,9 @@ def rename_file(statusbar, tree, path):
             version_window = None
 
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333
@@ -443,11 +443,11 @@ def rename_folder(statusbar, tree, folder_path):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if check.get_config_value("theme") == 0:
+        if int(check.get_config_value("theme")) == 0:
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif check.get_config_value("theme") == 1:
+        elif int(check.get_config_value("theme")) == 1:
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -497,9 +497,9 @@ def rename_folder(statusbar, tree, folder_path):
             version_windoww = None
 
         tb_color = 0x333333
-        if check.get_config_value("theme") == 0:
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif check.get_config_value("theme") == 1:
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333
@@ -520,11 +520,11 @@ def add_folder(statusbar, tree, custom_path=None):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if check.get_config_value("theme") == 0:
+        if int(check.get_config_value("theme")) == 0:
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif check.get_config_value("theme") == 1:
+        elif int(check.get_config_value("theme")) == 1:
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -576,9 +576,9 @@ def add_folder(statusbar, tree, custom_path=None):
             version_window.destroy()
 
         tb_color = 0x333333
-        if check.get_config_value("theme") == 0:
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif check.get_config_value("theme") == 1:
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333

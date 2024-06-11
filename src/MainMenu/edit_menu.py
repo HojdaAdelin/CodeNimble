@@ -69,11 +69,11 @@ def find_text(scroll_text):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -119,9 +119,9 @@ def find_text(scroll_text):
             find_window.destroy()
 
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333
@@ -146,11 +146,11 @@ def replace_text(scroll_text):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -244,9 +244,9 @@ def replace_text(scroll_text):
         replace_all_button.configure(command=replace_all)
 
         tb_color = 0x333333
-        if (check.get_config_value("theme") == 0):
+        if (int(check.get_config_value("theme")) == 0):
             tb_color = 0x333333
-        elif (check.get_config_value("theme") == 1):
+        elif (int(check.get_config_value("theme")) == 1):
             tb_color = 0xFFFFFF
         else:
             tb_color = 0x333333
