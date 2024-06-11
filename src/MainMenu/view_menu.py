@@ -65,3 +65,10 @@ def hide_unhide_input_output(tree):
         tree.input.grid(row=2, column=0, sticky="nsew", padx=(5, 5))
         tree.output_label.grid(row=3, column=0, padx=(5, 5))
         tree.output.grid(row=4, column=0, sticky="nsew", padx=(5, 5))
+
+def hide_unhide_statusbar(status):
+
+    if status.winfo_ismapped():
+        status.grid_forget()
+    else:
+        status.grid(row=2, column=0,columnspan=2, sticky="ew")
