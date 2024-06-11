@@ -107,7 +107,7 @@ def changelog_inf():
         
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.4", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Tab bar\n• Open files from treeview in tab bar\n• Close tab function\n• Quick input & output\n• Open file in input & output\n• Save input\n• Open input & output from treeview\n• Code completion for C++\n• Ctrl+Tab & Ctrl+Shift+Tab\n• Move tabs\n• Count lines & words\n• Hide & unhide status bar", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• Tab bar\n• Open files from treeview in tab bar\n• Close tab function\n• Quick input & output\n• Open file in input & output\n• Save input\n• Open input & output from treeview\n• Code completion for C++\n• Ctrl+Tab & Ctrl+Shift+Tab\n• Move tabs\n• Count lines & words\n• Hide & unhide status bar\n• Added status bar to config", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra

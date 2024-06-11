@@ -118,7 +118,8 @@ class MainWindow(ct.CTk):
         treeview_frame.grid_forget()
         menu.grid(row=0, column=0,columnspan=2, sticky="ew")
         scroll.grid(row=1, column=0,columnspan=2,sticky="nswe")
-        statusbar_instance.grid(row=2, column=0,columnspan=2, sticky="ew")
+        if (check.get_config_value("status") == 1):
+            statusbar_instance.grid(row=2, column=0,columnspan=2, sticky="ew")
 
         scroll.text.focus()
         self.after(200, scroll.redraw())

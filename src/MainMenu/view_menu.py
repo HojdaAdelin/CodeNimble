@@ -70,5 +70,7 @@ def hide_unhide_statusbar(status):
 
     if status.winfo_ismapped():
         status.grid_forget()
+        check.update_config_file("status", 0)
     else:
         status.grid(row=2, column=0,columnspan=2, sticky="ew")
+        check.update_config_file("status", 1)
