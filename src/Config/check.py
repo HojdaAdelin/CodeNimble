@@ -19,7 +19,7 @@ def create_config_file():
 def pre_write_config():
     try:
         with open("config.cfg", "w") as file:
-            file.write("zoom: 28\ntheme: 0\nstatus: 1")
+            file.write("zoom: 28\ntheme: 0\nstatus: 1\ndefault_file: 0\ndefault_folder: 0")
     except Exception as e:
         pass
 
@@ -45,7 +45,7 @@ def get_config_value(func):
         with open(file_name, "r") as file:
             for line in file:
                 if line.startswith(func + ":"):
-                    value = int(line.split(":")[1].strip())
+                    value = line.split(":", 1)[1].strip()
                     return value
         
     except Exception as e:

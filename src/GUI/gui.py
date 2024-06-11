@@ -60,7 +60,7 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Save                           Ctrl+S",command=lambda:file_menu.save_file(scroll.text, statusbar_instance))
         file_drop.add_option(option="Save as             Ctrl+Shift+S",command=lambda:file_menu.save_as_file(scroll.text, statusbar_instance))
         file_drop.add_option(option="Save as default file",command=lambda:file_menu.save_as_default(statusbar_instance))
-        file_drop.add_option(option="Remove default file",command=lambda:file_menu.delete_file("default_file.txt",statusbar_instance))
+        file_drop.add_option(option="Remove default file",command=lambda:file_menu.remove_default_file(statusbar_instance))
         
         edit_drop = CustomDropdownMenu(widget=edit, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         edit_drop.add_option(option="Undo                           Ctrl+Z", command=lambda:edit_menu.undo_text(scroll.text, scroll))
@@ -118,7 +118,7 @@ class MainWindow(ct.CTk):
         treeview_frame.grid_forget()
         menu.grid(row=0, column=0,columnspan=2, sticky="ew")
         scroll.grid(row=1, column=0,columnspan=2,sticky="nswe")
-        if (check.get_config_value("status") == 1):
+        if (int(check.get_config_value("status")) == 1):
             statusbar_instance.grid(row=2, column=0,columnspan=2, sticky="ew")
 
         scroll.text.focus()
@@ -147,10 +147,12 @@ class MainWindow(ct.CTk):
         self.geometry("1200x700")
         # Default file
         
-        if not hasattr(MainWindow, 'default_file_opened'):
+        #if not hasattr(MainWindow, 'default_file_opened'):
+            #file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
+            #scroll.redraw()
+            #MainWindow.default_file_opened = True
+        if not check.get_config_value("default_file") == "0":
             file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
-            scroll.redraw()
-            MainWindow.default_file_opened = True
 
         # Theme
         current_theme = check.get_config_value("theme")

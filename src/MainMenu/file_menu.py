@@ -229,55 +229,20 @@ def create_file(text, ext):
 
 def open_default_file(text, window, status_bar):
     global opened_filename
-    # Directorul curent
-    current_dir = os.getcwd()
-
-    # Numele fișierului de configurare
-    default_file = "default_file.txt"
-
-    # Calea către fișierul de configurare
-    config_file_path = os.path.join(current_dir, default_file)
-
-    # Verificăm dacă fișierul de configurare există
-    if os.path.exists(config_file_path):
-        # Dacă există, citim locația fișierului curent din fișierul de configurare
-        with open(config_file_path, "r") as file:
-            saved_filename = file.read().strip()
-            # Verificăm dacă locația este validă și dacă există fișierul
-            if os.path.exists(saved_filename):
-                opened_filename = saved_filename  # Actualizăm numele fișierului deschis
-
-                with open(saved_filename, "r") as file:
-                    file_content = file.read()
-
-                    text.delete("1.0", tk.END) 
-                    text.insert("1.0", file_content) 
-                    window.redraw()
-                status_bar.update_text("Opened default file: " + saved_filename)
-                
-                return
-            else:
-                # Dacă locația nu este validă sau fișierul nu există, nu facem nimic
-                pass
+    opened_filename = check.get_config_value("default_file")
+    open_file_by_path(text, status_bar, opened_filename)
+    window.tab_bar.add_tab(opened_filename)
+    window.redraw()
 
 def save_as_default(statusbar):
     global opened_filename
 
-    # Directorul curent
-    current_dir = os.getcwd()
-
-    # Numele fișierului de configurare
-    default_file = "default_file.txt"
-
-    # Calea către fișierul de configurare
-    config_file_path = os.path.join(current_dir, default_file)
-
-    # Verificăm dacă există o locație salvată în variabila globală opened_filename
+    global opened_filename
     if opened_filename:
-        # Salvăm locația fișierului curent în fișierul de configurare
-        with open(config_file_path, "w") as file:
-            file.write(opened_filename)
+        check.update_config_file("default_file", opened_filename)
         statusbar.update_text("Saved default file location")
+    else:
+        statusbar.update_text("No files are opened!")
 
 def delete_file(file_name, statusbar):
     global opened_filename  # Specificăm că vrem să folosim variabila globală
@@ -682,3 +647,7 @@ def return_input():
 def return_output():
     global opened_output
     return opened_output
+
+def remove_default_file(status):
+    check.update_config_file("default_file", 0)
+    status.update_text("Removed default file")
