@@ -175,7 +175,7 @@ class ScrollText(tk.Frame):
         cursor_position = self.text.bbox(cursor_index)
         if cursor_position:
             x, y, width, height = cursor_position
-            self.suggestions.place(x=x+(4 * check.get_config_value("zoom")), y=y+80+(check.get_config_value("zoom")))
+            self.suggestions.place(x=x+(4 * int(check.get_config_value("zoom"))), y=y+80+(int(check.get_config_value("zoom"))))
             self.suggestions.select_set(0)
 
     def hide_suggestions(self, event=None):
