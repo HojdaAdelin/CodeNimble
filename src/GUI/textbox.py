@@ -463,7 +463,10 @@ class ScrollText(tk.Frame):
             "DO": f"do {{\n{indent}\n{indent}}} while();",
             "FOR": f"for (int i = ; i <= ; i++) {{\n{indent}\n{indent}}}",
             "WHILE": f"while () {{\n{indent}\n{indent}}}",
-            "IF": f"if () {{\n{indent}\n{indent}}}"
+            "IF": f"if () {{\n{indent}\n{indent}}}",
+            "INT": f"int () {{\n{indent}\n{indent}}}",
+            "VOID": f"void () {{\n{indent}\n{indent}}}",
+            "LONG": f"long long () {{\n{indent}\n{indent}}}"
         }
 
         stripped_line = current_line.strip()
@@ -496,6 +499,10 @@ class ScrollText(tk.Frame):
             if_pos = self.text.search("if ()", line_index, tk.END)
             if if_pos:
                 return f"{if_pos} + 4c"
+        elif keyword in ["INT", "VOID", "LONG"]:
+            func_pos = self.text.search(f"{keyword.lower()} ()", line_index, tk.END)
+            if func_pos:
+                return f"{func_pos} + {len(keyword) + 1}c"
         return cursor_index
 
     def handle_ctrl_backspace(self, event):
