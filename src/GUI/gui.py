@@ -47,8 +47,7 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
     
         file_drop = CustomDropdownMenu(widget=file_m, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
-        file_drop.add_option(option="New File", command=lambda: file_menu.custom_file(statusbar_instance, treeview_frame))
-        file_drop.add_option(option="New                            Ctrl+N", command=lambda: file_menu.new_file(scroll.text, scroll, statusbar_instance))
+        file_drop.add_option(option="New File                     Ctrl+N", command=lambda: file_menu.custom_file(statusbar_instance, treeview_frame))
         file_drop.add_option(option="Open                          Ctrl+O",command=lambda:file_menu.open_file(scroll.text, scroll, statusbar_instance))
         file_drop.add_separator()
         file_drop.add_option(option="Open Input",command=lambda:file_menu.open_input(treeview_frame))
@@ -129,7 +128,7 @@ class MainWindow(ct.CTk):
 
         scroll.text.focus()
         self.after(200, scroll.redraw())
-        scroll.text.bind("<Control-n>", lambda event: file_menu.new_file(scroll.text, scroll, statusbar_instance))
+        scroll.text.bind("<Control-n>", lambda event: file_menu.custom_file(statusbar_instance, treeview_frame))
         scroll.text.bind("<Control-o>", lambda event: file_menu.open_file(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-s>", lambda event: file_menu.save_file(scroll.text, statusbar_instance))
         scroll.text.bind("<Control-Shift-s>", lambda event: file_menu.save_as_file(scroll.text, statusbar_instance))
