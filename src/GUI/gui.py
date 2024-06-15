@@ -116,6 +116,8 @@ class MainWindow(ct.CTk):
         scroll = textbox.ScrollText(self, statusbar_instance)
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
         
+        statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(treeview_frame))
+
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)

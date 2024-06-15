@@ -168,7 +168,7 @@ def guide():
         version_label.pack(pady=10)
 
         # Adăugarea label-urilor în fiecare frame
-        h1 = ctk.CTkLabel(guide_window, text="Autocompletion - type keywords with caps then ENTER:\nKeywords: FOR, IF, WHILE, DO\n\n Input & output - this is a useful feature, to use this\n open input & output file from File menu then save input text\n and run, then in output you will se the output file.\nOBS: this work when you use ifstream & ofstream in C++", font=("Arial", 18), text_color=text)
+        h1 = ctk.CTkLabel(guide_window, text="Autocompletion - type keywords with caps then ENTER:\nKeywords: FOR, IF, WHILE, DO, INT, VOID, LONG\n\n Input & output - this is a useful feature, to use this\n open input & output file from File menu then save input text\n and run, then in output you will se the output file.\nOBS: this work when you use ifstream & ofstream in C++", font=("Arial", 18), text_color=text)
         h1.pack(pady=10, padx=10)
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra

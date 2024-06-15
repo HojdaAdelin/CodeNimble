@@ -1,1 +1,1 @@
-pyinstaller --noconfirm --onefile -w --onedir --windowed -i "images/logo.ico" --add-data "images/logo.ico;images/" --add-data "[Path to customtkinter library];customtkinter/" --name "CodeNimble" src/main.py
+pyinstaller --noconfirm --onefile -w --onedir --windowed -i "images/logo.ico" --add-data "images/logo.ico;images/" --add-data "images/run.png;images/" --add-data "[Path to customtkinter library];customtkinter/" --name "CodeNimble" src/main.py
