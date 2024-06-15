@@ -179,7 +179,8 @@ def custom_file(statusbar, tree, custom_path=None):
                         if custom_path is None:
                             opened_filename = filepath  # Actualizăm variabila globală opened_filename
                         statusbar.update_text("Created: " + filepath)
-                        tree.reload_treeview(opened_folder_path if opened_folder_path else os.getcwd())
+                        if opened_folder_path:
+                            tree.reload_treeview(opened_folder_path if opened_folder_path else os.getcwd())
                             
                 except FileExistsError:
                     pass

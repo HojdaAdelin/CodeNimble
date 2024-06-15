@@ -83,9 +83,10 @@ class MainWindow(ct.CTk):
         view_drop.add_option(option="Zoom in                        Ctrl+ =", command=lambda:view_menu.zoom_in(scroll))
         view_drop.add_option(option="Zoom out                      Ctrl+ -", command=lambda:view_menu.zoom_out(scroll))
         view_drop.add_option(option="Reset zoom", command=lambda:view_menu.reset_zoom(scroll))
-        view_drop.add_separator()
         view_drop.add_option(option="Fullscreen                         F11", command=lambda:view_menu.toggle_fullscreen(self))
+        view_drop.add_separator()
         view_drop.add_option(option="Status Bar",command=lambda:view_menu.hide_unhide_statusbar(statusbar_instance))
+        view_drop.add_option(option="Notifications",command=lambda:view_menu.notifications(statusbar_instance))
         view_drop.add_option(option="Left Panel                     Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame, scroll))
         view_drop.add_option(option="Input & Output", command=lambda:view_menu.hide_unhide_input_output(treeview_frame))
 

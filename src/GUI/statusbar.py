@@ -8,6 +8,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from API import get_version
+from Config import check
 
 class StatusBar(tk.Frame):
     def __init__(self, master, text="", font_size=32, *args, **kwargs):
@@ -26,7 +27,8 @@ class StatusBar(tk.Frame):
         self.num_stats_label = tk.Label(self, text="Lines: 0, Words: 0 ", font=font, anchor="e")
         self.status_label = tk.Label(self, textvariable=self.text, anchor="e", font=font, bg="#333333", fg="white")
 
-        self.status_label.pack(side="right")
+        if int(check.get_config_value("notifications")) == 1:
+            self.status_label.pack(side="right")
         self.num_stats_label.pack(side="right")
         
         # Load the image and resize it

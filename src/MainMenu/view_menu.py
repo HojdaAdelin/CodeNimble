@@ -74,3 +74,22 @@ def hide_unhide_statusbar(status):
     else:
         status.grid(row=2, column=0,columnspan=2, sticky="ew")
         check.update_config_file("status", int(1))
+
+def notifications(status):
+    if int(check.get_config_value("notifications")) == 0:
+        check.update_config_file("notifications", 1)
+        status.num_stats_label.pack_forget()
+        status.run_img.pack_forget()
+        status.status_label.pack(side="right")
+        status.num_stats_label.pack(side="right")
+        status.run_img.pack(side="right", padx=10)
+    elif int(check.get_config_value("notifications")) == 1:
+        check.update_config_file("notifications", 0)
+        status.status_label.pack_forget()
+    else:
+        check.update_config_file("notifications", 1)
+        status.num_stats_label.pack_forget()
+        status.run_img.pack_forget()
+        status.status_label.pack(side="right")
+        status.num_stats_label.pack()
+        status.run_img.pack(side="right", padx=10)
