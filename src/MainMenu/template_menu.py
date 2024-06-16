@@ -1,5 +1,6 @@
 from ctypes import byref, c_int, sizeof, windll
 import tkinter as tk
+from tkinter import messagebox
 import customtkinter as ctk
 
 import sys
@@ -102,71 +103,212 @@ def create_template(textbox, root, statusbar, op):
 
 def custom_template():
     global template_window
-    if not template_window:
-        template_window = True
-        create_template_window = ctk.CTk()
-        create_template_window.title("CodeNimble - Create Templates")
-        create_template_window.iconbitmap("images/logo.ico")
-        
+    if template_window:
+        return
+    template_window = True
+
+    create_template_window = ctk.CTk()
+    create_template_window.title("CodeNimble - Create Templates")
+    create_template_window.iconbitmap("images/logo.ico")
+    
+    fg_cl = "#2b2b2b"
+    text_bg = "#4a4a4a"
+    text = "white"
+    if int(check.get_config_value("theme")) == 0:
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
-            fg_cl = "#2b2b2b"
-            text_bg = "#4a4a4a"
-            text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
-            fg_cl = "white"
-            text_bg = "#f0f0f0"
-            text = "black"
+    elif int(check.get_config_value("theme")) == 1:
+        fg_cl = "white"
+        text_bg = "#f0f0f0"
+        text = "black"
 
-        w = 500 
-        h = 600 
-        ws = create_template_window.winfo_screenwidth()
-        hs = create_template_window.winfo_screenheight()
-        x = (ws / 2 + 500) - (w / 2)
-        y = (hs / 2 + 200) - (h / 2)
-        create_template_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        create_template_window.resizable(False, False)
-        create_template_window.configure(fg_color=fg_cl)
+    w = 500 
+    h = 600 
+    ws = create_template_window.winfo_screenwidth()
+    hs = create_template_window.winfo_screenheight()
+    x = (ws / 2 + 500) - (w / 2)
+    y = (hs / 2 + 200) - (h / 2)
+    create_template_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    create_template_window.resizable(False, False)
+    create_template_window.configure(fg_color=fg_cl)
 
-        curr_dir = os.getcwd()
-        tmp_folder = os.path.join(curr_dir, 'Templates')
-        if not os.path.isdir(tmp_folder):
-            os.makedirs(tmp_folder)
+    curr_dir = os.getcwd()
+    tmp_folder = os.path.join(curr_dir, 'Templates')
+    if not os.path.isdir(tmp_folder):
+        os.makedirs(tmp_folder)
 
-        name_label = ctk.CTkLabel(create_template_window,text="Name:", font=("Arial", 20), fg_color=fg_cl, text_color=text).pack(pady=(40,0))
-        name_box = tk.Entry(create_template_window, width=32, font=("Arial", 30), bg=text_bg, foreground=text, 
-                            insertbackground='white',
-                            selectbackground="#616161", borderwidth=0)
-        name_box.pack()
+    name_label = ctk.CTkLabel(create_template_window, text="Name:", font=("Arial", 20), fg_color=fg_cl, text_color=text)
+    name_label.pack(pady=(40, 0))
+    name_box = tk.Entry(create_template_window, width=32, font=("Arial", 30), bg=text_bg, foreground=text, 
+                        insertbackground='white',
+                        selectbackground="#616161", borderwidth=0)
+    name_box.pack()
 
-        content_label = ctk.CTkLabel(create_template_window,text="Text:", font=("Arial", 20), fg_color=fg_cl, text_color=text).pack(pady=(20,0))
-        text_box = ctk.CTkTextbox(create_template_window, width=350, height=380, font=("Arial", 16), fg_color=text_bg, text_color=text)
-        text_box.pack()
+    content_label = ctk.CTkLabel(create_template_window, text="Text:", font=("Arial", 20), fg_color=fg_cl, text_color=text)
+    content_label.pack(pady=(20, 0))
+    text_box = ctk.CTkTextbox(create_template_window, width=350, height=380, font=("Arial", 16), fg_color=text_bg, text_color=text)
+    text_box.pack()
 
-        create_button = ctk.CTkButton(create_template_window, text="Create", width=200)
-        create_button.pack(pady=(10,0))
-
-        def on_closing():
-            global template_window
-            template_window = False
-            create_template_window.destroy()
-
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
+    def create_template():
+        template_name_full = name_box.get().strip()
+        if '.' in template_name_full:
+            template_name, extension = template_name_full.rsplit('.', 1)
         else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(create_template_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+            template_name = template_name_full
+            extension = 'txt'  # Default extension if none provided
 
-        create_template_window.protocol("WM_DELETE_WINDOW", on_closing)
-        create_template_window.mainloop()
+        template_content = text_box.get("1.0", tk.END).strip()
+
+        if not template_name:
+            messagebox.showerror("Error", "Template name cannot be empty!")
+            return
+        
+        template_path = os.path.join(tmp_folder, f"{template_name}.{extension}")
+
+        if os.path.exists(template_path):
+            messagebox.showerror("Error", f"Template '{template_name}' already exists!")
+            return
+
+        if not template_content:
+            messagebox.showerror("Error", "Template content cannot be empty!")
+            return
+
+        with open(template_path, 'w') as template_file:
+            template_file.write(template_content)
+        
+        messagebox.showinfo("Success", f"Template '{template_name}.{extension}' created successfully!")
+
+    create_button = ctk.CTkButton(create_template_window, text="Create", width=200, command=create_template)
+    create_button.pack(pady=(10, 0))
+
+    def on_closing():
+        global template_window
+        template_window = False
+        create_template_window.destroy()
+
+    tb_color = 0x333333
+    if int(check.get_config_value("theme")) == 0:
+        tb_color = 0x333333
+    elif int(check.get_config_value("theme")) == 1:
+        tb_color = 0xFFFFFF
+    else:
+        tb_color = 0x333333
+
+    HWND = windll.user32.GetParent(create_template_window.winfo_id())
+    windll.dwmapi.DwmSetWindowAttribute(
+        HWND,
+        35,
+        byref(c_int(tb_color)),
+        sizeof(c_int))
+
+    create_template_window.protocol("WM_DELETE_WINDOW", on_closing)
+    create_template_window.mainloop()
+
+use_template_window = None
+
+def use_template(textbox, root, statusbar):
+    global use_template_window
+    if use_template_window:
+        return
+    
+    use_template_window = True
+    select_template_window = ctk.CTk()
+    select_template_window.title("CodeNimble - Use Templates")
+    select_template_window.iconbitmap("images/logo.ico")
+    
+    fg_cl = "#2b2b2b"
+    text_bg = "#4a4a4a"
+    text = "white"
+    if int(check.get_config_value("theme")) == 0:
+        fg_cl = "#2b2b2b"
+        text_bg = "#4a4a4a"
+        text = "white"
+    elif int(check.get_config_value("theme")) == 1:
+        fg_cl = "white"
+        text_bg = "#f0f0f0"
+        text = "black"
+
+    w = 400 
+    h = 500 
+    ws = select_template_window.winfo_screenwidth()
+    hs = select_template_window.winfo_screenheight()
+    x = (ws / 2 + 500) - (w / 2)
+    y = (hs / 2 + 200) - (h / 2)
+    select_template_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    select_template_window.resizable(False, False)
+    select_template_window.configure(fg_color=fg_cl)
+
+    curr_dir = os.getcwd()
+    tmp_folder = os.path.join(curr_dir, 'Templates')
+    if not os.path.isdir(tmp_folder):
+        os.makedirs(tmp_folder)
+
+    def update_listbox(event=None):
+        search_term = search_box.get().strip().lower()
+        listbox.delete(0, tk.END)
+        for file in os.listdir(tmp_folder):
+            if search_term in file.lower():
+                listbox.insert(tk.END, file)
+
+    search_label = ctk.CTkLabel(select_template_window, text="Search:", font=("Arial", 20), fg_color=fg_cl, text_color=text)
+    search_label.pack(pady=(20, 0))
+    search_box = tk.Entry(select_template_window, width=32, font=("Arial", 20), bg=text_bg, foreground=text, 
+                          insertbackground='white', selectbackground="#616161", borderwidth=0)
+    search_box.pack()
+    search_box.bind("<KeyRelease>", update_listbox)
+
+    listbox = tk.Listbox(select_template_window, width=40, height=15, font=("Arial", 16), bg=text_bg, foreground=text,
+                         selectbackground="#616161", borderwidth=0)
+    listbox.pack(pady=(20, 0))
+
+    update_listbox()
+
+    def use_selected_template():
+        global use_template_window  # Folosim nonlocal pentru a modifica variabila din închiderea ferestrei
+        selected = listbox.curselection()
+        if not selected:
+            messagebox.showerror("Error", "No template selected!")
+            return
+        
+        template_file = listbox.get(selected[0])
+        template_path = os.path.join(tmp_folder, template_file)
+        
+        with open(template_path, 'r') as file:
+            template_content = file.read()
+        
+        # Extragem extensia din numele template-ului
+        template_name, extension = os.path.splitext(template_file)
+        
+        edit_menu.clear_text(textbox, root, statusbar)
+        textbox.insert("1.0", template_content)
+        file_menu.create_file(template_content, extension)
+        statusbar.update_text(f"Used template {template_file}")
+        root.redraw()
+        root.tab_bar.add_tab(file_menu.current_file())
+        
+    use_button = ctk.CTkButton(select_template_window, text="Use", width=200, command=use_selected_template)
+    use_button.pack(pady=(10, 0))
+
+    def on_closing():
+        global use_template_window
+        select_template_window.destroy()
+        use_template_window = False  # Resetăm variabila în cazul în care fereastra este închisă fără a utiliza un template
+
+    tb_color = 0x333333
+    if int(check.get_config_value("theme")) == 0:
+        tb_color = 0x333333
+    elif int(check.get_config_value("theme")) == 1:
+        tb_color = 0xFFFFFF
+    else:
+        tb_color = 0x333333
+    
+    HWND = windll.user32.GetParent(select_template_window.winfo_id())
+    windll.dwmapi.DwmSetWindowAttribute(
+        HWND,
+        35,
+        byref(c_int(tb_color)),
+        sizeof(c_int))
+
+    select_template_window.protocol("WM_DELETE_WINDOW", on_closing)
+    select_template_window.mainloop()

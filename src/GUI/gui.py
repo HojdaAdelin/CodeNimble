@@ -98,6 +98,7 @@ class MainWindow(ct.CTk):
         template_drop.add_option(option="C++ Competitive", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "com"))
         template_drop.add_separator()
         template_drop.add_option(option="Create Template", command=lambda:template_menu.custom_template())
+        template_drop.add_option(option="Use Template           Ctrl+Shift+T", command=lambda:template_menu.use_template(scroll.text, scroll, statusbar_instance))
 
         textures_drop = CustomDropdownMenu(widget=textures, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures, utility,
@@ -146,6 +147,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<F11>", lambda event: view_menu.toggle_fullscreen(self))
         scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
         scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll))
+        scroll.text.bind("<Control-Shift-T>", lambda event: template_menu.use_template(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame))
         treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
         # General configuration
