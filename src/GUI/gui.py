@@ -96,6 +96,8 @@ class MainWindow(ct.CTk):
         template_drop.add_option(option="Java", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "java"))
         template_drop.add_option(option="Html", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "html"))
         template_drop.add_option(option="C++ Competitive", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "com"))
+        template_drop.add_separator()
+        template_drop.add_option(option="Create Template", command=lambda:template_menu.custom_template())
 
         textures_drop = CustomDropdownMenu(widget=textures, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures, utility,
@@ -151,12 +153,7 @@ class MainWindow(ct.CTk):
         self.title("CodeNimble")
         self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")
-        # Default file
         
-        #if not hasattr(MainWindow, 'default_file_opened'):
-            #file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
-            #scroll.redraw()
-            #MainWindow.default_file_opened = True
         if not check.get_config_value("default_file") == "0":
             file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
 
