@@ -109,12 +109,15 @@ def custom_template():
         create_template_window.iconbitmap("images/logo.ico")
         
         fg_cl = "#2b2b2b"
+        text_bg = "#4a4a4a"
         text = "white"
         if (int(check.get_config_value("theme")) == 0):
             fg_cl = "#2b2b2b"
+            text_bg = "#4a4a4a"
             text = "white"
         elif (int(check.get_config_value("theme")) == 1):
             fg_cl = "white"
+            text_bg = "#f0f0f0"
             text = "black"
 
         w = 500 
@@ -127,7 +130,24 @@ def custom_template():
         create_template_window.resizable(False, False)
         create_template_window.configure(fg_color=fg_cl)
 
-        
+        curr_dir = os.getcwd()
+        tmp_folder = os.path.join(curr_dir, 'Templates')
+        if not os.path.isdir(tmp_folder):
+            os.makedirs(tmp_folder)
+
+        name_label = ctk.CTkLabel(create_template_window,text="Name:", font=("Arial", 20), fg_color=fg_cl, text_color=text).pack(pady=(40,0))
+        name_box = tk.Entry(create_template_window, width=32, font=("Arial", 30), bg=text_bg, foreground=text, 
+                            insertbackground='white',
+                            selectbackground="#616161", borderwidth=0)
+        name_box.pack()
+
+        content_label = ctk.CTkLabel(create_template_window,text="Text:", font=("Arial", 20), fg_color=fg_cl, text_color=text).pack(pady=(20,0))
+        text_box = ctk.CTkTextbox(create_template_window, width=350, height=380, font=("Arial", 16), fg_color=text_bg, text_color=text)
+        text_box.pack()
+
+        create_button = ctk.CTkButton(create_template_window, text="Create", width=200)
+        create_button.pack(pady=(10,0))
+
         def on_closing():
             global template_window
             template_window = False
