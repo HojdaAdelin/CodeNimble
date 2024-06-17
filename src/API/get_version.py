@@ -1,7 +1,5 @@
 import requests
 
-CURRENT_VERSION = "1.3"
-
 def get_latest_version_from_github(owner, repo):
     url = f"https://api.github.com/repos/{owner}/{repo}/releases/latest"
     response = requests.get(url)
