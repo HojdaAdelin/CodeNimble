@@ -73,7 +73,7 @@ class PaintApp(ctk.CTk):
             if self.current_tool == "pencil":
                 self.canvas.create_line(self.old_x, self.old_y, event.x, event.y, width=3, fill='black', capstyle=tk.ROUND, smooth=tk.TRUE)
             elif self.current_tool == "eraser":
-                self.canvas.create_line(self.old_x, self.old_y, event.x, event.y, width=10, fill='white', capstyle=tk.ROUND, smooth=tk.TRUE)
+                self.erase(event.x, event.y)
         self.old_x = event.x
         self.old_y = event.y
 
@@ -91,3 +91,8 @@ class PaintApp(ctk.CTk):
     def use_pencil(self):
         self.current_tool = "pencil"
         self.canvas.configure(cursor="pencil")
+
+    def erase(self, x, y):
+        # Draw a white rectangle to simulate erasing
+        erase_size = 20  # Size of the eraser
+        self.canvas.create_rectangle(x - erase_size, y - erase_size, x + erase_size, y + erase_size, fill="white", outline="white")
