@@ -13,7 +13,7 @@ from Config import check
 class StatusBar(tk.Frame):
     def __init__(self, master, text="", font_size=32, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
-        self.current_version = "1.4"
+        self.current_version = "1.5"
         self.latest_version = get_version.get_latest_version_from_github("HojdaAdelin", "CodeNimble")
         self.text = tk.StringVar(value=text)
         self.hv_color = tk.StringVar(value="#4d4d4d")

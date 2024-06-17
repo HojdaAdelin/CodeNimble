@@ -23,6 +23,7 @@ from Config import check
 from API import get_version
 from MainMenu import run
 from GUI import treeview
+from GUI import paint_mode
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -113,7 +114,8 @@ class MainWindow(ct.CTk):
                                                                                          scroll.tab_bar))
         
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
-        utility_drop.add_option(option="Run                         F5", command=lambda:run.run_cpp_file(treeview_frame))
+        utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(treeview_frame))
+        utility_drop.add_option(option="Paint Mode              Ctrl+P", command=lambda:open_paint_mode(self))
         
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self, statusbar_instance)
@@ -203,3 +205,7 @@ class MainWindow(ct.CTk):
             35,
             byref(c_int(tb_color)),
             sizeof(c_int))
+    
+        def open_paint_mode(self):
+            paint_window = paint_mode.PaintApp()
+            paint_window.mainloop()

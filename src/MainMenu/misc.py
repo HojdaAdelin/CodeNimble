@@ -48,7 +48,7 @@ def version_info():
         version_window.resizable(False, False)
         version_window.configure(fg_color = fg_cl)
 
-        current_version_label = ctk.CTkLabel(version_window, text="Current version: 1.4", font=("Arial", 20), text_color=text)
+        current_version_label = ctk.CTkLabel(version_window, text="Current version: 1.5", font=("Arial", 20), text_color=text)
         current_version_label.pack(pady=(25,0))
         version_label = ctk.CTkLabel(version_window, text="Latest version: "+get_version.get_latest_version_from_github("HojdaAdelin", "CodeNimble"), font=("Arial", 20), text_color=text)
         version_label.pack(pady=0)
@@ -105,9 +105,9 @@ def changelog_inf():
         changelog_window.resizable(False, False)
         changelog_window.configure(fg_color = fg_cl)
         
-        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.4", font=("Arial", 20), text_color=text)
+        version_label = ctk.CTkLabel(changelog_window, text="Version: 1.5", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Tab bar\n• Open files from treeview in tab bar\n• Close tab function\n• Quick input & output\n• Open file in input & output\n• Save input\n• Open input & output from treeview\n• Code completion for C++\n• Ctrl+Tab & Ctrl+Shift+Tab\n• Move tabs\n• Count lines & words\n• Hide & unhide status bar\n• Added status bar to config\n• Added default_file to config\n• Save & remove default folder\n• Update close folder\n• Autocomplete for INT, VOID, LONG\n• Run icon in status bar\n• Removed 'new'\n• Added status bar notifications to config\n• Custom templates & use custom templates", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• ", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
