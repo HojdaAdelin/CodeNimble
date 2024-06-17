@@ -15,13 +15,20 @@ class PaintApp(ctk.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Paint Mode")
-        self.geometry("500x550")  # Increased height to accommodate the tool_bar
+        self.geometry("1000x600")  # Increased height to accommodate the tool_bar
         self.resizable(False, False)  # Make the window size fixed
 
         self.set_icon("images/logo.ico")  # Set the window icon
 
+        if int(check.get_config_value("theme")) == 0:
+            self.bg_color = "#333333"
+        elif int(check.get_config_value("theme")) == 1:
+            self.bg_color = "#f0f0f0"
+        else:
+            self.bg_color = "#333333"
+
         # Tool bar frame
-        self.tool_bar = Frame(self, height=50, bg='lightgray')
+        self.tool_bar = Frame(self, height=50, bg=self.bg_color)
         self.tool_bar.pack(fill=tk.X)
 
         # Button 1: Pencil
@@ -90,7 +97,7 @@ class PaintApp(ctk.CTk):
 
     def use_pencil(self):
         self.current_tool = "pencil"
-        self.canvas.configure(cursor="pencil")
+        self.canvas.configure(cursor="arrow")
 
     def erase(self, x, y):
         # Draw a white rectangle to simulate erasing
