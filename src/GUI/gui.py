@@ -151,6 +151,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll))
         scroll.text.bind("<Control-Shift-T>", lambda event: template_menu.use_template(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame))
+        scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
         # General configuration
         ct.set_appearance_mode("dark")
