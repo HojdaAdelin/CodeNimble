@@ -43,6 +43,14 @@ class PaintApp(ctk.CTk):
         self.btn_clear = ctk.CTkButton(self.tool_bar, text="Clear", command=self.clear_canvas)
         self.btn_clear.pack(side=tk.LEFT, padx=5, pady=5)
 
+        # Color squares
+        self.color_squares = []
+        colors = ["black", "red", "yellow", "green", "blue"]
+        for color in colors:
+            square = ctk.CTkButton(self.tool_bar,text="", bg_color=color,fg_color=color,hover_color=color, width=20, height=20, command=lambda c=color: self.change_pencil_color(c))
+            square.pack(side=tk.LEFT, padx=5, pady=5)
+            self.color_squares.append(square)
+
         self.canvas = Canvas(self, bg='white', width=500, height=500)
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
@@ -52,6 +60,7 @@ class PaintApp(ctk.CTk):
         self.old_x = None
         self.old_y = None
         self.current_tool = "pencil"  # Initializăm current_tool cu "pencil"
+        self.pencil_color = "black"  # Culorea default pentru creion
 
         # Title bar color handle
         tb_color = 0x333333
@@ -78,7 +87,7 @@ class PaintApp(ctk.CTk):
     def paint(self, event):
         if self.old_x and self.old_y:
             if self.current_tool == "pencil":
-                self.canvas.create_line(self.old_x, self.old_y, event.x, event.y, width=3, fill='black', capstyle=tk.ROUND, smooth=tk.TRUE)
+                self.canvas.create_line(self.old_x, self.old_y, event.x, event.y, width=3, fill=self.pencil_color, capstyle=tk.ROUND, smooth=tk.TRUE)
             elif self.current_tool == "eraser":
                 self.erase(event.x, event.y)
         self.old_x = event.x
@@ -103,3 +112,6 @@ class PaintApp(ctk.CTk):
         # Draw a white rectangle to simulate erasing
         erase_size = 20  # Size of the eraser
         self.canvas.create_rectangle(x - erase_size, y - erase_size, x + erase_size, y + erase_size, fill="white", outline="white")
+
+    def change_pencil_color(self, color):
+        self.pencil_color = color
