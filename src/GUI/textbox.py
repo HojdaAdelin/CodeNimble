@@ -1,5 +1,6 @@
 import threading
 import tkinter as tk
+from tkinter import messagebox
 import customtkinter as ct
 import re
 import sys
@@ -529,7 +530,34 @@ class ScrollText(tk.Frame):
                 self.text.delete(f"{cursor_index} - {len(words[-1])}c", cursor_index)
         return "break"
 
+    def profile_bool(self):
+        if os.path.exists("profile.txt"):
+            with open("profile.txt", "r") as file:
+                content = file.read().strip()
+                if content.startswith('name: "'):
+                    profile_name = content[7:-1]
+                    if profile_name:
+                        return True
+        return False
+
+    def get_profile_name(self):
+        if os.path.exists("profile.txt"):
+            with open("profile.txt", "r") as file:
+                content = file.read().strip()
+                if content.startswith('name: "'):
+                    profile_name = content[7:-1]
+                    return profile_name
+
     def start_server(self):
+        if not self.profile_bool():
+            messagebox.showinfo("Info", "You need to complete the profile first!")
+            return
+        if self.server:
+            messagebox.showinfo("Info", "Server already created!")
+            return
+        if self.client:
+            messagebox.showinfo("Info", "Client already connected to a server!")
+            return
         self.server = server.Server()
         server_thread = threading.Thread(target=self.server.start)
         server_thread.daemon = True
@@ -537,10 +565,23 @@ class ScrollText(tk.Frame):
         self.start_client()
 
     def start_client(self):
-        self.client = client.Client()
+        if not self.profile_bool():
+            messagebox.showinfo("Info", "You need to complete the profile first!")
+            return
+        if self.client:
+            messagebox.showinfo("Info", "Client already connected!")
+            return
+        client_name = self.get_profile_name()
+        self.client = client.Client(client_name=client_name)
         receive_thread = threading.Thread(target=self.client.receive_messages, args=(self.display_message,))
         receive_thread.daemon = True
         receive_thread.start()
+
+    def disconnect_client(self):
+        if self.client:
+            self.client.disconnect()
+            self.client = None
+            messagebox.showinfo("Info", "Disconnected successfully!")
 
     def on_text_change(self):
         message = self.text.get(1.0, tk.END)

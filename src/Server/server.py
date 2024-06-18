@@ -28,9 +28,15 @@ class Server:
                 message = client_socket.recv(1024).decode()
                 if not message:
                     break
+                if message == "DISCONNECT":
+                    print(f"Client {client_socket} disconnected")
+                    del self.clients[client_socket]  # Folosește `del` pentru a șterge clientul din dicționar
+                    client_socket.close()
+                    break
                 self.broadcast(message, client_socket)
             except:
-                del self.clients[client_socket]
+                if client_socket in self.clients:
+                    del self.clients[client_socket]  # Șterge clientul din dicționar în caz de excepție
                 client_socket.close()
                 break
 

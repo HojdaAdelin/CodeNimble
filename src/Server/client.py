@@ -15,6 +15,13 @@ class Client:
     def send_message(self, message):
         self.client_socket.send(message.encode())
 
+    def disconnect(self):
+        try:
+            self.send_message("DISCONNECT")
+            self.client_socket.close()
+        except:
+            pass
+
     def receive_messages(self, callback):
         while True:
             try:
