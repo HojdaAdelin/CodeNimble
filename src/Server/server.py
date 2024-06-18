@@ -5,7 +5,7 @@ class Server:
     def __init__(self, host='0.0.0.0', port=9999):
         self.host = host
         self.port = port
-        self.clients = []
+        self.clients = {}  # Dicționar pentru a memora client_id: nume_client
 
     def start(self):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,8 +15,9 @@ class Server:
 
         while True:
             client_socket, addr = server_socket.accept()
-            self.clients.append(client_socket)
-            print(f"Connection established with {addr}")
+            client_name = client_socket.recv(1024).decode()  # Primește numele clientului
+            self.clients[client_socket] = client_name  # Adaugă clientul în dicționar
+            print(f"Connection established with {client_name} ({addr})")
             client_thread = threading.Thread(target=self.handle_client, args=(client_socket,))
             client_thread.daemon = True
             client_thread.start()
@@ -28,9 +29,8 @@ class Server:
                 if not message:
                     break
                 self.broadcast(message, client_socket)
-            except Exception as e:
-                print(f"Error handling client: {e}")
-                self.clients.remove(client_socket)
+            except:
+                del self.clients[client_socket]
                 client_socket.close()
                 break
 
@@ -38,9 +38,7 @@ class Server:
         for client in self.clients:
             if client != client_socket:
                 try:
-                    client.send(message.encode())
-                except Exception as e:
-                    print(f"Error broadcasting message: {e}")
-                    self.clients.remove(client)
+                    client.send(f"{self.clients[client_socket]}: {message}".encode())
+                except:
+                    del self.clients[client]
                     client.close()
-

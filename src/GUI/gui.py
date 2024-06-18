@@ -26,6 +26,7 @@ from MainMenu import run
 from GUI import treeview
 from GUI import paint_mode
 from Server import server
+from MainMenu import profile
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -47,6 +48,8 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
         home_drop.add_option(option="Source",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble"))
         home_drop.add_option(option="Report bugs",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble/issues"))
+        home_drop.add_separator()
+        home_drop.add_option(option="Profile", command=lambda:open_profile_window(self))
         home_drop.add_separator()
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
     
@@ -216,3 +219,7 @@ class MainWindow(ct.CTk):
         def open_paint_mode(self):
             paint_window = paint_mode.PaintApp()
             paint_window.mainloop()
+        
+        def open_profile_window(self):
+            profil = profile.ProfileApp()
+            profil.mainloop()
