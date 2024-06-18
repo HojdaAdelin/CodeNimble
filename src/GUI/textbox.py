@@ -1,3 +1,4 @@
+import threading
 import tkinter as tk
 import customtkinter as ct
 import re
@@ -11,6 +12,8 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import file_menu
 from GUI import filetab
+from Server import server
+from Server import client
 from MainMenu import run
 
 global ante_font
@@ -22,6 +25,10 @@ class ScrollText(tk.Frame):
         global ante_font
         tk.Frame.__init__(self, *args, **kwargs)
         self.statusbar = status
+
+        self.server = None
+        self.client = None
+
         font_size = check.get_config_value("zoom") or 28
 
         self.text = tk.Text(self, bg="#2b2b2b", foreground="#d1dce8", insertbackground='white',
@@ -259,6 +266,8 @@ class ScrollText(tk.Frame):
 
         if selection_start and selection_end:
             self.text.tag_add(tk.SEL, selection_start, selection_end)
+
+        self.on_text_change()
 
     def highlight_syntax(self):
         theme = check.get_config_value("theme")
@@ -519,6 +528,30 @@ class ScrollText(tk.Frame):
             else:
                 self.text.delete(f"{cursor_index} - {len(words[-1])}c", cursor_index)
         return "break"
+
+    def start_server(self):
+        self.server = server.Server()
+        server_thread = threading.Thread(target=self.server.start)
+        server_thread.daemon = True
+        server_thread.start()
+        self.start_client()
+
+    def start_client(self):
+        self.client = client.Client()
+        receive_thread = threading.Thread(target=self.client.receive_messages, args=(self.display_message,))
+        receive_thread.daemon = True
+        receive_thread.start()
+
+    def on_text_change(self):
+        message = self.text.get(1.0, tk.END)
+        if self.client:
+            self.client.send_message(message)
+
+    def display_message(self, message):
+        self.text.config(state=tk.NORMAL)
+        self.text.delete(1.0, tk.END)
+        self.text.insert(tk.INSERT, message)
+        self.text.config(state=tk.NORMAL)
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):

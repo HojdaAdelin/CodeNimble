@@ -31,9 +31,6 @@ class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.server = None
-        self.client = None
-
         # Main menu
         menu = CTkMenuBar(master=self, border_width=0)
         home = menu.add_cascade("Home", hover_color="#4d4d4d", font=("", 20))
@@ -122,13 +119,13 @@ class MainWindow(ct.CTk):
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(treeview_frame))
         utility_drop.add_option(option="Paint Mode              Ctrl+P", command=lambda:open_paint_mode(self))
-        utility_drop.add_option(option="Start Server", command= lambda:self.start_server())
-        utility_drop.add_option(option="Join Local Server", command=lambda:self.start_client())
+        utility_drop.add_option(option="Start Server", command= lambda:scroll.start_server())
+        utility_drop.add_option(option="Join Local Server", command=lambda:scroll.start_client())
         
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self, statusbar_instance)
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
-        self.scroll = scroll
+    
         statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(treeview_frame))
 
         self.grid_columnconfigure(0, weight=1)
@@ -161,7 +158,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
-        scroll.text.bind("<KeyRelease>", lambda event:self.on_text_change(event))
+        
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")
@@ -219,26 +216,3 @@ class MainWindow(ct.CTk):
         def open_paint_mode(self):
             paint_window = paint_mode.PaintApp()
             paint_window.mainloop()
-
-    def start_server(self):
-        self.server = server.Server()
-        server_thread = threading.Thread(target=self.server.start)
-        server_thread.daemon = True
-        server_thread.start()
-
-    def start_client(self):
-        self.client = server.Client()
-        receive_thread = threading.Thread(target=self.client.receive_messages, args=(self.display_message,))
-        receive_thread.daemon = True
-        receive_thread.start()
-
-    def on_text_change(self, event):
-        message = event.widget.get(1.0, tk.END)
-        if self.client:
-            self.client.send_message(message)
-
-    def display_message(self, message):
-        self.scroll.text.config(state=tk.NORMAL)
-        self.scroll.text.delete(1.0, tk.END)
-        self.scroll.text.insert(tk.INSERT, message)
-        self.scroll.text.config(state=tk.DISABLED)
