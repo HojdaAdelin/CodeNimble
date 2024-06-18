@@ -124,6 +124,7 @@ class MainWindow(ct.CTk):
         utility_drop.add_option(option="Paint Mode              Ctrl+P", command=lambda:open_paint_mode(self))
         utility_drop.add_option(option="Start Server", command= lambda:scroll.start_server())
         utility_drop.add_option(option="Join Local Server", command=lambda:scroll.start_client())
+        utility_drop.add_option(option="Disconnect", command=lambda:scroll.disconnect_client())
         
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self, statusbar_instance)
