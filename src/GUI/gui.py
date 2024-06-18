@@ -1,3 +1,4 @@
+import threading
 from typing import Any, Tuple
 import customtkinter as ct
 from CTkMenuBar import *
@@ -24,10 +25,12 @@ from API import get_version
 from MainMenu import run
 from GUI import treeview
 from GUI import paint_mode
+from Server import server
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         # Main menu
         menu = CTkMenuBar(master=self, border_width=0)
         home = menu.add_cascade("Home", hover_color="#4d4d4d", font=("", 20))
@@ -116,11 +119,13 @@ class MainWindow(ct.CTk):
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(treeview_frame))
         utility_drop.add_option(option="Paint Mode              Ctrl+P", command=lambda:open_paint_mode(self))
+        utility_drop.add_option(option="Start Server", command= lambda:scroll.start_server())
+        utility_drop.add_option(option="Join Local Server", command=lambda:scroll.start_client())
         
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self, statusbar_instance)
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
-        
+    
         statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(treeview_frame))
 
         self.grid_columnconfigure(0, weight=1)
@@ -153,6 +158,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
+        
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")
