@@ -25,7 +25,7 @@ from API import get_version
 from MainMenu import run
 from GUI import treeview
 from GUI import paint_mode
-from Server import server
+from Server import panel
 from MainMenu import profile
 
 class MainWindow(ct.CTk):
@@ -122,9 +122,11 @@ class MainWindow(ct.CTk):
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(treeview_frame))
         utility_drop.add_option(option="Paint Mode              Ctrl+P", command=lambda:open_paint_mode(self))
+        utility_drop.add_separator()
         utility_drop.add_option(option="Start Server", command= lambda:scroll.start_server())
         utility_drop.add_option(option="Join Local Server", command=lambda:scroll.start_client())
         utility_drop.add_option(option="Disconnect", command=lambda:scroll.disconnect_client())
+        utility_drop.add_option(option="Server Panel", command=lambda:open_server_panel(self))
         
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self, statusbar_instance)
@@ -224,3 +226,7 @@ class MainWindow(ct.CTk):
         def open_profile_window(self):
             profil = profile.ProfileApp()
             profil.mainloop()
+
+        def open_server_panel(self):
+            panel_window = panel.ServerPanel()
+            panel_window.mainloop()
