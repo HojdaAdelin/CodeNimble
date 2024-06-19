@@ -1,5 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
+from CTkTable import CTkTable
+from tkinter import ttk
 from ctypes import byref, sizeof, c_int, windll
 import sys
 import os
@@ -11,9 +13,12 @@ sys.path.append(parent_dir)
 from Config import check
 
 class ServerPanel(ctk.CTk):
-    def __init__(self):
+    def __init__(self, server_instance=None):
         super().__init__()
 
+        self.server = server_instance
+
+        # Definim culorile bazate pe tema
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
@@ -46,3 +51,33 @@ class ServerPanel(ctk.CTk):
             35,
             byref(c_int(tb_color)),
             sizeof(c_int))
+
+        # Creăm un CTkTable pentru a afișa clienții conectați
+        self.table = CTkTable(master=self, row=0, column=2, padx=10, pady=10,
+                              font=('Consolas', 14), wraplength=150, justify=tk.CENTER)
+        self.table.grid(row=0, column=0, sticky="nsew")
+
+        self.table.insert(0, 0, "Name")
+        self.table.insert(0, 1, "Address")
+
+        if self.server:
+            # Încărcăm clienții deja conectați
+            self.update_clients()
+
+            # Pornim un thread pentru a actualiza periodic lista de clienți
+            self.after(1000, self.update_clients_periodic)
+
+    def update_clients(self):
+        # Șterge toate intrările existente
+        self.table.delete(rows=range(1, self.table.row_count))
+
+        # Adaugă clienții conectați în CTkTable
+        row_index = 1
+        for client_socket, client_name in self.server.clients.items():
+            self.table.insert(row_index, 0, client_name)
+            self.table.insert(row_index, 1, "127.0.0.1")  # Adaugă adresa IP corespunzătoare
+            row_index += 1
+
+    def update_clients_periodic(self):
+        self.update_clients()
+        self.after(1000, self.update_clients_periodic)

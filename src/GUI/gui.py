@@ -130,6 +130,7 @@ class MainWindow(ct.CTk):
         
         statusbar_instance = statusbar.StatusBar(self, text="")
         scroll = textbox.ScrollText(self, statusbar_instance)
+        self.scroll = scroll
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
     
         statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(treeview_frame))
@@ -228,5 +229,5 @@ class MainWindow(ct.CTk):
             profil.mainloop()
 
         def open_server_panel(self):
-            panel_window = panel.ServerPanel()
+            panel_window = panel.ServerPanel(self.scroll.server)
             panel_window.mainloop()
