@@ -1,7 +1,5 @@
 import customtkinter as ctk
-import tkinter as tk
 from CTkTable import CTkTable
-from tkinter import ttk
 from ctypes import byref, sizeof, c_int, windll
 import sys
 import os
@@ -53,12 +51,16 @@ class ServerPanel(ctk.CTk):
             sizeof(c_int))
 
         # Creăm un CTkTable pentru a afișa clienții conectați
-        self.table = CTkTable(master=self, row=0, column=2, padx=10, pady=10,
-                              font=('Consolas', 14), wraplength=150, justify=tk.CENTER)
-        self.table.grid(row=0, column=0, sticky="nsew")
-
-        self.table.insert(0, 0, "Name")
-        self.table.insert(0, 1, "Address")
+        self.table = CTkTable(master=self, row=0, column=2, values=[["Name", "Address"]],
+                              font=('Consolas', 20),
+                              padx=5, pady=5, 
+                              text_color=text,
+                              colors=[text_bg, text_bg], 
+                              color_phase='vertical', 
+                              header_color=text_bg,
+                              corner_radius=10,
+                              hover_color="#4d4d4d")
+        self.table.pack(expand=False, fill="both", padx=20, pady=20)
 
         if self.server:
             # Încărcăm clienții deja conectați
@@ -68,15 +70,12 @@ class ServerPanel(ctk.CTk):
             self.after(1000, self.update_clients_periodic)
 
     def update_clients(self):
-        # Șterge toate intrările existente
-        self.table.delete(rows=range(1, self.table.row_count))
+        # Șterge toate rândurile existente, dar păstrează antetul
+        self.table.delete_rows(range(1, len(self.table.get())))
 
         # Adaugă clienții conectați în CTkTable
-        row_index = 1
         for client_socket, client_name in self.server.clients.items():
-            self.table.insert(row_index, 0, client_name)
-            self.table.insert(row_index, 1, "127.0.0.1")  # Adaugă adresa IP corespunzătoare
-            row_index += 1
+            self.table.add_row(values=[client_name, "127.0.0.1"]) 
 
     def update_clients_periodic(self):
         self.update_clients()
