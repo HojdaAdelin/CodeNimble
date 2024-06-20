@@ -132,8 +132,6 @@ class MainWindow(ct.CTk):
         scroll = textbox.ScrollText(self, statusbar_instance)
         self.scroll = scroll
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
-    
-        statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(treeview_frame))
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
@@ -146,6 +144,7 @@ class MainWindow(ct.CTk):
 
         scroll.text.focus()
         self.after(200, scroll.redraw())
+        statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(treeview_frame))
         scroll.text.bind("<Control-n>", lambda event: file_menu.custom_file(statusbar_instance, treeview_frame))
         scroll.text.bind("<Control-o>", lambda event: file_menu.open_file(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-s>", lambda event: file_menu.save_file(scroll.text, statusbar_instance))

@@ -21,6 +21,9 @@ class StatusBar(tk.Frame):
         self.num_lines = tk.IntVar()
         self.num_words = tk.IntVar()
         self.configure(bg="#333333")
+        self.gui(font_size)
+
+    def gui(self, font_size):
         font = ("Arial", font_size)
         
         self.new_version_label = tk.Label(self, text="New version available", font=font, bg="green", fg="black")
