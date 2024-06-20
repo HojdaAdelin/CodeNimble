@@ -17,6 +17,7 @@ class Server:
             client_socket, addr = server_socket.accept()
             client_name = client_socket.recv(1024).decode()  # Primește numele clientului
             self.clients[client_socket] = client_name  # Adaugă clientul în dicționar
+
             print(f"Connection established with {client_name} ({addr})")
             client_thread = threading.Thread(target=self.handle_client, args=(client_socket,))
             client_thread.daemon = True
@@ -29,7 +30,7 @@ class Server:
                 if not message:
                     break
                 if message == "DISCONNECT":
-                    print(f"Client {client_socket} disconnected")
+                    print(f"Client {self.clients[client_socket]} disconnected")
                     del self.clients[client_socket]  # Folosește `del` pentru a șterge clientul din dicționar
                     client_socket.close()
                     break
@@ -44,7 +45,7 @@ class Server:
         for client in self.clients:
             if client != client_socket:
                 try:
-                    client.send(f"{self.clients[client_socket]}: {message}".encode())
+                    client.send(message.encode())
                 except:
                     del self.clients[client]
                     client.close()

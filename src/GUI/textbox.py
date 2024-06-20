@@ -56,7 +56,7 @@ class ScrollText(tk.Frame):
         self.suggestions.bind('<Button-1>', self.on_suggestion_click)
         self.suggestions.bind('<FocusOut>', self.hide_suggestions)
         self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
-        self.text.bind('<Tab>', self.on_tab)
+        #self.text.bind('<Tab>', self.on_tab)
         self.text.bind('<space>', self.hide_suggestions)  # Hide suggestions on space
         self.text.bind("<Escape>", self.hide_suggestions)
         self.suggestions.bind("<Escape>", self.hide_suggestions)
@@ -214,7 +214,7 @@ class ScrollText(tk.Frame):
         self.text.insert(cursor_index, suggestion)
 
     def add_tab(self, event):
-        if self.suggestions.size() > 0:
+        if self.suggestions.size() > 0 and self.suggestions.winfo_ismapped():
             first_suggestion = self.suggestions.get(0)
             self.insert_suggestion(first_suggestion)
             self.hide_suggestions()

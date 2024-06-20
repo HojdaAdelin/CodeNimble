@@ -1,5 +1,6 @@
+from typing import Counter
 import customtkinter as ctk
-import tkinter as tk
+from CTkTable import CTkTable
 from ctypes import byref, sizeof, c_int, windll
 import sys
 import os
@@ -11,9 +12,13 @@ sys.path.append(parent_dir)
 from Config import check
 
 class ServerPanel(ctk.CTk):
-    def __init__(self):
+    def __init__(self, server_instance=None):
         super().__init__()
 
+        self.server = server_instance
+        self.previous_clients = None
+
+        # Definim culorile bazate pe tema
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
@@ -46,3 +51,40 @@ class ServerPanel(ctk.CTk):
             35,
             byref(c_int(tb_color)),
             sizeof(c_int))
+
+        # Creăm un CTkTable pentru a afișa clienții conectați
+        self.table = CTkTable(master=self, row=0, column=2, values=[["Name", "Address"]],
+                              font=('Consolas', 20),
+                              padx=5, pady=5, 
+                              text_color=text,
+                              colors=[text_bg, text_bg], 
+                              color_phase='vertical', 
+                              header_color=text_bg,
+                              corner_radius=10,
+                              hover_color="#4d4d4d")
+        self.table.pack(expand=False, fill="both", padx=20, pady=20)
+
+        if self.server:
+            # Încărcăm clienții deja conectați
+            self.update_clients()
+
+            # Pornim un thread pentru a actualiza periodic lista de clienți
+            self.after(1000, self.update_clients_periodic)
+
+    def update_clients(self):
+        current_clients = list(self.server.clients.values())
+
+        # Verificăm dacă lista curentă de clienți este identică cu cea anterioară
+        if self.previous_clients is None or Counter(current_clients) != Counter(self.previous_clients):
+            self.previous_clients = current_clients
+
+            # Ștergem toate rândurile, cu excepția antetului
+            self.table.delete_rows(range(1, len(self.table.get())))
+
+            # Adăugăm clienții conectați în CTkTable
+            for client_socket, client_name in self.server.clients.items():
+                self.table.add_row(values=[client_name, "127.0.0.1"])
+
+    def update_clients_periodic(self):
+        self.update_clients()
+        self.after(1000, self.update_clients_periodic)
