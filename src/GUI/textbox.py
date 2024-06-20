@@ -475,7 +475,14 @@ class ScrollText(tk.Frame):
             "IF": f"if () {{\n{indent}\n{indent}}}",
             "INT": f"int () {{\n{indent}\n{indent}}}",
             "VOID": f"void () {{\n{indent}\n{indent}}}",
-            "LONG": f"long long () {{\n{indent}\n{indent}}}"
+            "LONG": f"long long () {{\n{indent}\n{indent}}}",
+            "CPP": """#include <iostream>
+
+int main()
+{
+    std::cout << "Hello World";
+    return 0;
+}""" 
         }
 
         stripped_line = current_line.strip()
