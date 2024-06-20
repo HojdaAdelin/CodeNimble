@@ -18,25 +18,28 @@ class ServerPanel(ctk.CTk):
         self.server = server_instance
         self.previous_clients = None
 
-        # Definim culorile bazate pe tema
-        fg_cl = "#2b2b2b"
-        text_bg = "#4a4a4a"
-        text = "white"
-        if int(check.get_config_value("theme")) == 0:
-            fg_cl = "#2b2b2b"
-            text_bg = "#4a4a4a"
-            text = "white"
-        elif int(check.get_config_value("theme")) == 1:
-            fg_cl = "white"
-            text_bg = "#f0f0f0"
-            text = "black"
+        fg_cl, text_bg, text, hover_color = self.theme()
+        self.window(fg_cl)
+        self.title_color()
+        self.gui(text_bg, text,hover_color)
 
-        self.configure(fg_color=fg_cl)
-        self.title("Server Panel")
-        self.geometry("1000x600")
-        self.iconbitmap("images/logo.ico")
-        self.resizable(False, False)
+        if self.server:
+            self.update_clients()
+            self.after(1000, self.update_clients_periodic)
 
+    def gui(self, text_bg, text, hover_color):
+        self.table = CTkTable(master=self, row=0, column=2, values=[["Name", "Address"]],
+                              font=('Consolas', 20),
+                              padx=5, pady=5, 
+                              text_color=text,
+                              colors=[text_bg, text_bg], 
+                              color_phase='vertical', 
+                              header_color=text_bg,
+                              corner_radius=10,
+                              hover_color=hover_color)
+        self.table.pack(expand=False, fill="both", padx=20, pady=20)
+
+    def title_color(self):
         tb_color = 0x333333
         if int(check.get_config_value("theme")) == 0:
             tb_color = 0x333333
@@ -52,24 +55,29 @@ class ServerPanel(ctk.CTk):
             byref(c_int(tb_color)),
             sizeof(c_int))
 
-        # Creăm un CTkTable pentru a afișa clienții conectați
-        self.table = CTkTable(master=self, row=0, column=2, values=[["Name", "Address"]],
-                              font=('Consolas', 20),
-                              padx=5, pady=5, 
-                              text_color=text,
-                              colors=[text_bg, text_bg], 
-                              color_phase='vertical', 
-                              header_color=text_bg,
-                              corner_radius=10,
-                              hover_color="#4d4d4d")
-        self.table.pack(expand=False, fill="both", padx=20, pady=20)
+    def window(self, fg_cl):
+        self.configure(fg_color=fg_cl)
+        self.title("Server Panel")
+        self.geometry("1000x600")
+        self.iconbitmap("images/logo.ico")
+        self.resizable(False, False)
 
-        if self.server:
-            # Încărcăm clienții deja conectați
-            self.update_clients()
-
-            # Pornim un thread pentru a actualiza periodic lista de clienți
-            self.after(1000, self.update_clients_periodic)
+    def theme(self):
+        fg_cl = "#2b2b2b"
+        text_bg = "#4a4a4a"
+        text = "white"
+        hover_color="#4d4d4d"
+        if int(check.get_config_value("theme")) == 0:
+            fg_cl = "#2b2b2b"
+            text_bg = "#4a4a4a"
+            text = "white"
+            hover_color="#4d4d4d"
+        elif int(check.get_config_value("theme")) == 1:
+            fg_cl = "white"
+            text_bg = "#f0f0f0"
+            text = "black"
+            hover_color="#ebebeb"
+        return fg_cl,text_bg,text,hover_color
 
     def update_clients(self):
         current_clients = list(self.server.clients.values())

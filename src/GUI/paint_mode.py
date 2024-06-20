@@ -17,15 +17,9 @@ class PaintApp(ctk.CTk):
         self.title("Paint Mode")
         self.geometry("1000x600")  # Increased height to accommodate the tool_bar
         self.resizable(False, False)  # Make the window size fixed
-
         self.set_icon("images/logo.ico")  # Set the window icon
 
-        if int(check.get_config_value("theme")) == 0:
-            self.bg_color = "#333333"
-        elif int(check.get_config_value("theme")) == 1:
-            self.bg_color = "#f0f0f0"
-        else:
-            self.bg_color = "#333333"
+        self.theme()
 
         # Tool bar frame
         self.tool_bar = Frame(self, height=50, bg=self.bg_color)
@@ -77,6 +71,14 @@ class PaintApp(ctk.CTk):
             35,
             byref(c_int(tb_color)),
             sizeof(c_int))
+
+    def theme(self):
+        if int(check.get_config_value("theme")) == 0:
+            self.bg_color = "#333333"
+        elif int(check.get_config_value("theme")) == 1:
+            self.bg_color = "#f0f0f0"
+        else:
+            self.bg_color = "#333333"
 
     def set_icon(self, icon_path):
         try:

@@ -25,13 +25,16 @@ class ScrollText(tk.Frame):
     def __init__(self, master, status, *args, **kwargs):
         global ante_font
         tk.Frame.__init__(self, *args, **kwargs)
+        
         self.statusbar = status
-
         self.server = None
         self.client = None
-
         font_size = check.get_config_value("zoom") or 28
 
+        self.gui(font_size)
+        self.binding()
+
+    def gui(self, font_size):
         self.text = tk.Text(self, bg="#2b2b2b", foreground="#d1dce8", insertbackground='white',
                             selectbackground="#4d4d4d", font=("Consolas", font_size),
                             undo=True, autoseparators=True, borderwidth=0, wrap="none")
@@ -55,10 +58,7 @@ class ScrollText(tk.Frame):
         self.suggestions = tk.Listbox(self, width=25, height=5, font=("", check.get_config_value("zoom")))
         self.suggestions.bind('<Button-1>', self.on_suggestion_click)
         self.suggestions.bind('<FocusOut>', self.hide_suggestions)
-        self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
         #self.text.bind('<Tab>', self.on_tab)
-        self.text.bind('<space>', self.hide_suggestions)  # Hide suggestions on space
-        self.text.bind("<Escape>", self.hide_suggestions)
         self.suggestions.bind("<Escape>", self.hide_suggestions)
         #self.text.bind('<FocusOut>', self.hide_suggestions)  # Hide suggestions when focus is lost
         self.suggestions.bind('<<ListboxSelect>>', self.on_suggestion_select)
@@ -80,7 +80,7 @@ class ScrollText(tk.Frame):
                 'true', 'false'
             ]
 
-
+    def binding(self):
         self.text.bind('<Up>', self.on_up_key)
         self.text.bind('<Down>', self.on_down_key)
         self.text.bind("<Key>", self.onPressDelay)
@@ -89,16 +89,15 @@ class ScrollText(tk.Frame):
         self.text.bind("<MouseWheel>", self.onPressDelay)
         self.text.bind("<KeyRelease>", lambda event: self.redraw())
         self.text.bind("<Tab>", self.add_tab)
-
         self.text.bind("(", self.insert_parentheses)
         self.text.bind("[", self.insert_brackets)
         self.text.bind("{", self.insert_braces)
-
         self.text.bind("<BackSpace>", self.handle_backspace)
-
         self.text.bind("<Return>", self.handle_return)
-
         self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
+        self.text.bind('<space>', self.hide_suggestions)  # Hide suggestions on space
+        self.text.bind("<Escape>", self.hide_suggestions)
+        self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
 
     def on_up_key(self, event):
         if self.suggestions.winfo_ismapped():
@@ -476,7 +475,14 @@ class ScrollText(tk.Frame):
             "IF": f"if () {{\n{indent}\n{indent}}}",
             "INT": f"int () {{\n{indent}\n{indent}}}",
             "VOID": f"void () {{\n{indent}\n{indent}}}",
-            "LONG": f"long long () {{\n{indent}\n{indent}}}"
+            "LONG": f"long long () {{\n{indent}\n{indent}}}",
+            "CPP": """#include <iostream>
+
+int main()
+{
+    std::cout << "Hello World";
+    return 0;
+}""" 
         }
 
         stripped_line = current_line.strip()

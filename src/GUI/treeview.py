@@ -28,6 +28,17 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.text_color = self._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkLabel"]["text_color"])
         self.selected_color = self._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkButton"]["fg_color"])
 
+        self.gui(master)
+        
+        self.drag_data = {"item": None, "x": 0, "y": 0}
+        self.hovered_item = None 
+
+        if root_directory:
+            self.populate_treeview(root_directory)
+
+        self.treeview.bind("<<TreeviewOpen>>", self.on_open)
+
+    def gui(self, master):
         self.treestyle = ttk.Style()
         self.treestyle.theme_use('default')
         self.treestyle.configure(
@@ -81,14 +92,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.input = customtkinter.CTkTextbox(self, height=100, width=290)
         self.output_label = customtkinter.CTkLabel(self, text="#Output", font=("", 16))
         self.output = customtkinter.CTkTextbox(self, height=100, width=290, state="disabled")
-        
-        self.drag_data = {"item": None, "x": 0, "y": 0}
-        self.hovered_item = None 
-
-        if root_directory:
-            self.populate_treeview(root_directory)
-
-        self.treeview.bind("<<TreeviewOpen>>", self.on_open)
 
     def open_input(self):
         selected_item = self.treeview.selection()
