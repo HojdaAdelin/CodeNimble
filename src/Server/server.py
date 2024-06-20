@@ -45,7 +45,7 @@ class Server:
         for client in self.clients:
             if client != client_socket:
                 try:
-                    client.send(f"{self.clients[client_socket]}: {message}".encode())
+                    client.send(message.encode())
                 except:
                     del self.clients[client]
                     client.close()

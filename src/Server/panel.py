@@ -1,3 +1,4 @@
+from typing import Counter
 import customtkinter as ctk
 from CTkTable import CTkTable
 from ctypes import byref, sizeof, c_int, windll
@@ -15,6 +16,7 @@ class ServerPanel(ctk.CTk):
         super().__init__()
 
         self.server = server_instance
+        self.previous_clients = None
 
         # Definim culorile bazate pe tema
         fg_cl = "#2b2b2b"
@@ -70,12 +72,18 @@ class ServerPanel(ctk.CTk):
             self.after(1000, self.update_clients_periodic)
 
     def update_clients(self):
-        # Șterge toate rândurile existente, dar păstrează antetul
-        self.table.delete_rows(range(1, len(self.table.get())))
+        current_clients = list(self.server.clients.values())
 
-        # Adaugă clienții conectați în CTkTable
-        for client_socket, client_name in self.server.clients.items():
-            self.table.add_row(values=[client_name, "127.0.0.1"]) 
+        # Verificăm dacă lista curentă de clienți este identică cu cea anterioară
+        if self.previous_clients is None or Counter(current_clients) != Counter(self.previous_clients):
+            self.previous_clients = current_clients
+
+            # Ștergem toate rândurile, cu excepția antetului
+            self.table.delete_rows(range(1, len(self.table.get())))
+
+            # Adăugăm clienții conectați în CTkTable
+            for client_socket, client_name in self.server.clients.items():
+                self.table.add_row(values=[client_name, "127.0.0.1"])
 
     def update_clients_periodic(self):
         self.update_clients()
