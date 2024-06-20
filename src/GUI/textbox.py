@@ -525,9 +525,18 @@ class ScrollText(tk.Frame):
         else:
             words = re.split(r'(\s+)', text_before_cursor)
             if words[-1].isspace():
-                self.text.delete(f"{cursor_index} - {len(words[-2])}c", cursor_index)
+                num_spaces = len(words[-1])
+                self.text.delete(f"{cursor_index} - {num_spaces}c", cursor_index)
             else:
-                self.text.delete(f"{cursor_index} - {len(words[-1])}c", cursor_index)
+                if len(words) > 1 and words[-2].isspace():
+                    # Verifică dacă sunt spații înaintea ultimului cuvânt și șterge-le
+                    num_spaces = len(words[-2])
+                    self.text.delete(f"{cursor_index} - {len(words[-1]) + num_spaces}c", cursor_index)
+                else:
+                    # Șterge doar ultimul cuvânt
+                    last_word_length = len(words[-1])
+                    self.text.delete(f"{cursor_index} - {last_word_length}c", cursor_index)
+
         return "break"
 
     def profile_bool(self):
