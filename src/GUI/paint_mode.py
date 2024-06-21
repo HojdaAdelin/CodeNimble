@@ -41,20 +41,34 @@ class PaintApp(ctk.CTk):
         self.color_squares = []
         colors = ["black", "red", "yellow", "green", "blue"]
         for color in colors:
-            square = ctk.CTkButton(self.tool_bar,text="", bg_color=color,fg_color=color,hover_color=color, width=20, height=20, command=lambda c=color: self.change_pencil_color(c))
+            square = ctk.CTkButton(self.tool_bar, text="", bg_color=color, fg_color=color, hover_color=color, width=20, height=20, command=lambda c=color: self.change_pencil_color(c))
             square.pack(side=tk.LEFT, padx=5, pady=5)
             self.color_squares.append(square)
 
-        self.canvas = Canvas(self, bg='white', width=500, height=500)
-        self.canvas.pack(fill=tk.BOTH, expand=True)
+        # Tab buttons
+        self.tab_buttons = []
+        for i in range(5):
+            tab_button = ctk.CTkButton(self.tool_bar, text=f"#{i+1}", width=20, height=20, command=lambda i=i: self.switch_tab(i))
+            tab_button.pack(side=tk.LEFT, padx=5, pady=5)
+            self.tab_buttons.append(tab_button)
 
-        self.canvas.bind("<B1-Motion>", self.paint)
-        self.canvas.bind("<ButtonRelease-1>", self.reset)
+        # Canvas frames for each tab
+        self.canvases = []
+        for i in range(5):
+            canvas_frame = Frame(self)
+            canvas = Canvas(canvas_frame, bg='white', width=500, height=500)
+            canvas.pack(fill=tk.BOTH, expand=True)
+            canvas.bind("<B1-Motion>", self.paint)
+            canvas.bind("<ButtonRelease-1>", self.reset)
+            self.canvases.append((canvas_frame, canvas))
 
         self.old_x = None
         self.old_y = None
         self.current_tool = "pencil"  # Initializăm current_tool cu "pencil"
         self.pencil_color = "black"  # Culorea default pentru creion
+
+        self.current_canvas_index = 0
+        self.show_canvas(self.current_canvas_index)
 
         # Title bar color handle
         tb_color = 0x333333
@@ -87,9 +101,10 @@ class PaintApp(ctk.CTk):
             print(f"Error setting icon: {e}")
 
     def paint(self, event):
+        canvas = self.canvases[self.current_canvas_index][1]
         if self.old_x and self.old_y:
             if self.current_tool == "pencil":
-                self.canvas.create_line(self.old_x, self.old_y, event.x, event.y, width=3, fill=self.pencil_color, capstyle=tk.ROUND, smooth=tk.TRUE)
+                canvas.create_line(self.old_x, self.old_y, event.x, event.y, width=3, fill=self.pencil_color, capstyle=tk.ROUND, smooth=tk.TRUE)
             elif self.current_tool == "eraser":
                 self.erase(event.x, event.y)
         self.old_x = event.x
@@ -100,20 +115,37 @@ class PaintApp(ctk.CTk):
         self.old_y = None
 
     def clear_canvas(self):
-        self.canvas.delete("all")
+        canvas = self.canvases[self.current_canvas_index][1]
+        canvas.delete("all")
 
     def use_eraser(self):
         self.current_tool = "eraser"
-        self.canvas.configure(cursor="circle")
+        self.canvases[self.current_canvas_index][1].configure(cursor="circle")
 
     def use_pencil(self):
         self.current_tool = "pencil"
-        self.canvas.configure(cursor="arrow")
+        self.canvases[self.current_canvas_index][1].configure(cursor="arrow")
 
     def erase(self, x, y):
+        canvas = self.canvases[self.current_canvas_index][1]
         # Draw a white rectangle to simulate erasing
         erase_size = 20  # Size of the eraser
-        self.canvas.create_rectangle(x - erase_size, y - erase_size, x + erase_size, y + erase_size, fill="white", outline="white")
+        canvas.create_rectangle(x - erase_size, y - erase_size, x + erase_size, y + erase_size, fill="white", outline="white")
 
     def change_pencil_color(self, color):
         self.pencil_color = color
+
+    def switch_tab(self, index):
+        self.show_canvas(index)
+
+    def show_canvas(self, index):
+        self.canvases[self.current_canvas_index][0].pack_forget()
+        self.current_canvas_index = index
+        self.canvases[self.current_canvas_index][0].pack(fill=tk.BOTH, expand=True)
+
+        # Update tab button states
+        for i, button in enumerate(self.tab_buttons):
+            if i == index:
+                button.configure(fg_color="blue")  # Highlight active tab
+            else:
+                button.configure(fg_color="gray")  # Default color for inactive tabs
