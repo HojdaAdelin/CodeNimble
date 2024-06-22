@@ -11,10 +11,11 @@ sys.path.append(parent_dir)
 from MainMenu import file_menu
 
 class ClosableTab(customtkinter.CTkFrame):
-    def __init__(self, master, text, command, close_command, *args, **kwargs):
+    def __init__(self, master, text, command, close_command, middle_click_command, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.command = command
         self.close_command = close_command
+        self.middle_click_command = middle_click_command  # Funcția de callback pentru click pe butonul de mijloc
 
         self.inactive_bg_color = "#3252a8"
         self.active_bg_color = "#2c3eb8"
@@ -34,6 +35,9 @@ class ClosableTab(customtkinter.CTkFrame):
             font=("", 18)
         )
         self.close_button.pack(side="left", fill="y")
+
+        # Bind middle mouse button click event
+        self.tab_button.bind("<Button-2>", lambda event: self.middle_click_command())
 
         # Add mouse events for dragging
         self.tab_button.bind("<ButtonPress-1>", self.on_start_drag)
@@ -66,6 +70,7 @@ class ClosableTab(customtkinter.CTkFrame):
         self.master.reorder_tabs()
 
 
+
 class TabBar(customtkinter.CTkFrame):
     def __init__(self, master, text_widget, scroll, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
@@ -91,12 +96,15 @@ class TabBar(customtkinter.CTkFrame):
         # Obțineți doar numele fișierului
         file_name = os.path.basename(file_path)
 
+        def middle_click_command():
+            self.close_tab(file_path)
+
         def close_command(tab):
             self.close_tab(file_path)
 
         tab = ClosableTab(
             self, text=file_name, command=lambda: self.show_file_content(file_path),
-            close_command=close_command
+            close_command=close_command, middle_click_command=middle_click_command
         )
         tab.pack(side="left", padx=(0, 2))
 
