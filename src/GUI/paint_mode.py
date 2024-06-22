@@ -48,7 +48,7 @@ class PaintApp(ctk.CTk):
         # Tab buttons
         self.tab_buttons = []
         for i in range(5):
-            tab_button = ctk.CTkButton(self.tool_bar, text=f"#{i+1}", width=20, height=20, command=lambda i=i: self.switch_tab(i))
+            tab_button = ctk.CTkButton(self.tool_bar, text=f"#{i+1}", width=65, height=25, command=lambda i=i: self.switch_tab(i))
             tab_button.pack(side=tk.LEFT, padx=5, pady=5)
             self.tab_buttons.append(tab_button)
 

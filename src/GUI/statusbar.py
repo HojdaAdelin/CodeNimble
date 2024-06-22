@@ -2,6 +2,7 @@ import tkinter as tk
 import sys
 import os
 from PIL import Image, ImageTk
+from datetime import datetime, timedelta
 
 current_dir = os.path.dirname(__file__)
 parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
@@ -20,6 +21,10 @@ class StatusBar(tk.Frame):
         self.based_color = tk.StringVar(value="#333333")
         self.num_lines = tk.IntVar()
         self.num_words = tk.IntVar()
+        self.start_time = None
+        self.running = False
+        self.timer_paused = False
+        self.elapsed_time = timedelta(0)
         self.configure(bg="#333333")
         self.gui(font_size)
 
@@ -49,6 +54,52 @@ class StatusBar(tk.Frame):
 
         if self.latest_version > self.current_version:
             self.new_version_label.pack(side="left")
+
+        self.timer_frame = tk.Frame(self)
+        self.timer_frame.pack(side="left", anchor="w")
+        self.timer = tk.Label(self.timer_frame, text="00:00:00", font=font)
+        self.timer.pack(padx=(0,5))
+        self.timer.bind("<Button-1>", self.start_timer)
+        self.timer.bind("<Button-2>", self.stop_timer)
+        self.timer.bind("<Enter>", self.timer_hover)
+        self.timer.bind("<Leave>", self.timer_off_hover)
+
+    def timer_hover(self, event):
+        self.timer.config(bg=self.hv_color.get())
+        self.timer.config(cursor="hand2")
+
+    def timer_off_hover(self, event):
+        self.timer.config(bg=self.based_color.get())
+        self.timer.config(cursor="arrow")
+
+    def stop_timer(self, event):
+        self.running = False
+        self.timer_paused = False
+        self.elapsed_time = timedelta(0)
+        self.timer.config(text="00:00:00")
+
+    def start_timer(self, event):
+        if not self.running:
+            self.start_time = datetime.now() - self.elapsed_time
+            self.running = True
+            self.update_timer()
+        else:
+            self.timer_paused = not self.timer_paused
+            if self.timer_paused:
+                self.elapsed_time = datetime.now() - self.start_time
+            else:
+                self.start_time = datetime.now() - self.elapsed_time
+                self.update_timer()
+            
+
+    def update_timer(self):
+        if self.running and not self.timer_paused:
+            elapsed_time = datetime.now() - self.start_time
+            hours, remainder = divmod(elapsed_time.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            time_str = f"{hours:02}:{minutes:02}:{seconds:02}"
+            self.timer.config(text=time_str)
+            self.after(1000, self.update_timer)
 
     def on_hover(self, event):
         self.run_img.config(bg=self.hv_color.get())
