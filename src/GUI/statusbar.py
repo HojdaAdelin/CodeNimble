@@ -60,6 +60,7 @@ class StatusBar(tk.Frame):
         self.timer = tk.Label(self.timer_frame, text="00:00:00", font=font)
         self.timer.pack(padx=(0,5))
         self.timer.bind("<Button-1>", self.start_timer)
+        self.timer.bind("<Button-2>", self.stop_timer)
         self.timer.bind("<Enter>", self.timer_hover)
         self.timer.bind("<Leave>", self.timer_off_hover)
 
@@ -70,6 +71,12 @@ class StatusBar(tk.Frame):
     def timer_off_hover(self, event):
         self.timer.config(bg=self.based_color.get())
         self.timer.config(cursor="arrow")
+
+    def stop_timer(self, event):
+        self.running = False
+        self.timer_paused = False
+        self.elapsed_time = timedelta(0)
+        self.timer.config(text="00:00:00")
 
     def start_timer(self, event):
         if not self.running:
