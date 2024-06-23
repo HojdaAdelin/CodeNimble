@@ -5,6 +5,7 @@ import customtkinter as ct
 import re
 import sys
 import os
+import keyword
 
 current_dir = os.path.dirname(__file__)
 parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
@@ -92,6 +93,9 @@ class ScrollText(tk.Frame):
         self.text.bind("(", self.insert_parentheses)
         self.text.bind("[", self.insert_brackets)
         self.text.bind("{", self.insert_braces)
+        self.text.bind("\"", self.insert_quotation_mark)
+        self.text.bind("\'", self.insert_quotation_mark_sp)
+        self.text.bind("\*", self.comment_block)
         self.text.bind("<BackSpace>", self.handle_backspace)
         self.text.bind("<Return>", self.handle_return)
         self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
@@ -253,7 +257,7 @@ class ScrollText(tk.Frame):
             selection_start = None
             selection_end = None
 
-        if file_menu.return_file() == ".cpp":
+        if file_menu.return_file() == ".cpp" or file_menu.return_file() == ".py":
             self.highlight_syntax()
             self.update_suggestions()
         self.numberLines.redraw()
@@ -333,11 +337,31 @@ class ScrollText(tk.Frame):
         return dark_theme if theme == 0 else light_theme
 
     def get_keywords(self):
-        return {
-            "keyword1": ["int", "float", "double", "char", "if", "else", "for", "while", "return", "do", "string", "const", "using"],
-            "keyword2": ["struct", "class", "public", "private", "protected"],
-            "keyword3": ["void"]
-        }
+        if file_menu.return_file() == ".cpp":
+            return {
+                "keyword1": ["int", "float", "double", "char", "if", "else", "for", "while", "return", "do", "string", "const", "using"],
+                "keyword2": ["struct", "class", "public", "private", "protected"],
+                "keyword3": ["void"]
+            }
+        elif file_menu.return_file() == ".py":
+            return {
+                "keyword1": ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class",
+        "continue", "def", "del", "elif", "else", "except", "finally", "for", "from",
+        "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass",
+        "raise", "return", "try", "while", "with", "yield"],
+                "keyword2": ['abs', 'delattr', 'hash', 'memoryview', 'set', 'all', 'dict', 'help', 'min', 'setattr', 'any', 'dir', 'hex',
+        'next', 'slice', 'ascii', 'divmod', 'id', 'object', 'sorted', 'bin', 'enumerate', 'input', 'oct', 'staticmethod',
+        'bool', 'eval', 'int', 'open', 'str', 'breakpoint', 'exec', 'isinstance', 'ord', 'sum', 'bytearray', 'filter',
+        'issubclass', 'pow', 'super', 'bytes', 'float', 'iter', 'print', 'tuple', 'callable', 'format', 'len', 'property',
+        'type', 'chr', 'frozenset', 'list', 'range', 'vars', 'classmethod', 'getattr', 'locals', 'repr', 'zip', 'compile',
+        'globals', 'map', 'reversed', '__import__', 'complex', 'hasattr', 'max', 'round'],
+                "keyword3": ['append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort',
+        'capitalize', 'casefold', 'center', 'encode', 'endswith', 'expandtabs', 'find', 'format', 'format_map', 'isalnum',
+        'isalpha', 'isascii', 'isdecimal', 'isdigit', 'isidentifier', 'islower', 'isnumeric', 'isprintable', 'isspace',
+        'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 'maketrans', 'partition', 'replace', 'rfind', 'rindex',
+        'rjust', 'rpartition', 'rsplit', 'rstrip', 'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title',
+        'translate', 'upper', 'zfill']
+            }
 
     def get_special_characters(self):
         return {
@@ -427,6 +451,21 @@ class ScrollText(tk.Frame):
             self.text.tag_add(tag, start_index, end_index)
             start_index = end_index
 
+    def insert_quotation_mark(self, event):
+        self.text.insert(tk.INSERT, "\"\"")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
+        return "break"
+    
+    def insert_quotation_mark_sp(self, event):
+        self.text.insert(tk.INSERT, "\'\'")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
+        return "break"
+    
+    def comment_block(self, event):
+        self.text.insert(tk.INSERT, "**/")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-2c")
+        return "break"
+    
     def insert_parentheses(self, event):
         self.text.insert(tk.INSERT, "()")
         self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
@@ -447,8 +486,8 @@ class ScrollText(tk.Frame):
         previous_char = self.text.get(f"{cursor_index} -1c", cursor_index)
         next_char = self.text.get(cursor_index, f"{cursor_index} +1c")
 
-        if previous_char in "({[" and next_char in ")}]":
-            if self.text.get(f"{cursor_index} -1c", f"{cursor_index} +1c") in ["()", "{}", "[]"]:
+        if previous_char in "({[\"\'" and next_char in ")}]\"\'":
+            if self.text.get(f"{cursor_index} -1c", f"{cursor_index} +1c") in ["()", "{}", "[]", "\"\"", "\'\'"]:
                 self.text.delete(f"{cursor_index} -1c", f"{cursor_index} +1c")
                 return "break"
         return
