@@ -56,7 +56,8 @@ class StatusBar(tk.Frame):
             self.new_version_label.pack(side="left")
 
         self.timer_frame = tk.Frame(self)
-        self.timer_frame.pack(side="left", anchor="w")
+        if int(check.get_config_value("timer")) == 1:
+            self.timer_frame.pack(side="left", anchor="w")
         self.timer = tk.Label(self.timer_frame, text="00:00:00", font=font)
         self.timer.pack(padx=(0,5))
         self.timer.bind("<Button-1>", self.start_timer)

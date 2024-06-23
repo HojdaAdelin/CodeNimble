@@ -1,4 +1,5 @@
 import customtkinter as ct
+import tkinter as tk
 from tkinter import *
 from ctypes import byref, sizeof, c_int, windll
 
@@ -10,10 +11,13 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
+from MainMenu import view_menu
 
 class SettingsApp(ct.CTk):
-    def __init__(self):
+    def __init__(self, status):
         super().__init__()
+
+        self.status = status
 
         fg_cl, text_bg, text = self.theme()
         self.window(fg_cl)
@@ -67,11 +71,28 @@ class SettingsApp(ct.CTk):
 
         self.status_label = ct.CTkLabel(self.left_frame, font=("", 24), text_color=text, text="Status Bar")
         self.status_label.pack(padx=5,pady=5)
-        self.timer_box = ct.CTkCheckBox(self.left_frame, text="Timer", checkbox_width=20, checkbox_height=20, text_color=text)
+
+        initial_value = int(check.get_config_value("timer"))
+        self.timer_var = tk.IntVar(value=initial_value)
+
+        self.timer_box = ct.CTkCheckBox(self.left_frame, text="Timer", checkbox_width=20, checkbox_height=20, text_color=text,
+                                        variable=self.timer_var, command=self.update_timer)
         self.timer_box.pack(padx=5,pady=5)
+
         self.char_line_box = ct.CTkCheckBox(self.left_frame, text="Words", checkbox_width=20, checkbox_height=20, text_color=text)
         self.char_line_box.pack(padx=5,pady=5)
         self.run_box = ct.CTkCheckBox(self.left_frame, text="Run", checkbox_width=20, checkbox_height=20, text_color=text)
         self.run_box.pack(padx=5,pady=5)
-        self.not_box = ct.CTkCheckBox(self.left_frame, text="Notifications", checkbox_width=20, checkbox_height=20, text_color=text)
+
+        initial_value = int(check.get_config_value("notifications"))
+        self.notifications_var = tk.IntVar(value=initial_value)
+
+        self.not_box = ct.CTkCheckBox(self.left_frame, text="Notifications", checkbox_width=20, checkbox_height=20, text_color=text,
+                                      variable=self.notifications_var, command=self.update_notifications)
         self.not_box.pack(padx=5,pady=5)
+
+    def update_notifications(self):
+        view_menu.notifications(self.status)
+
+    def update_timer(self):
+        view_menu.hide_unhide_timer(self.status)
