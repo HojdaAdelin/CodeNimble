@@ -234,5 +234,5 @@ class MainWindow(ct.CTk):
             panel_window.mainloop()
 
         def open_settings_window(self):
-            settings_window = settings.SettingsApp()
+            settings_window = settings.SettingsApp(status=statusbar_instance)
             settings_window.mainloop()

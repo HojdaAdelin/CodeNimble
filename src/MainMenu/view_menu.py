@@ -93,3 +93,14 @@ def notifications(status):
         status.status_label.pack(side="right")
         status.num_stats_label.pack()
         status.run_img.pack(side="right", padx=10)
+
+def hide_unhide_timer(status):
+    if int(check.get_config_value("timer")) == 0:
+        check.update_config_file("timer", 1)
+        status.timer_frame.pack(side="left", anchor="w")
+    elif int(check.get_config_value("timer")) == 1:
+        check.update_config_file("timer", 0)
+        status.timer_frame.pack_forget()
+    else:
+        check.update_config_file("timer", 1)
+        status.timer_frame.pack(side="left", anchor="w")
