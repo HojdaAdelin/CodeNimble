@@ -27,6 +27,7 @@ from GUI import treeview
 from GUI import paint_mode
 from Server import panel
 from MainMenu import profile
+from MainMenu import settings
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -50,6 +51,7 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Report bugs",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble/issues"))
         home_drop.add_separator()
         home_drop.add_option(option="Profile", command=lambda:open_profile_window(self))
+        home_drop.add_option(option="Settings", command=lambda:open_settings_window(self))
         home_drop.add_separator()
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
     
@@ -230,3 +232,7 @@ class MainWindow(ct.CTk):
         def open_server_panel(self):
             panel_window = panel.ServerPanel(self.scroll.server)
             panel_window.mainloop()
+
+        def open_settings_window(self):
+            settings_window = settings.SettingsApp()
+            settings_window.mainloop()
