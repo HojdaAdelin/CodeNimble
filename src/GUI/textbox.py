@@ -93,6 +93,9 @@ class ScrollText(tk.Frame):
         self.text.bind("(", self.insert_parentheses)
         self.text.bind("[", self.insert_brackets)
         self.text.bind("{", self.insert_braces)
+        self.text.bind("\"", self.insert_quotation_mark)
+        self.text.bind("\'", self.insert_quotation_mark_sp)
+        self.text.bind("\*", self.comment_block)
         self.text.bind("<BackSpace>", self.handle_backspace)
         self.text.bind("<Return>", self.handle_return)
         self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
@@ -448,6 +451,21 @@ class ScrollText(tk.Frame):
             self.text.tag_add(tag, start_index, end_index)
             start_index = end_index
 
+    def insert_quotation_mark(self, event):
+        self.text.insert(tk.INSERT, "\"\"")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
+        return "break"
+    
+    def insert_quotation_mark_sp(self, event):
+        self.text.insert(tk.INSERT, "\'\'")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
+        return "break"
+    
+    def comment_block(self, event):
+        self.text.insert(tk.INSERT, "**/")
+        self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-2c")
+        return "break"
+    
     def insert_parentheses(self, event):
         self.text.insert(tk.INSERT, "()")
         self.text.mark_set(tk.INSERT, f"{self.text.index(tk.INSERT)}-1c")
@@ -468,8 +486,8 @@ class ScrollText(tk.Frame):
         previous_char = self.text.get(f"{cursor_index} -1c", cursor_index)
         next_char = self.text.get(cursor_index, f"{cursor_index} +1c")
 
-        if previous_char in "({[" and next_char in ")}]":
-            if self.text.get(f"{cursor_index} -1c", f"{cursor_index} +1c") in ["()", "{}", "[]"]:
+        if previous_char in "({[\"\'" and next_char in ")}]\"\'":
+            if self.text.get(f"{cursor_index} -1c", f"{cursor_index} +1c") in ["()", "{}", "[]", "\"\"", "\'\'"]:
                 self.text.delete(f"{cursor_index} -1c", f"{cursor_index} +1c")
                 return "break"
         return
