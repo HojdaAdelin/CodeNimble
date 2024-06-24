@@ -37,7 +37,8 @@ class StatusBar(tk.Frame):
 
         if int(check.get_config_value("notifications")) == 1:
             self.status_label.pack(side="right")
-        self.num_stats_label.pack(side="right")
+        if int(check.get_config_value("words_count")) == 1:
+            self.num_stats_label.pack(side="right")
         
         # Load the image and resize it
         image_path = "images/run.png"  # Update this path if necessary
@@ -47,7 +48,8 @@ class StatusBar(tk.Frame):
         
         # Create a label to display the image
         self.run_img = tk.Label(self, image=self.image, cursor="hand2")
-        self.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("status_run")) == 1:
+            self.run_img.pack(side="right", padx=10)
         
         self.run_img.bind("<Enter>", self.on_hover)
         self.run_img.bind("<Leave>", self.off_hover)
