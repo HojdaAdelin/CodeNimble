@@ -106,7 +106,7 @@ class TabBar(customtkinter.CTkFrame):
             self.current_tab.modified = False
 
         self.current_tab.update_title()
-        self.text_widget.edit_modified(False)  # Resetează flag-ul de modificare
+        self.text_widget.edit_modified(False)
 
 
     def add_tab(self, file_path):

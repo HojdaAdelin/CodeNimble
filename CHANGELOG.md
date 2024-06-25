@@ -26,6 +26,7 @@
 - Fixed autocompletion when list isn't mapped
 - Fixed Ctrl+Backspace
 - Fixded save
+- Input & Output won't be displayed when populate treeview 
 
 # Version: 1.4
 

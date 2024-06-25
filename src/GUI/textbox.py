@@ -259,7 +259,8 @@ class ScrollText(tk.Frame):
 
         if file_menu.return_file() == ".cpp" or file_menu.return_file() == ".py":
             self.highlight_syntax()
-            self.update_suggestions()
+            if file_menu.return_file() == ".cpp":
+                self.update_suggestions()
         self.numberLines.redraw()
         self.statusbar.update_stats(self.text)
         font_size = check.get_config_value("zoom")
