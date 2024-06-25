@@ -6,6 +6,7 @@ import sys
 import os
 import shutil
 from tkinter import messagebox
+from PIL import Image, ImageTk, ImageDraw
 
 current_dir = os.path.dirname(__file__)
 parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
@@ -39,14 +40,30 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<<TreeviewOpen>>", self.on_open)
 
     def gui(self, master):
+
+        im_open = Image.new('RGBA', (30, 30), '#00000000')  # Săgeată deschisă mai mare
+        im_empty = Image.new('RGBA', (30, 30), '#00000000')  # Imagine goală mai mare
+        draw = ImageDraw.Draw(im_open)
+        draw.polygon([(0, 10), (28, 10), (14, 28)], fill='#858585', outline='black')
+        im_close = im_open.rotate(90)
+
+        self.img_open = ImageTk.PhotoImage(im_open, name='img_open', master=master)
+        self.img_close = ImageTk.PhotoImage(im_close, name='img_close', master=master)
+        self.img_empty = ImageTk.PhotoImage(im_empty, name='img_empty', master=master)
+
         self.treestyle = ttk.Style()
         self.treestyle.theme_use('default')
+
+        self.treestyle.element_create('Treeitem.myindicator', 'image', 'img_close', ('user1', '!user2', 'img_open'), ('user2', 'img_empty'), sticky='w', width=30)
+        self.treestyle.layout('Treeview.Item', [('Treeitem.padding', {'sticky': 'nswe', 'children': [('Treeitem.myindicator', {'side': 'left', 'sticky': ''}), ('Treeitem.image', {'side': 'left', 'sticky': ''}), ('Treeitem.focus', {'side': 'left', 'sticky': '', 'children': [('Treeitem.text', {'side': 'left', 'sticky': ''})]})]})])
+
         self.treestyle.configure(
             "Treeview",
             highlightthickness=0,
             borderwidth=0,
             font=('Consolas', 28),
-            rowheight=45
+            rowheight=45,
+            indent=50
         )
         self.treestyle.map('Treeview', background=[('selected', self.bg_color)], foreground=[('selected', self.selected_color)])
         

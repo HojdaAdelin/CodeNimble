@@ -74,19 +74,24 @@ class SettingsApp(ct.CTk):
 
         initial_value = int(check.get_config_value("timer"))
         self.timer_var = tk.IntVar(value=initial_value)
-
         self.timer_box = ct.CTkCheckBox(self.left_frame, text="Timer", checkbox_width=20, checkbox_height=20, text_color=text,
                                         variable=self.timer_var, command=self.update_timer)
         self.timer_box.pack(padx=5,pady=5)
 
-        self.char_line_box = ct.CTkCheckBox(self.left_frame, text="Words", checkbox_width=20, checkbox_height=20, text_color=text)
+        initial_value = int(check.get_config_value("words_count"))
+        self.words_var = tk.IntVar(value=initial_value)
+        self.char_line_box = ct.CTkCheckBox(self.left_frame, text="Words", checkbox_width=20, checkbox_height=20, text_color=text,
+                                            variable=self.words_var, command=self.update_words)
         self.char_line_box.pack(padx=5,pady=5)
-        self.run_box = ct.CTkCheckBox(self.left_frame, text="Run", checkbox_width=20, checkbox_height=20, text_color=text)
+
+        initial_value = int(check.get_config_value("status_run"))
+        self.run_var = tk.IntVar(value=initial_value)
+        self.run_box = ct.CTkCheckBox(self.left_frame, text="Run", checkbox_width=20, checkbox_height=20, text_color=text,
+                                      variable=self.run_var, command=self.update_run)
         self.run_box.pack(padx=5,pady=5)
 
         initial_value = int(check.get_config_value("notifications"))
         self.notifications_var = tk.IntVar(value=initial_value)
-
         self.not_box = ct.CTkCheckBox(self.left_frame, text="Notifications", checkbox_width=20, checkbox_height=20, text_color=text,
                                       variable=self.notifications_var, command=self.update_notifications)
         self.not_box.pack(padx=5,pady=5)
@@ -96,3 +101,9 @@ class SettingsApp(ct.CTk):
 
     def update_timer(self):
         view_menu.hide_unhide_timer(self.status)
+
+    def update_run(self):
+        view_menu.hide_unhide_run(self.status)
+
+    def update_words(self):
+        view_menu.hide_unhide_words(self.status)

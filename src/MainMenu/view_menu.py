@@ -104,3 +104,33 @@ def hide_unhide_timer(status):
     else:
         check.update_config_file("timer", 1)
         status.timer_frame.pack(side="left", anchor="w")
+
+def hide_unhide_run(status):
+    if int(check.get_config_value("status_run")) == 0:
+        check.update_config_file("status_run", 1)
+        status.run_img.pack(side="right", padx=10)
+    elif int(check.get_config_value("status_run")) == 1:
+        check.update_config_file("status_run", 0)
+        status.run_img.pack_forget()
+    else:
+        check.update_config_file("status_run", 1)
+        status.run_img.pack(side="right", padx=10)
+
+def hide_unhide_words(status):
+    if int(check.get_config_value("words_count")) == 0:
+        check.update_config_file("words_count", 1)
+        if int(check.get_config_value("status_run")) == 1:
+            status.run_img.pack_forget()
+        status.num_stats_label.pack(side="right")
+        if int(check.get_config_value("status_run")) == 1:
+            status.run_img.pack(side="right", padx=10)
+    elif int(check.get_config_value("words_count")) == 1:
+        check.update_config_file("words_count", 0)
+        status.num_stats_label.pack_forget()
+    else:
+        check.update_config_file("words_count", 1)
+        if int(check.get_config_value("status_run")) == 1:
+            status.run_img.pack_forget()
+        status.num_stats_label.pack(side="right")
+        if int(check.get_config_value("status_run")) == 1:
+            status.run_img.pack(side="right", padx=10)
