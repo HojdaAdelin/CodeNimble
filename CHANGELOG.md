@@ -20,6 +20,8 @@
 - Added CHANGELOG.md
 - Timer in status bar
 - Added "*" in file tab when the file is modified
+- Now you can run the textbox content(you don't need to save the file everytime)
+- File tab pack forget when there aren't any tabs
 
 ### Fixed:
 
@@ -27,6 +29,7 @@
 - Fixed Ctrl+Backspace
 - Fixded save
 - Input & Output won't be displayed when populate treeview 
+
 
 # Version: 1.4
 

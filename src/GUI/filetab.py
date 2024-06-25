@@ -90,7 +90,7 @@ class TabBar(customtkinter.CTkFrame):
         self.text_widget.bind("<<NotebookTabChanged>>", self.on_tab_changed)
         self.text_widget.bind("<<Modified>>", self.on_text_modified)
         # Setați lățimea fixă a frame-ului
-        self.configure(height=35, corner_radius=0)
+        self.configure(height=0, corner_radius=0)
         self.pack_propagate(False)  # Previne modificarea automată a dimensiunilor frame-ului
 
     def on_text_modified(self, event=None):
@@ -135,6 +135,7 @@ class TabBar(customtkinter.CTkFrame):
 
         # Setează tab-ul nou ca tab activ
         self.show_file_content(file_path)
+        self.configure(height=35)
 
     def show_file_content(self, file_path):
         if file_path == file_menu.current_file():
@@ -204,6 +205,9 @@ class TabBar(customtkinter.CTkFrame):
                     self.text_widget.delete("1.0", "end")
                     file_menu.update_file_path("")  # Resetează calea fișierului curent
                     self.current_tab = None
+            
+            if not self.tabs:
+                self.configure(height=0)
             self.scroll.redraw()
 
     def delete_tab(self, file_path):

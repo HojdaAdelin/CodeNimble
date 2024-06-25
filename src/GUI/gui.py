@@ -122,7 +122,7 @@ class MainWindow(ct.CTk):
                                                                                          scroll.tab_bar))
         
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
-        utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(treeview_frame))
+        utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(treeview_frame, scroll.text))
         utility_drop.add_option(option="Paint Mode              Ctrl+P", command=lambda:open_paint_mode(self))
         utility_drop.add_separator()
         utility_drop.add_option(option="Start Server", command= lambda:scroll.start_server())
@@ -146,7 +146,7 @@ class MainWindow(ct.CTk):
 
         scroll.text.focus()
         self.after(200, scroll.redraw())
-        statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(treeview_frame))
+        statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(treeview_frame, scroll.text))
         scroll.text.bind("<Control-n>", lambda event: file_menu.custom_file(statusbar_instance, treeview_frame))
         scroll.text.bind("<Control-o>", lambda event: file_menu.open_file(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-s>", lambda event: file_menu.save_file(scroll.text, statusbar_instance))
@@ -163,7 +163,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
         scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll))
         scroll.text.bind("<Control-Shift-T>", lambda event: template_menu.use_template(scroll.text, scroll, statusbar_instance))
-        scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame))
+        scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame, scroll.text))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
         
