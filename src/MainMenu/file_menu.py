@@ -91,7 +91,7 @@ def save_file(text, status_bar):
     global opened_filename  
 
     if opened_filename:
-        content = text.get("1.0", tk.END)
+        content = text.get("1.0", "end-1c")
 
         with open(opened_filename, "w") as file:
             file.write(content)
@@ -103,7 +103,7 @@ def save_as_file(text, status_bar):
     global opened_filename  
     global opened_folder_path
 
-    content = text.get("1.0", tk.END)
+    content = text.get("1.0", "end-1c")
     filename = filedialog.asksaveasfilename(defaultextension=".txt",
                                              filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
                                              initialdir=opened_folder_path if opened_folder_path else os.getcwd())
@@ -646,7 +646,7 @@ def open_output(tree, path=None):
 def save_input(tree):
     global opened_input
     if opened_input:
-        content = tree.input.get("1.0", tk.END)
+        content = tree.input.get("1.0", "end-1c")
         with open(opened_input, "w") as file:
             file.write(content)
     else:

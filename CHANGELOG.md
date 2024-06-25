@@ -18,11 +18,14 @@
 - Settings
 - Settings for status bar
 - Added CHANGELOG.md
+- Timer in status bar
+- Added "*" in file tab when the file is modified
 
 ### Fixed:
 
 - Fixed autocompletion when list isn't mapped
-- Fix Ctrl+Backspace
+- Fixed Ctrl+Backspace
+- Fixded save
 
 # Version: 1.4
 

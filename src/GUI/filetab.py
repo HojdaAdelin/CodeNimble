@@ -16,13 +16,14 @@ class ClosableTab(customtkinter.CTkFrame):
         self.command = command
         self.close_command = close_command
         self.middle_click_command = middle_click_command  # Funcția de callback pentru click pe butonul de mijloc
-
+        self.text = text
         self.inactive_bg_color = "#3252a8"
         self.active_bg_color = "#2c3eb8"
+        self.modified = False 
 
         # Set up the main tab button
         self.tab_button = customtkinter.CTkButton(
-            self, text=text, command=self.command, height=35, width=80,
+            self, text=self.text, command=self.command, height=35, width=80,
             corner_radius=0, hover_color=self.active_bg_color, fg_color=self.inactive_bg_color,
             font=("", 16)
         )
@@ -69,7 +70,11 @@ class ClosableTab(customtkinter.CTkFrame):
         self._drag_data["item"] = None
         self.master.reorder_tabs()
 
-
+    def update_title(self):
+        title = self.text
+        if self.modified:
+            title += " *"
+        self.tab_button.configure(text=title)
 
 class TabBar(customtkinter.CTkFrame):
     def __init__(self, master, text_widget, scroll, *args, **kwargs):
@@ -83,9 +88,26 @@ class TabBar(customtkinter.CTkFrame):
         self.text_widget.bind("<Control-Tab>", self.next_tab)
         self.text_widget.bind("<Control-Shift-Tab>", self.previous_tab)
         self.text_widget.bind("<<NotebookTabChanged>>", self.on_tab_changed)
+        self.text_widget.bind("<<Modified>>", self.on_text_modified)
         # Setați lățimea fixă a frame-ului
         self.configure(height=35, corner_radius=0)
         self.pack_propagate(False)  # Previne modificarea automată a dimensiunilor frame-ului
+
+    def on_text_modified(self, event=None):
+        if self.current_tab is None:
+            return
+        
+        file_path = file_menu.current_file()
+        current_content = self.text_widget.get("1.0", "end-1c")
+
+        if file_path in self.file_contents and current_content != file_menu.get_content_of_current_file(file_path):
+            self.current_tab.modified = True
+        else:
+            self.current_tab.modified = False
+
+        self.current_tab.update_title()
+        self.text_widget.edit_modified(False)  # Resetează flag-ul de modificare
+
 
     def add_tab(self, file_path):
         # Verificați dacă fișierul este deja deschis într-un tab
