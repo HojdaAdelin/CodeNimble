@@ -6,6 +6,10 @@ Code Nimble is a light code editor dedicated for competitive programming.
 <img src="images/ss.png">
 <img src="images/ss2.png">
 
+# Change log
+
+To see the full change log, check [CHANGELOG](CHANGELOG.md)
+
 # Build
 
 ### In order to build on your own this project you need to follow these steps:

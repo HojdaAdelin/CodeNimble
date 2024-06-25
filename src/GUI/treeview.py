@@ -63,7 +63,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
             borderwidth=0,
             font=('Consolas', 28),
             rowheight=45,
-            indent=50
+            indent=20
         )
         self.treestyle.map('Treeview', background=[('selected', self.bg_color)], foreground=[('selected', self.selected_color)])
         
@@ -154,12 +154,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
         abspath = os.path.abspath(path)
         root_node = self.treeview.insert('', 'end', text=abspath, open=True)
         self.process_directory(root_node, abspath)
-        
-        if root_node:
-            self.input_label.grid(row=1, column=0, padx=(5, 5))
-            self.input.grid(row=2, column=0, sticky="nsew", padx=(5, 5))
-            self.output_label.grid(row=3, column=0, padx=(5, 5))
-            self.output.grid(row=4, column=0, sticky="nsew", padx=(5, 5))
 
     def process_directory(self, parent, path):
         try:
