@@ -494,6 +494,13 @@ class ScrollText(tk.Frame):
         return
 
     def handle_return(self, event):
+
+        if self.suggestions.size() > 0 and self.suggestions.winfo_ismapped():
+            first_suggestion = self.suggestions.get(0)
+            self.insert_suggestion(first_suggestion)
+            self.hide_suggestions()
+            self.text.focus_set()
+            return 'break'
         if file_menu.return_file() != ".cpp":
             cursor_index = self.text.index(tk.INSERT)
             current_line = self.text.get(f"{cursor_index} linestart", cursor_index)
