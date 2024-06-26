@@ -15,6 +15,7 @@ sys.path.append(parent_dir)
 
 from Config import check
 from MainMenu import edit_menu
+from MainMenu import themes
 
 opened_filename = None
 opened_folder_path = None
@@ -130,11 +131,11 @@ def custom_file(statusbar, tree, custom_path=None):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -195,20 +196,7 @@ def custom_file(statusbar, tree, custom_path=None):
             version_window_opened = False
             version_window.destroy()
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(version_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(version_window)
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
@@ -338,11 +326,11 @@ def rename_file(statusbar, tree, path):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -399,20 +387,7 @@ def rename_file(statusbar, tree, path):
             version_window.destroy()
             version_window = None
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(version_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(version_window)
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
@@ -444,11 +419,11 @@ def rename_folder(statusbar, tree, folder_path):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if int(check.get_config_value("theme")) == 0:
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif int(check.get_config_value("theme")) == 1:
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -497,16 +472,7 @@ def rename_folder(statusbar, tree, folder_path):
             version_windoww.destroy()
             version_windoww = None
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(version_windoww.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(HWND, 35, byref(c_int(tb_color)), sizeof(c_int))
+        themes.title_bar_color_handle(version_windoww)
 
         version_windoww.protocol("WM_DELETE_WINDOW", on_closing)
         version_windoww.mainloop()
@@ -521,11 +487,11 @@ def add_folder(statusbar, tree, custom_path=None):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if int(check.get_config_value("theme")) == 0:
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif int(check.get_config_value("theme")) == 1:
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -576,20 +542,7 @@ def add_folder(statusbar, tree, custom_path=None):
             version_window_opened = False
             version_window.destroy()
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(version_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(version_window)
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()

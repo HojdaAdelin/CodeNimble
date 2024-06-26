@@ -10,6 +10,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
+from MainMenu import themes
 
 class PaintApp(ctk.CTk):
     def __init__(self, *args, **kwargs):
@@ -71,25 +72,12 @@ class PaintApp(ctk.CTk):
         self.show_canvas(self.current_canvas_index)
 
         # Title bar color handle
-        tb_color = 0x333333
-        if int(check.get_config_value("theme")) == 0:
-            tb_color = 0x333333
-        elif int(check.get_config_value("theme")) == 1:
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(self.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(self)
 
     def theme(self):
-        if int(check.get_config_value("theme")) == 0:
+        if check.get_config_value("theme") == "dark":
             self.bg_color = "#333333"
-        elif int(check.get_config_value("theme")) == 1:
+        elif check.get_config_value("theme") == "light":
             self.bg_color = "#f0f0f0"
         else:
             self.bg_color = "#333333"

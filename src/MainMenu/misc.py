@@ -16,6 +16,7 @@ sys.path.append(parent_dir)
 
 from Config import check
 from API import get_version
+from MainMenu import themes
 
 def exit_application(root):
     root.quit()
@@ -28,10 +29,10 @@ def version_info():
         version_window.title("CodeNimble - Version")
         fg_cl = "#2b2b2b"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text = "black"
         w = 300 
@@ -58,20 +59,7 @@ def version_info():
             version_window_opened = False
             version_window.destroy()
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(version_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(version_window)
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
@@ -86,10 +74,10 @@ def changelog_inf():
         changelog_window.iconbitmap("images/logo.ico")
         fg_cl = "#2b2b2b"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text = "black"
         w = 500 
@@ -107,7 +95,7 @@ def changelog_inf():
         
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.5", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Paint Mode\n• Integrate paint window in app\n• Change colors in paint mode\n• Local Server\n• Profile\n• Fixed autocompletion when list isn't mapped\n• Connected users list in panel\n• Fix Ctrl+Backspace\n• Autocomplete for CPP when ENTER\n• Button 2 bind in file tab\n• Tabs in paint mode\n• Text highlighted for python\n• Autocomplete \", \', \*\n• Settings\n• Settings for status bar\n• Design updates\n• Fixed save\n• Added \"*\" in file tab", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• Paint Mode\n• Integrate paint window in app\n• Change colors in paint mode\n• Local Server\n• Profile\n• Fixed autocompletion when list isn't mapped\n• Connected users list in panel\n• Fix Ctrl+Backspace\n• Autocomplete for CPP when ENTER\n• Button 2 bind in file tab\n• Tabs in paint mode\n• Text highlighted for python\n• Autocomplete \", \', \*\n• Settings\n• Settings for status bar\n• Design updates\n• Fixed save\n• Added \"*\" in file tab\n• New theme system", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
@@ -116,20 +104,7 @@ def changelog_inf():
             changelog_window_opened = False
             changelog_window.destroy()
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(changelog_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(changelog_window)
 
         changelog_window.protocol("WM_DELETE_WINDOW", on_closing)
         changelog_window.mainloop()
@@ -147,10 +122,10 @@ def guide():
         
         fg_cl = "#2b2b2b"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text = "black"
 
@@ -177,20 +152,7 @@ def guide():
             guide_window_opened = False
             guide_window.destroy()
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(guide_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(guide_window)
 
         guide_window.protocol("WM_DELETE_WINDOW", on_closing)
         guide_window.mainloop()

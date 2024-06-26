@@ -22,6 +22,7 @@
 - Added "*" in file tab when the file is modified
 - Now you can run the textbox content(you don't need to save the file everytime)
 - File tab pack forget when there aren't any tabs
+- New theme system with json files
 
 ### Fixed:
 
