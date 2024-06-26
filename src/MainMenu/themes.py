@@ -1,7 +1,7 @@
 import tkinter as tk
 import customtkinter as ct
 from ctypes import byref, sizeof, c_int, windll
-
+import json
 import sys
 import os
 
@@ -11,133 +11,118 @@ sys.path.append(parent_dir)
 
 from Config import check
 
-def dark_theme(menu_bar, cascade1, cascade2, 
-               cascade3, cascade4, cascade5, cascade6,
-               cascade7,
-               drop1, drop2, drop3, drop4, drop5, drop6,
-               drop7,
-               status, text, win, tree, tree_menu, tree_foldermenu,
-               tab_bar):
-    check.update_config_file("theme", 0)
-    menu_bar.configure(bg_color="#333333")
-    cascade1.configure(hover_color="#4d4d4d", text_color="white")
-    cascade2.configure(hover_color="#4d4d4d", text_color="white")
-    cascade3.configure(hover_color="#4d4d4d", text_color="white")
-    cascade4.configure(hover_color="#4d4d4d", text_color="white")
-    cascade5.configure(hover_color="#4d4d4d", text_color="white")
-    cascade6.configure(hover_color="#4d4d4d", text_color="white")
-    cascade7.configure(hover_color="#4d4d4d", text_color="white")
+def find_theme_color(init, widget):
+    path = f"Themes/{init}"
+    
+    try:
+        with open(path, 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        raise ValueError(f"File {path} not found")
+    
+    if widget in data:
+        return data[widget]
+    else:
+        raise ValueError(f"Widget {widget} not found in {path}")
 
-    drop1.configure(fg_color="#333333", text_color="white",hover_color="#4d4d4d", bg_color="#333333")
-    drop2.configure(fg_color="#333333", text_color="white",hover_color="#4d4d4d", bg_color="#333333")
-    drop3.configure(fg_color="#333333", text_color="white",hover_color="#4d4d4d", bg_color="#333333")
-    drop4.configure(fg_color="#333333", text_color="white",hover_color="#4d4d4d", bg_color="#333333")
-    drop5.configure(fg_color="#333333", text_color="white",hover_color="#4d4d4d", bg_color="#333333")
-    drop6.configure(fg_color="#333333", text_color="white",hover_color="#4d4d4d", bg_color="#333333")
-    drop7.configure(fg_color="#333333", text_color="white",hover_color="#4d4d4d", bg_color="#333333")
-    status.configure(bg="#333333")
-    status.status_label.configure(bg="#333333", fg="white")
-    status.num_stats_label.configure(bg="#3252a8", fg="white")
-    status.run_img.configure(bg="#333333")
-    status.set_color("#4d4d4d")
-    status.set_based_color("#333333")
-    status.timer.configure(bg="#333333", fg="white")
-    status.timer_frame.configure(bg="#333333")
-    text.text.configure(bg="#2b2b2b", foreground="white",insertbackground='white',selectbackground="#4d4d4d")
-    text.scrollbar.configure(fg_color="#2b2b2b", button_color="#5c5c5c", button_hover_color="#858585")
-    text.scrollhor.configure(fg_color="#2b2b2b", button_color="#5c5c5c", button_hover_color="#858585")
-    text.numberLines.configure(bg='#333333')
-    text.suggestions.configure(bg='#333333', fg="white",selectbackground='#4d4d4d', selectforeground='white')
-    win.configure(fg_color="#333333")
+def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, cascade6, cascade7, drop1, drop2, drop3, drop4, drop5, drop6, drop7, status, text, win, tree, tree_menu, tree_foldermenu, tab_bar):
+    widgets = {
+        'menu_bar': menu_bar,
+        'cascade1': cascade1,
+        'cascade2': cascade2,
+        'cascade3': cascade3,
+        'cascade4': cascade4,
+        'cascade5': cascade5,
+        'cascade6': cascade6,
+        'cascade7': cascade7,
+        'drop1': drop1,
+        'drop2': drop2,
+        'drop3': drop3,
+        'drop4': drop4,
+        'drop5': drop5,
+        'drop6': drop6,
+        'drop7': drop7,
+        'status': status,
+        'text': text,
+        'win': win,
+        'tree': tree,
+        'tree_menu': tree_menu,
+        'tree_foldermenu': tree_foldermenu,
+        'tab_bar': tab_bar
+    }
+    misc = init
+    init += ".json"
+    with open(f"Themes/{init}", 'r') as file:
+        config = json.load(file)
+        
+    # Convert title_bar_color from string to integer
+    title_bar_color = int(config['title_bar_color'], 16)
+        
+        # Apply the title bar color
     HWND = windll.user32.GetParent(win.winfo_id())
     windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(0x333333)),
-            sizeof(c_int))
-    text.redraw()
-    tree.configure(fg_color="#333333")
-    tree.treestyle.configure(
-            "Treeview",
-            background="#333333", 
-            fieldbackground="#333333",
-            foreground = "white",
-            bordercolor = "#333333" 
-        )
-    tree.treestyle.map('Treeview', 
-                           background=[('selected', "#858585")],
-                           foreground=[('selected', "white")])
-    
-    tree_menu.configure(bg="#333333", fg="white", activebackground="#ebebeb", activeforeground="black")
-    tree_foldermenu.configure(bg="#333333", fg="white", activebackground="#ebebeb", activeforeground="black")
-    tab_bar.configure(fg_color="#333333")
-    tree.input_label.configure(text_color="white")
-    tree.output_label.configure(text_color="white")
-    tree.input.configure(fg_color="#2b2b2b", text_color="white")
-    tree.output.configure(fg_color="#2b2b2b", text_color="white")
-    
-def light_theme(menu_bar, cascade1, cascade2, 
-               cascade3, cascade4, cascade5, cascade6,
-               cascade7,
-               drop1, drop2, drop3, drop4, drop5, drop6,
-               drop7,
-               status, text, win, tree, tree_menu, tree_foldermenu,
-               tab_bar):
-    
-    check.update_config_file("theme", 1)
-    menu_bar.configure(bg_color="white")
-    cascade1.configure(hover_color="#ebebeb", text_color="black")
-    cascade2.configure(hover_color="#ebebeb", text_color="black")
-    cascade3.configure(hover_color="#ebebeb", text_color="black")
-    cascade4.configure(hover_color="#ebebeb", text_color="black")
-    cascade5.configure(hover_color="#ebebeb", text_color="black")
-    cascade6.configure(hover_color="#ebebeb", text_color="black")
-    cascade7.configure(hover_color="#ebebeb", text_color="black")
+        HWND,
+        35,
+        byref(c_int(title_bar_color)),
+        sizeof(c_int))
 
-    drop1.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
-    drop2.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
-    drop3.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
-    drop4.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
-    drop5.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
-    drop6.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
-    drop7.configure(fg_color="white", text_color="black",hover_color="#ebebeb", bg_color="white")
-    status.configure(bg="white")
-    status.status_label.configure(bg="white", fg="black")
-    status.num_stats_label.configure(bg="#3252a8", fg="white")
-    status.run_img.configure(bg="white")
-    status.set_color("#ebebeb")
-    status.set_based_color("white")
-    status.timer.configure(bg="white", fg="black")
-    status.timer_frame.configure(bg="white")
-    text.text.configure(bg="#f0f0f0", foreground="black",insertbackground='black',selectbackground="#d6d6d6")
-    text.scrollbar.configure(fg_color="#f0f0f0", button_color="#b0b0b0", button_hover_color="#cccccc")
-    text.scrollhor.configure(fg_color="#f0f0f0", button_color="#b0b0b0", button_hover_color="#cccccc")
-    text.numberLines.configure(bg='white')
-    text.suggestions.configure(bg='white', fg="black",selectbackground='#ebebeb', selectforeground='black')
-    win.configure(fg_color="white")
-    HWND = windll.user32.GetParent(win.winfo_id())
-    windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(0xFFFFFF)),
-            sizeof(c_int))
-    text.redraw()
-    tree.configure(fg_color="white")
-    tree.treestyle.configure(
-            "Treeview",
-            background="white",  
-            fieldbackground="white",
-            foreground = "black",
-            bordercolor = "white"  
-        )
-    tree.treestyle.map('Treeview', 
-                           background=[('selected', "#ebebeb")],
-                           foreground=[('selected', "black")])
-    
-    tree_menu.configure(bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
-    tree_foldermenu.configure(bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
-    tab_bar.configure(fg_color="white")
-    tree.input_label.configure(text_color="black")
-    tree.output_label.configure(text_color="black")
-    tree.input.configure(fg_color="#f0f0f0", text_color="black")
-    tree.output.configure(fg_color="#f0f0f0", text_color="black")
+    for widget_name, widget in widgets.items():
+        try:
+            config = find_theme_color(init, widget_name)
+            if widget_name == 'status':
+                widget.configure(bg=config['bg'])
+                widget.status_label.configure(bg=config['status_label']['bg'], fg=config['status_label']['fg'])
+                widget.num_stats_label.configure(bg=config['num_stats_label']['bg'], fg=config['num_stats_label']['fg'])
+                widget.run_img.configure(bg=config['run_img']['bg'])
+                widget.set_color(config['set_color'])
+                widget.set_based_color(config['set_based_color'])
+                widget.timer.configure(bg=config['timer']['bg'], fg=config['timer']['fg'])
+                widget.timer_frame.configure(bg=config['timer_frame']['bg'])
+            elif widget_name == 'text':
+                widget.text.configure(bg=config['text']['bg'], foreground=config['text']['foreground'],
+                                      insertbackground=config['text']['insertbackground'],
+                                      selectbackground=config['text']['selectbackground'])
+                widget.scrollbar.configure(fg_color=config['scrollbar']['fg_color'], button_color=config['scrollbar']['button_color'],
+                                           button_hover_color=config['scrollbar']['button_hover_color'])
+                widget.scrollhor.configure(fg_color=config['scrollhor']['fg_color'], button_color=config['scrollhor']['button_color'],
+                                           button_hover_color=config['scrollhor']['button_hover_color'])
+                widget.numberLines.configure(bg=config['numberLines']['bg'])
+                widget.suggestions.configure(bg=config['suggestions']['bg'], fg=config['suggestions']['fg'],
+                                             selectbackground=config['suggestions']['selectbackground'],
+                                             selectforeground=config['suggestions']['selectforeground'])
+            elif widget_name == 'tree':
+                widget.configure(fg_color=config['fg_color'])
+                widget.treestyle.configure("Treeview",
+                                           background=config['treestyle']['Treeview']['background'],
+                                           fieldbackground=config['treestyle']['Treeview']['fieldbackground'],
+                                           foreground=config['treestyle']['Treeview']['foreground'],
+                                           bordercolor=config['treestyle']['Treeview']['bordercolor'])
+                widget.treestyle.map('Treeview',
+                                     background=[('selected', config['treestyle']['Treeview_map']['background'][0][1])],
+                                     foreground=[('selected', config['treestyle']['Treeview_map']['foreground'][0][1])])
+                widget.input_label.configure(text_color=config['input_label']['text_color'])
+                widget.output_label.configure(text_color=config['output_label']['text_color'])
+                widget.input.configure(fg_color=config['input']['fg_color'], text_color=config['input']['text_color'])
+                widget.output.configure(fg_color=config['output']['fg_color'], text_color=config['output']['text_color'])
+            else:
+                widget.configure(**config)
+        except ValueError as e:
+            print(f"Warning: {e}")
+        except Exception as e:
+            print(f"Error configuring {widget_name}: {e}")
+    check.update_config_file("theme", misc)
+def title_bar_color_handle(win):
+        current_theme = check.get_config_value("theme") + ".json"
+        with open(f"Themes/{current_theme}", 'r') as file:
+                config = json.load(file)
+        
+        # Convert title_bar_color from string to integer
+        title_bar_color = int(config['title_bar_color'], 16)
+                
+                # Apply the title bar color
+        HWND = windll.user32.GetParent(win.winfo_id())
+        windll.dwmapi.DwmSetWindowAttribute(
+                HWND,
+                35,
+                byref(c_int(title_bar_color)),
+                sizeof(c_int))

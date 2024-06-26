@@ -110,12 +110,12 @@ class MainWindow(ct.CTk):
         template_drop.add_option(option="Use Template           Ctrl+Shift+T", command=lambda:template_menu.use_template(scroll.text, scroll, statusbar_instance))
 
         textures_drop = CustomDropdownMenu(widget=textures, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
-        textures_drop.add_option(option="Light theme", command=lambda:themes.light_theme(menu, home, file_m, edit, view, template, textures, utility,
+        textures_drop.add_option(option="Light theme", command=lambda:themes.use_theme("light",menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
                                                                                          scroll.tab_bar))
-        textures_drop.add_option(option="Dark theme", command=lambda:themes.dark_theme(menu, home, file_m, edit, view, template, textures, utility,
+        textures_drop.add_option(option="Dark theme", command=lambda:themes.use_theme("dark",menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
@@ -180,47 +180,14 @@ class MainWindow(ct.CTk):
             file_menu.open_folder(treeview_frame, statusbar_instance, scroll, check.get_config_value("default_folder"))
 
         # Theme
-        current_theme = int(check.get_config_value("theme"))
-        if (current_theme == 0):
-            themes.dark_theme(menu, home, file_m, edit, view, template, textures,
+        current_theme = check.get_config_value("theme")
+        themes.use_theme(current_theme,menu, home, file_m, edit, view, template, textures,
                                 utility,
                                 home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                 utility_drop,
                                 statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
                                 scroll.tab_bar)
-            
-        elif(current_theme == 1):
-            themes.light_theme(menu, home, file_m, edit, view, template, textures,
-                                utility,
-                                home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
-                                utility_drop,
-                                statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
-                                scroll.tab_bar)
-            
-        else:
-            themes.dark_theme(menu, home, file_m, edit, view, template, textures,
-                                utility,
-                                home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
-                                utility_drop,
-                                statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
-                                scroll.tab_bar)
-            
-        # Title bar color handle
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
         
-        HWND = windll.user32.GetParent(self.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
-    
         def open_paint_mode(self):
             paint_window = paint_mode.PaintApp()
             paint_window.mainloop()
