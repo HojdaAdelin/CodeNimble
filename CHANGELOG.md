@@ -23,6 +23,7 @@
 - Now you can run the textbox content(you don't need to save the file everytime)
 - File tab pack forget when there aren't any tabs
 - New theme system with json files
+- When suggestion is mapped and hit ENTER will autocomplete code
 
 ### Fixed:
 
