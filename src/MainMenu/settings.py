@@ -12,6 +12,7 @@ sys.path.append(parent_dir)
 
 from Config import check
 from MainMenu import view_menu
+from MainMenu import themes
 
 class SettingsApp(ct.CTk):
     def __init__(self, status):
@@ -25,20 +26,7 @@ class SettingsApp(ct.CTk):
         self.title_color()
 
     def title_color(self):
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(self.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(self)
 
     def window(self, fg_cl):
         self.configure(fg_color = fg_cl)
@@ -51,11 +39,11 @@ class SettingsApp(ct.CTk):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"

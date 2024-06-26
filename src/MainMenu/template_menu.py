@@ -13,6 +13,7 @@ sys.path.append(parent_dir)
 from MainMenu import file_menu
 from MainMenu import edit_menu
 from Config import check
+from MainMenu import themes
 
 template_window = None
 
@@ -114,11 +115,11 @@ def custom_template():
     fg_cl = "#2b2b2b"
     text_bg = "#4a4a4a"
     text = "white"
-    if int(check.get_config_value("theme")) == 0:
+    if (check.get_config_value("theme") == "dark"):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-    elif int(check.get_config_value("theme")) == 1:
+    elif (check.get_config_value("theme") == "light"):
         fg_cl = "white"
         text_bg = "#f0f0f0"
         text = "black"
@@ -187,20 +188,7 @@ def custom_template():
         template_window = False
         create_template_window.destroy()
 
-    tb_color = 0x333333
-    if int(check.get_config_value("theme")) == 0:
-        tb_color = 0x333333
-    elif int(check.get_config_value("theme")) == 1:
-        tb_color = 0xFFFFFF
-    else:
-        tb_color = 0x333333
-
-    HWND = windll.user32.GetParent(create_template_window.winfo_id())
-    windll.dwmapi.DwmSetWindowAttribute(
-        HWND,
-        35,
-        byref(c_int(tb_color)),
-        sizeof(c_int))
+    themes.title_bar_color_handle(create_template_window)
 
     create_template_window.protocol("WM_DELETE_WINDOW", on_closing)
     create_template_window.mainloop()
@@ -220,11 +208,11 @@ def use_template(textbox, root, statusbar):
     fg_cl = "#2b2b2b"
     text_bg = "#4a4a4a"
     text = "white"
-    if int(check.get_config_value("theme")) == 0:
+    if (check.get_config_value("theme") == "dark"):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-    elif int(check.get_config_value("theme")) == 1:
+    elif (check.get_config_value("theme") == "light"):
         fg_cl = "white"
         text_bg = "#f0f0f0"
         text = "black"
@@ -295,20 +283,7 @@ def use_template(textbox, root, statusbar):
         select_template_window.destroy()
         use_template_window = False  # Resetăm variabila în cazul în care fereastra este închisă fără a utiliza un template
 
-    tb_color = 0x333333
-    if int(check.get_config_value("theme")) == 0:
-        tb_color = 0x333333
-    elif int(check.get_config_value("theme")) == 1:
-        tb_color = 0xFFFFFF
-    else:
-        tb_color = 0x333333
-    
-    HWND = windll.user32.GetParent(select_template_window.winfo_id())
-    windll.dwmapi.DwmSetWindowAttribute(
-        HWND,
-        35,
-        byref(c_int(tb_color)),
-        sizeof(c_int))
+    themes.title_bar_color_handle(select_template_window)
 
     select_template_window.protocol("WM_DELETE_WINDOW", on_closing)
     select_template_window.mainloop()

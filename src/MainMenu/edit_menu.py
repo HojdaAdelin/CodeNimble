@@ -12,6 +12,7 @@ current_dir = os.path.dirname(__file__)
 parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
+from MainMenu import themes
 from Config import check
 
 def undo_text(widget, root):
@@ -69,11 +70,11 @@ def find_text(scroll_text):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -118,20 +119,7 @@ def find_text(scroll_text):
             find_window_opened = False
             find_window.destroy()
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(find_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(find_window)
 
         find_window.protocol("WM_DELETE_WINDOW", on_closing)
         find_window.mainloop()
@@ -146,11 +134,11 @@ def replace_text(scroll_text):
         fg_cl = "#2b2b2b"
         text_bg = "#4a4a4a"
         text = "white"
-        if (int(check.get_config_value("theme")) == 0):
+        if (check.get_config_value("theme") == "dark"):
             fg_cl = "#2b2b2b"
             text_bg = "#4a4a4a"
             text = "white"
-        elif (int(check.get_config_value("theme")) == 1):
+        elif (check.get_config_value("theme") == "light"):
             fg_cl = "white"
             text_bg = "#f0f0f0"
             text = "black"
@@ -243,20 +231,7 @@ def replace_text(scroll_text):
         replace_button.configure(command=replace)
         replace_all_button.configure(command=replace_all)
 
-        tb_color = 0x333333
-        if (int(check.get_config_value("theme")) == 0):
-            tb_color = 0x333333
-        elif (int(check.get_config_value("theme")) == 1):
-            tb_color = 0xFFFFFF
-        else:
-            tb_color = 0x333333
-        
-        HWND = windll.user32.GetParent(replace_window.winfo_id())
-        windll.dwmapi.DwmSetWindowAttribute(
-            HWND,
-            35,
-            byref(c_int(tb_color)),
-            sizeof(c_int))
+        themes.title_bar_color_handle(replace_window)
 
         replace_window.protocol("WM_DELETE_WINDOW", on_closing)
         replace_window.mainloop()

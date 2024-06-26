@@ -1,0 +1,173 @@
+{
+    "title_bar_color": "0xFFFFFF",
+    "menu_bar": {
+        "bg_color": "white"
+    },
+    "cascade1": {
+        "hover_color": "#ebebeb",
+        "text_color": "black"
+    },
+    "cascade2": {
+        "hover_color": "#ebebeb",
+        "text_color": "black"
+    },
+    "cascade3": {
+        "hover_color": "#ebebeb",
+        "text_color": "black"
+    },
+    "cascade4": {
+        "hover_color": "#ebebeb",
+        "text_color": "black"
+    },
+    "cascade5": {
+        "hover_color": "#ebebeb",
+        "text_color": "black"
+    },
+    "cascade6": {
+        "hover_color": "#ebebeb",
+        "text_color": "black"
+    },
+    "cascade7": {
+        "hover_color": "#ebebeb",
+        "text_color": "black"
+    },
+    "drop1": {
+        "fg_color": "white",
+        "text_color": "black",
+        "hover_color": "#ebebeb",
+        "bg_color": "white"
+    },
+    "drop2": {
+        "fg_color": "white",
+        "text_color": "black",
+        "hover_color": "#ebebeb",
+        "bg_color": "white"
+    },
+    "drop3": {
+        "fg_color": "white",
+        "text_color": "black",
+        "hover_color": "#ebebeb",
+        "bg_color": "white"
+    },
+    "drop4": {
+        "fg_color": "white",
+        "text_color": "black",
+        "hover_color": "#ebebeb",
+        "bg_color": "white"
+    },
+    "drop5": {
+        "fg_color": "white",
+        "text_color": "black",
+        "hover_color": "#ebebeb",
+        "bg_color": "white"
+    },
+    "drop6": {
+        "fg_color": "white",
+        "text_color": "black",
+        "hover_color": "#ebebeb",
+        "bg_color": "white"
+    },
+    "drop7": {
+        "fg_color": "white",
+        "text_color": "black",
+        "hover_color": "#ebebeb",
+        "bg_color": "white"
+    },
+    "status": {
+        "bg": "white",
+        "status_label": {
+            "bg": "white",
+            "fg": "black"
+        },
+        "num_stats_label": {
+            "bg": "#3252a8",
+            "fg": "white"
+        },
+        "run_img": {
+            "bg": "white"
+        },
+        "set_color": "#ebebeb",
+        "set_based_color": "white",
+        "timer": {
+            "bg": "white",
+            "fg": "black"
+        },
+        "timer_frame": {
+            "bg": "white"
+        }
+    },
+    "text": {
+        "text": {
+            "bg": "#f0f0f0",
+            "foreground": "black",
+            "insertbackground": "black",
+            "selectbackground": "#d6d6d6"
+        },
+        "scrollbar": {
+            "fg_color": "#f0f0f0",
+            "button_color": "#b0b0b0",
+            "button_hover_color": "#cccccc"
+        },
+        "scrollhor": {
+            "fg_color": "#f0f0f0",
+            "button_color": "#b0b0b0",
+            "button_hover_color": "#cccccc"
+        },
+        "numberLines": {
+            "bg": "white"
+        },
+        "suggestions": {
+            "bg": "white",
+            "fg": "black",
+            "selectbackground": "#ebebeb",
+            "selectforeground": "black"
+        }
+    },
+    "win": {
+        "fg_color": "white"
+    },
+    "tree": {
+        "fg_color": "white",
+        "treestyle": {
+            "Treeview": {
+                "background": "white",
+                "fieldbackground": "white",
+                "foreground": "black",
+                "bordercolor": "white"
+            },
+            "Treeview_map": {
+                "background": [["selected", "#ebebeb"]],
+                "foreground": [["selected", "black"]]
+            }
+        },
+        "input_label": {
+            "text_color": "black"
+        },
+        "output_label": {
+            "text_color": "black"
+        },
+        "input": {
+            "fg_color": "#f0f0f0",
+            "text_color": "black"
+        },
+        "output": {
+            "fg_color": "#f0f0f0",
+            "text_color": "black"
+        }
+    },
+    "tree_menu": {
+        "bg": "white",
+        "fg": "black",
+        "activebackground": "#ebebeb",
+        "activeforeground": "black"
+    },
+    "tree_foldermenu": {
+        "bg": "white",
+        "fg": "black",
+        "activebackground": "#ebebeb",
+        "activeforeground": "black"
+    },
+    "tab_bar": {
+        "fg_color": "white"
+    }
+}
