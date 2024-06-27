@@ -27,14 +27,7 @@ def version_info():
         version_window_opened = True
         version_window = ctk.CTk()
         version_window.title("CodeNimble - Version")
-        fg_cl = "#2b2b2b"
-        text = "white"
-        if (check.get_config_value("theme") == "dark"):
-            fg_cl = "#2b2b2b"
-            text = "white"
-        elif (check.get_config_value("theme") == "light"):
-            fg_cl = "white"
-            text = "black"
+        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 300 
         h = 100 
 
@@ -72,14 +65,7 @@ def changelog_inf():
         changelog_window = ctk.CTk()
         changelog_window.title("CodeNimble - Change log")
         changelog_window.iconbitmap("images/logo.ico")
-        fg_cl = "#2b2b2b"
-        text = "white"
-        if (check.get_config_value("theme") == "dark"):
-            fg_cl = "#2b2b2b"
-            text = "white"
-        elif (check.get_config_value("theme") == "light"):
-            fg_cl = "white"
-            text = "black"
+        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 500 
         h = 600 
 
@@ -120,14 +106,7 @@ def guide():
         guide_window.title("CodeNimble - Change log")
         guide_window.iconbitmap("images/logo.ico")
         
-        fg_cl = "#2b2b2b"
-        text = "white"
-        if (check.get_config_value("theme") == "dark"):
-            fg_cl = "#2b2b2b"
-            text = "white"
-        elif (check.get_config_value("theme") == "light"):
-            fg_cl = "white"
-            text = "black"
+        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
 
         w = 500 
         h = 600 

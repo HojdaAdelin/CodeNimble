@@ -75,12 +75,7 @@ class PaintApp(ctk.CTk):
         themes.title_bar_color_handle(self)
 
     def theme(self):
-        if check.get_config_value("theme") == "dark":
-            self.bg_color = "#333333"
-        elif check.get_config_value("theme") == "light":
-            self.bg_color = "#f0f0f0"
-        else:
-            self.bg_color = "#333333"
+        self.bg_color, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
 
     def set_icon(self, icon_path):
         try:

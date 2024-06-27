@@ -20,7 +20,7 @@ class SettingsApp(ct.CTk):
 
         self.status = status
 
-        fg_cl, text_bg, text = self.theme()
+        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.window(fg_cl)
         self.gui(fg_cl, text_bg, text)
         self.title_color()
@@ -34,20 +34,6 @@ class SettingsApp(ct.CTk):
         self.geometry("900x460")
         self.iconbitmap("images/logo.ico")
         self.resizable(False, False)
-
-    def theme(self):
-        fg_cl = "#2b2b2b"
-        text_bg = "#4a4a4a"
-        text = "white"
-        if (check.get_config_value("theme") == "dark"):
-            fg_cl = "#2b2b2b"
-            text_bg = "#4a4a4a"
-            text = "white"
-        elif (check.get_config_value("theme") == "light"):
-            fg_cl = "white"
-            text_bg = "#f0f0f0"
-            text = "black"
-        return fg_cl,text_bg,text
     
     def gui(self, fg_cl, text_bg, text):
         self.left_frame = ct.CTkFrame(self, width=300, height=460, fg_color=fg_cl, corner_radius=0)

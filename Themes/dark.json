@@ -169,5 +169,11 @@
     },
     "tab_bar": {
         "fg_color": "#333333"
+    },
+    "default_window": {
+        "fg_color": "#2b2b2b",
+        "text_bg": "#4a4a4a",
+        "text": "white",
+        "hover_color": "#4d4d4d"
     }
 }

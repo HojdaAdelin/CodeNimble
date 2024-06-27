@@ -126,3 +126,17 @@ def title_bar_color_handle(win):
                 35,
                 byref(c_int(title_bar_color)),
                 sizeof(c_int))
+        
+def return_default_win_color(init):
+    theme = "Themes/" + init + ".json"
+    
+    with open(theme, 'r') as file:
+        data = json.load(file)
+        
+    default_window = data.get("default_window", {})
+    fg_color = default_window.get("fg_color")
+    text_bg = default_window.get("text_bg")
+    text = default_window.get("text")
+    hover_color = default_window.get("hover_color")
+    
+    return fg_color, text_bg, text, hover_color
