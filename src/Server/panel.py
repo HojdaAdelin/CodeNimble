@@ -19,7 +19,7 @@ class ServerPanel(ctk.CTk):
         self.server = server_instance
         self.previous_clients = None
 
-        fg_cl, text_bg, text, hover_color = self.theme()
+        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.window(fg_cl)
         self.title_color()
         self.gui(text_bg, text,hover_color)
@@ -49,23 +49,6 @@ class ServerPanel(ctk.CTk):
         self.geometry("1000x600")
         self.iconbitmap("images/logo.ico")
         self.resizable(False, False)
-
-    def theme(self):
-        fg_cl = "#2b2b2b"
-        text_bg = "#4a4a4a"
-        text = "white"
-        hover_color="#4d4d4d"
-        if check.get_config_value("theme") == "dark":
-            fg_cl = "#2b2b2b"
-            text_bg = "#4a4a4a"
-            text = "white"
-            hover_color="#4d4d4d"
-        elif check.get_config_value("theme") == "light":
-            fg_cl = "white"
-            text_bg = "#f0f0f0"
-            text = "black"
-            hover_color="#ebebeb"
-        return fg_cl,text_bg,text,hover_color
 
     def update_clients(self):
         current_clients = list(self.server.clients.values())

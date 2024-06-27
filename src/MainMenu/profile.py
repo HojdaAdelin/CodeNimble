@@ -17,7 +17,7 @@ class ProfileApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        fg_cl, text_bg, text = self.theme()
+        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.window(fg_cl)
         self.gui(fg_cl, text_bg, text)
         self.title_color()
@@ -45,20 +45,6 @@ class ProfileApp(ctk.CTk):
 
         self.statusbar = ctk.CTkLabel(self, text="", fg_color=fg_cl, text_color=text)
         self.statusbar.pack(side=tk.BOTTOM, fill=tk.X)
-
-    def theme(self):
-        fg_cl = "#2b2b2b"
-        text_bg = "#4a4a4a"
-        text = "white"
-        if (check.get_config_value("theme") == "dark"):
-            fg_cl = "#2b2b2b"
-            text_bg = "#4a4a4a"
-            text = "white"
-        elif (check.get_config_value("theme") == "light"):
-            fg_cl = "white"
-            text_bg = "#f0f0f0"
-            text = "black"
-        return fg_cl,text_bg,text
 
     def save_profile(self):
         profile_name = self.entry.get().strip()

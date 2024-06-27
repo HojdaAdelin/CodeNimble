@@ -67,17 +67,7 @@ def find_text(scroll_text):
         find_window = ctk.CTk()
         find_window.title("CodeNimble - Find Text")
 
-        fg_cl = "#2b2b2b"
-        text_bg = "#4a4a4a"
-        text = "white"
-        if (check.get_config_value("theme") == "dark"):
-            fg_cl = "#2b2b2b"
-            text_bg = "#4a4a4a"
-            text = "white"
-        elif (check.get_config_value("theme") == "light"):
-            fg_cl = "white"
-            text_bg = "#f0f0f0"
-            text = "black"
+        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
 
         w = 300 
         h = 100 
@@ -131,17 +121,7 @@ def replace_text(scroll_text):
         replace_window_opened = True
         replace_window = ctk.CTk()
         replace_window.title("CodeNimble - Replace Text")
-        fg_cl = "#2b2b2b"
-        text_bg = "#4a4a4a"
-        text = "white"
-        if (check.get_config_value("theme") == "dark"):
-            fg_cl = "#2b2b2b"
-            text_bg = "#4a4a4a"
-            text = "white"
-        elif (check.get_config_value("theme") == "light"):
-            fg_cl = "white"
-            text_bg = "#f0f0f0"
-            text = "black"
+        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 500 
         h = 140 
 
