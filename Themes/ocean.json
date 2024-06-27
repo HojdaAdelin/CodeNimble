@@ -1,0 +1,179 @@
+{
+    "title_bar_color": "0x361414",
+    "menu_bar": {
+        "bg_color": "#151436"
+    },
+    "cascade1": {
+        "hover_color": "#1c3373",
+        "text_color": "white"
+    },
+    "cascade2": {
+        "hover_color": "#1c3373",
+        "text_color": "white"
+    },
+    "cascade3": {
+        "hover_color": "#1c3373",
+        "text_color": "white"
+    },
+    "cascade4": {
+        "hover_color": "#1c3373",
+        "text_color": "white"
+    },
+    "cascade5": {
+        "hover_color": "#1c3373",
+        "text_color": "white"
+    },
+    "cascade6": {
+        "hover_color": "#1c3373",
+        "text_color": "white"
+    },
+    "cascade7": {
+        "hover_color": "#1c3373",
+        "text_color": "white"
+    },
+    "drop1": {
+        "fg_color": "#151436",
+        "text_color": "white",
+        "hover_color": "#1c3373",
+        "bg_color": "#151436"
+    },
+    "drop2": {
+        "fg_color": "#151436",
+        "text_color": "white",
+        "hover_color": "#1c3373",
+        "bg_color": "#151436"
+    },
+    "drop3": {
+        "fg_color": "#151436",
+        "text_color": "white",
+        "hover_color": "#1c3373",
+        "bg_color": "#151436"
+    },
+    "drop4": {
+        "fg_color": "#151436",
+        "text_color": "white",
+        "hover_color": "#1c3373",
+        "bg_color": "#151436"
+    },
+    "drop5": {
+        "fg_color": "#151436",
+        "text_color": "white",
+        "hover_color": "#1c3373",
+        "bg_color": "#151436"
+    },
+    "drop6": {
+        "fg_color": "#151436",
+        "text_color": "white",
+        "hover_color": "#1c3373",
+        "bg_color": "#151436"
+    },
+    "drop7": {
+        "fg_color": "#151436",
+        "text_color": "white",
+        "hover_color": "#1c3373",
+        "bg_color": "#151436"
+    },
+    "status": {
+        "bg": "#151436",
+        "status_label": {
+            "bg": "#151436",
+            "fg": "white"
+        },
+        "num_stats_label": {
+            "bg": "#3252a8",
+            "fg": "white"
+        },
+        "run_img": {
+            "bg": "#151436"
+        },
+        "set_color": "#1c3373",
+        "set_based_color": "#151436",
+        "timer": {
+            "bg": "#151436",
+            "fg": "white"
+        },
+        "timer_frame": {
+            "bg": "#151436"
+        }
+    },
+    "text": {
+        "text": {
+            "bg": "#1a3275",
+            "foreground": "white",
+            "insertbackground": "white",
+            "selectbackground": "#3e518c"
+        },
+        "scrollbar": {
+            "fg_color": "#1a3275",
+            "button_color": "#151d36",
+            "button_hover_color": "#3e518c"
+        },
+        "scrollhor": {
+            "fg_color": "#1a3275",
+            "button_color": "#151d36",
+            "button_hover_color": "#3e518c"
+        },
+        "numberLines": {
+            "bg": "#151436"
+        },
+        "suggestions": {
+            "bg": "#151436",
+            "fg": "white",
+            "selectbackground": "#1c3373",
+            "selectforeground": "white"
+        }
+    },
+    "win": {
+        "fg_color": "#151436"
+    },
+    "tree": {
+        "fg_color": "#151436",
+        "treestyle": {
+            "Treeview": {
+                "background": "#151436",
+                "fieldbackground": "#151436",
+                "foreground": "white",
+                "bordercolor": "#151436"
+            },
+            "Treeview_map": {
+                "background": [["selected", "#1c3373"]],
+                "foreground": [["selected", "white"]]
+            }
+        },
+        "input_label": {
+            "text_color": "white"
+        },
+        "output_label": {
+            "text_color": "white"
+        },
+        "input": {
+            "fg_color": "#1a3275",
+            "text_color": "white"
+        },
+        "output": {
+            "fg_color": "#1a3275",
+            "text_color": "white"
+        }
+    },
+    "tree_menu": {
+        "bg": "#151436",
+        "fg": "white",
+        "activebackground": "#1c3373",
+        "activeforeground": "black"
+    },
+    "tree_foldermenu": {
+        "bg": "#151436",
+        "fg": "white",
+        "activebackground": "#1c3373",
+        "activeforeground": "black"
+    },
+    "tab_bar": {
+        "fg_color": "#151436"
+    },
+    "default_window": {
+        "fg_color": "#19184a",
+        "text_bg": "#1a3275",
+        "text": "white",
+        "hover_color": "#1c3373"
+    }
+}
