@@ -120,6 +120,11 @@ class MainWindow(ct.CTk):
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
                                                                                          scroll.tab_bar))
+        textures_drop.add_option(option="Ocean theme", command=lambda:themes.use_theme("ocean",menu, home, file_m, edit, view, template, textures, utility,
+                                                                                         home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                                                                         utility_drop,
+                                                                                         statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
+                                                                                         scroll.tab_bar))
         
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(treeview_frame, scroll.text))
