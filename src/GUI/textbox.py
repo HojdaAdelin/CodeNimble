@@ -312,8 +312,8 @@ class ScrollText(tk.Frame):
 
     def get_keyword_colors(self, theme):
         dark_theme = {
-            "keyword1": "#00b7ff",  # Cuvinte cheie (ex: int, float, etc.)
-            "keyword2": "#144478",  # Acces specifiers (ex: public, private, etc.)
+            "keyword1": "#94193e",  # Cuvinte cheie (ex: int, float, etc.)
+            "keyword2": "#1b8ca8",  # Acces specifiers (ex: public, private, etc.)
             "keyword3": "#00b7ff",
             "special_char": "#7eade0",    # Numere și alte cuvinte cheie
             "comment_line": "#008000",  # Comentarii
@@ -324,8 +324,8 @@ class ScrollText(tk.Frame):
         }
 
         light_theme = {
-            "keyword1": "#00b7ff",
-            "keyword2": "#144478",
+            "keyword1": "#94193e",
+            "keyword2": "#1b8ca8",
             "keyword3": "#00b7ff",
             "special_char": "#7eade0",
             "comment_line": "#008000",
@@ -340,9 +340,28 @@ class ScrollText(tk.Frame):
     def get_keywords(self):
         if file_menu.return_file() == ".cpp":
             return {
-                "keyword1": ["int", "float", "double", "char", "if", "else", "for", "while", "return", "do", "string", "const", "using"],
-                "keyword2": ["struct", "class", "public", "private", "protected"],
-                "keyword3": ["void"]
+                "keyword1": [
+                "int", "float", "double", "char", "if", "else", "for", "while", 
+                "return", "do", "string", "const", "using", "short", "long", 
+                "signed", "unsigned", "bool", "true", "false", "auto", 
+                "static", "volatile", "register", "extern", "enum", "typedef",
+                "inline", "switch", "case", "default", "goto", "break", "continue",
+                "sizeof", "namespace", "new", "delete", "try", "catch", "throw", 
+                "nullptr"
+                ],
+
+                "keyword2": ["void", "main", "printf", "scanf", "cin", "cout", "endl", "std", 
+                "size_t", "ptrdiff_t", "int8_t", "int16_t", "int32_t", "int64_t", 
+                "uint8_t", "uint16_t", "uint32_t", "uint64_t", "int_least8_t", 
+                "int_least16_t", "int_least32_t", "int_least64_t", "uint_least8_t", 
+                "uint_least16_t", "uint_least32_t", "uint_least64_t", "int_fast8_t", 
+                "int_fast16_t", "int_fast32_t", "int_fast64_t", "uint_fast8_t", 
+                "uint_fast16_t", "uint_fast32_t", "uint_fast64_t", "intptr_t", 
+                "uintptr_t", "intmax_t", "uintmax_t"],
+                "keyword3": [
+                    "class", "public", "private", "protected"
+                ]
+
             }
         elif file_menu.return_file() == ".py":
             return {

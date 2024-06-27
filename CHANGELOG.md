@@ -25,6 +25,7 @@
 - New theme system with json files
 - When suggestion is mapped and hit ENTER will autocomplete code
 - Ocean theme
+- Update text highlighted
 
 ### Fixed:
 
