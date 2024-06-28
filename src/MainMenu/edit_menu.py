@@ -59,7 +59,7 @@ def select_all(text):
     text.mark_set(tk.INSERT, "1.0")
     text.see(tk.INSERT)
 
-def find_text(scroll_text):
+def find_text(scroll_text, scroll):
     global find_window_opened
 
     if not find_window_opened:
@@ -107,6 +107,7 @@ def find_text(scroll_text):
         def on_closing():
             global find_window_opened
             find_window_opened = False
+            scroll.redraw()
             find_window.destroy()
 
         themes.title_bar_color_handle(find_window)
@@ -114,7 +115,7 @@ def find_text(scroll_text):
         find_window.protocol("WM_DELETE_WINDOW", on_closing)
         find_window.mainloop()
 
-def replace_text(scroll_text):
+def replace_text(scroll_text, scroll):
     global replace_window_opened
 
     if not replace_window_opened:
@@ -162,6 +163,7 @@ def replace_text(scroll_text):
         def on_closing():
             global replace_window_opened
             replace_window_opened = False
+            scroll.redraw()
             replace_window.destroy()
 
         def find():

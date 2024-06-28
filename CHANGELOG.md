@@ -35,7 +35,7 @@
 - Fixed Ctrl+Backspace
 - Fixded save
 - Input & Output won't be displayed when populate treeview 
-
+- Redraw textbox after find & replace
 
 # Version: 1.4
 
