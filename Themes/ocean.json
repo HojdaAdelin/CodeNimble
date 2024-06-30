@@ -1,7 +1,7 @@
 {
-    "title_bar_color": "0x361414",
+    "title_bar_color": "0x3b1f1f",
     "menu_bar": {
-        "bg_color": "#151436"
+        "bg_color": "#1f1f3b"
     },
     "cascade1": {
         "hover_color": "#1c3373",
@@ -32,51 +32,51 @@
         "text_color": "white"
     },
     "drop1": {
-        "fg_color": "#151436",
+        "fg_color": "#1f1f3b",
         "text_color": "white",
         "hover_color": "#1c3373",
-        "bg_color": "#151436"
+        "bg_color": "#1f1f3b"
     },
     "drop2": {
-        "fg_color": "#151436",
+        "fg_color": "#1f1f3b",
         "text_color": "white",
         "hover_color": "#1c3373",
-        "bg_color": "#151436"
+        "bg_color": "#1f1f3b"
     },
     "drop3": {
-        "fg_color": "#151436",
+        "fg_color": "#1f1f3b",
         "text_color": "white",
         "hover_color": "#1c3373",
-        "bg_color": "#151436"
+        "bg_color": "#1f1f3b"
     },
     "drop4": {
-        "fg_color": "#151436",
+        "fg_color": "#1f1f3b",
         "text_color": "white",
         "hover_color": "#1c3373",
-        "bg_color": "#151436"
+        "bg_color": "#1f1f3b"
     },
     "drop5": {
-        "fg_color": "#151436",
+        "fg_color": "#1f1f3b",
         "text_color": "white",
         "hover_color": "#1c3373",
-        "bg_color": "#151436"
+        "bg_color": "#1f1f3b"
     },
     "drop6": {
-        "fg_color": "#151436",
+        "fg_color": "#1f1f3b",
         "text_color": "white",
         "hover_color": "#1c3373",
-        "bg_color": "#151436"
+        "bg_color": "#1f1f3b"
     },
     "drop7": {
-        "fg_color": "#151436",
+        "fg_color": "#1f1f3b",
         "text_color": "white",
         "hover_color": "#1c3373",
-        "bg_color": "#151436"
+        "bg_color": "#1f1f3b"
     },
     "status": {
-        "bg": "#151436",
+        "bg": "#1f1f3b",
         "status_label": {
-            "bg": "#151436",
+            "bg": "#1f1f3b",
             "fg": "white"
         },
         "num_stats_label": {
@@ -84,16 +84,16 @@
             "fg": "white"
         },
         "run_img": {
-            "bg": "#151436"
+            "bg": "#1f1f3b"
         },
         "set_color": "#1c3373",
-        "set_based_color": "#151436",
+        "set_based_color": "#1f1f3b",
         "timer": {
-            "bg": "#151436",
+            "bg": "#1f1f3b",
             "fg": "white"
         },
         "timer_frame": {
-            "bg": "#151436"
+            "bg": "#1f1f3b"
         }
     },
     "text": {
@@ -105,35 +105,35 @@
         },
         "scrollbar": {
             "fg_color": "#1a3275",
-            "button_color": "#151d36",
+            "button_color": "#1f1f3b",
             "button_hover_color": "#3e518c"
         },
         "scrollhor": {
             "fg_color": "#1a3275",
-            "button_color": "#151d36",
+            "button_color": "#1f1f3b",
             "button_hover_color": "#3e518c"
         },
         "numberLines": {
-            "bg": "#151436"
+            "bg": "#1f1f3b"
         },
         "suggestions": {
-            "bg": "#151436",
+            "bg": "#1f1f3b",
             "fg": "white",
             "selectbackground": "#1c3373",
             "selectforeground": "white"
         }
     },
     "win": {
-        "fg_color": "#151436"
+        "fg_color": "#1f1f3b"
     },
     "tree": {
-        "fg_color": "#151436",
+        "fg_color": "#1f1f3b",
         "treestyle": {
             "Treeview": {
-                "background": "#151436",
-                "fieldbackground": "#151436",
+                "background": "#1f1f3b",
+                "fieldbackground": "#1f1f3b",
                 "foreground": "white",
-                "bordercolor": "#151436"
+                "bordercolor": "#1f1f3b"
             },
             "Treeview_map": {
                 "background": [["selected", "#1c3373"]],
@@ -156,19 +156,19 @@
         }
     },
     "tree_menu": {
-        "bg": "#151436",
+        "bg": "#1f1f3b",
         "fg": "white",
         "activebackground": "#1c3373",
         "activeforeground": "black"
     },
     "tree_foldermenu": {
-        "bg": "#151436",
+        "bg": "#1f1f3b",
         "fg": "white",
         "activebackground": "#1c3373",
         "activeforeground": "black"
     },
     "tab_bar": {
-        "fg_color": "#151436"
+        "fg_color": "#1f1f3b"
     },
     "default_window": {
         "fg_color": "#19184a",
