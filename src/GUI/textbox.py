@@ -114,9 +114,9 @@ class ScrollText(tk.Frame):
         # Folosim regex pentru a găsi variabile locale
         pattern = re.compile(r'\b\w+\b')
         matches = pattern.findall(text)
-        
+        current_word = self.get_current_word()
         # Actualizăm setul de variabile locale
-        self.local_variables = set(matches) - set(self.keywords)
+        self.local_variables = set(matches) - set(self.keywords) - {current_word}
         self.text.edit_modified(False)
         # Actualizăm sugestiile
         if file_menu.return_file() == ".cpp":
@@ -180,7 +180,7 @@ class ScrollText(tk.Frame):
         
         typed_word = self.get_current_word()
         if typed_word:
-            matching_keywords = [kw for kw in (self.keywords + list(self.local_variables)) if kw.startswith(typed_word)]
+            matching_keywords = [kw for kw in (list(self.local_variables) + self.keywords) if kw.startswith(typed_word)]
             if matching_keywords:
                 self.show_suggestions(matching_keywords)
             else:
