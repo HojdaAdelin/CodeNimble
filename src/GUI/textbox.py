@@ -559,6 +559,14 @@ int main()
             self.text.mark_set(tk.INSERT, new_cursor_index)
             return "break"
 
+        previous_char = self.text.get(cursor_index + "-1c")
+        next_char = self.text.get(cursor_index)
+
+        if previous_char == "{" and next_char == "}":
+            self.text.insert(cursor_index, "\n" + indent + "    \n" + indent)
+            self.text.mark_set(tk.INSERT, f"{cursor_index} + {len(indent) + 5}c")
+            return "break"
+
         self.text.insert(cursor_index, "\n" + indent)
         
         return "break"
