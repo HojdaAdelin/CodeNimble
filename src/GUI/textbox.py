@@ -80,6 +80,9 @@ class ScrollText(tk.Frame):
                 'and', 'and_eq', 'asm', 'bitand', 'bitor', 'compl', 'not', 'not_eq', 'or', 'or_eq', 'xor', 'xor_eq',
                 'true', 'false'
             ]
+        
+        self.local_variables = set()
+        self.current_file = None
 
     def binding(self):
         self.text.bind('<Up>', self.on_up_key)
@@ -102,6 +105,22 @@ class ScrollText(tk.Frame):
         self.text.bind('<space>', self.hide_suggestions)  # Hide suggestions on space
         self.text.bind("<Escape>", self.hide_suggestions)
         self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
+        self.text.bind('<<Modified>>', self.on_text_modified)
+
+    def on_text_modified(self, event=None):
+        # Obține textul curent din widget
+        text = self.text.get("1.0", tk.END)
+        
+        # Folosim regex pentru a găsi variabile locale
+        pattern = re.compile(r'\b\w+\b')
+        matches = pattern.findall(text)
+        current_word = self.get_current_word()
+        # Actualizăm setul de variabile locale
+        self.local_variables = set(matches) - set(self.keywords) - {current_word}
+        self.text.edit_modified(False)
+        # Actualizăm sugestiile
+        if file_menu.return_file() == ".cpp":
+            self.update_suggestions()
 
     def on_up_key(self, event):
         if self.suggestions.winfo_ismapped():
@@ -115,7 +134,7 @@ class ScrollText(tk.Frame):
             return 'break'
         else:
             return None
-
+    
     def on_down_key(self, event):
         if self.suggestions.winfo_ismapped():
     
@@ -161,7 +180,7 @@ class ScrollText(tk.Frame):
         
         typed_word = self.get_current_word()
         if typed_word:
-            matching_keywords = [kw for kw in self.keywords if kw.startswith(typed_word)]
+            matching_keywords = [kw for kw in (list(self.local_variables) + self.keywords) if kw.startswith(typed_word)]
             if matching_keywords:
                 self.show_suggestions(matching_keywords)
             else:

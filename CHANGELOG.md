@@ -37,6 +37,7 @@
 - Fixded save
 - Input & Output won't be displayed when populate treeview 
 - Redraw textbox after find & replace
+- Fix run
 
 # Version: 1.4
 
