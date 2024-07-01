@@ -28,6 +28,7 @@
 - Update text highlighted
 - BUILD.md
 - CONTRIBUTION.md
+- New cursor position when use ENTER between {}
 
 ### Fixed:
 
