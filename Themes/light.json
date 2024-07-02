@@ -79,6 +79,10 @@
             "bg": "white",
             "fg": "black"
         },
+        "server_status": {
+            "bg": "white",
+            "fg": "black"
+        },
         "num_stats_label": {
             "bg": "#3252a8",
             "fg": "white"

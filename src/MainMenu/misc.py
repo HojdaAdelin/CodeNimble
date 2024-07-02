@@ -42,7 +42,7 @@ def version_info():
         version_window.resizable(False, False)
         version_window.configure(fg_color = fg_cl)
 
-        current_version_label = ctk.CTkLabel(version_window, text="Current version: 1.5", font=("Arial", 20), text_color=text)
+        current_version_label = ctk.CTkLabel(version_window, text="Current version: 2.0", font=("Arial", 20), text_color=text)
         current_version_label.pack(pady=(25,0))
         version_label = ctk.CTkLabel(version_window, text="Latest version: "+get_version.get_latest_version_from_github("HojdaAdelin", "CodeNimble"), font=("Arial", 20), text_color=text)
         version_label.pack(pady=0)
@@ -81,7 +81,7 @@ def changelog_inf():
         
         version_label = ctk.CTkLabel(changelog_window, text="Version: 1.5", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Paint Mode\n• Integrate paint window in app\n• Change colors in paint mode\n• Local Server\n• Profile\n• Fixed autocompletion when list isn't mapped\n• Connected users list in panel\n• Fix Ctrl+Backspace\n• Autocomplete for CPP when ENTER\n• Button 2 bind in file tab\n• Tabs in paint mode\n• Text highlighted for python\n• Autocomplete \", \', \*\n• Settings\n• Settings for status bar\n• Design updates\n• Fixed save\n• Added \"*\" in file tab\n• New theme system\n• Ocean theme\n• Documentation", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• Server status in status bar", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra

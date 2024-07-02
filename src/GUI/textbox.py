@@ -669,6 +669,7 @@ int main()
         server_thread.daemon = True
         server_thread.start()
         self.start_client()
+        self.statusbar.update_server("host")
 
     def start_client(self):
         if not self.profile_bool():
@@ -682,12 +683,14 @@ int main()
         receive_thread = threading.Thread(target=self.client.receive_messages, args=(self.display_message,))
         receive_thread.daemon = True
         receive_thread.start()
+        self.statusbar.update_server("client")
 
     def disconnect_client(self):
         if self.client:
             self.client.disconnect()
             self.client = None
             messagebox.showinfo("Info", "Disconnected successfully!")
+            self.statusbar.update_server("none")
 
     def on_text_change(self):
         message = self.text.get(1.0, tk.END)
@@ -699,6 +702,11 @@ int main()
         self.text.delete(1.0, tk.END)
         self.text.insert(tk.INSERT, message)
         self.text.config(state=tk.NORMAL)
+
+    def get_client(self):
+        return self.client
+    def get_server(self):
+        return self.server
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
