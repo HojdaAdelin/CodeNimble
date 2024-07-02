@@ -14,7 +14,7 @@ from Config import check
 class StatusBar(tk.Frame):
     def __init__(self, master, text="", font_size=32, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
-        self.current_version = "1.5"
+        self.current_version = "2.0"
         self.latest_version = get_version.get_latest_version_from_github("HojdaAdelin", "CodeNimble")
         self.text = tk.StringVar(value=text)
         self.hv_color = tk.StringVar(value="#4d4d4d")
@@ -51,6 +51,10 @@ class StatusBar(tk.Frame):
         if int(check.get_config_value("status_run")) == 1:
             self.run_img.pack(side="right", padx=10)
         
+        self.server_status = tk.Label(self, text="Server: none", font=font)
+        if int(check.get_config_value("server_status")) == 1:
+            self.server_status.pack(side="right")
+
         self.run_img.bind("<Enter>", self.on_hover)
         self.run_img.bind("<Leave>", self.off_hover)
 
@@ -130,3 +134,7 @@ class StatusBar(tk.Frame):
         self.num_words.set(words)
         stats_text = f"Lines: {lines}, Words: {words}"
         self.num_stats_label.config(text=stats_text)
+
+    def update_server(self, status):
+        status_text = "Server: " + status
+        self.server_status.config(text=status_text)

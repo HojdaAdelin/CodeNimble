@@ -70,6 +70,12 @@ class SettingsApp(ct.CTk):
                                       variable=self.notifications_var, command=self.update_notifications)
         self.not_box.pack(padx=5,pady=5)
 
+        initial_value = int(check.get_config_value("server_status"))
+        self.server_var = tk.IntVar(value=initial_value)
+        self.server_box = ct.CTkCheckBox(self.left_frame, text="Server status", checkbox_width=20, checkbox_height=20, text_color=text,
+                                      variable=self.server_var, command=self.update_server)
+        self.server_box.pack(padx=5,pady=5)
+
     def update_notifications(self):
         view_menu.notifications(self.status)
 
@@ -81,3 +87,6 @@ class SettingsApp(ct.CTk):
 
     def update_words(self):
         view_menu.hide_unhide_words(self.status)
+
+    def update_server(self):
+        view_menu.hide_unhide_server_status(self.status)

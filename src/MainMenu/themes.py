@@ -74,6 +74,7 @@ def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, 
                 widget.status_label.configure(bg=config['status_label']['bg'], fg=config['status_label']['fg'])
                 widget.num_stats_label.configure(bg=config['num_stats_label']['bg'], fg=config['num_stats_label']['fg'])
                 widget.run_img.configure(bg=config['run_img']['bg'])
+                widget.server_status.configure(bg=config['server_status']['bg'], fg=config['server_status']['fg'])
                 widget.set_color(config['set_color'])
                 widget.set_based_color(config['set_based_color'])
                 widget.timer.configure(bg=config['timer']['bg'], fg=config['timer']['fg'])

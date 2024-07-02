@@ -1,3 +1,10 @@
+# Version 2.0
+
+### Added:
+
+- Server status in status bar
+
+
 # Version: 1.5
 
 ### Added:

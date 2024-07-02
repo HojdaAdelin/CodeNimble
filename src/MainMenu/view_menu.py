@@ -78,21 +78,37 @@ def hide_unhide_statusbar(status):
 def notifications(status):
     if int(check.get_config_value("notifications")) == 0:
         check.update_config_file("notifications", 1)
-        status.num_stats_label.pack_forget()
-        status.run_img.pack_forget()
+        if int(check.get_config_value("words_count")) == 1:
+            status.num_stats_label.pack_forget()
+        if int(check.get_config_value("status_run")) == 1:
+            status.run_img.pack_forget()
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack_forget()
         status.status_label.pack(side="right")
-        status.num_stats_label.pack(side="right")
-        status.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("words_count")) == 1:
+            status.num_stats_label.pack(side="right")
+        if int(check.get_config_value("status_run")) == 1:
+            status.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack(side="right")
     elif int(check.get_config_value("notifications")) == 1:
         check.update_config_file("notifications", 0)
         status.status_label.pack_forget()
     else:
         check.update_config_file("notifications", 1)
-        status.num_stats_label.pack_forget()
-        status.run_img.pack_forget()
+        if int(check.get_config_value("words_count")) == 1:
+            status.num_stats_label.pack_forget()
+        if int(check.get_config_value("status_run")) == 1:
+            status.run_img.pack_forget()
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack_forget()
         status.status_label.pack(side="right")
-        status.num_stats_label.pack()
-        status.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("words_count")) == 1:
+            status.num_stats_label.pack(side="right")
+        if int(check.get_config_value("status_run")) == 1:
+            status.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack(side="right")
 
 def hide_unhide_timer(status):
     if int(check.get_config_value("timer")) == 0:
@@ -108,22 +124,34 @@ def hide_unhide_timer(status):
 def hide_unhide_run(status):
     if int(check.get_config_value("status_run")) == 0:
         check.update_config_file("status_run", 1)
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack_forget()
         status.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack(side="right")
     elif int(check.get_config_value("status_run")) == 1:
         check.update_config_file("status_run", 0)
         status.run_img.pack_forget()
     else:
         check.update_config_file("status_run", 1)
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack_forget()
         status.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack(side="right")
 
 def hide_unhide_words(status):
     if int(check.get_config_value("words_count")) == 0:
         check.update_config_file("words_count", 1)
         if int(check.get_config_value("status_run")) == 1:
             status.run_img.pack_forget()
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack_forget()
         status.num_stats_label.pack(side="right")
         if int(check.get_config_value("status_run")) == 1:
             status.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack(side="right")
     elif int(check.get_config_value("words_count")) == 1:
         check.update_config_file("words_count", 0)
         status.num_stats_label.pack_forget()
@@ -131,6 +159,21 @@ def hide_unhide_words(status):
         check.update_config_file("words_count", 1)
         if int(check.get_config_value("status_run")) == 1:
             status.run_img.pack_forget()
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack_forget()
         status.num_stats_label.pack(side="right")
         if int(check.get_config_value("status_run")) == 1:
             status.run_img.pack(side="right", padx=10)
+        if int(check.get_config_value("server_status")) == 1:
+            status.server_status.pack(side="right")
+
+def hide_unhide_server_status(status):
+    if int(check.get_config_value("server_status")) == 0:
+        check.update_config_file("server_status", 1)
+        status.server_status.pack(side="right")
+    elif int(check.get_config_value("server_status")) == 1:
+        check.update_config_file("server_status", 0)
+        status.server_status.pack_forget()
+    else:
+        check.update_config_file("server_status", 1)
+        status.server_status.pack(side="right")
