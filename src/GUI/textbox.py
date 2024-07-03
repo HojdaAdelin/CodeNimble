@@ -12,6 +12,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
+from MainMenu import view_menu
 from MainMenu import file_menu
 from GUI import filetab
 from Server import server
@@ -107,6 +108,8 @@ class ScrollText(tk.Frame):
         self.text.bind("<Escape>", self.hide_suggestions)
         self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
         self.text.bind('<<Modified>>', self.on_text_modified)
+        self.text.bind("<Control-Button-4>", view_menu.zoom_in(self))
+        self.text.bind("<Control-Button-5>", view_menu.zoom_out(self))
 
     def on_text_modified(self, event=None):
         # Obține textul curent din widget

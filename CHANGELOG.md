@@ -3,6 +3,8 @@
 ### Added:
 
 - Server status in status bar
+- Auto save file after 5s
+- Ctrl+roler bind
 
 
 # Version: 1.5
