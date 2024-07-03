@@ -27,6 +27,7 @@ class ScrollText(tk.Frame):
         global ante_font
         tk.Frame.__init__(self, *args, **kwargs)
         
+        self.master = master
         self.statusbar = status
         self.server = None
         self.client = None
