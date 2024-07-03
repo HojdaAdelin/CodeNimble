@@ -136,9 +136,13 @@ class MainWindow(ct.CTk):
         utility_drop.add_option(option="Server Panel (Beta)", command=lambda:open_server_panel(self))
         
         statusbar_instance = statusbar.StatusBar(self, text="")
+        self.statusbar_instance = statusbar_instance
         scroll = textbox.ScrollText(self, statusbar_instance)
         self.scroll = scroll
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
+
+        
+        self.auto_save_option()
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
@@ -208,3 +212,9 @@ class MainWindow(ct.CTk):
         def open_settings_window(self):
             settings_window = settings.SettingsApp(status=statusbar_instance)
             settings_window.mainloop()
+
+    def auto_save_option(self):
+        if file_menu.opened_file_status() and int(check.get_config_value("auto_save")) == 1:
+            file_menu.save_file(self.scroll.text, self.statusbar_instance)
+        
+        self.after(5000, self.auto_save_option)

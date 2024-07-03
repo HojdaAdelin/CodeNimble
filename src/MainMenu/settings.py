@@ -37,11 +37,13 @@ class SettingsApp(ct.CTk):
     
     def gui(self, fg_cl, text_bg, text):
         self.left_frame = ct.CTkFrame(self, width=300, height=460, fg_color=fg_cl, corner_radius=0)
-        self.left_frame.pack(side="left",anchor="nw")
+        self.left_frame.pack(side="left",anchor="nw", padx=(0, 100))
         self.center_frame = ct.CTkFrame(self, width=300, height=460, fg_color=fg_cl, corner_radius=0)
         self.center_frame.pack(side="left",anchor="nw")
         self.right_frame = ct.CTkFrame(self, width=300, height=460, fg_color=fg_cl, corner_radius=0)
         self.right_frame.pack(side="right",anchor="nw")
+
+        """ LEFT FRAME """
 
         self.status_label = ct.CTkLabel(self.left_frame, font=("", 24), text_color=text, text="Status Bar")
         self.status_label.pack(padx=5,pady=5)
@@ -76,6 +78,16 @@ class SettingsApp(ct.CTk):
                                       variable=self.server_var, command=self.update_server)
         self.server_box.pack(padx=5,pady=5)
 
+        """ CENTER FRAME """
+        self.misc_lab = ct.CTkLabel(self.center_frame, font=("", 24), text_color=text, text="Misc")
+        self.misc_lab.pack(padx=5,pady=5)
+
+        initial_value = int(check.get_config_value("auto_save"))
+        self.auto_save_var = tk.IntVar(value=initial_value)
+        self.auto_save_box = ct.CTkCheckBox(self.center_frame, text="Auto save", checkbox_width=20, checkbox_height=20, text_color=text,
+                                      variable=self.auto_save_var, command=self.update_auto_save)
+        self.auto_save_box.pack(padx=5,pady=5)
+
     def update_notifications(self):
         view_menu.notifications(self.status)
 
@@ -90,3 +102,10 @@ class SettingsApp(ct.CTk):
 
     def update_server(self):
         view_menu.hide_unhide_server_status(self.status)
+
+    def update_auto_save(self):
+        if int(check.get_config_value("auto_save")) == 0:
+            check.update_config_file("auto_save", 1)
+        elif int(check.get_config_value("auto_save")) == 1:
+            check.update_config_file("auto_save", 0)
+        
