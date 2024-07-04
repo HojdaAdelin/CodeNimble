@@ -98,6 +98,8 @@ class MainWindow(ct.CTk):
         view_drop.add_option(option="Notifications",command=lambda:view_menu.notifications(statusbar_instance))
         view_drop.add_option(option="Left Panel                     Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame, scroll))
         view_drop.add_option(option="Input & Output", command=lambda:view_menu.hide_unhide_input_output(treeview_frame))
+        view_drop.add_separator()
+        view_drop.add_option(option="Refresh editor     Ctrl+Shift+R", command=lambda:scroll.redraw())
 
         template_drop = CustomDropdownMenu(widget=template, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         template_drop.add_option(option="C++", command=lambda:template_menu.create_template(scroll.text, scroll, statusbar_instance, "cpp"))
@@ -175,6 +177,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame, scroll.text))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
+        scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())
         
         # General configuration
         ct.set_appearance_mode("dark")
