@@ -7,7 +7,6 @@
 - Ctrl+roler bind
 - Refresh editor (Ctrl+Shift+R)
 
-
 # Version: 1.5
 
 ### Added:
