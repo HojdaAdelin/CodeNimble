@@ -5,6 +5,7 @@
 - Server status in status bar
 - Auto save file after 5s
 - Ctrl+roler bind
+- Refresh editor (Ctrl+Shift+R)
 
 
 # Version: 1.5
