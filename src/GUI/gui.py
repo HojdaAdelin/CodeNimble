@@ -52,6 +52,7 @@ class MainWindow(ct.CTk):
         home_drop.add_separator()
         home_drop.add_option(option="Profile", command=lambda:open_profile_window(self))
         home_drop.add_option(option="Settings", command=lambda:open_settings_window(self))
+        home_drop.add_option(option="Save session", command=lambda:open_settings_window(self))
         home_drop.add_separator()
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
     
