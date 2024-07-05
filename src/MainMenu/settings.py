@@ -13,6 +13,7 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import view_menu
 from MainMenu import themes
+from MainMenu import session
 
 class SettingsApp(ct.CTk):
     def __init__(self, status):
@@ -94,7 +95,7 @@ class SettingsApp(ct.CTk):
                                       variable=self.session_var, command=self.update_session)
         self.session_box.pack(padx=5,pady=5)
 
-        self.reset_session = ct.CTkButton(self.center_frame,text="Reset Session", width=100)
+        self.reset_session = ct.CTkButton(self.center_frame,text="Reset Session", width=100, command=session.reset_session())
         self.reset_session.pack(padx=5,pady=5)
 
     def update_notifications(self):

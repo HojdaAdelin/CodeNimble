@@ -28,6 +28,7 @@ from GUI import paint_mode
 from Server import panel
 from MainMenu import profile
 from MainMenu import settings
+from MainMenu import session
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -52,7 +53,6 @@ class MainWindow(ct.CTk):
         home_drop.add_separator()
         home_drop.add_option(option="Profile", command=lambda:open_profile_window(self))
         home_drop.add_option(option="Settings", command=lambda:open_settings_window(self))
-        home_drop.add_option(option="Save session", command=lambda:open_settings_window(self))
         home_drop.add_separator()
         home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
     
@@ -74,6 +74,8 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Remove default file",command=lambda:file_menu.remove_default_file(statusbar_instance))
         file_drop.add_option(option="Save as default folder", command=lambda:file_menu.save_as_default_folder(statusbar_instance))
         file_drop.add_option(option="Remove default folder", command=lambda:file_menu.remove_default_folder(statusbar_instance))
+        file_drop.add_separator()
+        file_drop.add_option(option="Save session", command=lambda:session.save_session(scroll.tab_bar.tabs))
 
         edit_drop = CustomDropdownMenu(widget=edit, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         edit_drop.add_option(option="Undo                           Ctrl+Z", command=lambda:edit_menu.undo_text(scroll.text, scroll))
