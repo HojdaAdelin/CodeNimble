@@ -28,6 +28,7 @@ from GUI import paint_mode
 from Server import panel
 from MainMenu import profile
 from MainMenu import settings
+from MainMenu import session
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -73,6 +74,8 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Remove default file",command=lambda:file_menu.remove_default_file(statusbar_instance))
         file_drop.add_option(option="Save as default folder", command=lambda:file_menu.save_as_default_folder(statusbar_instance))
         file_drop.add_option(option="Remove default folder", command=lambda:file_menu.remove_default_folder(statusbar_instance))
+        file_drop.add_separator()
+        file_drop.add_option(option="Save session", command=lambda:session.save_session(scroll.tab_bar.tabs))
 
         edit_drop = CustomDropdownMenu(widget=edit, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         edit_drop.add_option(option="Undo                           Ctrl+Z", command=lambda:edit_menu.undo_text(scroll.text, scroll))
@@ -186,11 +189,14 @@ class MainWindow(ct.CTk):
         self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")
         
-        if not check.get_config_value("default_file") == "0":
+        if not check.get_config_value("default_file") == "0" and check.get_config_value("files") == "0":
             file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
 
         if not check.get_config_value("default_folder") == "0":
             file_menu.open_folder(treeview_frame, statusbar_instance, scroll, check.get_config_value("default_folder"))
+
+        if not check.get_config_value("files") == "0":
+            session.load_file_tab(scroll.tab_bar)
 
         # Theme
         current_theme = check.get_config_value("theme")

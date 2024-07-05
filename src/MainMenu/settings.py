@@ -13,6 +13,7 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import view_menu
 from MainMenu import themes
+from MainMenu import session
 
 class SettingsApp(ct.CTk):
     def __init__(self, status):
@@ -88,6 +89,15 @@ class SettingsApp(ct.CTk):
                                       variable=self.auto_save_var, command=self.update_auto_save)
         self.auto_save_box.pack(padx=5,pady=5)
 
+        initial_value = int(check.get_config_value("session"))
+        self.session_var = tk.IntVar(value=initial_value)
+        self.session_box = ct.CTkCheckBox(self.center_frame, text="Session", checkbox_width=20, checkbox_height=20, text_color=text,
+                                      variable=self.session_var, command=self.update_session)
+        self.session_box.pack(padx=5,pady=5)
+
+        self.reset_session = ct.CTkButton(self.center_frame,text="Reset Session", width=100, command=session.reset_session())
+        self.reset_session.pack(padx=5,pady=5)
+
     def update_notifications(self):
         view_menu.notifications(self.status)
 
@@ -109,3 +119,8 @@ class SettingsApp(ct.CTk):
         elif int(check.get_config_value("auto_save")) == 1:
             check.update_config_file("auto_save", 0)
         
+    def update_session(self):
+        if int(check.get_config_value("session")) == 0:
+            check.update_config_file("session", 1)
+        elif int(check.get_config_value("session")) == 1:
+            check.update_config_file("session", 0)

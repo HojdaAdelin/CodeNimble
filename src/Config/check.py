@@ -19,7 +19,7 @@ def create_config_file():
 def pre_write_config():
     try:
         with open("config.cfg", "w") as file:
-            file.write("zoom: 28\ntheme: dark\nstatus: 1\ndefault_file: 0\ndefault_folder: 0\nnotifications: 0\ntimer: 1\nstatus_run: 1\nwords_count: 1\nserver_status: 1\nauto_save: 0")
+            file.write("zoom: 28\ntheme: dark\nstatus: 1\ndefault_file: 0\ndefault_folder: 0\nfiles: 0\nnotifications: 0\ntimer: 1\nstatus_run: 1\nwords_count: 1\nserver_status: 1\nauto_save: 0\nsession: 0")
     except Exception as e:
         pass
 
