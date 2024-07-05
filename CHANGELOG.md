@@ -7,6 +7,8 @@
 - Ctrl+roler bind
 - Refresh editor (Ctrl+Shift+R)
 - Save session
+- Summer theme
+- Drag files
 
 # Version: 1.5
 

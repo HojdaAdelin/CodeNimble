@@ -1,0 +1,183 @@
+{
+    "title_bar_color": "0x633a1c",
+    "menu_bar": {
+        "bg_color": "#1c3a63"
+    },
+    "cascade1": {
+        "hover_color": "#2a4b7b",
+        "text_color": "white"
+    },
+    "cascade2": {
+        "hover_color": "#2a4b7b",
+        "text_color": "white"
+    },
+    "cascade3": {
+        "hover_color": "#2a4b7b",
+        "text_color": "white"
+    },
+    "cascade4": {
+        "hover_color": "#2a4b7b",
+        "text_color": "white"
+    },
+    "cascade5": {
+        "hover_color": "#2a4b7b",
+        "text_color": "white"
+    },
+    "cascade6": {
+        "hover_color": "#2a4b7b",
+        "text_color": "white"
+    },
+    "cascade7": {
+        "hover_color": "#2a4b7b",
+        "text_color": "white"
+    },
+    "drop1": {
+        "fg_color": "#1c3a63",
+        "text_color": "white",
+        "hover_color": "#2a4b7b",
+        "bg_color": "#1c3a63"
+    },
+    "drop2": {
+        "fg_color": "#1c3a63",
+        "text_color": "white",
+        "hover_color": "#2a4b7b",
+        "bg_color": "#1c3a63"
+    },
+    "drop3": {
+        "fg_color": "#1c3a63",
+        "text_color": "white",
+        "hover_color": "#2a4b7b",
+        "bg_color": "#1c3a63"
+    },
+    "drop4": {
+        "fg_color": "#1c3a63",
+        "text_color": "white",
+        "hover_color": "#2a4b7b",
+        "bg_color": "#1c3a63"
+    },
+    "drop5": {
+        "fg_color": "#1c3a63",
+        "text_color": "white",
+        "hover_color": "#2a4b7b",
+        "bg_color": "#1c3a63"
+    },
+    "drop6": {
+        "fg_color": "#1c3a63",
+        "text_color": "white",
+        "hover_color": "#2a4b7b",
+        "bg_color": "#1c3a63"
+    },
+    "drop7": {
+        "fg_color": "#1c3a63",
+        "text_color": "white",
+        "hover_color": "#2a4b7b",
+        "bg_color": "#1c3a63"
+    },
+    "status": {
+        "bg": "#1c3a63",
+        "status_label": {
+            "bg": "#1c3a63",
+            "fg": "white"
+        },
+        "server_status": {
+            "bg": "#1c3a63",
+            "fg": "white"
+        },
+        "num_stats_label": {
+            "bg": "#3252a8",
+            "fg": "white"
+        },
+        "run_img": {
+            "bg": "#1c3a63"
+        },
+        "set_color": "#2a4b7b",
+        "set_based_color": "#1c3a63",
+        "timer": {
+            "bg": "#1c3a63",
+            "fg": "white"
+        },
+        "timer_frame": {
+            "bg": "#1c3a63"
+        }
+    },
+    "text": {
+        "text": {
+            "bg": "#2b2b2b",
+            "foreground": "white",
+            "insertbackground": "white",
+            "selectbackground": "#2a4b7b"
+        },
+        "scrollbar": {
+            "fg_color": "#2b2b2b",
+            "button_color": "#4c4c4c",
+            "button_hover_color": "#6e6e6e"
+        },
+        "scrollhor": {
+            "fg_color": "#2b2b2b",
+            "button_color": "#4c4c4c",
+            "button_hover_color": "#6e6e6e"
+        },
+        "numberLines": {
+            "bg": "#1c3a63"
+        },
+        "suggestions": {
+            "bg": "#1c3a63",
+            "fg": "white",
+            "selectbackground": "#2a4b7b",
+            "selectforeground": "white"
+        }
+    },
+    "win": {
+        "fg_color": "#1c3a63"
+    },
+    "tree": {
+        "fg_color": "#1c3a63",
+        "treestyle": {
+            "Treeview": {
+                "background": "#1c3a63",
+                "fieldbackground": "#1c3a63",
+                "foreground": "white",
+                "bordercolor": "#1c3a63"
+            },
+            "Treeview_map": {
+                "background": [["selected", "#6e6e6e"]],
+                "foreground": [["selected", "white"]]
+            }
+        },
+        "input_label": {
+            "text_color": "white"
+        },
+        "output_label": {
+            "text_color": "white"
+        },
+        "input": {
+            "fg_color": "#2b2b2b",
+            "text_color": "white"
+        },
+        "output": {
+            "fg_color": "#2b2b2b",
+            "text_color": "white"
+        }
+    },
+    "tree_menu": {
+        "bg": "#1c3a63",
+        "fg": "white",
+        "activebackground": "#6e6e6e",
+        "activeforeground": "black"
+    },
+    "tree_foldermenu": {
+        "bg": "#1c3a63",
+        "fg": "white",
+        "activebackground": "#6e6e6e",
+        "activeforeground": "black"
+    },
+    "tab_bar": {
+        "fg_color": "#1c3a63"
+    },
+    "default_window": {
+        "fg_color": "#2b2b2b",
+        "text_bg": "#3c4b6e",
+        "text": "white",
+        "hover_color": "#2a4b7b"
+    }
+}

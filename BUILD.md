@@ -8,11 +8,13 @@ To build from source you need to clone this repo:
     - tkinter
     - CTkMenuBar
     - CTkTable
+    - Pywinstyles
     ```sh
     pip install customtkinter
     pip install tkinter
     pip install CTkMenuBar
     pip install CTkTable
+    pip install pywinstyles
     ```
 
 2. Fiind the source of the custom tkinter library
