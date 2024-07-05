@@ -189,11 +189,14 @@ class MainWindow(ct.CTk):
         self.iconbitmap("images/logo.ico")
         self.geometry("1200x700")
         
-        if not check.get_config_value("default_file") == "0":
+        if not check.get_config_value("default_file") == "0" and check.get_config_value("files") == "0":
             file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
 
         if not check.get_config_value("default_folder") == "0":
             file_menu.open_folder(treeview_frame, statusbar_instance, scroll, check.get_config_value("default_folder"))
+
+        if not check.get_config_value("files") == "0":
+            session.load_file_tab(scroll.tab_bar)
 
         # Theme
         current_theme = check.get_config_value("theme")

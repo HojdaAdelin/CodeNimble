@@ -1,5 +1,6 @@
 from tkinter import *
 import customtkinter as ctk
+import re
 
 import sys
 import os
@@ -28,3 +29,14 @@ def reset_session():
     check.update_config_file("default_file", 0)
     check.update_config_file("default_folder", 0)
     check.update_config_file("files", 0)
+
+def load_file_tab(file_tab):
+    files = check.get_config_value("files")
+    
+    pattern = r"'(.*?)': <GUI\.filetab\.ClosableTab object"
+    
+    paths = re.findall(pattern, files)
+    
+    for path in paths:
+        file_tab.add_tab(path)
+    

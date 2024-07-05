@@ -6,6 +6,7 @@
 - Auto save file after 5s
 - Ctrl+roler bind
 - Refresh editor (Ctrl+Shift+R)
+- Save session
 
 # Version: 1.5
 
