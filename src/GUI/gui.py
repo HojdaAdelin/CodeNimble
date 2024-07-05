@@ -178,7 +178,8 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
         scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())
-        
+        scroll.text.bind("<Control-MouseWheel>", lambda event:self.mouse_wheel(event=event))
+
         # General configuration
         ct.set_appearance_mode("dark")
         self.title("CodeNimble")
@@ -221,3 +222,10 @@ class MainWindow(ct.CTk):
             file_menu.save_file(self.scroll.text, self.statusbar_instance)
         
         self.after(5000, self.auto_save_option)
+
+    def mouse_wheel(self,event):
+        
+        if event.num == 5 or event.delta == -120:
+            view_menu.zoom_out(self.scroll)
+        if event.num == 4 or event.delta == 120:
+            view_menu.zoom_in(self.scroll)
