@@ -4,6 +4,7 @@ import customtkinter as ct
 from CTkMenuBar import *
 from ctypes import byref, sizeof, c_int, windll
 import tkinter as tk
+import pywinstyles
 
 import sys
 import os
@@ -187,6 +188,7 @@ class MainWindow(ct.CTk):
         treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
         scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())
         scroll.text.bind("<Control-MouseWheel>", lambda event:self.mouse_wheel(event=event))
+        pywinstyles.apply_dnd(scroll.text, self.drag_file)
 
         # General configuration
         ct.set_appearance_mode("dark")
@@ -240,3 +242,7 @@ class MainWindow(ct.CTk):
             view_menu.zoom_out(self.scroll)
         if event.num == 4 or event.delta == 120:
             view_menu.zoom_in(self.scroll)
+
+    def drag_file(self, file):
+        file_path = file[0]
+        self.scroll.tab_bar.add_tab(file_path=file_path)
