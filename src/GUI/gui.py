@@ -55,7 +55,7 @@ class MainWindow(ct.CTk):
         home_drop.add_option(option="Profile", command=lambda:open_profile_window(self))
         home_drop.add_option(option="Settings", command=lambda:open_settings_window(self))
         home_drop.add_separator()
-        home_drop.add_option(option="Exit", command=lambda: misc.exit_application(self))
+        home_drop.add_option(option="Exit               Alt+F4", command=lambda: misc.exit_application(self))
     
         file_drop = CustomDropdownMenu(widget=file_m, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         file_drop.add_option(option="New File                     Ctrl+N", command=lambda: file_menu.custom_file(statusbar_instance, treeview_frame))
