@@ -9,6 +9,7 @@
 - Save session
 - Summer theme
 - Drag files
+- Exit accelerator
 
 # Version: 1.5
 
