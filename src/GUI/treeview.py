@@ -30,7 +30,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.selected_color = self._apply_appearance_mode(customtkinter.ThemeManager.theme["CTkButton"]["fg_color"])
 
         self.gui(master)
-        
         self.drag_data = {"item": None, "x": 0, "y": 0}
         self.hovered_item = None 
 
@@ -40,7 +39,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<<TreeviewOpen>>", self.on_open)
 
     def gui(self, master):
-
         im_open = Image.new('RGBA', (30, 30), '#00000000')  # Săgeată deschisă mai mare
         im_empty = Image.new('RGBA', (30, 30), '#00000000')  # Imagine goală mai mare
         draw = ImageDraw.Draw(im_open)
