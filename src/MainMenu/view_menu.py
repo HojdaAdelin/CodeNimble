@@ -44,16 +44,15 @@ def toggle_fullscreen(window):
         window.state("zoomed")
 
 def hide_unhide_treeview(treeview_frame: TreeviewFrame, text):
-
-    if treeview_frame.winfo_ismapped():  # Verificăm dacă TreeviewFrame-ul este vizibil
-        treeview_frame.grid_forget()  # Dacă da, îl ascundem
+    if treeview_frame.winfo_ismapped(): 
+        treeview_frame.grid_forget() 
         text.grid_forget()
         text.grid(row=1, column=0,columnspan=2,sticky="nswe")
     else:
         text.grid_forget()
         treeview_frame.grid(row=1, column=0, sticky="nsw") 
         text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,0))
-
+    
 def hide_unhide_input_output(tree):
     if tree.input_label.winfo_ismapped():
         tree.input_label.grid_forget()

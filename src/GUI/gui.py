@@ -151,14 +151,12 @@ class MainWindow(ct.CTk):
         scroll = textbox.ScrollText(self, statusbar_instance)
         self.scroll = scroll
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
-
         
         self.auto_save_option()
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)
-        treeview_frame.grid_forget()
         menu.grid(row=0, column=0,columnspan=2, sticky="ew")
         scroll.grid(row=1, column=0,columnspan=2,sticky="nswe")
         if (int(check.get_config_value("status")) == 1):
