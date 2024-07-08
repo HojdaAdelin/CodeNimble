@@ -30,6 +30,8 @@ from Server import panel
 from MainMenu import profile
 from MainMenu import settings
 from MainMenu import session
+from GUI import locations
+from MainMenu import recent
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -67,6 +69,7 @@ class MainWindow(ct.CTk):
         file_drop.add_separator()
         file_drop.add_option(option="Open Folder               Ctrl+K",command=lambda:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
         file_drop.add_option(option="Close Folder", command=lambda:file_menu.close_folder(treeview_frame, scroll))
+        file_drop.add_option(option="Open Recent", command=lambda:open_recent(self))
         file_drop.add_separator()
         file_drop.add_option(option="Save                           Ctrl+S",command=lambda:file_menu.save_file(scroll.text, statusbar_instance))
         file_drop.add_option(option="Save as             Ctrl+Shift+S",command=lambda:file_menu.save_as_file(scroll.text, statusbar_instance))
@@ -227,6 +230,10 @@ class MainWindow(ct.CTk):
         def open_settings_window(self):
             settings_window = settings.SettingsApp(status=statusbar_instance)
             settings_window.mainloop()
+
+        def open_recent(self):
+            lista = recent.return_lines()
+            locations.RecentDrop(self, lista)
 
     def auto_save_option(self):
         if file_menu.opened_file_status() and int(check.get_config_value("auto_save")) == 1:
