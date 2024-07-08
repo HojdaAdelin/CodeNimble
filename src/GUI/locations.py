@@ -6,7 +6,7 @@ class RecentDrop:
         self.lista_elemente = lista_elemente
         self.visible = False
         
-        self.frame = tk.Frame(self.master, width=600, height=460, bd=1, relief='solid')
+        self.frame = tk.Frame(self.master, width=750, height=460, bd=1, relief='solid')
         self.listbox = tk.Listbox(self.frame, selectmode=tk.SINGLE, height=len(self.lista_elemente),
                                   font=("", 34))
         for item in self.lista_elemente:
@@ -17,6 +17,7 @@ class RecentDrop:
         
         self.frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         self.frame.bind("<FocusOut>", self.hide_dropdown)
+        self.master.bind("<Escape>", self.hide_dropdown)
         self.master.bind("<Button-1>", self.check_click_outside)
     
     def toggle_visibility(self):

@@ -31,6 +31,7 @@ from MainMenu import profile
 from MainMenu import settings
 from MainMenu import session
 from GUI import locations
+from MainMenu import recent
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -231,8 +232,7 @@ class MainWindow(ct.CTk):
             settings_window.mainloop()
 
         def open_recent(self):
-            lista = ["11", "22", "33", "44", "55",
-                     "66", "77", "88", "99"]
+            lista = recent.return_lines()
             locations.RecentDrop(self, lista)
 
     def auto_save_option(self):

@@ -16,6 +16,7 @@ sys.path.append(parent_dir)
 from Config import check
 from MainMenu import edit_menu
 from MainMenu import themes
+from MainMenu import recent
 
 opened_filename = None
 opened_folder_path = None
@@ -75,6 +76,7 @@ def open_folder(treeview, status_bar, text, path=None):
         text.grid_forget()
         treeview.grid(row=1, column=0,sticky="nsw") 
         text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
+        recent.write_lines(folder_path)
 
 def close_folder(treeview_frame, text):
     global opened_filename
