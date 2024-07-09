@@ -1,9 +1,21 @@
 import tkinter as tk
+import sys
+import os
+
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+sys.path.append(parent_dir)
+
+from Config import check
+from MainMenu import themes
+from MainMenu import view_menu
 
 class RecentDrop:
-    def __init__(self, master, lista_elemente):
+    def __init__(self, master, lista_elemente, treeview, textbox):
         self.master = master
         self.lista_elemente = lista_elemente
+        self.textbox = textbox
+        self.treeview = treeview
         self.visible = False
         
         self.frame = tk.Frame(self.master, width=750, height=460, bd=1, relief='solid')
@@ -19,7 +31,11 @@ class RecentDrop:
         self.frame.bind("<FocusOut>", self.hide_dropdown)
         self.master.bind("<Escape>", self.hide_dropdown)
         self.master.bind("<Button-1>", self.check_click_outside)
-    
+        self.listbox.bind("<Double-1>", self.open_folder)
+
+        fg_color, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        self.listbox.configure(bg=fg_color, fg=text)
+
     def toggle_visibility(self):
         if self.visible:
             self.hide_dropdown(None)
@@ -32,5 +48,14 @@ class RecentDrop:
         self.visible = False
     
     def check_click_outside(self, event):
-        if not (self.frame.winfo_containing(event.x_root, event.y_root) == self.frame or self.frame.winfo_toplevel() == event.widget):
+        # Verifică dacă clicul a avut loc în afara frame-ului și listbox-ului
+        widget = self.master.winfo_containing(event.x_root, event.y_root)
+        if widget not in [self.frame, self.listbox]:
             self.hide_dropdown(None)
+
+    def open_folder(self, event):
+        index = self.listbox.curselection()
+        if index:
+            folder_path = self.listbox.get(index).strip()
+            self.treeview.populate_treeview(folder_path)
+        self.hide_dropdown(event)

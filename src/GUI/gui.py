@@ -233,7 +233,7 @@ class MainWindow(ct.CTk):
 
         def open_recent(self):
             lista = recent.return_lines()
-            locations.RecentDrop(self, lista)
+            locations.RecentDrop(self, lista, treeview_frame, scroll.text)
 
     def auto_save_option(self):
         if file_menu.opened_file_status() and int(check.get_config_value("auto_save")) == 1:

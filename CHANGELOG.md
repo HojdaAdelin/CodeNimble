@@ -10,6 +10,7 @@
 - Summer theme
 - Drag files
 - Exit accelerator
+- Open recent
 
 # Version: 1.5
 
