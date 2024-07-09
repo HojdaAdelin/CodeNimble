@@ -1,4 +1,13 @@
 import tkinter as tk
+import sys
+import os
+
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+sys.path.append(parent_dir)
+
+from Config import check
+from MainMenu import themes
 
 class RecentDrop:
     def __init__(self, master, lista_elemente):
@@ -19,6 +28,9 @@ class RecentDrop:
         self.frame.bind("<FocusOut>", self.hide_dropdown)
         self.master.bind("<Escape>", self.hide_dropdown)
         self.master.bind("<Button-1>", self.check_click_outside)
+
+        fg_color, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        self.listbox.configure(bg=fg_color, fg=text)
     
     def toggle_visibility(self):
         if self.visible:
