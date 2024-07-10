@@ -11,6 +11,7 @@
 - Drag files
 - Exit accelerator
 - Open recent
+- LAN password
 
 # Version: 1.5
 

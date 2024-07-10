@@ -2,10 +2,11 @@ import socket
 import threading
 
 class Server:
-    def __init__(self, host='0.0.0.0', port=9999):
+    def __init__(self, host='0.0.0.0', port=9999, password="1234"):
         self.host = host
         self.port = port
-        self.clients = {}  # Dicționar pentru a memora client_id: nume_client
+        self.password = password
+        self.clients = {}
 
     def start(self):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,9 +16,18 @@ class Server:
 
         while True:
             client_socket, addr = server_socket.accept()
-            client_name = client_socket.recv(1024).decode()  # Primește numele clientului
-            self.clients[client_socket] = client_name  # Adaugă clientul în dicționar
+            client_name = client_socket.recv(1024).decode()
 
+            # Ask for password
+            client_socket.send("PASSWORD_REQUIRED".encode())
+            password_attempt = client_socket.recv(1024).decode()
+            if password_attempt != self.password:
+                client_socket.send("WRONG_PASSWORD".encode())
+                client_socket.close()
+                continue
+
+            client_socket.send("PASSWORD_ACCEPTED".encode())
+            self.clients[client_socket] = client_name
             print(f"Connection established with {client_name} ({addr})")
             client_thread = threading.Thread(target=self.handle_client, args=(client_socket,))
             client_thread.daemon = True
@@ -31,13 +41,13 @@ class Server:
                     break
                 if message == "DISCONNECT":
                     print(f"Client {self.clients[client_socket]} disconnected")
-                    del self.clients[client_socket]  # Folosește `del` pentru a șterge clientul din dicționar
+                    del self.clients[client_socket]
                     client_socket.close()
                     break
                 self.broadcast(message, client_socket)
             except:
                 if client_socket in self.clients:
-                    del self.clients[client_socket]  # Șterge clientul din dicționar în caz de excepție
+                    del self.clients[client_socket]
                 client_socket.close()
                 break
 
