@@ -701,6 +701,7 @@ int main()
                 self.statusbar.update_server("client")
             else:
                 self.client = None
+                self.password = None
                 self.statusbar.update_server("none")
     
     def disconnect_client(self):
