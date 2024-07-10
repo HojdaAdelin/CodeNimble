@@ -18,6 +18,8 @@ from GUI import filetab
 from Server import server
 from Server import client
 from MainMenu import run
+from MainMenu import themes
+from Server import password_handle
 
 global ante_font
 ante_font = check.get_config_value("zoom")
@@ -32,6 +34,7 @@ class ScrollText(tk.Frame):
         self.statusbar = status
         self.server = None
         self.client = None
+        self.password = None
         font_size = check.get_config_value("zoom") or 28
 
         self.gui(font_size)
@@ -668,12 +671,15 @@ int main()
         if self.client:
             messagebox.showinfo("Info", "Client already connected to a server!")
             return
-        self.server = server.Server()
-        server_thread = threading.Thread(target=self.server.start)
-        server_thread.daemon = True
-        server_thread.start()
-        self.start_client()
-        self.statusbar.update_server("host")
+        server_handle = password_handle.PasswordHandle(self)
+        server_handle.mainloop()
+        if self.password:
+            self.server = server.Server(password=self.password)
+            server_thread = threading.Thread(target=self.server.start)
+            server_thread.daemon = True
+            server_thread.start()
+            self.start_client()
+            self.statusbar.update_server("host")
 
     def start_client(self):
         if not self.profile_bool():
@@ -682,13 +688,21 @@ int main()
         if self.client:
             messagebox.showinfo("Info", "Client already connected!")
             return
-        client_name = self.get_profile_name()
-        self.client = client.Client(client_name=client_name)
-        receive_thread = threading.Thread(target=self.client.receive_messages, args=(self.display_message,))
-        receive_thread.daemon = True
-        receive_thread.start()
-        self.statusbar.update_server("client")
-
+        if self.password is None:
+            server_handle = password_handle.PasswordHandle(self)
+            server_handle.mainloop()
+        if self.password:
+            client_name = self.get_profile_name()
+            self.client = client.Client(self, client_name=client_name, password=self.password)
+            if self.client.is_connected():
+                receive_thread = threading.Thread(target=self.client.receive_messages, args=(self.display_message,))
+                receive_thread.daemon = True
+                receive_thread.start()
+                self.statusbar.update_server("client")
+            else:
+                self.client = None
+                self.statusbar.update_server("none")
+    
     def disconnect_client(self):
         if self.client:
             self.client.disconnect()
@@ -698,7 +712,7 @@ int main()
 
     def on_text_change(self):
         message = self.text.get(1.0, tk.END)
-        if self.client:
+        if self.client and self.client.is_connected():
             self.client.send_message(message)
 
     def display_message(self, message):
@@ -711,6 +725,8 @@ int main()
         return self.client
     def get_server(self):
         return self.server
+    def server_password(self, password):
+        self.password = password
 
 class TextLineNumbers(tk.Canvas):
     def __init__(self, *args, **kwargs):
