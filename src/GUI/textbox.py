@@ -20,6 +20,7 @@ from Server import client
 from MainMenu import run
 from MainMenu import themes
 from Server import password_handle
+from GUI import terminal
 
 global ante_font
 ante_font = check.get_config_value("zoom")
@@ -52,8 +53,11 @@ class ScrollText(tk.Frame):
         self.numberLines = TextLineNumbers(self, width=4 * font_size, bg='#313335')
         self.numberLines.attach(self.text)
 
+        self.terminal = terminal.Terminal(self.text)
+
         self.tab_bar = filetab.TabBar(self, self.text, self)
         self.tab_bar.pack(side=tk.TOP, fill="x")
+        self.terminal.pack(side=tk.BOTTOM, fill=tk.X)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
