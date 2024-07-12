@@ -127,8 +127,10 @@
             "selectforeground": "white"
         },
         "terminal": {
-            "bg_color": "#1f1f3b",
-            "fg_color": "#1f1f3b"
+            "bg_color": "#1a3275",
+            "fg_color": "#1a3275",
+            "textbox_color": "#1f1f3b",
+            "text_color": "white"
         }
     },
     "win": {
