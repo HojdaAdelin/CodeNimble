@@ -12,6 +12,7 @@
 - Exit accelerator
 - Open recent
 - LAN password
+- Terminal inside editor
 
 # Version: 1.5
 

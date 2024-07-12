@@ -41,6 +41,23 @@ class ScrollText(tk.Frame):
         self.gui(font_size)
         self.binding()
 
+    def manipulate_gui(self, type):
+        if type == "hide":
+            self.terminal.pack_forget()
+            self.tab_bar.pack_forget()
+            self.tab_bar.pack_forget()
+            self.scrollbar.pack_forget()
+            self.scrollhor.pack_forget()
+            self.numberLines.pack_forget()
+            self.text.pack_forget()
+        elif type == "show":
+            self.terminal.pack(side=tk.BOTTOM, fill=tk.X)
+            self.tab_bar.pack(side=tk.TOP, fill="x")
+            self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
+            self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
+            self.text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+
     def gui(self, font_size):
         self.text = tk.Text(self, bg="#2b2b2b", foreground="#d1dce8", insertbackground='white',
                             selectbackground="#4d4d4d", font=("Consolas", font_size),
@@ -53,11 +70,10 @@ class ScrollText(tk.Frame):
         self.numberLines = TextLineNumbers(self, width=4 * font_size, bg='#313335')
         self.numberLines.attach(self.text)
 
-        self.terminal = terminal.Terminal(self.text)
+        self.terminal = terminal.Terminal(self)
 
         self.tab_bar = filetab.TabBar(self, self.text, self)
         self.tab_bar.pack(side=tk.TOP, fill="x")
-        self.terminal.pack(side=tk.BOTTOM, fill=tk.X,pady=5, padx=(5,0))
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
@@ -126,9 +142,8 @@ class ScrollText(tk.Frame):
             self.terminal.pack_forget()
         else:
             self.terminal.update_height(150)
-            self.scrollhor.pack_forget()
-            self.terminal.pack(side=tk.BOTTOM, fill=tk.X,pady=5, padx=(5,0))
-            self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
+            self.manipulate_gui("hide")
+            self.manipulate_gui("show")
 
     def on_text_modified(self, event=None):
         # Obține textul curent din widget
@@ -679,13 +694,13 @@ int main()
 
     def start_server(self):
         if not self.profile_bool():
-            messagebox.showinfo("Info", "You need to complete the profile first!")
+            self.terminal.notification("[Info]: You need to complete the profile before to start the server!")
             return
         if self.server:
-            messagebox.showinfo("Info", "Server already created!")
+            self.terminal.notification("[Info]: Server already created!")
             return
         if self.client:
-            messagebox.showinfo("Info", "Client already connected to a server!")
+            self.terminal.notification("[Info]: Client already connected to a server!")
             return
         server_handle = password_handle.PasswordHandle(self)
         server_handle.mainloop()
@@ -699,10 +714,10 @@ int main()
 
     def start_client(self):
         if not self.profile_bool():
-            messagebox.showinfo("Info", "You need to complete the profile first!")
+            self.terminal.notification("[Info]: You need to complete the profile before join a local server!")
             return
         if self.client:
-            messagebox.showinfo("Info", "Client already connected!")
+            self.terminal.notification("[Info]: Client already connected!")
             return
         if self.password is None:
             server_handle = password_handle.PasswordHandle(self)
@@ -724,7 +739,7 @@ int main()
         if self.client:
             self.client.disconnect()
             self.client = None
-            messagebox.showinfo("Info", "Disconnected successfully!")
+            self.terminal.notification("[Info]: Disconnected successfully!")
             self.statusbar.update_server("none")
 
     def on_text_change(self):
