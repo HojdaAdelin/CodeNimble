@@ -91,6 +91,7 @@ def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, 
                 widget.suggestions.configure(bg=config['suggestions']['bg'], fg=config['suggestions']['fg'],
                                              selectbackground=config['suggestions']['selectbackground'],
                                              selectforeground=config['suggestions']['selectforeground'])
+                widget.terminal.configure(fg_color=config['terminal']['fg_color'], bg_color=config['terminal']['bg_color'])
             elif widget_name == 'tree':
                 widget.configure(fg_color=config['fg_color'])
                 widget.treestyle.configure("Treeview",

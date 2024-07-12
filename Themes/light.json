@@ -125,6 +125,10 @@
             "fg": "black",
             "selectbackground": "#ebebeb",
             "selectforeground": "black"
+        },
+        "terminal": {
+            "bg_color": "#b0b0b0",
+            "fg_color": "#b0b0b0"
         }
     },
     "win": {
