@@ -57,7 +57,7 @@ class ScrollText(tk.Frame):
 
         self.tab_bar = filetab.TabBar(self, self.text, self)
         self.tab_bar.pack(side=tk.TOP, fill="x")
-        self.terminal.pack(side=tk.BOTTOM, fill=tk.X)
+        self.terminal.pack(side=tk.BOTTOM, fill=tk.X,pady=5, padx=(5,0))
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
@@ -117,6 +117,18 @@ class ScrollText(tk.Frame):
         self.text.bind('<<Modified>>', self.on_text_modified)
         self.text.bind("<Control-Button-4>", view_menu.zoom_in(self))
         self.text.bind("<Control-Button-5>", view_menu.zoom_out(self))
+        self.text.bind("<Control-`>", self.handle_terminal)
+
+    def handle_terminal(self, event):
+        
+        if self.terminal.return_height() == 150:
+            self.terminal.update_height(0)
+            self.terminal.pack_forget()
+        else:
+            self.terminal.update_height(150)
+            self.scrollhor.pack_forget()
+            self.terminal.pack(side=tk.BOTTOM, fill=tk.X,pady=5, padx=(5,0))
+            self.scrollhor.pack(side=tk.BOTTOM, fill=tk.X)
 
     def on_text_modified(self, event=None):
         # Obține textul curent din widget
