@@ -32,6 +32,7 @@ from MainMenu import settings
 from MainMenu import session
 from GUI import locations
 from MainMenu import recent
+from MainMenu import theme_changer
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -140,6 +141,7 @@ class MainWindow(ct.CTk):
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
                                                                                          scroll.tab_bar))
+        textures_drop.add_option(option="Theme changer", command=lambda:theme_changer.update_theme())
         
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(treeview_frame, scroll.text))
