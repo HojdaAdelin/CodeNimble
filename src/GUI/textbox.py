@@ -135,7 +135,7 @@ class ScrollText(tk.Frame):
         self.text.bind("<Control-Button-5>", view_menu.zoom_out(self))
         self.text.bind("<Control-`>", self.handle_terminal)
 
-    def handle_terminal(self, event):
+    def handle_terminal(self, event=None):
         
         if self.terminal.return_height() == 150:
             self.terminal.update_height(0)
@@ -705,12 +705,13 @@ int main()
         server_handle = password_handle.PasswordHandle(self)
         server_handle.mainloop()
         if self.password:
-            self.server = server.Server(password=self.password)
+            self.server = server.Server(password=self.password, app=self)
             server_thread = threading.Thread(target=self.server.start)
             server_thread.daemon = True
             server_thread.start()
             self.start_client()
             self.statusbar.update_server("host")
+            self.terminal.notification("[Server]: Started")
 
     def start_client(self):
         if not self.profile_bool():

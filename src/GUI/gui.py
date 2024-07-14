@@ -105,6 +105,7 @@ class MainWindow(ct.CTk):
         view_drop.add_option(option="Notifications",command=lambda:view_menu.notifications(statusbar_instance))
         view_drop.add_option(option="Left Panel                     Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame, scroll))
         view_drop.add_option(option="Input & Output", command=lambda:view_menu.hide_unhide_input_output(treeview_frame))
+        view_drop.add_option(option="Terminal                         Ctrl+`", command=lambda:scroll.handle_terminal())
         view_drop.add_separator()
         view_drop.add_option(option="Refresh editor     Ctrl+Shift+R", command=lambda:scroll.redraw())
 

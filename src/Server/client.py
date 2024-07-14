@@ -30,7 +30,7 @@ class Client:
             # Receive password acceptance
             password_acceptance = self.client_socket.recv(1024).decode()
             if password_acceptance != "PASSWORD_ACCEPTED":
-                print("Server rejected connection: Wrong password.")
+                self.app.terminal.notification("[Warning]: Server rejected connection: Wrong password.")
                 self.client_socket.close()
                 self.app.client = None
                 self.app.statusbar.update_server("none")

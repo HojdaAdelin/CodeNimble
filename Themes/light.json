@@ -129,7 +129,7 @@
         "terminal": {
             "bg_color": "#f0f0f0",
             "fg_color": "#f0f0f0",
-            "textbox_color": "#5c5c5c",
+            "textbox_color": "#b0b0b0",
             "text_color": "white"
         }
     },

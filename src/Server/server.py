@@ -2,7 +2,8 @@ import socket
 import threading
 
 class Server:
-    def __init__(self, host='0.0.0.0', port=9999, password="1234"):
+    def __init__(self,app, host='0.0.0.0', port=9999, password="1234"):
+        self.app = app
         self.host = host
         self.port = port
         self.password = password
@@ -12,7 +13,7 @@ class Server:
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.bind((self.host, self.port))
         server_socket.listen(5)
-        print(f"Server started on {self.host}:{self.port}")
+        #print(f"Server started on {self.host}:{self.port}")
 
         while True:
             client_socket, addr = server_socket.accept()
@@ -28,7 +29,9 @@ class Server:
 
             client_socket.send("PASSWORD_ACCEPTED".encode())
             self.clients[client_socket] = client_name
-            print(f"Connection established with {client_name} ({addr})")
+            self.var = f"[Server]: Connection established with {client_name} ({addr})"
+            self.app.terminal.notification(self.var)
+            #print(f"Connection established with {client_name} ({addr})")
             client_thread = threading.Thread(target=self.handle_client, args=(client_socket,))
             client_thread.daemon = True
             client_thread.start()
