@@ -13,6 +13,7 @@
 - Open recent
 - LAN password
 - Terminal inside editor
+- Theme changer
 
 # Version: 1.5
 
