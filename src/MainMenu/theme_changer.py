@@ -13,7 +13,11 @@ from MainMenu import themes
 
 use_template_window = None
 
-def update_theme():
+def update_theme(menu, home, file_m, edit, view, template, textures, utility,
+                home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                utility_drop,
+                statusbar_instance, scroll, self, treeview_frame, treeview_frame_menu, treeview_frame_folder_menu,
+                scroll_tab_bar):
     global use_template_window
     if use_template_window:
         return
@@ -49,19 +53,30 @@ def update_theme():
 
     search_label = ctk.CTkLabel(select_template_window, text="Search:", font=("Arial", 20), fg_color=fg_cl, text_color=text)
     search_label.pack(pady=(20, 0))
-    search_box = tk.Entry(select_template_window, width=32, font=("Arial", 20), bg=text_bg, foreground=text, 
+    search_box = tk.Entry(select_template_window, width=30, font=("Arial", 30), bg=text_bg, foreground=text, 
                           insertbackground='white', selectbackground="#616161", borderwidth=0)
     search_box.pack()
     search_box.bind("<KeyRelease>", update_listbox)
 
-    listbox = tk.Listbox(select_template_window, width=40, height=15, font=("Arial", 16), bg=text_bg, foreground=text,
+    listbox = tk.Listbox(select_template_window, width=30, height=15, font=("Arial", 30), bg=text_bg, foreground=text,
                          selectbackground="#616161", borderwidth=0)
     listbox.pack(pady=(20, 0))
 
     update_listbox()
 
     def update_theme():
-        pass
+        new_theme = listbox.curselection()
+        if not new_theme:
+            messagebox.showerror("Error", "No theme selected!")
+            return
+        theme = listbox.get(new_theme[0])
+        theme = theme[:-5]
+        check.update_config_file("theme", theme)
+        themes.use_theme(check.get_config_value("theme"),menu, home, file_m, edit, view, template, textures, utility,
+                                                                                         home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
+                                                                                         utility_drop,
+                                                                                         statusbar_instance, scroll, self, treeview_frame, treeview_frame_menu, treeview_frame_folder_menu,
+                                                                                         scroll_tab_bar)
         
     use_button = ctk.CTkButton(select_template_window, text="Use", width=200, command=update_theme)
     use_button.pack(pady=(10, 0))

@@ -221,19 +221,19 @@ def use_template(textbox, root, statusbar):
 
     search_label = ctk.CTkLabel(select_template_window, text="Search:", font=("Arial", 20), fg_color=fg_cl, text_color=text)
     search_label.pack(pady=(20, 0))
-    search_box = tk.Entry(select_template_window, width=32, font=("Arial", 20), bg=text_bg, foreground=text, 
+    search_box = tk.Entry(select_template_window, width=30, font=("Arial", 30), bg=text_bg, foreground=text, 
                           insertbackground='white', selectbackground="#616161", borderwidth=0)
     search_box.pack()
     search_box.bind("<KeyRelease>", update_listbox)
 
-    listbox = tk.Listbox(select_template_window, width=40, height=15, font=("Arial", 16), bg=text_bg, foreground=text,
+    listbox = tk.Listbox(select_template_window, width=30, height=15, font=("Arial", 30), bg=text_bg, foreground=text,
                          selectbackground="#616161", borderwidth=0)
     listbox.pack(pady=(20, 0))
 
     update_listbox()
 
     def use_selected_template():
-        global use_template_window  # Folosim nonlocal pentru a modifica variabila din închiderea ferestrei
+        global use_template_window  
         selected = listbox.curselection()
         if not selected:
             messagebox.showerror("Error", "No template selected!")
@@ -245,7 +245,6 @@ def use_template(textbox, root, statusbar):
         with open(template_path, 'r') as file:
             template_content = file.read()
         
-        # Extragem extensia din numele template-ului
         template_name, extension = os.path.splitext(template_file)
         
         edit_menu.clear_text(textbox, root, statusbar)
