@@ -196,7 +196,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
             node = selected_item[0]
             abspath = self.get_absolute_path(node)
             if os.path.isfile(abspath):
-                file_menu.delete_file(abspath, self.status, self.text, self.root)
+                file_menu.delete_file(abspath, self.status)
                 self.treeview.delete(node)
                 self.text.delete("1.0", tk.END)
                 self.root.redraw()

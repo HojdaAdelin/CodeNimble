@@ -53,12 +53,12 @@ def update_theme(menu, home, file_m, edit, view, template, textures, utility,
 
     search_label = ctk.CTkLabel(select_template_window, text="Search:", font=("Arial", 20), fg_color=fg_cl, text_color=text)
     search_label.pack(pady=(20, 0))
-    search_box = tk.Entry(select_template_window, width=32, font=("Arial", 20), bg=text_bg, foreground=text, 
+    search_box = tk.Entry(select_template_window, width=30, font=("Arial", 30), bg=text_bg, foreground=text, 
                           insertbackground='white', selectbackground="#616161", borderwidth=0)
     search_box.pack()
     search_box.bind("<KeyRelease>", update_listbox)
 
-    listbox = tk.Listbox(select_template_window, width=40, height=15, font=("Arial", 16), bg=text_bg, foreground=text,
+    listbox = tk.Listbox(select_template_window, width=30, height=15, font=("Arial", 30), bg=text_bg, foreground=text,
                          selectbackground="#616161", borderwidth=0)
     listbox.pack(pady=(20, 0))
 

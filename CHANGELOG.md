@@ -2,18 +2,23 @@
 
 ### Added:
 
-- Server status in status bar
-- Auto save file after 5s
-- Ctrl+roler bind
-- Refresh editor (Ctrl+Shift+R)
-- Save session
-- Summer theme
-- Drag files
-- Exit accelerator
-- Open recent
-- LAN password
-- Terminal inside editor
-- Theme changer
+1. Server status in status bar
+2. Auto save file after 5s
+3. Ctrl+roler bind
+4. Refresh editor (Ctrl+Shift+R)
+5. Save session
+6. Summer theme
+7. Drag files
+8. Exit accelerator
+9. Open recent
+10. LAN password
+11. Terminal inside editor
+12. Theme changer
+
+### Fixed/Changes
+
+1. Fixed delete file function
+2. Changed template & theme interface
 
 # Version: 1.5
 
