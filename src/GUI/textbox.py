@@ -21,10 +21,10 @@ from MainMenu import run
 from MainMenu import themes
 from Server import password_handle
 from GUI import terminal
+from GUI import suggestions
 
 global ante_font
 ante_font = check.get_config_value("zoom")
-
 
 class ScrollText(tk.Frame):
     def __init__(self, master, status, *args, **kwargs):
@@ -79,39 +79,11 @@ class ScrollText(tk.Frame):
         self.numberLines.pack(side=tk.LEFT, fill=tk.Y)
         self.text.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
-        # Autocompletare
-        
-        self.suggestions = tk.Listbox(self, width=25, height=5, font=("", check.get_config_value("zoom")))
-        self.suggestions.bind('<Button-1>', self.on_suggestion_click)
-        self.suggestions.bind('<FocusOut>', self.hide_suggestions)
-        #self.text.bind('<Tab>', self.on_tab)
-        self.suggestions.bind("<Escape>", self.hide_suggestions)
-        #self.text.bind('<FocusOut>', self.hide_suggestions)  # Hide suggestions when focus is lost
-        self.suggestions.bind('<<ListboxSelect>>', self.on_suggestion_select)
-        self.suggestions.bind('<Motion>', self.on_mouse_motion)
-        self.keywords = [
-                'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else',
-                'enum', 'extern', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long', 'register', 'restrict',
-                'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned',
-                'void', 'volatile', 'while', 'using', 'namespace', 'std', 'vector', 'set', 'map', 'unordered_map',
-                'queue', 'priority_queue', 'stack', 'list', 'deque', 'algorithm', 'iterator', 'utility', 'functional',
-                'numeric', 'limits', 'memory', 'shared_ptr', 'unique_ptr', 'make_shared', 'make_unique', 'move',
-                'swap', 'typeid', 'type_traits', 'function', 'bind', 'placeholders', 'tuple', 'array', 'bitset',
-                'complex', 'valarray', 'future', 'promise', 'thread', 'mutex', 'condition_variable', 'chrono',
-                'ratio', 'random', 'atomic', 'filesystem', 'ratio', 'complex', 'valarray', 'new', 'delete',
-                'template', 'typename', 'bool', 'catch', 'class', 'const_cast', 'dynamic_cast', 'explicit', 'export',
-                'friend', 'mutable', 'operator', 'private', 'protected', 'public', 'reinterpret_cast',
-                'static_assert', 'static_cast', 'throw', 'try', 'typeid', 'typename', 'virtual', 'wchar_t',
-                'and', 'and_eq', 'asm', 'bitand', 'bitor', 'compl', 'not', 'not_eq', 'or', 'or_eq', 'xor', 'xor_eq',
-                'true', 'false'
-            ]
-        
-        self.local_variables = set()
-        self.current_file = None
+        self.suggestions = suggestions.Suggestions(self, self)
 
     def binding(self):
-        self.text.bind('<Up>', self.on_up_key)
-        self.text.bind('<Down>', self.on_down_key)
+        self.text.bind('<Up>', self.suggestions.on_up_key)
+        self.text.bind('<Down>', self.suggestions.on_down_key)
         self.text.bind("<Key>", self.onPressDelay)
         self.text.bind("<Button-1>", self.numberLines.redraw)
         self.scrollbar.bind("<Button-1>", self.onScrollPress)
@@ -127,10 +99,10 @@ class ScrollText(tk.Frame):
         self.text.bind("<BackSpace>", self.handle_backspace)
         self.text.bind("<Return>", self.handle_return)
         self.text.bind("<Control-BackSpace>", self.handle_ctrl_backspace)
-        self.text.bind('<space>', self.hide_suggestions)  # Hide suggestions on space
-        self.text.bind("<Escape>", self.hide_suggestions)
-        self.text.bind_all('<KeyRelease>', self.on_keyrelease_all)
-        self.text.bind('<<Modified>>', self.on_text_modified)
+        self.text.bind('<space>', self.suggestions.hide_suggestions)  # Hide suggestions on space
+        self.text.bind("<Escape>", self.suggestions.hide_suggestions)
+        self.text.bind_all('<KeyRelease>', self.suggestions.on_keyrelease_all)
+        self.text.bind('<<Modified>>', self.suggestions.on_text_modified)
         self.text.bind("<Control-Button-4>", view_menu.zoom_in(self))
         self.text.bind("<Control-Button-5>", view_menu.zoom_out(self))
         self.text.bind("<Control-`>", self.handle_terminal)
@@ -145,86 +117,11 @@ class ScrollText(tk.Frame):
             self.manipulate_gui("hide")
             self.manipulate_gui("show")
 
-    def on_text_modified(self, event=None):
-        # Obține textul curent din widget
-        text = self.text.get("1.0", tk.END)
-        
-        # Folosim regex pentru a găsi variabile locale
-        pattern = re.compile(r'\b\w+\b')
-        matches = pattern.findall(text)
-        current_word = self.get_current_word()
-        # Actualizăm setul de variabile locale
-        self.local_variables = set(matches) - set(self.keywords) - {current_word}
-        self.text.edit_modified(False)
-        # Actualizăm sugestiile
-        if file_menu.return_file() == ".cpp":
-            self.update_suggestions()
-
-    def on_up_key(self, event):
-        if self.suggestions.winfo_ismapped():
-            if self.suggestions.curselection():
-                index = self.suggestions.curselection()[0]
-                if index > 0:
-                    self.suggestions.select_clear(0, tk.END)
-                    self.suggestions.select_set(index - 1)
-                    self.suggestions.see(index - 1)
-                    self.suggestions.focus_set()  # Setează focusul înapoi pe lista de sugestii
-            return 'break'
-        else:
-            return None
-    
-    def on_down_key(self, event):
-        if self.suggestions.winfo_ismapped():
-    
-            if self.suggestions.curselection():
-                index = self.suggestions.curselection()[0]
-                if index < self.suggestions.size() - 1:
-                    self.suggestions.select_clear(0, tk.END)
-                    self.suggestions.select_set(index + 1)
-                    self.suggestions.see(index + 1)
-                    self.suggestions.focus_set()  # Setează focusul înapoi pe lista de sugestii
-            return 'break'
-        else:
-            return None
-
-    def on_suggestion_select(self, event):
-        selected_index = self.suggestions.curselection()
-        if selected_index:
-            selected_text = self.suggestions.get(selected_index)
-            self.insert_suggestion(selected_text)
-
     def on_mouse_motion(self, event):
         widget = event.widget
         widget.focus()
         widget.select_clear(0, tk.END)
         widget.select_set(widget.nearest(event.y))
-
-    def on_keyrelease_all(self, event):
-        if file_menu.return_file() == ".cpp":
-            if event.widget == self.text:
-                if event.keysym in ('Up', 'Down', 'Left', 'Right', 'Return', 'Tab', 'space', "enter", "Backspace"):
-                    self.hide_suggestions()  # Ascunde sugestiile la apăsarea acestor taste
-                    return  # Sari peste tastele săgeți, Enter, Tab și spațiu
-
-                # Verifică dacă a fost apăsată tasta "Escape" și oprește afișarea sugestiilor
-                if event.keysym == "Escape":
-                    self.hide_suggestions()
-                    return
-
-                # Actualizează sugestiile doar dacă nu a fost apăsată tasta "Escape"
-                self.update_suggestions()
-
-    def update_suggestions(self):
-        
-        typed_word = self.get_current_word()
-        if typed_word:
-            matching_keywords = [kw for kw in (list(self.local_variables) + self.keywords) if kw.startswith(typed_word)]
-            if matching_keywords:
-                self.show_suggestions(matching_keywords)
-            else:
-                self.hide_suggestions()
-        else:
-            self.hide_suggestions()
 
     def get_current_word(self):
         try:
@@ -235,51 +132,9 @@ class ScrollText(tk.Frame):
         except IndexError:
             return ''
 
-    def show_suggestions(self, suggestions):
-        self.suggestions.delete(0, tk.END)
-        for suggestion in suggestions:
-            self.suggestions.insert(tk.END, suggestion)
-        cursor_index = self.text.index(tk.INSERT)
-        cursor_position = self.text.bbox(cursor_index)
-        if cursor_position:
-            x, y, width, height = cursor_position
-            self.suggestions.place(x=x+(4 * int(check.get_config_value("zoom"))), y=y+80+(int(check.get_config_value("zoom"))))
-            self.suggestions.select_set(0)
-
-    def hide_suggestions(self, event=None):
-        self.suggestions.place_forget()
-
-    def on_suggestion_click(self, event):
-        selected_suggestion = self.suggestions.get(tk.ACTIVE)
-        if selected_suggestion:
-            self.insert_suggestion(selected_suggestion)
-        self.hide_suggestions()
-
-    def on_tab(self, event):
-        if self.suggestions.size() > 0:
-            first_suggestion = self.suggestions.get(0)
-            self.insert_suggestion(first_suggestion)
-            self.hide_suggestions()
-            return 'break'  # This prevents the default behavior of the Tab key
-        return None
-
-    def insert_suggestion(self, suggestion):
-        current_word = self.get_current_word()
-        cursor_index = self.index(tk.INSERT)
-        # Calculate the start index of the current word
-        start_index = f'{cursor_index} - {len(current_word)}c'
-        # Delete the current word
-        self.text.delete(start_index, cursor_index)
-        # Insert the suggestion
-        self.text.insert(cursor_index, suggestion)
-
     def add_tab(self, event):
-        if self.suggestions.size() > 0 and self.suggestions.winfo_ismapped():
-            first_suggestion = self.suggestions.get(0)
-            self.insert_suggestion(first_suggestion)
-            self.hide_suggestions()
-            self.text.focus_set()
-            return 'break'
+        if self.suggestions.handle_case() == True:
+            self.suggestions.handle_tab()
         else:
             self.text.insert(tk.INSERT, "    ")
             return 'break'
@@ -317,7 +172,7 @@ class ScrollText(tk.Frame):
         if file_menu.return_file() == ".cpp" or file_menu.return_file() == ".py":
             self.highlight_syntax()
             if file_menu.return_file() == ".cpp":
-                self.update_suggestions()
+                self.suggestions.update_suggestions()
         self.numberLines.redraw()
         self.statusbar.update_stats(self.text)
         font_size = check.get_config_value("zoom")
@@ -571,12 +426,9 @@ class ScrollText(tk.Frame):
 
     def handle_return(self, event):
 
-        if self.suggestions.size() > 0 and self.suggestions.winfo_ismapped():
-            first_suggestion = self.suggestions.get(0)
-            self.insert_suggestion(first_suggestion)
-            self.hide_suggestions()
-            self.text.focus_set()
-            return 'break'
+        if self.suggestions.handle_case() == True:
+            self.suggestions.handle_enter()
+            return "break"
         if file_menu.return_file() != ".cpp":
             cursor_index = self.text.index(tk.INSERT)
             current_line = self.text.get(f"{cursor_index} linestart", cursor_index)
