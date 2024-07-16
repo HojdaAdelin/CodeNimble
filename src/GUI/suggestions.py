@@ -34,6 +34,7 @@ class Suggestions(tk.Text):
         ]
         self.local_variables = set()
         self.current_file = None
+        self.current_selection = 0
         self.hide_suggestions()
         self.binding()
 
@@ -55,7 +56,10 @@ class Suggestions(tk.Text):
         self.place_forget()
 
     def insert_suggestion(self, suggestion):
-        current_word = self.get_current_word()
+        current_word = self.get_current_word().strip()
+        if not current_word:
+            return
+
         cursor_index = self.root.index(tk.INSERT)
         start_index = f'{cursor_index} - {len(current_word)}c'
         self.root.text.delete(start_index, cursor_index)
@@ -67,15 +71,20 @@ class Suggestions(tk.Text):
         self.highlight_line(index)
 
     def highlight_line(self, index):
-        self.tag_remove("highlight", "1.0", tk.END)
-        self.tag_add("highlight", f"{index} linestart", f"{index} lineend")
-        self.tag_config("highlight", background=self.cget("selectbackground"), foreground=self.cget("selectforeground"))
+        try:
+            line_start = self.index(f"{index} linestart")
+            line_end = self.index(f"{index} lineend")
+            self.tag_remove("highlight", "1.0", tk.END)
+            self.tag_add("highlight", line_start, line_end)
+            self.tag_config("highlight", background=self.cget("selectbackground"), foreground=self.cget("selectforeground"))
+        except tk.TclError:
+            pass
 
     def on_up_key(self, event):
-        return 'break'  # Handled by text_widget
+        pass
 
     def on_down_key(self, event):
-        return 'break'  # Handled by text_widget
+        pass
 
     def on_keyrelease_all(self, event):
         if file_menu.return_file() == ".cpp":
@@ -91,8 +100,8 @@ class Suggestions(tk.Text):
                 self.update_suggestions()
 
     def update_suggestions(self):
-        typed_word = self.get_current_word()
-        if typed_word:
+        typed_word = self.get_current_word().strip()
+        if typed_word and not typed_word.isspace():
             matching_keywords = [
                 f"\u25A0 {kw}" if kw in self.local_variables else kw
                 for kw in (list(self.local_variables) + self.keywords)
@@ -110,7 +119,11 @@ class Suggestions(tk.Text):
             cursor_index = self.root.index(tk.INSERT)
             line_start = self.root.index(f'{cursor_index} linestart')
             current_line_text = self.root.get(line_start, cursor_index)
-            return current_line_text.split()[-1] if current_line_text else ''
+            words = current_line_text.split()
+            if words and current_line_text.endswith(words[-1]):
+                return words[-1]
+            else:
+                return ''
         except IndexError:
             return ''
 
@@ -148,7 +161,7 @@ class Suggestions(tk.Text):
         text = self.root.text.get("1.0", tk.END)
         pattern = re.compile(r'\b\w+\b')
         matches = pattern.findall(text)
-        current_word = self.get_current_word()
+        current_word = self.get_current_word().strip()
         self.local_variables = set(matches) - set(self.keywords) - {current_word}
         self.root.text.edit_modified(False)
         if file_menu.return_file() == ".cpp":
