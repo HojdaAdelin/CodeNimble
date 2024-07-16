@@ -177,7 +177,8 @@ class ScrollText(tk.Frame):
         if font_size != ante_font:
             ante_font = font_size
             self.text.configure(font=("Consolas", font_size))
-            self.suggestions.configure(font=("", font_size))
+            self.suggestions.suggestions_text.configure(font=("", font_size))
+            self.suggestions.tags_text.configure(font=("", font_size))
 
         if selection_start and selection_end:
             self.text.tag_add(tk.SEL, selection_start, selection_end)

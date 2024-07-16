@@ -11,11 +11,17 @@ from Config import check
 from MainMenu import file_menu
 from MainMenu import themes
 
-class Suggestions(tk.Text):
+class Suggestions(tk.Frame):
     def __init__(self, master, root, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.root = root
-        self.configure(height=5, width=30, wrap="none", font=("Courier", check.get_config_value("zoom")))
+        
+        self.suggestions_text = tk.Text(self, height=6, width=20, wrap="none", font=("Courier", check.get_config_value("zoom")))
+        self.suggestions_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        
+        self.tags_text = tk.Text(self, height=6, width=7, wrap="none", font=("Courier", check.get_config_value("zoom")))
+        self.tags_text.pack(side=tk.RIGHT, fill=tk.Y)
+        
         self.keywords = [
             'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else',
             'enum', 'extern', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long', 'register', 'restrict',
@@ -39,15 +45,14 @@ class Suggestions(tk.Text):
         self.binding()
 
     def binding(self):
-        self.bind('<Button-1>', self.on_suggestion_click)
-        self.bind('<FocusOut>', self.hide_suggestions)
-        self.bind("<Escape>", self.hide_suggestions)
-        self.bind('<Motion>', self.on_mouse_motion)
+        self.suggestions_text.bind('<Button-1>', self.on_suggestion_click)
+        self.suggestions_text.bind('<FocusOut>', self.hide_suggestions)
+        self.suggestions_text.bind("<Escape>", self.hide_suggestions)
+        self.suggestions_text.bind('<Motion>', self.on_mouse_motion)
 
     def on_suggestion_click(self, event):
-        index = self.index("@%d,%d" % (event.x, event.y))
-        suggestion = self.get(f"{index} linestart", f"{index} lineend").strip()
-        suggestion = self.strip_marker(suggestion)
+        index = self.suggestions_text.index("@%d,%d" % (event.x, event.y))
+        suggestion = self.suggestions_text.get(f"{index} linestart", f"{index} lineend").strip()
         if suggestion:
             self.insert_suggestion(suggestion)
         self.hide_suggestions()
@@ -72,11 +77,11 @@ class Suggestions(tk.Text):
 
     def highlight_line(self, index):
         try:
-            line_start = self.index(f"{index} linestart")
-            line_end = self.index(f"{index} lineend")
-            self.tag_remove("highlight", "1.0", tk.END)
-            self.tag_add("highlight", line_start, line_end)
-            self.tag_config("highlight", background=self.cget("selectbackground"), foreground=self.cget("selectforeground"))
+            line_start = self.suggestions_text.index(f"{index} linestart")
+            line_end = self.suggestions_text.index(f"{index} lineend")
+            self.suggestions_text.tag_remove("highlight", "1.0", tk.END)
+            self.suggestions_text.tag_add("highlight", line_start, line_end)
+            self.suggestions_text.tag_config("highlight", background=self.suggestions_text.cget("selectbackground"), foreground=self.suggestions_text.cget("selectforeground"))
         except tk.TclError:
             pass
 
@@ -103,7 +108,7 @@ class Suggestions(tk.Text):
         typed_word = self.get_current_word().strip()
         if typed_word and not typed_word.isspace():
             matching_keywords = [
-                f"\u25A0 {kw}" if kw in self.local_variables else kw
+                f"{kw}" if kw in self.local_variables else kw
                 for kw in (list(self.local_variables) + self.keywords)
                 if kw.startswith(typed_word)
             ]
@@ -128,21 +133,29 @@ class Suggestions(tk.Text):
             return ''
 
     def show_suggestions(self, suggestions):
-        self.config(state=tk.NORMAL)
-        self.delete("1.0", tk.END)
+        self.suggestions_text.config(state=tk.NORMAL)
+        self.tags_text.config(state=tk.NORMAL)
+        self.suggestions_text.delete("1.0", tk.END)
+        self.tags_text.delete("1.0", tk.END)
         for suggestion in suggestions:
-            self.insert(tk.END, suggestion + "\n")
+            self.suggestions_text.insert(tk.END, suggestion + "\n")
+            if suggestion in self.keywords:
+                self.tags_text.insert(tk.END, "keyword\n")
+            elif suggestion in self.local_variables:
+                self.tags_text.insert(tk.END, "local\n")
+            else:
+                self.tags_text.insert(tk.END, "\n")
         cursor_index = self.root.text.index(tk.INSERT)
         cursor_position = self.root.text.bbox(cursor_index)
         if cursor_position:
             x, y, width, height = cursor_position
             self.place(x=x+(4 * int(check.get_config_value('zoom'))), y=y+80+(int(check.get_config_value('zoom'))))
-        self.config(state=tk.DISABLED)
+        self.suggestions_text.config(state=tk.DISABLED)
+        self.tags_text.config(state=tk.DISABLED)
 
     def handle_tab(self):
         if self.handle_case():
-            first_suggestion = self.get("1.0", "1.end").strip()
-            first_suggestion = self.strip_marker(first_suggestion)
+            first_suggestion = self.suggestions_text.get("1.0", "1.end").strip()
             self.insert_suggestion(first_suggestion)
             self.hide_suggestions()
             self.root.text.focus_set()
@@ -150,8 +163,7 @@ class Suggestions(tk.Text):
         
     def handle_enter(self):
         if self.handle_case():
-            first_suggestion = self.get("1.0", "1.end").strip()
-            first_suggestion = self.strip_marker(first_suggestion)
+            first_suggestion = self.suggestions_text.get("1.0", "1.end").strip()
             self.insert_suggestion(first_suggestion)
             self.hide_suggestions()
             self.root.text.focus_set()
@@ -168,12 +180,7 @@ class Suggestions(tk.Text):
             self.update_suggestions()
 
     def handle_case(self):
-        if self.get("1.0", tk.END).strip() and self.winfo_ismapped():
+        if self.suggestions_text.get("1.0", tk.END).strip() and self.winfo_ismapped():
             return True
         else:
             return False
-
-    def strip_marker(self, text):
-        return text.replace("\u25A0 ", "")
-
-# Restul codului pentru integrarea cu alte părți ale aplicației rămâne neschimbat.

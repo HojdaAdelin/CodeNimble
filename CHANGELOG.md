@@ -14,6 +14,7 @@
 10. LAN password
 11. Terminal inside editor
 12. Theme changer
+13. Added tags in suggestions
 
 ### Fixed/Changes
 
