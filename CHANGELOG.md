@@ -16,7 +16,7 @@
 12. Theme changer
 13. Added tags in suggestions
 
-### Fixed/Changes
+### Fixed/Changes:
 
 1. Fixed delete file function
 2. Changed template & theme interface
