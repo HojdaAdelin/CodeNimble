@@ -19,6 +19,7 @@
 
 1. Fixed delete file function
 2. Changed template & theme interface
+3. Fixed suggestion box
 
 # Version: 1.5
 

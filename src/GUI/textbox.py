@@ -37,7 +37,6 @@ class ScrollText(tk.Frame):
         self.client = None
         self.password = None
         font_size = check.get_config_value("zoom") or 28
-
         self.gui(font_size)
         self.binding()
 
@@ -66,7 +65,6 @@ class ScrollText(tk.Frame):
         self.scrollbar = ct.CTkScrollbar(self, orientation=tk.VERTICAL, command=self.text.yview)
         self.scrollhor = ct.CTkScrollbar(self.text, orientation=tk.HORIZONTAL, command=self.text.xview)
         self.text.configure(yscrollcommand=self.scrollbar.set, xscrollcommand=self.scrollhor.set)
-
         self.numberLines = TextLineNumbers(self, width=4 * font_size, bg='#313335')
         self.numberLines.attach(self.text)
 
