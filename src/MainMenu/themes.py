@@ -88,7 +88,10 @@ def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, 
                 widget.scrollhor.configure(fg_color=config['scrollhor']['fg_color'], button_color=config['scrollhor']['button_color'],
                                            button_hover_color=config['scrollhor']['button_hover_color'])
                 widget.numberLines.configure(bg=config['numberLines']['bg'])
-                widget.suggestions.configure(bg=config['suggestions']['bg'], fg=config['suggestions']['fg'],
+                widget.suggestions.suggestions_text.configure(bg=config['suggestions']['bg'], fg=config['suggestions']['fg'],
+                                             selectbackground=config['suggestions']['selectbackground'],
+                                             selectforeground=config['suggestions']['selectforeground'])
+                widget.suggestions.tags_text.configure(bg=config['suggestions']['bg'], fg=config['suggestions']['fg'],
                                              selectbackground=config['suggestions']['selectbackground'],
                                              selectforeground=config['suggestions']['selectforeground'])
                 widget.terminal.configure(fg_color=config['terminal']['fg_color'], bg_color=config['terminal']['bg_color'])
