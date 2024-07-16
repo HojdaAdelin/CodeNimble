@@ -33,6 +33,7 @@ from MainMenu import session
 from GUI import locations
 from MainMenu import recent
 from MainMenu import theme_changer
+from GUI import snippet_code
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -119,6 +120,7 @@ class MainWindow(ct.CTk):
         template_drop.add_separator()
         template_drop.add_option(option="Create Template", command=lambda:template_menu.custom_template())
         template_drop.add_option(option="Use Template           Ctrl+Shift+T", command=lambda:template_menu.use_template(scroll.text, scroll, statusbar_instance))
+        template_drop.add_option(option="Snippets Code", command=lambda:open_snippets_code(self))
 
         textures_drop = CustomDropdownMenu(widget=textures, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         textures_drop.add_option(option="Light theme", command=lambda:themes.use_theme("light",menu, home, file_m, edit, view, template, textures, utility,
@@ -242,6 +244,10 @@ class MainWindow(ct.CTk):
         def open_recent(self):
             lista = recent.return_lines()
             locations.RecentDrop(self, lista, treeview_frame, scroll.text)
+
+        def open_snippets_code(self):
+            code = snippet_code.SnippetsCode()
+            code.mainloop()
 
     def auto_save_option(self):
         if file_menu.opened_file_status() and int(check.get_config_value("auto_save")) == 1:

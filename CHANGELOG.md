@@ -15,8 +15,9 @@
 11. Terminal inside editor
 12. Theme changer
 13. Added tags in suggestions
+14. Snippet code interface
 
-### Fixed/Changes
+### Fixed/Changes:
 
 1. Fixed delete file function
 2. Changed template & theme interface
