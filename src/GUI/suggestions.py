@@ -38,6 +38,8 @@ class Suggestions(tk.Frame):
             'and', 'and_eq', 'asm', 'bitand', 'bitor', 'compl', 'not', 'not_eq', 'or', 'or_eq', 'xor', 'xor_eq',
             'true', 'false'
         ]
+        self.snippets_code = []
+        self.snippet_code()
         self.local_variables = set()
         self.current_file = None
         self.current_selection = 0
@@ -53,17 +55,24 @@ class Suggestions(tk.Frame):
     def on_suggestion_click(self, event):
         index = self.suggestions_text.index("@%d,%d" % (event.x, event.y))
         suggestion = self.suggestions_text.get(f"{index} linestart", f"{index} lineend").strip()
-        if suggestion:
+        tag = self.tags_text.get(f"{index} linestart", f"{index} lineend").strip()
+        if suggestion and tag == "snippet":
+            self.insert_suggestion(suggestion, snippet=tag)
+        elif suggestion:
             self.insert_suggestion(suggestion)
         self.hide_suggestions()
 
     def hide_suggestions(self, event=None):
         self.place_forget()
 
-    def insert_suggestion(self, suggestion):
+    def insert_suggestion(self, suggestion, snippet=None):
         current_word = self.get_current_word().strip()
         if not current_word:
             return
+        if snippet == "snippet":
+            src = "Snippets/" + suggestion + ".txt"
+            with open(src, "r") as file:
+                suggestion = file.read()
 
         cursor_index = self.root.index(tk.INSERT)
         start_index = f'{cursor_index} - {len(current_word)}c'
@@ -109,7 +118,7 @@ class Suggestions(tk.Frame):
         if typed_word and not typed_word.isspace():
             matching_keywords = [
                 f"{kw}" if kw in self.local_variables else kw
-                for kw in (list(self.local_variables) + self.keywords)
+                for kw in (list(self.local_variables) + self.keywords + self.snippets_code)
                 if kw.startswith(typed_word)
             ]
             if matching_keywords:
@@ -143,6 +152,8 @@ class Suggestions(tk.Frame):
                 self.tags_text.insert(tk.END, "keyword\n")
             elif suggestion in self.local_variables:
                 self.tags_text.insert(tk.END, "local\n")
+            elif suggestion in self.snippets_code:
+                self.tags_text.insert(tk.END, "snippet\n")
             else:
                 self.tags_text.insert(tk.END, "\n")
         cursor_index = self.root.text.index(tk.INSERT)
@@ -156,7 +167,11 @@ class Suggestions(tk.Frame):
     def handle_tab(self):
         if self.handle_case():
             first_suggestion = self.suggestions_text.get("1.0", "1.end").strip()
-            self.insert_suggestion(first_suggestion)
+            tag = self.tags_text.get("1.0", "1.end").strip()
+            if tag == "snippet":
+                self.insert_suggestion(first_suggestion, snippet=tag)
+            else:
+                self.insert_suggestion(first_suggestion)
             self.hide_suggestions()
             self.root.text.focus_set()
             return 'break'
@@ -164,7 +179,11 @@ class Suggestions(tk.Frame):
     def handle_enter(self):
         if self.handle_case():
             first_suggestion = self.suggestions_text.get("1.0", "1.end").strip()
-            self.insert_suggestion(first_suggestion)
+            tag = self.tags_text.get("1.0", "1.end").strip()
+            if tag == "snippet":
+                self.insert_suggestion(first_suggestion, snippet=tag)
+            else:
+                self.insert_suggestion(first_suggestion)
             self.hide_suggestions()
             self.root.text.focus_set()
             return 'break'
@@ -174,7 +193,7 @@ class Suggestions(tk.Frame):
         pattern = re.compile(r'\b\w+\b')
         matches = pattern.findall(text)
         current_word = self.get_current_word().strip()
-        self.local_variables = set(matches) - set(self.keywords) - {current_word}
+        self.local_variables = set(matches) - set(self.keywords) - set(self.snippets_code) - {current_word}
         self.root.text.edit_modified(False)
         if file_menu.return_file() == ".cpp":
             self.update_suggestions()
@@ -184,3 +203,18 @@ class Suggestions(tk.Frame):
             return True
         else:
             return False
+        
+    def snippet_code(self):
+        snippets_folder = os.path.join(os.getcwd(), 'Snippets')
+
+        # Check if the folder exists
+        if not os.path.exists(snippets_folder):
+            print(f"Folder '{snippets_folder}' does not exist.")
+            return
+
+        # Loop through all files in the folder
+        for filename in os.listdir(snippets_folder):
+            # Check if the file has a .txt extension
+            if filename.endswith('.txt'):
+                # Add the file name without extension to the list
+                self.snippets_code.append(os.path.splitext(filename)[0])
