@@ -115,21 +115,6 @@ class ScrollText(tk.Frame):
             self.manipulate_gui("hide")
             self.manipulate_gui("show")
 
-    def on_mouse_motion(self, event):
-        widget = event.widget
-        widget.focus()
-        widget.select_clear(0, tk.END)
-        widget.select_set(widget.nearest(event.y))
-
-    def get_current_word(self):
-        try:
-            cursor_index = self.index(tk.INSERT)
-            line_start = self.index(f'{cursor_index} linestart')
-            current_line_text = self.get(line_start, cursor_index)
-            return current_line_text.split()[-1] if current_line_text else ''
-        except IndexError:
-            return ''
-
     def add_tab(self, event):
         if self.suggestions.handle_case() == True:
             self.suggestions.handle_tab()
