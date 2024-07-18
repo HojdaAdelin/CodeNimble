@@ -17,6 +17,7 @@ class SnippetsCode(ct.CTk):
         
         self.title("Snippets Code")
         self.geometry("800x600")
+        self.iconbitmap("images/logo.ico")
         self.fg, self.text_bg, self.text, self.hover = themes.return_default_win_color(check.get_config_value("theme"))
         themes.title_bar_color_handle(self)
         self.configure(fg_color=self.fg, bg_color=self.fg)
