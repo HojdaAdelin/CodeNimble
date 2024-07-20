@@ -17,6 +17,7 @@
 13. Added tags in suggestions
 14. Snippet code interface
 15. Snippets code in suggestions
+16. Kilonova.ro tools 
 
 ### Fixed/Changes:
 
