@@ -24,11 +24,11 @@ class Suggestions(tk.Frame):
         
         self.keywords = [
             'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else',
-            'enum', 'extern', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long', 'register', 'restrict',
-            'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'union', 'unsigned',
-            'void', 'volatile', 'while', 'using', 'namespace', 'std', 'vector', 'set', 'map', 'unordered_map',
+            'enum', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long',
+            'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'unsigned',
+            'void', 'while', 'using', 'namespace', 'std', 'vector', 'set', 'map', 'unordered_map', 'cout', 'cin',
             'queue', 'priority_queue', 'stack', 'list', 'deque', 'algorithm', 'iterator', 'utility', 'functional',
-            'numeric', 'limits', 'memory', 'shared_ptr', 'unique_ptr', 'make_shared', 'make_unique', 'move',
+            'numeric', 'limits', 'shared_ptr', 'unique_ptr', 'make_shared', 'make_unique', 'move',
             'swap', 'typeid', 'type_traits', 'function', 'bind', 'placeholders', 'tuple', 'array', 'bitset',
             'complex', 'valarray', 'future', 'promise', 'thread', 'mutex', 'condition_variable', 'chrono',
             'ratio', 'random', 'atomic', 'filesystem', 'ratio', 'complex', 'valarray', 'new', 'delete',
