@@ -18,6 +18,8 @@
 14. Snippet code interface
 15. Snippets code in suggestions
 16. Kilonova.ro tools 
+17. Python support
+18. Scrollbar in suggestions
 
 ### Fixed/Changes:
 

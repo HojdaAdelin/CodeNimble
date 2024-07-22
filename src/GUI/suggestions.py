@@ -1,4 +1,5 @@
 import tkinter as tk
+import customtkinter as ct
 import re
 import sys
 import os
@@ -15,14 +16,38 @@ class Suggestions(tk.Frame):
     def __init__(self, master, root, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         self.root = root
-        
+
         self.suggestions_text = tk.Text(self, height=6, width=20, wrap="none", font=("Courier", check.get_config_value("zoom")))
         self.suggestions_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         
+        self.scrollbar = ct.CTkScrollbar(self,orientation="vertical", command=self.sync_scroll)
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
         self.tags_text = tk.Text(self, height=6, width=7, wrap="none", font=("Courier", check.get_config_value("zoom")))
         self.tags_text.pack(side=tk.RIGHT, fill=tk.Y)
         
-        self.keywords = [
+        self.suggestions_text.config(yscrollcommand=self.on_scrollbar)
+        self.tags_text.config(yscrollcommand=self.on_scrollbar)
+
+        self.keywords_selector()
+        self.snippets_code = []
+        self.snippet_code()
+        self.local_variables = set()
+        self.current_file = None
+        self.current_selection = 0
+        self.hide_suggestions()
+        self.binding()
+
+    def sync_scroll(self, *args):
+        self.suggestions_text.yview(*args)
+        self.tags_text.yview(*args)
+
+    def on_scrollbar(self, *args):
+        self.scrollbar.set(*args)
+        self.sync_scroll('moveto', args[0])
+
+    def keywords_selector(self):
+        self.cpp_keywords = [
             'auto', 'break', 'case', 'char', 'const', 'continue', 'default', 'do', 'double', 'else',
             'enum', 'float', 'for', 'goto', 'if', 'inline', 'int', 'long',
             'return', 'short', 'signed', 'sizeof', 'static', 'struct', 'switch', 'typedef', 'unsigned',
@@ -38,13 +63,22 @@ class Suggestions(tk.Frame):
             'and', 'and_eq', 'asm', 'bitand', 'bitor', 'compl', 'not', 'not_eq', 'or', 'or_eq', 'xor', 'xor_eq',
             'true', 'false'
         ]
-        self.snippets_code = []
-        self.snippet_code()
-        self.local_variables = set()
-        self.current_file = None
-        self.current_selection = 0
-        self.hide_suggestions()
-        self.binding()
+        self.py_keywords = ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class",
+        "continue", "def", "del", "elif", "else", "except", "finally", "for", "from",
+        "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass",
+        "raise", "return", "try", "while", "with", "yield",
+        'abs', 'delattr', 'hash', 'memoryview', 'set', 'all', 'dict', 'help', 'min', 'setattr', 'any', 'dir', 'hex',
+        'next', 'slice', 'ascii', 'divmod', 'id', 'object', 'sorted', 'bin', 'enumerate', 'input', 'oct', 'staticmethod',
+        'bool', 'eval', 'int', 'open', 'str', 'breakpoint', 'exec', 'isinstance', 'ord', 'sum', 'bytearray', 'filter',
+        'issubclass', 'pow', 'super', 'bytes', 'float', 'iter', 'print', 'tuple', 'callable', 'format', 'len', 'property',
+        'type', 'chr', 'frozenset', 'list', 'range', 'vars', 'classmethod', 'getattr', 'locals', 'repr', 'zip', 'compile',
+        'globals', 'map', 'reversed', '__import__', 'complex', 'hasattr', 'max', 'round',
+        'append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort',
+        'capitalize', 'casefold', 'center', 'encode', 'endswith', 'expandtabs', 'find', 'format', 'format_map', 'isalnum',
+        'isalpha', 'isascii', 'isdecimal', 'isdigit', 'isidentifier', 'islower', 'isnumeric', 'isprintable', 'isspace',
+        'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 'maketrans', 'partition', 'replace', 'rfind', 'rindex',
+        'rjust', 'rpartition', 'rsplit', 'rstrip', 'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title',
+        'translate', 'upper', 'zfill']
 
     def binding(self):
         self.suggestions_text.bind('<Button-1>', self.on_suggestion_click)
@@ -101,7 +135,7 @@ class Suggestions(tk.Frame):
         pass
 
     def on_keyrelease_all(self, event):
-        if file_menu.return_file() == ".cpp":
+        if file_menu.return_file() == ".cpp" or file_menu.return_file() == ".py":
             if event.widget == self.root.text:
                 if event.keysym in ('Up', 'Down', 'Left', 'Right', 'Return', 'Tab', 'space', "enter", "Backspace"):
                     self.hide_suggestions()
@@ -114,6 +148,10 @@ class Suggestions(tk.Frame):
                 self.update_suggestions()
 
     def update_suggestions(self):
+        if file_menu.return_file() == ".cpp":
+            self.keywords = self.cpp_keywords
+        elif file_menu.return_file() == ".py":
+            self.keywords = self.py_keywords
         typed_word = self.get_current_word().strip()
         if typed_word and not typed_word.isspace():
             matching_keywords = [
@@ -142,6 +180,10 @@ class Suggestions(tk.Frame):
             return ''
 
     def show_suggestions(self, suggestions):
+        if file_menu.return_file() == ".cpp":
+            self.keywords = self.cpp_keywords
+        elif file_menu.return_file() == ".py":
+            self.keywords = self.py_keywords
         self.suggestions_text.config(state=tk.NORMAL)
         self.tags_text.config(state=tk.NORMAL)
         self.suggestions_text.delete("1.0", tk.END)
@@ -189,13 +231,17 @@ class Suggestions(tk.Frame):
             return 'break'
         
     def on_text_modified(self, event=None):
+        if file_menu.return_file() == ".cpp":
+            self.keywords = self.cpp_keywords
+        elif file_menu.return_file() == ".py":
+            self.keywords = self.py_keywords
         text = self.root.text.get("1.0", tk.END)
         pattern = re.compile(r'\b\w+\b')
         matches = pattern.findall(text)
         current_word = self.get_current_word().strip()
         self.local_variables = set(matches) - set(self.keywords) - set(self.snippets_code) - {current_word}
         self.root.text.edit_modified(False)
-        if file_menu.return_file() == ".cpp":
+        if file_menu.return_file() == ".cpp" or file_menu.return_file() == ".py":
             self.update_suggestions()
 
     def handle_case(self):
