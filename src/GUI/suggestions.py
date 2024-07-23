@@ -231,10 +231,13 @@ class Suggestions(tk.Frame):
             return 'break'
         
     def on_text_modified(self, event=None):
+
         if file_menu.return_file() == ".cpp":
             self.keywords = self.cpp_keywords
         elif file_menu.return_file() == ".py":
             self.keywords = self.py_keywords
+        else:
+            self.keywords = []
         text = self.root.text.get("1.0", tk.END)
         pattern = re.compile(r'\b\w+\b')
         matches = pattern.findall(text)

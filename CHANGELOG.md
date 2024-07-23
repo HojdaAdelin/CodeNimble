@@ -20,6 +20,7 @@
 16. Kilonova.ro tools 
 17. Python support
 18. Scrollbar in suggestions
+19. Right panel
 
 ### Fixed/Changes:
 
