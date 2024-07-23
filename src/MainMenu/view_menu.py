@@ -43,27 +43,37 @@ def toggle_fullscreen(window):
     else:
         window.state("zoomed")
 
-def hide_unhide_treeview(treeview_frame: TreeviewFrame, text):
+def hide_unhide_treeview(treeview_frame: TreeviewFrame, text, r_panel):
     if treeview_frame.winfo_ismapped(): 
         treeview_frame.grid_forget() 
         text.grid_forget()
-        text.grid(row=1, column=0,columnspan=2,sticky="nswe")
+        if r_panel.winfo_ismapped(): 
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(0,600))
+        else:
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe")
     else:
         text.grid_forget()
         treeview_frame.grid(row=1, column=0, sticky="nsw") 
-        text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,0))
-    
-def hide_unhide_input_output(tree):
-    if tree.input_label.winfo_ismapped():
-        tree.input_label.grid_forget()
-        tree.output_label.grid_forget()
-        tree.input.grid_forget()
-        tree.output.grid_forget()
+        if r_panel.winfo_ismapped():
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,600))
+        else:
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,0))
+
+def hide_unhide_right_panel(text, panel, tree):
+    if panel.winfo_ismapped():
+        panel.grid_forget()
+        text.grid_forget()
+        if tree.winfo_ismapped():
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,0))
+        else:
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe")
     else:
-        tree.input_label.grid(row=1, column=0, padx=(5, 5))
-        tree.input.grid(row=2, column=0, sticky="nsew", padx=(5, 5))
-        tree.output_label.grid(row=3, column=0, padx=(5, 5))
-        tree.output.grid(row=4, column=0, sticky="nsew", padx=(5, 5))
+        text.grid_forget()
+        panel.grid(row=1,column=1,sticky="nse")
+        if tree.winfo_ismapped():
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,600))
+        else:
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(0,600))
 
 def hide_unhide_statusbar(status):
 

@@ -35,6 +35,7 @@ from MainMenu import recent
 from MainMenu import theme_changer
 from GUI import snippet_code
 from API import kilo 
+from GUI import right_panel
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -105,8 +106,8 @@ class MainWindow(ct.CTk):
         view_drop.add_separator()
         view_drop.add_option(option="Status Bar",command=lambda:view_menu.hide_unhide_statusbar(statusbar_instance))
         view_drop.add_option(option="Notifications",command=lambda:view_menu.notifications(statusbar_instance))
-        view_drop.add_option(option="Left Panel                     Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame, scroll))
-        view_drop.add_option(option="Input & Output", command=lambda:view_menu.hide_unhide_input_output(treeview_frame))
+        view_drop.add_option(option="Left Panel                     Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame, scroll, right_panel_frame))
+        view_drop.add_option(option="Right Panel", command=lambda:view_menu.hide_unhide_right_panel(scroll, right_panel_frame, treeview_frame))
         view_drop.add_option(option="Terminal                         Ctrl+`", command=lambda:scroll.handle_terminal())
         view_drop.add_separator()
         view_drop.add_option(option="Refresh editor     Ctrl+Shift+R", command=lambda:scroll.redraw())
@@ -167,6 +168,8 @@ class MainWindow(ct.CTk):
         self.scroll = scroll
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
         
+        right_panel_frame = right_panel.RightPanel(self)
+
         self.auto_save_option()
 
         self.grid_columnconfigure(0, weight=1)
@@ -194,11 +197,11 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-h>", lambda event:edit_menu.replace_text(scroll.text, scroll))
         scroll.text.bind("<F11>", lambda event: view_menu.toggle_fullscreen(self))
         scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
-        scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll))
+        scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll, right_panel_frame))
         scroll.text.bind("<Control-Shift-T>", lambda event: template_menu.use_template(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame, scroll.text))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
-        treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
+        #treeview_frame.input.bind("<Control-s>", lambda event:file_menu.save_input(treeview_frame))
         scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())
         scroll.text.bind("<Control-MouseWheel>", lambda event:self.mouse_wheel(event=event))
         pywinstyles.apply_dnd(scroll.text, self.drag_file)

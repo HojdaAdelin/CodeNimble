@@ -105,11 +105,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<B1-Motion>", self.on_drag)
         self.treeview.bind("<ButtonRelease-1>", self.on_drop)
 
-        self.input_label = customtkinter.CTkLabel(self, text="#Input file", font=("", 16))
-        self.input = customtkinter.CTkTextbox(self, height=150, width=290)
-        self.output_label = customtkinter.CTkLabel(self, text="#Output file", font=("", 16))
-        self.output = customtkinter.CTkTextbox(self, height=150, width=290, state="disabled")
-
     def open_input(self):
         selected_item = self.treeview.selection()
         if selected_item:
