@@ -17,6 +17,7 @@ from Config import check
 from MainMenu import edit_menu
 from MainMenu import themes
 from MainMenu import recent
+from MainMenu import view_menu
 
 opened_filename = None
 opened_folder_path = None
@@ -52,7 +53,7 @@ def open_file(text, window, status_bar):
             window.tab_bar.add_tab(filename)
         status_bar.update_text("Opened: " + filename)
 
-def open_folder(treeview, status_bar, text, path=None):
+def open_folder(treeview, status_bar, text,r_panel, path=None):
     global opened_filename
     global opened_folder_path
 
@@ -61,9 +62,7 @@ def open_folder(treeview, status_bar, text, path=None):
         treeview.populate_treeview(opened_folder_path)
         status_bar.update_text("Opened folder: " + opened_folder_path)
         treeview.grid_forget()
-        text.grid_forget()
-        treeview.grid(row=1, column=0,sticky="nsw") 
-        text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
+        view_menu.hide_unhide_treeview(text=text, r_panel=r_panel, treeview_frame=treeview)
         return 
 
     folder_path = filedialog.askdirectory()
@@ -73,21 +72,17 @@ def open_folder(treeview, status_bar, text, path=None):
         treeview.populate_treeview(folder_path)
         status_bar.update_text("Opened folder: " + folder_path)
         treeview.grid_forget()
-        text.grid_forget()
-        treeview.grid(row=1, column=0,sticky="nsw") 
-        text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
+        view_menu.hide_unhide_treeview(text=text, r_panel=r_panel, treeview_frame=treeview)
         recent.write_lines(folder_path)
 
-def close_folder(treeview_frame, text):
+def close_folder(treeview_frame, text, r_panel):
     global opened_filename
     global opened_folder_path
 
     if opened_folder_path:
         opened_folder_path = None  
         treeview_frame.clear_treeview()  # Clear the content of the Treeview
-        treeview_frame.grid_forget()  # Hide the TreeviewFrame
-        text.grid_forget()
-        text.grid(row=1, column=0, columnspan=2, sticky="nswe")
+        view_menu.hide_unhide_treeview(treeview_frame=treeview_frame, text=text, r_panel=r_panel)
 
 
 def save_file(text, status_bar):

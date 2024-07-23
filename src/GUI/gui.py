@@ -70,8 +70,8 @@ class MainWindow(ct.CTk):
         file_drop.add_option(option="Save Input",command=lambda:file_menu.save_input(treeview_frame))
         file_drop.add_option(option="Open Output",command=lambda:file_menu.open_output(treeview_frame))
         file_drop.add_separator()
-        file_drop.add_option(option="Open Folder               Ctrl+K",command=lambda:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
-        file_drop.add_option(option="Close Folder", command=lambda:file_menu.close_folder(treeview_frame, scroll))
+        file_drop.add_option(option="Open Folder               Ctrl+K",command=lambda:file_menu.open_folder(treeview_frame, statusbar_instance, scroll, right_panel_frame))
+        file_drop.add_option(option="Close Folder", command=lambda:file_menu.close_folder(treeview_frame, scroll, right_panel_frame))
         file_drop.add_option(option="Open Recent", command=lambda:open_recent(self))
         file_drop.add_separator()
         file_drop.add_option(option="Save                           Ctrl+S",command=lambda:file_menu.save_file(scroll.text, statusbar_instance))
@@ -107,7 +107,7 @@ class MainWindow(ct.CTk):
         view_drop.add_option(option="Status Bar",command=lambda:view_menu.hide_unhide_statusbar(statusbar_instance))
         view_drop.add_option(option="Notifications",command=lambda:view_menu.notifications(statusbar_instance))
         view_drop.add_option(option="Left Panel                     Ctrl+B", command=lambda:view_menu.hide_unhide_treeview(treeview_frame, scroll, right_panel_frame))
-        view_drop.add_option(option="Right Panel", command=lambda:view_menu.hide_unhide_right_panel(scroll, right_panel_frame, treeview_frame))
+        view_drop.add_option(option="Right Panel             Ctrl+Alt+B", command=lambda:view_menu.hide_unhide_right_panel(scroll, right_panel_frame, treeview_frame))
         view_drop.add_option(option="Terminal                         Ctrl+`", command=lambda:scroll.handle_terminal())
         view_drop.add_separator()
         view_drop.add_option(option="Refresh editor     Ctrl+Shift+R", command=lambda:scroll.redraw())
@@ -169,6 +169,7 @@ class MainWindow(ct.CTk):
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
         
         right_panel_frame = right_panel.RightPanel(self)
+        self.right_panel_frame = right_panel_frame
 
         self.auto_save_option()
 
@@ -196,8 +197,9 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-f>", lambda event: edit_menu.find_text(scroll.text, scroll))
         scroll.text.bind("<Control-h>", lambda event:edit_menu.replace_text(scroll.text, scroll))
         scroll.text.bind("<F11>", lambda event: view_menu.toggle_fullscreen(self))
-        scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance, scroll))
+        scroll.text.bind("<Control-k>",lambda event:file_menu.open_folder(treeview_frame, statusbar_instance, scroll, right_panel_frame))
         scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll, right_panel_frame))
+        scroll.text.bind("<Control-Alt-b>", lambda event:view_menu.hide_unhide_right_panel(scroll, right_panel_frame, treeview_frame))
         scroll.text.bind("<Control-Shift-T>", lambda event: template_menu.use_template(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(treeview_frame, scroll.text))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
@@ -216,7 +218,7 @@ class MainWindow(ct.CTk):
             file_menu.open_default_file(scroll.text, scroll, statusbar_instance)
 
         if not check.get_config_value("default_folder") == "0":
-            file_menu.open_folder(treeview_frame, statusbar_instance, scroll, check.get_config_value("default_folder"))
+            file_menu.open_folder(treeview_frame, statusbar_instance, scroll,right_panel_frame, check.get_config_value("default_folder"))
 
         if not check.get_config_value("files") == "0":
             session.load_file_tab(scroll.tab_bar)

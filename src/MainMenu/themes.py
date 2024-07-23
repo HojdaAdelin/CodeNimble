@@ -107,10 +107,13 @@ def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, 
                 widget.treestyle.map('Treeview',
                                      background=[('selected', config['treestyle']['Treeview_map']['background'][0][1])],
                                      foreground=[('selected', config['treestyle']['Treeview_map']['foreground'][0][1])])
-                #widget.input_label.configure(text_color=config['input_label']['text_color'])
-                #widget.output_label.configure(text_color=config['output_label']['text_color'])
-                #widget.input.configure(fg_color=config['input']['fg_color'], text_color=config['input']['text_color'])
-                #widget.output.configure(fg_color=config['output']['fg_color'], text_color=config['output']['text_color'])
+                win.right_panel_frame.configure(fg_color=config['fg_color'])
+                win.right_panel_frame.input_label.configure(text_color=config['input_label']['text_color'])
+                win.right_panel_frame.output_label.configure(text_color=config['output_label']['text_color'])
+                win.right_panel_frame.expected_label.configure(text_color=config['output_label']['text_color'])
+                win.right_panel_frame.input_box.configure(fg_color=config['input']['fg_color'], text_color=config['input']['text_color'])
+                win.right_panel_frame.output_box.configure(fg_color=config['output']['fg_color'], text_color=config['output']['text_color'])
+                win.right_panel_frame.expected_box.configure(fg_color=config['output']['fg_color'], text_color=config['output']['text_color'])
             else:
                 widget.configure(**config)
         except ValueError as e:

@@ -48,14 +48,14 @@ def hide_unhide_treeview(treeview_frame: TreeviewFrame, text, r_panel):
         treeview_frame.grid_forget() 
         text.grid_forget()
         if r_panel.winfo_ismapped(): 
-            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(0,600))
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(0,440))
         else:
             text.grid(row=1, column=0,columnspan=2,sticky="nswe")
     else:
         text.grid_forget()
         treeview_frame.grid(row=1, column=0, sticky="nsw") 
         if r_panel.winfo_ismapped():
-            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,600))
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,440))
         else:
             text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,0))
 
@@ -71,9 +71,9 @@ def hide_unhide_right_panel(text, panel, tree):
         text.grid_forget()
         panel.grid(row=1,column=1,sticky="nse")
         if tree.winfo_ismapped():
-            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,600))
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(600,440))
         else:
-            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(0,600))
+            text.grid(row=1, column=0,columnspan=2,sticky="nswe", padx=(0,440))
 
 def hide_unhide_statusbar(status):
 
