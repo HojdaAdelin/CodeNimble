@@ -86,9 +86,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.menu.add_command(label="Delete File", command=self.delete_selected_file)
         self.menu.add_command(label="Rename File", command=self.rename_selected_file)
         self.menu.add_separator()
-        self.menu.add_command(label="Open as Input", command=self.open_input)
-        self.menu.add_command(label="Open as Output", command=self.open_output)
-        self.menu.add_separator()  
         self.menu.add_command(label="Open in Explorer", command=self.open_in_explorer)
 
         self.folder_menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
@@ -104,27 +101,6 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<ButtonPress-1>", self.on_start_drag)
         self.treeview.bind("<B1-Motion>", self.on_drag)
         self.treeview.bind("<ButtonRelease-1>", self.on_drop)
-
-        self.input_label = customtkinter.CTkLabel(self, text="#Input file", font=("", 16))
-        self.input = customtkinter.CTkTextbox(self, height=150, width=290)
-        self.output_label = customtkinter.CTkLabel(self, text="#Output file", font=("", 16))
-        self.output = customtkinter.CTkTextbox(self, height=150, width=290, state="disabled")
-
-    def open_input(self):
-        selected_item = self.treeview.selection()
-        if selected_item:
-            node = selected_item[0]
-            abspath = self.get_absolute_path(node)
-            if os.path.isfile(abspath):
-                file_menu.open_input(self, abspath)
-
-    def open_output(self):
-        selected_item = self.treeview.selection()
-        if selected_item:
-            node = selected_item[0]
-            abspath = self.get_absolute_path(node)
-            if os.path.isfile(abspath):
-                file_menu.open_output(self, abspath)
 
     def delete_selected_folder(self):
         selected_item = self.treeview.selection()

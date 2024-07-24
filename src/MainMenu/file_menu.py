@@ -17,6 +17,7 @@ from Config import check
 from MainMenu import edit_menu
 from MainMenu import themes
 from MainMenu import recent
+from MainMenu import view_menu
 
 opened_filename = None
 opened_folder_path = None
@@ -52,7 +53,7 @@ def open_file(text, window, status_bar):
             window.tab_bar.add_tab(filename)
         status_bar.update_text("Opened: " + filename)
 
-def open_folder(treeview, status_bar, text, path=None):
+def open_folder(treeview, status_bar, text,r_panel, path=None):
     global opened_filename
     global opened_folder_path
 
@@ -61,9 +62,7 @@ def open_folder(treeview, status_bar, text, path=None):
         treeview.populate_treeview(opened_folder_path)
         status_bar.update_text("Opened folder: " + opened_folder_path)
         treeview.grid_forget()
-        text.grid_forget()
-        treeview.grid(row=1, column=0,sticky="nsw") 
-        text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
+        view_menu.hide_unhide_treeview(text=text, r_panel=r_panel, treeview_frame=treeview)
         return 
 
     folder_path = filedialog.askdirectory()
@@ -73,21 +72,17 @@ def open_folder(treeview, status_bar, text, path=None):
         treeview.populate_treeview(folder_path)
         status_bar.update_text("Opened folder: " + folder_path)
         treeview.grid_forget()
-        text.grid_forget()
-        treeview.grid(row=1, column=0,sticky="nsw") 
-        text.grid(row=1,column=0,columnspan=2,sticky="nswe", padx=(600,0))
+        view_menu.hide_unhide_treeview(text=text, r_panel=r_panel, treeview_frame=treeview)
         recent.write_lines(folder_path)
 
-def close_folder(treeview_frame, text):
+def close_folder(treeview_frame, text, r_panel):
     global opened_filename
     global opened_folder_path
 
     if opened_folder_path:
         opened_folder_path = None  
         treeview_frame.clear_treeview()  # Clear the content of the Treeview
-        treeview_frame.grid_forget()  # Hide the TreeviewFrame
-        text.grid_forget()
-        text.grid(row=1, column=0, columnspan=2, sticky="nswe")
+        view_menu.hide_unhide_treeview(treeview_frame=treeview_frame, text=text, r_panel=r_panel)
 
 
 def save_file(text, status_bar):
@@ -508,73 +503,6 @@ def add_folder(statusbar, tree, custom_path=None):
 
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
-
-def open_input(tree, path=None):
-    global opened_input
-    if path:
-        opened_input = path
-        with open(path, "r") as file:
-            file_content = file.read()
-            tree.input.delete("1.0", tk.END) 
-            tree.input.insert("1.0", file_content)
-            tree.input_label.configure(text=os.path.basename(path)) 
-        return
-
-    filename = filedialog.askopenfilename(filetypes=[("All files", "*.*")])
-
-    if filename:
-        opened_input = filename 
-
-        with open(filename, "r") as file:
-            file_content = file.read()
-            tree.input.delete("1.0", tk.END) 
-            tree.input.insert("1.0", file_content) 
-            tree.input_label.configure(text=os.path.basename(filename))
-
-def open_output(tree, path=None):
-    global opened_output
-
-    if path:
-        opened_output = path
-        with open(path, "r") as file:
-            file_content = file.read()
-            tree.output.configure(state="normal")
-            tree.output.delete("1.0", tk.END) 
-            tree.output.insert("1.0", file_content)
-            tree.output.configure(state="disabled")
-            tree.output_label.configure(text=os.path.basename(path)) 
-        return
-
-    filename = filedialog.askopenfilename(filetypes=[("All files", "*.*")])
-
-    if filename:
-        opened_output = filename 
-
-        with open(filename, "r") as file:
-            file_content = file.read()
-            tree.output.configure(state="normal")
-            tree.output.delete("1.0", tk.END) 
-            tree.output.insert("1.0", file_content)
-            tree.output.configure(state="disabled")
-            tree.output_label.configure(text=os.path.basename(filename)) 
-
-def save_input(tree):
-    global opened_input
-    if opened_input:
-        content = tree.input.get("1.0", "end-1c")
-        with open(opened_input, "w") as file:
-            file.write(content)
-    else:
-        open_input(tree)
-
-        
-def return_input():
-    global opened_input
-    return opened_input
-
-def return_output():
-    global opened_output
-    return opened_output
 
 def remove_default_file(status):
     check.update_config_file("default_file", 0)

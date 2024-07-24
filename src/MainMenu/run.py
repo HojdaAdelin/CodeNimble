@@ -13,7 +13,7 @@ sys.path.append(parent_dir)
 
 from MainMenu import file_menu
 
-def run_cpp_file(tree, text_widget):
+def run_cpp_file(text_widget):
     file_path = file_menu.current_file()
     if file_path is None:
         messagebox.showerror("Error", "No files are open.")
@@ -52,21 +52,63 @@ def run_cpp_file(tree, text_widget):
         run_command = f"start cmd /k {os.path.basename(executable_name)}"
         subprocess.run(run_command, shell=True, cwd=current_file_dir)
         time.sleep(1)
-        output = file_menu.return_output()
-        if output and os.path.exists(output):
-            with open(output, "r") as file:
-                file_content = file.read()
-                tree.output.configure(state="normal")
-                tree.output.delete("1.0", tk.END)
-                tree.output.insert("1.0", file_content)
-                tree.output.configure(state="disabled")
     
-    # Ștergem fișierul temporar după rulare
     os.remove(temp_file_path)
     if os.path.exists(executable_name):
         os.remove(executable_name)
     if os.path.exists(error_log):
         os.remove(error_log)
 
-# Exemplu de utilizare într-o funcție sau într-un buton:
-# run_cpp_file(tree, text_widget)
+def pre_input_run(root):
+    file_path = file_menu.current_file()
+    if file_path is None:
+        messagebox.showerror("Error", "No files are open.")
+        return
+    
+    if not file_path.endswith(".cpp"):
+        messagebox.showerror("Error", "Only .cpp files can be run.")
+        return
+    code_content = root.scroll.text.get("1.0", "end-1c")
+    
+    pre_input = root.right_panel_frame.input_box.get("1.0", "end-1c")
+    current_file_dir = os.path.dirname(file_path)
+    
+    try:
+        cpp_file_path = os.path.join(current_file_dir, "temp_code.cpp")
+        with open(cpp_file_path, 'w', encoding='utf-8') as cpp_file:
+            cpp_file.write(code_content)
+        
+        executable_path = os.path.join(current_file_dir, "temp_code")
+
+        compile_process = subprocess.run(["g++", cpp_file_path, "-o", executable_path], capture_output=True, text=True)
+        
+        if compile_process.returncode != 0:
+            compile_errors = compile_process.stderr
+            root.right_panel_frame.output_box.delete("1.0", "end")
+            root.right_panel_frame.output_box.insert("1.0", f"Compilation failed:\n{compile_errors}")
+            return
+
+        run_process = subprocess.Popen(executable_path, 
+                                       stdin=subprocess.PIPE, 
+                                       stdout=subprocess.PIPE, 
+                                       stderr=subprocess.PIPE, 
+                                       text=True)
+        output, error = run_process.communicate(input=pre_input)
+
+        if run_process.returncode != 0:
+            root.right_panel_frame.output_box.delete("1.0", "end")
+            root.right_panel_frame.output_box.insert("1.0", f"Runtime error:\n{error}")
+            return
+
+        root.right_panel_frame.output_box.delete("1.0", "end")
+        root.right_panel_frame.output_box.insert("1.0", output)
+
+    except Exception as e:
+        root.right_panel_frame.output_box.delete("1.0", "end")
+        root.right_panel_frame.output_box.insert("1.0", f"Exception occurred:\n{str(e)}")
+    
+    finally:
+        if os.path.exists(cpp_file_path):
+            os.remove(cpp_file_path)
+        if os.path.exists(executable_path):
+            os.remove(executable_path)
