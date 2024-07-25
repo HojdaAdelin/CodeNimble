@@ -81,7 +81,7 @@ def changelog_inf():
         
         version_label = ctk.CTkLabel(changelog_window, text="Version: 2.0", font=("Arial", 20), text_color=text)
         version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Server status in status bar\n• Auto save option\n• Ctrl+roler bind\n• Refresh editor (Ctrl+Shift+R)\n• Save session\n• Summer theme\n• Drag files\n• Exit accelerator\n• Open recent\n• LAN password\n• Terminal inside editor\n• Theme changer\n•Added tags in suggestions\n•Snippet code interface\n• Snippets code in suggestions\n• Kilonova.ro tools\n• Python support\n• Right panel", font=("Arial", 20), text_color=text)
+        content_label = ctk.CTkLabel(changelog_window, text="• Server status in status bar\n• Auto save option\n• Ctrl+roler bind\n• Refresh editor (Ctrl+Shift+R)\n• Save session\n• Summer theme\n• Drag files\n• Exit accelerator\n• Open recent\n• LAN password\n• Terminal inside editor\n• Theme changer\n•Added tags in suggestions\n•Snippet code interface\n• Snippets code in suggestions\n• Kilonova.ro tools\n• Python support\n• Right panel\n• Expected output and check test casses ", font=("Arial", 20), text_color=text)
         content_label.pack()
 
         # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra

@@ -69,8 +69,10 @@ def pre_input_run(root):
         messagebox.showerror("Error", "Only .cpp files can be run.")
         return
     code_content = root.scroll.text.get("1.0", "end-1c")
-    
-    pre_input = root.right_panel_frame.input_box.get("1.0", "end-1c")
+    pre_input = root.right_panel_frame.input_box.get("1.0", "end-1c").strip()
+    if len(pre_input) == 0:
+        messagebox.showerror("Error", "You need to set the pre-input from right panel!")
+        return
     current_file_dir = os.path.dirname(file_path)
     
     try:
@@ -102,6 +104,30 @@ def pre_input_run(root):
 
         root.right_panel_frame.output_box.delete("1.0", "end")
         root.right_panel_frame.output_box.insert("1.0", output)
+
+        expected_output = root.right_panel_frame.expected_box.get("1.0", "end-1c").strip()
+        passing = True
+        if len(expected_output) != 0:
+            new_output = root.right_panel_frame.output_box.get("1.0", "end-1c").strip()
+            
+            # Split the text into words, ignoring extra spaces
+            expected_words = expected_output.split()
+            new_words = new_output.split()
+            
+            if len(expected_words) != len(new_words):
+                passing = False
+                root.right_panel_frame.output_label.configure(text_color="red", text="Different number of words")
+            else:
+                for i in range(len(new_words)):
+                    if expected_words[i] != new_words[i]:
+                        passing = False
+                        root.right_panel_frame.output_label.configure(text_color="red", text=f"Wrong answer on test case {i + 1}")
+                        break
+
+        if passing:
+            root.right_panel_frame.output_label.configure(text_color="green", text="All test cases passed")
+
+                    
 
     except Exception as e:
         root.right_panel_frame.output_box.delete("1.0", "end")
