@@ -29,6 +29,7 @@
 1. Fixed delete file function
 2. Changed template & theme interface
 3. Fixed suggestion box
+4. Changed open recent list
 
 # Version: 1.5
 
