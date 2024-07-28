@@ -22,13 +22,16 @@
 18. Scrollbar in suggestions
 19. Right panel
 20. New input & output system
-21. Expected output and check test casses 
+21. Expected output and check test casses
+22. Submit code to pbinfo.ro directly from the app
 
 ### Fixed/Changes:
 
 1. Fixed delete file function
 2. Changed template & theme interface
 3. Fixed suggestion box
+4. Changed open recent list
+5. Changed the LICENSE
 
 # Version: 1.5
 

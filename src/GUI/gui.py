@@ -36,6 +36,7 @@ from MainMenu import theme_changer
 from GUI import snippet_code
 from API import kilo 
 from GUI import right_panel
+from API import pbinfo
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -157,6 +158,7 @@ class MainWindow(ct.CTk):
         utility_drop.add_option(option="Disconnect (Beta)", command=lambda:scroll.disconnect_client())
         utility_drop.add_option(option="Server Panel (Beta)", command=lambda:open_server_panel(self))
         utility_drop.add_separator()
+        utility_drop.add_option(option="Pbinfo tools", command=lambda:open_pbinfo(self))
         utility_drop.add_option(option="Kilonova tools", command=lambda:open_kilotools(self))
         
         statusbar_instance = statusbar.StatusBar(self, text="")
@@ -255,6 +257,10 @@ class MainWindow(ct.CTk):
         def open_kilotools(self):
             kilo_win = kilo.Kilotools()
             kilo_win.mainloop()
+
+        def open_pbinfo(self):
+            pbinfo_win = pbinfo.PbinfoInterface()
+            pbinfo_win.mainloop()
 
     def auto_save_option(self):
         if file_menu.opened_file_status() and int(check.get_config_value("auto_save")) == 1:
