@@ -4,6 +4,7 @@ import customtkinter as ct
 from CTkMenuBar import *
 from ctypes import byref, sizeof, c_int, windll
 import tkinter as tk
+from tkinter import messagebox
 import pywinstyles
 
 import sys
@@ -36,7 +37,6 @@ from MainMenu import theme_changer
 from GUI import snippet_code
 from API import kilo 
 from GUI import right_panel
-from API import pbinfo
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -259,8 +259,12 @@ class MainWindow(ct.CTk):
             kilo_win.mainloop()
 
         def open_pbinfo(self):
-            pbinfo_win = pbinfo.PbinfoInterface()
-            pbinfo_win.mainloop()
+            try:
+                from API import pbinfo
+                pbinfo_win = pbinfo.PbinfoInterface(scroll.text)
+                pbinfo_win.mainloop()
+            except ImportError:
+                messagebox.showerror("Error", "PbInfo library doesn't exist!")
 
     def auto_save_option(self):
         if file_menu.opened_file_status() and int(check.get_config_value("auto_save")) == 1:
