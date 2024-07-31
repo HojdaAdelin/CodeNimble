@@ -5,7 +5,6 @@ from ctypes import byref, sizeof, c_int, windll
 
 version_window_opened = False
 changelog_window_opened = False
-guide_window_opened = False
 
 import sys
 import os
@@ -19,7 +18,7 @@ from API import get_version
 from MainMenu import themes
 
 def exit_application(root):
-    root.quit()
+    exit()
 
 def version_info():
     global version_window_opened
@@ -97,41 +96,3 @@ def changelog_inf():
 
 def open_links(url):
     webbrowser.open(url)
-
-def guide():
-    global guide_window_opened
-    if not guide_window_opened:
-        guide_window_opened = True
-        guide_window = ctk.CTk()
-        guide_window.title("CodeNimble - Change log")
-        guide_window.iconbitmap("images/logo.ico")
-        
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
-
-        w = 500 
-        h = 600 
-        ws = guide_window.winfo_screenwidth()
-        hs = guide_window.winfo_screenheight()
-        x = (ws / 2 + 500) - (w / 2)
-        y = (hs / 2 + 200) - (h / 2)
-        guide_window.geometry('%dx%d+%d+%d' % (w, h, x, y))
-        guide_window.resizable(False, False)
-        guide_window.configure(fg_color=fg_cl)
-
-        version_label = ctk.CTkLabel(guide_window, text="Guide", font=("Arial", 24), text_color=text)
-        version_label.pack(pady=10)
-
-        # Adăugarea label-urilor în fiecare frame
-        h1 = ctk.CTkLabel(guide_window, text="Autocompletion - type keywords with caps then ENTER:\nKeywords: FOR, IF, WHILE, DO, INT, VOID, LONG\n\n Input & output - this is a useful feature, to use this\n open input & output file from File menu then save input text\n and run, then in output you will se the output file.\nOBS: this work when you use ifstream & ofstream in C++", font=("Arial", 18), text_color=text)
-        h1.pack(pady=10, padx=10)
-
-        # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
-        def on_closing():
-            global guide_window_opened
-            guide_window_opened = False
-            guide_window.destroy()
-
-        themes.title_bar_color_handle(guide_window)
-
-        guide_window.protocol("WM_DELETE_WINDOW", on_closing)
-        guide_window.mainloop()

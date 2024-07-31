@@ -24,6 +24,7 @@
 20. New input & output system
 21. Expected output and check test casses
 22. Submit code to pbinfo.ro directly from the app
+23. Open site function in Home
 
 ### Fixed/Changes:
 
@@ -31,6 +32,9 @@
 2. Changed template & theme interface
 3. Fixed suggestion box
 4. Changed open recent list
+5. Fixed exit
+6. Changed treeview indicator
+7. Removed Guide from Home
 
 # Version: 1.5
 
