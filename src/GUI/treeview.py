@@ -41,10 +41,10 @@ class TreeviewFrame(customtkinter.CTkFrame):
 
     def gui(self, master):
 
-        im_open = Image.new('RGBA', (30, 30), '#00000000')  # Săgeată deschisă mai mare
-        im_empty = Image.new('RGBA', (30, 30), '#00000000')  # Imagine goală mai mare
+        im_open = Image.new('RGBA', (30, 30), '#00000000')  
+        im_empty = Image.new('RGBA', (30, 30), '#00000000') 
         draw = ImageDraw.Draw(im_open)
-        draw.polygon([(0, 10), (28, 10), (14, 28)], fill='#858585', outline='black')
+        draw.polygon([(0, 10), (28, 10), (14, 28)], fill='white', outline='black', width=2)
         im_close = im_open.rotate(90)
 
         self.img_open = ImageTk.PhotoImage(im_open, name='img_open', master=master)

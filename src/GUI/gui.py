@@ -53,9 +53,9 @@ class MainWindow(ct.CTk):
         utility = menu.add_cascade("Utility", hover_color="#4d4d4d", font=("", 20))
 
         home_drop = CustomDropdownMenu(widget=home, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
-        home_drop.add_option(option="Guide", command=lambda:misc.guide())
         home_drop.add_option(option="Version", command=lambda:misc.version_info())
         home_drop.add_option(option="Change log", command=lambda:misc.changelog_inf())
+        home_drop.add_option(option="Site", command=lambda:misc.open_links("https://hojdaadelin.github.io/code-nimble/"))
         home_drop.add_option(option="Report bugs",command=lambda:misc.open_links("https://github.com/HojdaAdelin/CodeNimble/issues"))
         home_drop.add_separator()
         home_drop.add_option(option="Profile", command=lambda:open_profile_window(self))
