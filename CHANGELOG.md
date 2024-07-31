@@ -31,6 +31,7 @@
 2. Changed template & theme interface
 3. Fixed suggestion box
 4. Changed open recent list
+5. Fixed exit
 
 # Version: 1.5
 

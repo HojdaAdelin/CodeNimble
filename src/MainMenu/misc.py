@@ -19,7 +19,7 @@ from API import get_version
 from MainMenu import themes
 
 def exit_application(root):
-    root.quit()
+    exit()
 
 def version_info():
     global version_window_opened
