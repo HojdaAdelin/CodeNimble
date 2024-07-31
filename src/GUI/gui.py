@@ -261,7 +261,7 @@ class MainWindow(ct.CTk):
         def open_pbinfo(self):
             try:
                 from API import pbinfo
-                pbinfo_win = pbinfo.PbinfoInterface(scroll.text)
+                pbinfo_win = pbinfo.PbinfoInterface(scroll.text, scroll.terminal)
                 pbinfo_win.mainloop()
             except ImportError:
                 messagebox.showerror("Error", "PbInfo library doesn't exist!")
