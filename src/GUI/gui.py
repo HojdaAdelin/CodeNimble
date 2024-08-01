@@ -37,6 +37,7 @@ from MainMenu import theme_changer
 from GUI import snippet_code
 from API import kilo 
 from GUI import right_panel
+from API import pbinfo
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -260,13 +261,9 @@ class MainWindow(ct.CTk):
             kilo_win.mainloop()
 
         def open_pbinfo(self):
-            try:
-                from API import pbinfo
-                pbinfo_win = pbinfo.PbinfoInterface(scroll.text, scroll.terminal)
-                pbinfo_win.mainloop()
-            except ImportError:
-                messagebox.showerror("Error", "PbInfo library doesn't exist!")
-
+            pbinfo_win = pbinfo.PbinfoInterface(scroll.text, scroll.terminal)
+            pbinfo_win.mainloop()
+            
     def auto_save_option(self):
         if file_menu.opened_file_status() and int(check.get_config_value("auto_save")) == 1:
             file_menu.save_file(self.scroll.text, self.statusbar_instance)
