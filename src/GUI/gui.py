@@ -137,7 +137,7 @@ class MainWindow(ct.CTk):
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
                                                                                          scroll.tab_bar))
-        textures_drop.add_option(option="Summer theme", command=lambda:themes.use_theme("summer",menu, home, file_m, edit, view, template, textures, utility,
+        textures_drop.add_option(option="Dark-blue theme", command=lambda:themes.use_theme("dark-blue",menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
