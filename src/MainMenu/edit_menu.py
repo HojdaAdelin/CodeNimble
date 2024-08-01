@@ -19,6 +19,7 @@ def undo_text(widget, root):
     try:
         widget.edit_undo()
         root.redraw()
+        root.highlight_all()
     except tk.TclError:
         pass
 
@@ -26,6 +27,7 @@ def redo_text(widget, root):
     try:
         widget.edit_redo()
         root.redraw()
+        root.highlight_all()
     except tk.TclError:
         pass
 
@@ -39,6 +41,8 @@ def paste_text(text, root):
     clipboard_text = text.clipboard_get()
     text.insert(tk.INSERT, clipboard_text)
     root.redraw()
+    root.highlight_all()
+    return "break"
 
 def cut_text(text, root):
     copy_text(text, root)
@@ -108,6 +112,7 @@ def find_text(scroll_text, scroll):
             global find_window_opened
             find_window_opened = False
             scroll.redraw()
+            scroll.highlight_all()
             find_window.destroy()
 
         themes.title_bar_color_handle(find_window)
@@ -164,6 +169,7 @@ def replace_text(scroll_text, scroll):
             global replace_window_opened
             replace_window_opened = False
             scroll.redraw()
+            scroll.highlight_all()
             replace_window.destroy()
 
         def find():

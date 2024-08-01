@@ -101,6 +101,7 @@ def create_template(textbox, root, statusbar, op):
     statusbar.update_text("Used " + ext_misc + " template")
     root.redraw()
     root.tab_bar.add_tab(file_menu.current_file())
+    root.highlight_all()
 
 def custom_template():
     global template_window
@@ -253,6 +254,7 @@ def use_template(textbox, root, statusbar):
         statusbar.update_text(f"Used template {template_file}")
         root.redraw()
         root.tab_bar.add_tab(file_menu.current_file())
+        root.highlight_all()
         
     use_button = ctk.CTkButton(select_template_window, text="Use", width=200, command=use_selected_template)
     use_button.pack(pady=(10, 0))

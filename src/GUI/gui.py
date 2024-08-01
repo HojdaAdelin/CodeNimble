@@ -200,6 +200,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll, right_panel_frame))
         scroll.text.bind("<Control-Alt-b>", lambda event:view_menu.hide_unhide_right_panel(scroll, right_panel_frame, treeview_frame))
         scroll.text.bind("<Control-Shift-T>", lambda event: template_menu.use_template(scroll.text, scroll, statusbar_instance))
+        scroll.text.bind("<Control-v>", lambda event: edit_menu.paste_text(scroll.text, scroll))
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(scroll.text))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())

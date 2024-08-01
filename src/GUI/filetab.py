@@ -166,6 +166,7 @@ class TabBar(customtkinter.CTkFrame):
         self.text_widget.insert("1.0", content)
         file_menu.update_file_path(file_path)
         self.scroll.redraw()
+        self.scroll.highlight_all()
         self.text_widget.focus_set()
 
     def close_tab(self, file_path):
@@ -209,6 +210,7 @@ class TabBar(customtkinter.CTkFrame):
             if not self.tabs:
                 self.configure(height=0)
             self.scroll.redraw()
+            self.scroll.highlight_all()
 
     def delete_tab(self, file_path):
         if file_path in self.tabs:
@@ -229,6 +231,7 @@ class TabBar(customtkinter.CTkFrame):
                     file_menu.update_file_path("")  # Resetează calea fișierului curent
                     self.current_tab = None
             self.scroll.redraw()
+            self.scroll.highlight_all()
 
     def check_tab(self, file_path):
         return file_path in self.tabs

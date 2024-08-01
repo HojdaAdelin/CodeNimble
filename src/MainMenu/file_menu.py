@@ -49,6 +49,7 @@ def open_file(text, window, status_bar):
             text.delete("1.0", tk.END) 
             text.insert("1.0", file_content) 
             window.redraw()
+            window.highlight_all()
         if not window.tab_bar.check_tab(filename):
             window.tab_bar.add_tab(filename)
         status_bar.update_text("Opened: " + filename)
@@ -221,6 +222,7 @@ def open_default_file(text, window, status_bar):
     open_file_by_path(text, status_bar, opened_filename)
     window.tab_bar.add_tab(opened_filename)
     window.redraw()
+    window.highlight_all()
 
 def save_as_default(statusbar):
     global opened_filename
