@@ -25,6 +25,7 @@
 21. Expected output and check test casses
 22. Submit code to pbinfo.ro directly from the app
 23. Open site function in Home
+24. New code highlight system
 
 ### Fixed/Changes:
 

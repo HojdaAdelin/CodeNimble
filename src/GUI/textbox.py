@@ -37,7 +37,10 @@ class ScrollText(tk.Frame):
         self.client = None
         self.password = None
         font_size = check.get_config_value("zoom") or 28
+        self.specific_patterns()
+        self.colors()
         self.gui(font_size)
+        self.configure_tags()
         self.binding()
 
     def manipulate_gui(self, type):
@@ -169,202 +172,118 @@ class ScrollText(tk.Frame):
 
         self.on_text_change()
 
+    def specific_patterns(self):
+        self.PATTERNS = {
+            "for": r"\bfor\b",
+            "do": r"\bdo\b",
+            "while": r"\bwhile\b",
+            "if": r"\bif\b",
+            "else": r"\belse\b",
+            "int": r"\bint\b",
+            "return": r"\breturn\b",
+            "long": r"\blong\b",
+            "short": r"\bshort\b",
+            "unsigned": r"\bunsigned\b",
+            "string": r"\bstring\b",
+            "float": r"\bfloat\b",
+            "double": r"\bdouble\b",
+            "static": r"\bstatic\b",
+            "bool": r"\bbool\b",
+            "true": r"\btrue\b",
+            "false": r"\bfalse\b",
+            "cout": r"\bcout\b",
+            "cin": r"\bcin\b",
+            "std": r"\bstd\b",
+            "paren": r"[\(\)\[\]\{\}]",
+            "number": r"\b\d+\b",
+            "arrow_right": r"<",
+            "arrow_left": r">",
+            "colon": r":",
+            "semicolon": r";",
+            "question": r"\?",
+            "excl": r"!",
+            "pointer": r"&",
+            "equal": r"=",
+            "include": r"#include\s+[\"<]\S+[\">]",
+            "comment": r"//.*",
+            "string_double": r"\".*?\"",
+            "string_single": r"'.*?'",
+        }
+    
+    def colors(self):
+        self.COLORS = {
+            "for": "#a83264",
+            "do": "#a83264",
+            "while": "#a83264",
+            "if": "#a83264",
+            "else": "#a83264",
+            "int": "orange",
+            "return": "orange",
+            "long": "orange",
+            "short": "orange",
+            "unsigned": "orange",
+            "string": "orange",
+            "float": "orange",
+            "double": "orange",
+            "static": "orange",
+            "bool": "orange",
+            "true": "#2f5ea3",
+            "false": "#2f5ea3",
+            "cout": "#328da8",
+            "cin": "#328da8",
+            "std": "#328da8",
+            "paren": "#3265d1",
+            "number": "#f77d3b",
+            "arrow_right": "#3265d1",
+            "arrow_left": "#3265d1",
+            "colon": "#3265d1",
+            "semicolon": "#3265d1",
+            "question": "#3265d1",
+            "excl": "#3265d1",
+            "pointer": "#3265d1",
+            "equal": "#3265d1",
+            "include": "green",
+            "comment": "green",
+            "string_double": "green",
+            "string_single": "green",
+        }
+
+    def configure_tags(self):
+        for tag, color in self.COLORS.items():
+            self.text.tag_configure(tag, foreground=color)
+
     def highlight_syntax(self):
-        theme = check.get_config_value("theme")
-        keyword_colors = self.get_keyword_colors(theme)
+        text_widget = self.text
+        line_start = text_widget.index("insert linestart")
+        line_end = text_widget.index("insert lineend")
 
-        for tag in self.text.tag_names():
+        line_text = text_widget.get(line_start, line_end)
+        line_number = int(line_start.split('.')[0])
+
+        # Șterge toate etichetele pentru linia curentă
+        for tag in self.COLORS.keys():
+            text_widget.tag_remove(tag, line_start, line_end)
+
+        # Aplică noile etichete
+        for tag, pattern in self.PATTERNS.items():
+            for match in re.finditer(pattern, line_text):
+                start_index = f"{line_number}.{match.start()}"
+                end_index = f"{line_number}.{match.end()}"
+                text_widget.tag_add(tag, start_index, end_index)
+
+    def highlight_all(self):
+        for tag in self.COLORS.keys():
             self.text.tag_remove(tag, "1.0", tk.END)
-
-        for keyword_group, color in keyword_colors.items():
-            self.text.tag_configure(keyword_group, foreground=color)
-
-        keywords = self.get_keywords()
-
-        # Highlight keywords
-        for keyword_group, keyword_list in keywords.items():
-            for keyword in keyword_list:
-                start_index = "1.0"
-                while True:
-                    start_index = self.text.search(r'\m{}\M'.format(re.escape(keyword)), start_index, tk.END, regexp=True)
-                    if not start_index:
-                        break
-                    end_index = self.text.index(f"{start_index}+{len(keyword)}c wordend")
-                    self.text.tag_add(keyword_group, start_index, end_index)
-                    start_index = end_index
-
-
-        # Highlight special characters individually
-        special_characters = self.get_special_characters()
-        for char, tag in special_characters.items():
-            self.highlight_character(char, tag)
-
-        self.highlight_line_comments()
-        self.highlight_block_comments()
-        self.highlight_strings()
-        self.highlight_quotes()
-        self.highlight_include()
-
-    def get_keyword_colors(self, theme):
-        dark_theme = {
-            "keyword1": "#94193e",  # Cuvinte cheie (ex: int, float, etc.)
-            "keyword2": "#1b8ca8",  # Acces specifiers (ex: public, private, etc.)
-            "keyword3": "#00b7ff",
-            "special_char": "#7eade0",    # Numere și alte cuvinte cheie
-            "comment_line": "#008000",  # Comentarii
-            "comment_block": "#008000", # Comentarii bloc
-            "string": "#008000",    # Șiruri de caractere
-            "quote": "#008000",     # Caractere între ghilimele simple
-            "include": "#008000",   # Directive include 
-        }
-
-        light_theme = {
-            "keyword1": "#94193e",
-            "keyword2": "#1b8ca8",
-            "keyword3": "#00b7ff",
-            "special_char": "#7eade0",
-            "comment_line": "#008000",
-            "comment_block": "#008000",
-            "string": "#008000",
-            "quote": "#008000",
-            "include": "#008000"
-        }
-
-        return dark_theme if theme == 0 else light_theme
-
-    def get_keywords(self):
-        if file_menu.return_file() == ".cpp":
-            return {
-                "keyword1": [
-                "int", "float", "double", "char", "if", "else", "for", "while", 
-                "return", "do", "string", "const", "using", "short", "long", 
-                "signed", "unsigned", "bool", "true", "false", "auto", 
-                "static", "volatile", "register", "extern", "enum", "typedef",
-                "inline", "switch", "case", "default", "goto", "break", "continue",
-                "sizeof", "namespace", "new", "delete", "try", "catch", "throw", 
-                "nullptr"
-                ],
-
-                "keyword2": ["void", "main", "printf", "scanf", "cin", "cout", "endl", "std", 
-                "size_t", "ptrdiff_t", "int8_t", "int16_t", "int32_t", "int64_t", 
-                "uint8_t", "uint16_t", "uint32_t", "uint64_t", "int_least8_t", 
-                "int_least16_t", "int_least32_t", "int_least64_t", "uint_least8_t", 
-                "uint_least16_t", "uint_least32_t", "uint_least64_t", "int_fast8_t", 
-                "int_fast16_t", "int_fast32_t", "int_fast64_t", "uint_fast8_t", 
-                "uint_fast16_t", "uint_fast32_t", "uint_fast64_t", "intptr_t", 
-                "uintptr_t", "intmax_t", "uintmax_t"],
-                "keyword3": [
-                    "class", "public", "private", "protected"
-                ]
-
-            }
-        elif file_menu.return_file() == ".py":
-            return {
-                "keyword1": ["False", "None", "True", "and", "as", "assert", "async", "await", "break", "class",
-        "continue", "def", "del", "elif", "else", "except", "finally", "for", "from",
-        "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass",
-        "raise", "return", "try", "while", "with", "yield"],
-                "keyword2": ['abs', 'delattr', 'hash', 'memoryview', 'set', 'all', 'dict', 'help', 'min', 'setattr', 'any', 'dir', 'hex',
-        'next', 'slice', 'ascii', 'divmod', 'id', 'object', 'sorted', 'bin', 'enumerate', 'input', 'oct', 'staticmethod',
-        'bool', 'eval', 'int', 'open', 'str', 'breakpoint', 'exec', 'isinstance', 'ord', 'sum', 'bytearray', 'filter',
-        'issubclass', 'pow', 'super', 'bytes', 'float', 'iter', 'print', 'tuple', 'callable', 'format', 'len', 'property',
-        'type', 'chr', 'frozenset', 'list', 'range', 'vars', 'classmethod', 'getattr', 'locals', 'repr', 'zip', 'compile',
-        'globals', 'map', 'reversed', '__import__', 'complex', 'hasattr', 'max', 'round'],
-                "keyword3": ['append', 'clear', 'copy', 'count', 'extend', 'index', 'insert', 'pop', 'remove', 'reverse', 'sort',
-        'capitalize', 'casefold', 'center', 'encode', 'endswith', 'expandtabs', 'find', 'format', 'format_map', 'isalnum',
-        'isalpha', 'isascii', 'isdecimal', 'isdigit', 'isidentifier', 'islower', 'isnumeric', 'isprintable', 'isspace',
-        'istitle', 'isupper', 'join', 'ljust', 'lower', 'lstrip', 'maketrans', 'partition', 'replace', 'rfind', 'rindex',
-        'rjust', 'rpartition', 'rsplit', 'rstrip', 'split', 'splitlines', 'startswith', 'strip', 'swapcase', 'title',
-        'translate', 'upper', 'zfill']
-            }
-
-    def get_special_characters(self):
-        return {
-            "{": "special_char",
-            "}": "special_char",
-            "[": "special_char",
-            "]": "special_char",
-            "(": "special_char",
-            ")": "special_char",
-            "<": "special_char",
-            ">": "special_char",
-            "=": "special_char",
-            "%": "special_char",
-            "+": "special_char",
-            "-": "special_char",
-            "*": "special_char",
-            "!": "special_char",
-            ";": "special_char",
-            ":": "special_char",
-            "0": "keyword3",
-            "1": "keyword3", "2": "keyword3", "3": "keyword3", "4": "keyword3", "5": "keyword3", 
-            "6": "keyword3", "7": "keyword3", "8": "keyword3", "9": "keyword3"
-        }
-
-    def highlight_character(self, character, tag):
-        start_index = "1.0"
-        while True:
-            start_index = self.text.search(re.escape(character), start_index, tk.END, regexp=True)
-            if not start_index:
-                break
-            end_index = self.text.index(f"{start_index}+1c")
-            self.text.tag_add(tag, start_index, end_index)
-            start_index = end_index
-
-    def highlight_include(self):
-        start_index = "1.0"
-        while True:
-            start_index = self.text.search("#", start_index, tk.END, regexp=True)
-            if not start_index:
-                break
-            end_index = self.text.index(f"{start_index} lineend")
-            self.text.tag_add("include", start_index, end_index)
-            start_index = end_index
-
-    def highlight_line_comments(self):
-        start_index = "1.0"
-        while True:
-            start_index = self.text.search("//", start_index, tk.END, regexp=True)
-            if not start_index:
-                break
-            end_index = self.text.search("\n", start_index, tk.END, regexp=True)
-            if not end_index:
-                end_index = self.text.index(tk.END)
-            self.text.tag_add("comment_line", start_index, end_index)
-            start_index = end_index
-
-    def highlight_block_comments(self):
-        start_index = "1.0"
-        while True:
-            start_index = self.text.search("/\\*", start_index, tk.END, regexp=True)
-            if not start_index:
-                break
-            end_index = self.text.search("\\*/", start_index, tk.END, regexp=True)
-            if not end_index:
-                end_index = self.text.index(tk.END)
-            end_index = self.text.index(f"{end_index}+2c")  # Adjust the end index to include the "*/"
-            self.text.tag_add("comment_block", start_index, end_index)
-            start_index = end_index + "+1c"
-
-
-    def highlight_strings(self):
-        self.highlight_pattern("\"", "string", "\"", offset=1)
-
-    def highlight_quotes(self):
-        self.highlight_pattern("'", "quote", "'", offset=1)
-
-    def highlight_pattern(self, start_pattern, tag, end_pattern, offset=0):
-        start_index = "1.0"
-        while True:
-            start_index = self.text.search(start_pattern, start_index, tk.END, regexp=True)
-            if not start_index:
-                break
-            end_index = self.text.search(end_pattern, f"{start_index}+{offset}c", tk.END, regexp=True)
-            if not end_index:
-                break
-            end_index = self.text.index(f"{end_index}+1c")
-            self.text.tag_add(tag, start_index, end_index)
-            start_index = end_index
+        
+        # Re-evidențiază întregul text
+        text_content = self.text.get("1.0", tk.END)
+        lines = text_content.splitlines()
+        for line_number, line_text in enumerate(lines, start=1):
+            for tag, pattern in self.PATTERNS.items():
+                for match in re.finditer(pattern, line_text):
+                    start_index = f"{line_number}.{match.start()}"
+                    end_index = f"{line_number}.{match.end()}"
+                    self.text.tag_add(tag, start_index, end_index)
 
     def insert_quotation_mark(self, event):
         self.text.insert(tk.INSERT, "\"\"")

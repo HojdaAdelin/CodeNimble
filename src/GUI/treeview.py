@@ -235,6 +235,7 @@ class TreeviewFrame(customtkinter.CTkFrame):
     def treeview_open_file(self, path):
         file_menu.open_file_by_path(self.text, self.status, path)
         self.root.redraw()
+        self.root.highlight_all()
 
     def on_start_drag(self, event):
         item = self.treeview.identify_row(event.y)

@@ -37,6 +37,7 @@ from MainMenu import theme_changer
 from GUI import snippet_code
 from API import kilo 
 from GUI import right_panel
+from API import pbinfo
 
 class MainWindow(ct.CTk):
     def __init__(self, *args, **kwargs):
@@ -136,7 +137,7 @@ class MainWindow(ct.CTk):
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
                                                                                          scroll.tab_bar))
-        textures_drop.add_option(option="Summer theme", command=lambda:themes.use_theme("summer",menu, home, file_m, edit, view, template, textures, utility,
+        textures_drop.add_option(option="Dark-blue theme", command=lambda:themes.use_theme("dark-blue",menu, home, file_m, edit, view, template, textures, utility,
                                                                                          home_drop, file_drop, edit_drop, view_drop, template_drop, textures_drop,
                                                                                          utility_drop,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame.menu, treeview_frame.folder_menu,
@@ -200,6 +201,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-b>", lambda event: view_menu.hide_unhide_treeview(treeview_frame, scroll, right_panel_frame))
         scroll.text.bind("<Control-Alt-b>", lambda event:view_menu.hide_unhide_right_panel(scroll, right_panel_frame, treeview_frame))
         scroll.text.bind("<Control-Shift-T>", lambda event: template_menu.use_template(scroll.text, scroll, statusbar_instance))
+        scroll.text.bind("<Control-v>", lambda event: edit_menu.paste_text(scroll.text, scroll))
         scroll.text.bind("<F5>", lambda event:run.run_cpp_file(scroll.text))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())
@@ -259,13 +261,9 @@ class MainWindow(ct.CTk):
             kilo_win.mainloop()
 
         def open_pbinfo(self):
-            try:
-                from API import pbinfo
-                pbinfo_win = pbinfo.PbinfoInterface(scroll.text, scroll.terminal)
-                pbinfo_win.mainloop()
-            except ImportError:
-                messagebox.showerror("Error", "PbInfo library doesn't exist!")
-
+            pbinfo_win = pbinfo.PbinfoInterface(scroll.text, scroll.terminal)
+            pbinfo_win.mainloop()
+            
     def auto_save_option(self):
         if file_menu.opened_file_status() and int(check.get_config_value("auto_save")) == 1:
             file_menu.save_file(self.scroll.text, self.statusbar_instance)
