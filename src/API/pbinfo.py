@@ -31,7 +31,7 @@ class PbinfoInterface(ct.CTk):
         self.bg_color, self.text_bg, self.text_color, self.hover_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.configure(fg_color = self.bg_color)
         self.iconbitmap("images/logo.ico")
-        self.geometry("700x550")
+        self.geometry("650x550")
         self.resizable(False, False)
         self.title("Code Nimble - Pbinfo tools")
         themes.title_bar_color_handle(self)
