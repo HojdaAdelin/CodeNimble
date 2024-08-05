@@ -26,6 +26,7 @@
 22. Submit code to pbinfo.ro directly from the app
 23. Open site function in Home
 24. New code highlight system
+25. New submit code button
 
 ### Fixed/Changes:
 

@@ -272,18 +272,19 @@ class ScrollText(tk.Frame):
                 text_widget.tag_add(tag, start_index, end_index)
 
     def highlight_all(self):
-        for tag in self.COLORS.keys():
-            self.text.tag_remove(tag, "1.0", tk.END)
-        
-        # Re-evidențiază întregul text
-        text_content = self.text.get("1.0", tk.END)
-        lines = text_content.splitlines()
-        for line_number, line_text in enumerate(lines, start=1):
-            for tag, pattern in self.PATTERNS.items():
-                for match in re.finditer(pattern, line_text):
-                    start_index = f"{line_number}.{match.start()}"
-                    end_index = f"{line_number}.{match.end()}"
-                    self.text.tag_add(tag, start_index, end_index)
+        if file_menu.return_file() == ".cpp" or file_menu.return_file() == ".py":
+            for tag in self.COLORS.keys():
+                self.text.tag_remove(tag, "1.0", tk.END)
+            
+            # Re-evidențiază întregul text
+            text_content = self.text.get("1.0", tk.END)
+            lines = text_content.splitlines()
+            for line_number, line_text in enumerate(lines, start=1):
+                for tag, pattern in self.PATTERNS.items():
+                    for match in re.finditer(pattern, line_text):
+                        start_index = f"{line_number}.{match.start()}"
+                        end_index = f"{line_number}.{match.end()}"
+                        self.text.tag_add(tag, start_index, end_index)
 
     def insert_quotation_mark(self, event):
         self.text.insert(tk.INSERT, "\"\"")
