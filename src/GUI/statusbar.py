@@ -58,7 +58,7 @@ class StatusBar(tk.Frame):
         self.run_img.bind("<Enter>", self.on_hover)
         self.run_img.bind("<Leave>", self.off_hover)
 
-        if self.latest_version > self.current_version:
+        if self.latest_version > self.current_version and isinstance(self.latest_version, int):
             self.new_version_label.pack(side="left")
 
         self.timer_frame = tk.Frame(self)

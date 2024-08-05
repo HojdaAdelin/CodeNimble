@@ -159,7 +159,7 @@ class MainWindow(ct.CTk):
         utility_drop.add_option(option="Disconnect (Beta)", command=lambda:scroll.disconnect_client())
         utility_drop.add_option(option="Server Panel (Beta)", command=lambda:open_server_panel(self))
         utility_drop.add_separator()
-        utility_drop.add_option(option="Pbinfo tools", command=lambda:open_pbinfo(self))
+        utility_drop.add_option(option="Submit code", command=lambda:open_pbinfo(self))
         utility_drop.add_option(option="Kilonova tools", command=lambda:open_kilotools(self))
         
         statusbar_instance = statusbar.StatusBar(self, text="")

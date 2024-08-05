@@ -13,6 +13,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from MainMenu import file_menu
+from API import pbinfo
 
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
@@ -82,6 +83,9 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.column("#0", width=600, minwidth=600, stretch=False)
         self.treeview.bind("<Double-1>", self.on_double_click)
 
+        self.submit_code = customtkinter.CTkButton(self,text="Submit code", font=("", 16), command=self.open_submit)
+        self.submit_code.grid(row=1, column=0, sticky="sew", pady=5,padx=10)
+
         self.menu = tk.Menu(self, tearoff=0, font=("", 30), bg="white", fg="black", activebackground="#ebebeb", activeforeground="black")
         self.menu.add_command(label="Delete File", command=self.delete_selected_file)
         self.menu.add_command(label="Rename File", command=self.rename_selected_file)
@@ -101,6 +105,10 @@ class TreeviewFrame(customtkinter.CTkFrame):
         self.treeview.bind("<ButtonPress-1>", self.on_start_drag)
         self.treeview.bind("<B1-Motion>", self.on_drag)
         self.treeview.bind("<ButtonRelease-1>", self.on_drop)
+
+    def open_submit(self):
+        submit_win = pbinfo.PbinfoInterface(self.text, self.scroll.terminal)
+        submit_win.mainloop()
 
     def delete_selected_folder(self):
         selected_item = self.treeview.selection()
