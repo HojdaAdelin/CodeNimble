@@ -27,6 +27,7 @@
 23. Open site function in Home
 24. New code highlight system
 25. New submit code button
+26. Fetch test cases: pbinfo.ro support
 
 ### Fixed/Changes:
 

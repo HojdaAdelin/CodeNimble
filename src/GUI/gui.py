@@ -168,7 +168,7 @@ class MainWindow(ct.CTk):
         self.scroll = scroll
         treeview_frame = treeview.TreeviewFrame(self, scroll, statusbar_instance, scroll)
         
-        right_panel_frame = right_panel.RightPanel(self)
+        right_panel_frame = right_panel.RightPanel(self, scroll.terminal)
         self.right_panel_frame = right_panel_frame
 
         self.auto_save_option()
