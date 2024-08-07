@@ -56,4 +56,10 @@ class FetchWindow(ct.CTk):
             self.right_panel.input_box.insert("1.0", self.intrare)
             self.right_panel.expected_box.delete("1.0", "end")
             self.right_panel.expected_box.insert("1.0", self.iesire)
+        elif self.site.get().strip() == "Kilonova":
+            self.intrare, self.iesire = fetch_get.fetch_kilonova(self.terminal, self.id.get().strip())
+            self.right_panel.input_box.delete("1.0", "end")
+            self.right_panel.input_box.insert("1.0", self.intrare)
+            self.right_panel.expected_box.delete("1.0", "end")
+            self.right_panel.expected_box.insert("1.0", self.iesire)
         

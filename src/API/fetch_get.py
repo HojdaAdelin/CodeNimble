@@ -36,3 +36,19 @@ def fetch_pbinfo(terminal,id):
             terminal.notification(f"[Pbinfo - Error]: {e}")
     else:
         terminal.notification(f"[Pbinfo - Error]: {response.status_code}")
+
+def fetch_kilonova(terminal, id):
+    url = f'https://kilonova.ro/problems/{id}'
+
+    response = requests.get(url)
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    pre_tags = soup.find_all('pre')
+
+    if len(pre_tags) >= 2:
+        stdin_content = pre_tags[0].get_text()
+        stdout_content = pre_tags[1].get_text()
+        return stdin_content, stdout_content
+    else:
+        terminal.notification("[Kilonova - Error]: Insufficient <pre> tags")
