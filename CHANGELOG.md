@@ -28,6 +28,8 @@
 24. New code highlight system
 25. New submit code button
 26. Fetch test cases: pbinfo.ro support
+27. Fetch test cases: kilonova.ro support
+28. Fetch test cases: codeforces.com support
 
 ### Fixed/Changes:
 

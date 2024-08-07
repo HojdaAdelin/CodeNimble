@@ -36,3 +36,44 @@ def fetch_pbinfo(terminal,id):
             terminal.notification(f"[Pbinfo - Error]: {e}")
     else:
         terminal.notification(f"[Pbinfo - Error]: {response.status_code}")
+
+def fetch_kilonova(terminal, id):
+    url = f'https://kilonova.ro/problems/{id}'
+
+    response = requests.get(url)
+    response.raise_for_status()
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    pre_tags = soup.find_all('pre')
+
+    if len(pre_tags) >= 2:
+        stdin_content = pre_tags[0].get_text()
+        stdout_content = pre_tags[1].get_text()
+        return stdin_content, stdout_content
+    else:
+        terminal.notification("[Kilonova - Error]: Insufficient <pre> tags")
+
+def fetch_codeforce(contest_id, problem_id, link=False):
+    if link:
+        url = link
+    else:
+        url = f"https://codeforces.com/contest/{contest_id}/problem/{problem_id}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    pretest_input = None
+    pretest_output = None
+    
+    input_div = soup.find('div', class_='input')
+    if input_div:
+        pre_element = input_div.find('pre')
+        if pre_element:
+            pretest_input = pre_element.get_text("\n", strip=True)
+    
+    output_div = soup.find('div', class_='output')
+    if output_div:
+        pre_element = output_div.find('pre')
+        if pre_element:
+            pretest_output = pre_element.get_text("\n", strip=True)
+    
+    return pretest_input, pretest_output
