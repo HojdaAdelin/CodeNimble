@@ -52,3 +52,28 @@ def fetch_kilonova(terminal, id):
         return stdin_content, stdout_content
     else:
         terminal.notification("[Kilonova - Error]: Insufficient <pre> tags")
+
+def fetch_codeforce(contest_id, problem_id, link=False):
+    if link:
+        url = link
+    else:
+        url = f"https://codeforces.com/contest/{contest_id}/problem/{problem_id}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    pretest_input = None
+    pretest_output = None
+    
+    input_div = soup.find('div', class_='input')
+    if input_div:
+        pre_element = input_div.find('pre')
+        if pre_element:
+            pretest_input = pre_element.get_text("\n", strip=True)
+    
+    output_div = soup.find('div', class_='output')
+    if output_div:
+        pre_element = output_div.find('pre')
+        if pre_element:
+            pretest_output = pre_element.get_text("\n", strip=True)
+    
+    return pretest_input, pretest_output
