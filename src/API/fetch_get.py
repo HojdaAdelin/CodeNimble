@@ -77,3 +77,21 @@ def fetch_codeforce(contest_id, problem_id, link=False):
             pretest_output = pre_element.get_text("\n", strip=True)
     
     return pretest_input, pretest_output
+
+def fetch_atcoder(problem_url):
+    response = requests.get(problem_url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Găsește toate secțiunile de exemplu (sample) Input și Output
+    sample_inputs = soup.find_all('h3', string='Sample Input 1')
+    sample_outputs = soup.find_all('h3', string='Sample Output 1')
+    
+    # Verificăm că există cel puțin un exemplu de input și output
+    if sample_inputs and sample_outputs:
+        # Extragem primul exemplu de input și output
+        pretest_input = sample_inputs[0].find_next('pre').get_text(strip=True)
+        pretest_output = sample_outputs[0].find_next('pre').get_text(strip=True)
+        
+        return pretest_input, pretest_output
+    else:
+        return "None", "None"
