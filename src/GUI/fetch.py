@@ -37,18 +37,28 @@ class FetchWindow(ct.CTk):
             self.geometry("320x120")
             self.fetch_button.grid_forget()
             self.fetch_button.grid(row=2, column=0, columnspan=2, padx=10, pady=(0, 10), sticky="nwe")
+            self.id_label.configure(text="Problem ID")
         elif platform == "Codeforces":
             self.contest_id_for_cf_label.grid(row=0, column=2, pady=(10, 5), padx=10, sticky="n")
             self.contest_id_for_cf.grid(row=1, column=2,padx=10, pady=(0, 10), sticky="ne")
             self.fetch_button.grid_forget()
             self.fetch_button.grid(row=2, column=0, columnspan=3, padx=10, pady=(0, 10), sticky="nwe")
             self.geometry("480x120")
+            self.id_label.configure(text="Problem ID")
+        elif platform == "AtCoder":
+            self.contest_id_for_cf.grid_forget()
+            self.contest_id_for_cf_label.grid_forget()
+            self.geometry()
+            self.geometry("320x120")
+            self.fetch_button.grid_forget()
+            self.fetch_button.grid(row=2, column=0, columnspan=2, padx=10, pady=(0, 10), sticky="nwe")
+            self.id_label.configure(text="URL")
     def gui(self):
         self.site_label = ct.CTkLabel(self,text="Platform", text_color=self.text, font=("", 16))
         self.site_label.grid(row=0, column=0, pady=(10, 5), padx=10, sticky="n")
         self.id_label = ct.CTkLabel(self, text="Problem ID", text_color=self.text, font=("", 16))
         self.id_label.grid(row=0, column=1, pady=(10, 5), padx=10, sticky="n")
-        self.site = ct.CTkComboBox(self, values=["Pbinfo", "Kilonova", "Codeforces"],command=self.toggle_gui, font=("", 16), text_color=self.text, fg_color=self.text_bg, dropdown_fg_color=self.text_bg, dropdown_text_color=self.text, button_color=self.text_bg, button_hover_color=self.hover_color, dropdown_hover_color=self.hover_color, border_width=0)
+        self.site = ct.CTkComboBox(self, values=["Pbinfo", "Kilonova", "Codeforces", "AtCoder"],command=self.toggle_gui, font=("", 16), text_color=self.text, fg_color=self.text_bg, dropdown_fg_color=self.text_bg, dropdown_text_color=self.text, button_color=self.text_bg, button_hover_color=self.hover_color, dropdown_hover_color=self.hover_color, border_width=0)
         self.site.grid(row=1, column=0, padx=10, pady=(0, 10), sticky="nw")
         self.id = ct.CTkEntry(self, text_color=self.text, fg_color=self.text_bg, border_width=0)
         self.id.grid(row=1,column=1,padx=10, pady=(0, 10), sticky="ne")
@@ -56,7 +66,7 @@ class FetchWindow(ct.CTk):
         self.fetch_button.grid(row=2, column=0, columnspan=2, padx=10, pady=(0, 10), sticky="nwe")
 
     def fetch(self):
-        if self.site.get().strip() == "Pbinfo" or self.site.get().strip() == "Kilonova" or self.site.get().strip() == "Codeforces":
+        if self.site.get().strip() == "Pbinfo" or self.site.get().strip() == "Kilonova" or self.site.get().strip() == "Codeforces" or self.site.get().strip() == "AtCoder":
             pass
         else:
             messagebox.showerror("Error", "Invalid platform!")
@@ -80,6 +90,12 @@ class FetchWindow(ct.CTk):
             self.right_panel.expected_box.insert("1.0", self.iesire)
         elif self.site.get().strip() == "Codeforces":
             self.intrare, self.iesire = fetch_get.fetch_codeforce(contest_id=self.contest_id_for_cf.get().strip(), problem_id=self.id.get().strip())
+            self.right_panel.input_box.delete("1.0", "end")
+            self.right_panel.input_box.insert("1.0", self.intrare)
+            self.right_panel.expected_box.delete("1.0", "end")
+            self.right_panel.expected_box.insert("1.0", self.iesire)
+        elif self.site.get().strip() == "AtCoder":
+            self.intrare, self.iesire = fetch_get.fetch_atcoder(self.id.get().strip())
             self.right_panel.input_box.delete("1.0", "end")
             self.right_panel.input_box.insert("1.0", self.intrare)
             self.right_panel.expected_box.delete("1.0", "end")
