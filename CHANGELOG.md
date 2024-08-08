@@ -31,6 +31,7 @@
 27. Fetch test cases: kilonova.ro support
 28. Fetch test cases: codeforces.com support
 29. Fetch test cases: atcoder.jp support
+30. New change log in app
 
 ### Fixed/Changes:
 

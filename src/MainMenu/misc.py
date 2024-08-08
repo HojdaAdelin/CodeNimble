@@ -56,6 +56,24 @@ def version_info():
         version_window.protocol("WM_DELETE_WINDOW", on_closing)
         version_window.mainloop()
 
+def create_card(parent, title, description, bg_color, row, col):
+    card = ctk.CTkFrame(
+        parent,
+        width=250,
+        height=250,
+        corner_radius=15, 
+        fg_color=bg_color 
+    )
+    card.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
+
+    # Titlu
+    title_label = ctk.CTkLabel(card, text=title, font=("Arial", 20), text_color="white")
+    title_label.pack(pady=(5, 10))
+
+    # Descriere
+    description_label = ctk.CTkLabel(card, text=description, font=("Arial", 16), text_color="white")
+    description_label.pack(pady=(0, 10))
+
 def changelog_inf():
     
     global changelog_window_opened
@@ -65,8 +83,8 @@ def changelog_inf():
         changelog_window.title("CodeNimble - Change log")
         changelog_window.iconbitmap("images/logo.ico")
         fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
-        w = 500 
-        h = 600 
+        w = 900 
+        h = 650 
 
         ws = changelog_window.winfo_screenwidth()
         hs = changelog_window.winfo_screenheight()
@@ -78,12 +96,28 @@ def changelog_inf():
         changelog_window.resizable(False, False)
         changelog_window.configure(fg_color = fg_cl)
         
-        version_label = ctk.CTkLabel(changelog_window, text="Version: 2.0", font=("Arial", 20), text_color=text)
-        version_label.pack(pady=10)
-        content_label = ctk.CTkLabel(changelog_window, text="• Server status in status bar\n• Auto save option\n• Ctrl+roler bind\n• Refresh editor (Ctrl+Shift+R)\n• Save session\n• Summer theme\n• Drag files\n• Exit accelerator\n• Open recent\n• LAN password\n• Terminal inside editor\n• Theme changer\n•Added tags in suggestions\n•Snippet code interface\n• Snippets code in suggestions\n• Kilonova.ro tools\n• Python support\n• Right panel\n• Expected output and check test casses ", font=("Arial", 20), text_color=text)
-        content_label.pack()
+        changelog_window.grid_rowconfigure(1, weight=1)
+        changelog_window.grid_rowconfigure(2, weight=1)
+        changelog_window.grid_columnconfigure(0, weight=1)
+        changelog_window.grid_columnconfigure(1, weight=1)
+        changelog_window.grid_columnconfigure(2, weight=1)
 
-        # Funcție pentru a reseta changelog_window_opened la False după ce închidem fereastra
+        title_label = ctk.CTkLabel(changelog_window, text="Change log - major features", font=("Arial", 24), text_color=text)
+        title_label.grid(row=0, column=1, pady=20)
+
+        create_card(changelog_window, "Local Server", "Local server now\n have only one\n interface where\n you can find all\n functionalities in\n the same place.\nAlso the security have\nbeen improved by adding\na password when starting\nthe local server.", "lightblue", 1, 0)
+        create_card(changelog_window, "Snippets code", "Now you can create\nyour own code \"shortcut\"\nby creating a snippet\ncode.\nYou can find the\nnew snippet code in\nthe suggestion list\nwith the tag \"snippet\".", "lightgreen", 1, 1)
+        create_card(changelog_window, "Python support", "New python support\nincluding code suggestions,\ncode highlight\nand code run.", "lightcoral", 2, 0)
+        create_card(changelog_window, "New input & output,", "New input & output system.\nIn the right panel\nyou cand find input,\noutput, expected output.\nYou can set the input\n and expected output then you can\nuse run with pre-input\n and this will display the\noutput from the source code\nand then it will be\ncompared witht the expected\noutput.", "lightgoldenrod", 2, 1)
+        create_card(changelog_window, "Submit code", "With this new feature\nyou no longer need to use\nthe browser to submit code.\nYou can submit code on\npbinfo.ro for now but in the\nfuture will be more platforms.", "gray", 1, 2)
+        create_card(changelog_window, "Fetch test cases", "You can now use this\nfeature to fetch pre-test\nsamples from different platforms\nto the input & expected output.\nSupported platforms: pbinfo.ro,\nkilonova.ro, codeforces.com, atcoder.jp.", "pink", 2, 2)
+        
+        def open_l():
+            open_links("https://hojdaadelin.github.io/code-nimble/src/blogs.html")
+
+        view_more = ctk.CTkButton(changelog_window, text="View more >", font=("Arial", 16), text_color=text, bg_color="transparent", command=open_l)
+        view_more.grid(row=3, column=2, pady=(0,5), sticky="e", padx=10)
+
         def on_closing():
             global changelog_window_opened
             changelog_window_opened = False
