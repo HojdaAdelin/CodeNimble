@@ -32,6 +32,7 @@
 28. Fetch test cases: codeforces.com support
 29. Fetch test cases: atcoder.jp support
 30. New change log in app
+31. Run python files
 
 ### Fixed/Changes:
 
@@ -42,6 +43,7 @@
 5. Fixed exit
 6. Changed treeview indicator
 7. Removed Guide from Home
+8. Fixed run
 
 # Version: 1.5
 
