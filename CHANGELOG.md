@@ -33,6 +33,7 @@
 29. Fetch test cases: atcoder.jp support
 30. New change log in app
 31. Run python files
+32. New local server interface
 
 ### Fixed/Changes:
 
