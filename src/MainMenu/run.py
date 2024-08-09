@@ -13,42 +13,42 @@ sys.path.append(parent_dir)
 
 from MainMenu import file_menu
 
-def run_cpp_file(text_widget):
-    file_path = file_menu.current_file()
+def run(text_widget):
+    file_path=file_menu.current_file()
     if file_path is None:
         messagebox.showerror("Error", "No files are open.")
         return
-    
-    if not file_path.endswith(".cpp"):
-        messagebox.showerror("Error", "Only .cpp files can be run.")
+    if file_path.endswith(".cpp"):
+        run_cpp_file(text_widget)
+    elif file_path.endswith(".py"):
+        run_python_file(text_widget)
+    else:
+        messagebox.showerror("Error", "Only .cpp & .py files can be run.")
         return
+
+def run_cpp_file(text_widget):
+    file_path = file_menu.current_file()
     
-    # Extragem conținutul din text_widget
     code_content = text_widget.get("1.0", "end-1c")
     
-    # Obținem directorul fișierului curent
     current_file_dir = os.path.dirname(file_path)
     
-    # Creăm un fișier temporar în directorul curent al fișierului
     with tempfile.NamedTemporaryFile(delete=False, suffix=".cpp", mode='w', encoding='utf-8', dir=current_file_dir) as temp_file:
         temp_file.write(code_content)
         temp_file_path = temp_file.name
     
-    # Compilarea fișierului temporar .cpp
     base_name = os.path.splitext(os.path.basename(file_path))[0]
     executable_name = os.path.join(current_file_dir, f"{base_name}.exe")
     error_log = os.path.join(current_file_dir, f"{base_name}_error.log")
     compile_command = f"g++ {temp_file_path} -o {executable_name} 2> {error_log}"
     
-    # Rularea comenzii de compilare
     compile_process = subprocess.run(compile_command, shell=True, cwd=current_file_dir)
     
     if compile_process.returncode != 0:
-        # Dacă există erori de compilare, deschidem cmd și afișăm erorile
         run_command = f"start cmd /k type {error_log}"
         subprocess.run(run_command, shell=True, cwd=current_file_dir)
+        time.sleep(1)
     else:
-        # Dacă compilarea reușește, rulăm fișierul executabil în cmd
         run_command = f"start cmd /k {os.path.basename(executable_name)}"
         subprocess.run(run_command, shell=True, cwd=current_file_dir)
         time.sleep(1)
@@ -56,6 +56,35 @@ def run_cpp_file(text_widget):
     os.remove(temp_file_path)
     if os.path.exists(executable_name):
         os.remove(executable_name)
+    if os.path.exists(error_log):
+        os.remove(error_log)
+
+def run_python_file(text_widget):
+    file_path = file_menu.current_file()  
+    code_content = text_widget.get("1.0", "end-1c")
+    
+    current_file_dir = os.path.dirname(file_path)
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".py", mode='w', encoding='utf-8', dir=current_file_dir) as temp_file:
+        temp_file.write(code_content)
+        temp_file_path = temp_file.name
+    
+    base_name = os.path.splitext(os.path.basename(file_path))[0]
+    error_log = os.path.join(current_file_dir, f"{base_name}_error.log")
+    run_command = f"python {temp_file_path} 2> {error_log}"
+    
+    run_process = subprocess.run(run_command, shell=True, cwd=current_file_dir)
+    
+    if run_process.returncode != 0:
+        show_errors_command = f"start cmd /k type {error_log}"
+        subprocess.run(show_errors_command, shell=True, cwd=current_file_dir)
+        time.sleep(1)
+    else:
+        result_command = f"start cmd /k python {os.path.basename(temp_file_path)}"
+        subprocess.run(result_command, shell=True, cwd=current_file_dir)
+        time.sleep(1)
+    
+    os.remove(temp_file_path)
     if os.path.exists(error_log):
         os.remove(error_log)
 
@@ -110,7 +139,6 @@ def pre_input_run(root):
         if len(expected_output) != 0:
             new_output = root.right_panel_frame.output_box.get("1.0", "end-1c").strip()
             
-            # Split the text into words, ignoring extra spaces
             expected_words = expected_output.split()
             new_words = new_output.split()
             

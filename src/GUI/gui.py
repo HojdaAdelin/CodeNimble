@@ -150,7 +150,7 @@ class MainWindow(ct.CTk):
                                                                                          scroll.tab_bar))
         
         utility_drop = CustomDropdownMenu(widget=utility, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
-        utility_drop.add_option(option="Run                                F5", command=lambda:run.run_cpp_file(scroll.text))
+        utility_drop.add_option(option="Run                                F5", command=lambda:run.run(scroll.text))
         utility_drop.add_option(option="Run with pre-input", command=lambda:run.pre_input_run(self))
         utility_drop.add_option(option="Paint Mode              Ctrl+P", command=lambda:open_paint_mode(self))
         utility_drop.add_separator()
@@ -183,7 +183,7 @@ class MainWindow(ct.CTk):
 
         scroll.text.focus()
         self.after(200, scroll.redraw())
-        statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run_cpp_file(scroll.text))
+        statusbar_instance.run_img.bind("<Button-1>", lambda event: run.run(scroll.text))
         scroll.text.bind("<Control-n>", lambda event: file_menu.custom_file(statusbar_instance, treeview_frame))
         scroll.text.bind("<Control-o>", lambda event: file_menu.open_file(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-s>", lambda event: file_menu.save_file(scroll.text, statusbar_instance))
@@ -202,7 +202,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-Alt-b>", lambda event:view_menu.hide_unhide_right_panel(scroll, right_panel_frame, treeview_frame))
         scroll.text.bind("<Control-Shift-T>", lambda event: template_menu.use_template(scroll.text, scroll, statusbar_instance))
         scroll.text.bind("<Control-v>", lambda event: edit_menu.paste_text(scroll.text, scroll))
-        scroll.text.bind("<F5>", lambda event:run.run_cpp_file(scroll.text))
+        scroll.text.bind("<F5>", lambda event:run.run(scroll.text))
         scroll.text.bind("<Control-p>", lambda event:open_paint_mode(self))
         scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())
         scroll.text.bind("<Control-MouseWheel>", lambda event:self.mouse_wheel(event=event))
