@@ -18,7 +18,7 @@ class SnippetsCode(ct.CTk):
         self.title("Snippets Code")
         self.geometry("800x600")
         self.iconbitmap("images/logo.ico")
-        self.fg, self.text_bg, self.text, self.hover = themes.return_default_win_color(check.get_config_value("theme"))
+        self.fg, self.text_bg, self.text, self.hover, self.button_color, self.button_hover_color, self.button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         themes.title_bar_color_handle(self)
         self.configure(fg_color=self.fg, bg_color=self.fg)
         
@@ -40,16 +40,16 @@ class SnippetsCode(ct.CTk):
         button_frame = ct.CTkFrame(self, fg_color=self.fg, bg_color=self.fg)
         button_frame.pack(fill=ct.X, padx=10, pady=10)
         
-        create_button = ct.CTkButton(button_frame, text="Create", command=self.create_snippet)
+        create_button = ct.CTkButton(button_frame, text="Create", command=self.create_snippet, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         create_button.pack(side=ct.LEFT, padx=10)
         
-        edit_button = ct.CTkButton(button_frame, text="Edit", command=self.edit_snippet)
+        edit_button = ct.CTkButton(button_frame, text="Edit", command=self.edit_snippet, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         edit_button.pack(side=ct.LEFT, padx=10)
         
-        save_button = ct.CTkButton(button_frame, text="Save", command=self.save_snippet)
+        save_button = ct.CTkButton(button_frame, text="Save", command=self.save_snippet, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         save_button.pack(side=ct.LEFT, padx=10)
         
-        remove_button = ct.CTkButton(button_frame, text="Remove", command=self.remove_snippet)
+        remove_button = ct.CTkButton(button_frame, text="Remove", command=self.remove_snippet, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         remove_button.pack(side=ct.LEFT, padx=10)
 
         self.listbox_list.bind("<Double-Button-1>", lambda event:self.edit_snippet())

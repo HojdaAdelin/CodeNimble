@@ -113,7 +113,7 @@ def custom_template():
     create_template_window.title("CodeNimble - Create Templates")
     create_template_window.iconbitmap("images/logo.ico")
     
-    fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+    fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
 
     w = 500 
     h = 600 
@@ -171,7 +171,7 @@ def custom_template():
         
         messagebox.showinfo("Success", f"Template '{template_name}.{extension}' created successfully!")
 
-    create_button = ctk.CTkButton(create_template_window, text="Create", width=200, command=create_template)
+    create_button = ctk.CTkButton(create_template_window, text="Create", width=200, command=create_template, fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
     create_button.pack(pady=(10, 0))
 
     def on_closing():
@@ -196,7 +196,7 @@ def use_template(textbox, root, statusbar):
     select_template_window.title("CodeNimble - Use Templates")
     select_template_window.iconbitmap("images/logo.ico")
     
-    fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+    fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
 
     w = 400 
     h = 500 
@@ -256,7 +256,7 @@ def use_template(textbox, root, statusbar):
         root.tab_bar.add_tab(file_menu.current_file())
         root.highlight_all()
         
-    use_button = ctk.CTkButton(select_template_window, text="Use", width=200, command=use_selected_template)
+    use_button = ctk.CTkButton(select_template_window, text="Use", width=200, command=use_selected_template, fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
     use_button.pack(pady=(10, 0))
 
     def on_closing():

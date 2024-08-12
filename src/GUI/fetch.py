@@ -21,7 +21,7 @@ class FetchWindow(ct.CTk):
         self.right_panel = right_panel
         self.iconbitmap("images/logo.ico")
         self.resizable(False, False)
-        self.bg_color, self.text_bg, self.text, self.hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        self.bg_color, self.text_bg, self.text, self.hover_color, self.button_color, self.button_hover_color, self.button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.gui()
         themes.title_bar_color_handle(self)
         self.columnconfigure(1, weight=0)
@@ -62,7 +62,7 @@ class FetchWindow(ct.CTk):
         self.site.grid(row=1, column=0, padx=10, pady=(0, 10), sticky="nw")
         self.id = ct.CTkEntry(self, text_color=self.text, fg_color=self.text_bg, border_width=0)
         self.id.grid(row=1,column=1,padx=10, pady=(0, 10), sticky="ne")
-        self.fetch_button = ct.CTkButton(self, text="Fetch test cases", command=self.fetch)
+        self.fetch_button = ct.CTkButton(self, text="Fetch test cases", command=self.fetch, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.fetch_button.grid(row=2, column=0, columnspan=2, padx=10, pady=(0, 10), sticky="nwe")
 
     def fetch(self):

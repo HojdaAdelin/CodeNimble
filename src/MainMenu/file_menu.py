@@ -126,7 +126,7 @@ def custom_file(statusbar, tree, custom_path=None):
         version_window_opened = True
         version_window = ctk.CTk()
         version_window.title("CodeNimble - New File")
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 300 
         h = 100 
 
@@ -175,7 +175,7 @@ def custom_file(statusbar, tree, custom_path=None):
                     pass
 
         # Adaugă un buton "Create" pentru a crea fișierul
-        create_button = ctk.CTkButton(version_window, text="Create", command=create_file)
+        create_button = ctk.CTkButton(version_window, text="Create", command=create_file, fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
         create_button.pack()
 
         # Funcție pentru a reseta version_window_opened la False după ce închidem fereastra
@@ -312,7 +312,7 @@ def rename_file(statusbar, tree, path):
         file_path = path
         version_window = ctk.CTk()
         version_window.title("CodeNimble - Rename File")
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 300 
         h = 100 
 
@@ -357,7 +357,7 @@ def rename_file(statusbar, tree, path):
 
 
         # Adaugă un buton "Rename" pentru a redenumi fișierul
-        rename_button = ctk.CTkButton(version_window, text="Rename", command=lambda: rename(file_path))
+        rename_button = ctk.CTkButton(version_window, text="Rename", command=lambda: rename(file_path), fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
         rename_button.pack()
 
         # Funcție pentru a reseta version_window la None după ce fereastra se închide
@@ -395,7 +395,7 @@ def rename_folder(statusbar, tree, folder_path):
     if version_windoww is None:
         version_windoww = ctk.CTk()
         version_windoww.title("CodeNimble - Rename Folder")
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 300 
         h = 100 
 
@@ -433,7 +433,7 @@ def rename_folder(statusbar, tree, folder_path):
                     except Exception as e:
                         pass
 
-        rename_button = ctk.CTkButton(version_windoww, text="Rename", command=lambda: rename(folder_path))
+        rename_button = ctk.CTkButton(version_windoww, text="Rename", command=lambda: rename(folder_path), fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
         rename_button.pack()
 
         def on_closing():
@@ -453,7 +453,7 @@ def add_folder(statusbar, tree, custom_path=None):
         version_window_opened = True
         version_window = ctk.CTk()
         version_window.title("CodeNimble - New Folder")
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 300 
         h = 100 
 
@@ -492,7 +492,7 @@ def add_folder(statusbar, tree, custom_path=None):
                     pass
 
         # Adaugă un buton "Create" pentru a crea folderul
-        create_button = ctk.CTkButton(version_window, text="Create", command=create_folder)
+        create_button = ctk.CTkButton(version_window, text="Create", command=create_folder, fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
         create_button.pack()
 
         # Funcție pentru a reseta version_window_opened la False după ce închidem fereastra

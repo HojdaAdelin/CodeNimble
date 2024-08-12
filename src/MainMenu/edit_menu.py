@@ -71,7 +71,7 @@ def find_text(scroll_text, scroll):
         find_window = ctk.CTk()
         find_window.title("CodeNimble - Find Text")
 
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
 
         w = 300 
         h = 100 
@@ -105,7 +105,7 @@ def find_text(scroll_text, scroll):
                     scroll_text.tag_configure("found", background="gray")
                     start_index = end_index
         
-        find_button = ctk.CTkButton(find_window, text="Find", command=find)
+        find_button = ctk.CTkButton(find_window, text="Find", command=find, fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
         find_button.pack()
 
         def on_closing():
@@ -127,7 +127,7 @@ def replace_text(scroll_text, scroll):
         replace_window_opened = True
         replace_window = ctk.CTk()
         replace_window.title("CodeNimble - Replace Text")
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color,button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 500 
         h = 140 
 
@@ -149,7 +149,7 @@ def replace_text(scroll_text, scroll):
                             insertbackground='white',
                             selectbackground="#616161", borderwidth=0)
         find_box.pack(side="left", pady=40)        
-        find_button = ctk.CTkButton(find_frame, text="Find")
+        find_button = ctk.CTkButton(find_frame, text="Find", fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
         find_button.pack(side="right", padx=(10, 0))
 
         replace_frame = ctk.CTkFrame(replace_window)
@@ -159,9 +159,9 @@ def replace_text(scroll_text, scroll):
                             insertbackground='white',
                             selectbackground="#616161", borderwidth=0)
         replace_box.pack(side="left")       
-        replace_button = ctk.CTkButton(replace_frame, text="Replace")
+        replace_button = ctk.CTkButton(replace_frame, text="Replace", fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
         replace_button.pack(side="right", padx=(10, 0))
-        replace_all_button = ctk.CTkButton(replace_window, text="Replace all")
+        replace_all_button = ctk.CTkButton(replace_window, text="Replace all", fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
         replace_all_button.pack(side="right", padx=(10, 38), pady=(10, 0)) 
         
 

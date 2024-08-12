@@ -154,10 +154,7 @@ class MainWindow(ct.CTk):
         utility_drop.add_option(option="Run with pre-input", command=lambda:run.pre_input_run(self))
         utility_drop.add_option(option="Paint Mode              Ctrl+P", command=lambda:open_paint_mode(self))
         utility_drop.add_separator()
-        utility_drop.add_option(option="Start Server (Beta)", command= lambda:scroll.start_server())
-        utility_drop.add_option(option="Join Local Server (Beta)", command=lambda:scroll.start_client())
-        utility_drop.add_option(option="Disconnect (Beta)", command=lambda:scroll.disconnect_client())
-        utility_drop.add_option(option="Server Panel (Beta)", command=lambda:open_server_panel(self))
+        utility_drop.add_option(option="Local Server (Beta)", command=lambda:open_server_panel(self))
         utility_drop.add_separator()
         utility_drop.add_option(option="Submit code", command=lambda:open_pbinfo(self))
         utility_drop.add_option(option="Kilonova tools", command=lambda:open_kilotools(self))
@@ -241,7 +238,7 @@ class MainWindow(ct.CTk):
             profil.mainloop()
 
         def open_server_panel(self):
-            panel_window = panel.ServerPanel(self.scroll.server)
+            panel_window = panel.ServerPanel(self.scroll,self.scroll.server)
             panel_window.mainloop()
 
         def open_settings_window(self):

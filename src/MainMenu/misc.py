@@ -26,7 +26,7 @@ def version_info():
         version_window_opened = True
         version_window = ctk.CTk()
         version_window.title("CodeNimble - Version")
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 300 
         h = 100 
 
@@ -82,7 +82,7 @@ def changelog_inf():
         changelog_window = ctk.CTk()
         changelog_window.title("CodeNimble - Change log")
         changelog_window.iconbitmap("images/logo.ico")
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         w = 900 
         h = 650 
 
@@ -115,7 +115,7 @@ def changelog_inf():
         def open_l():
             open_links("https://hojdaadelin.github.io/code-nimble/src/blogs.html")
 
-        view_more = ctk.CTkButton(changelog_window, text="View more >", font=("Arial", 16), text_color=text, bg_color="transparent", command=open_l)
+        view_more = ctk.CTkButton(changelog_window, text="View more >", font=("Arial", 16), text_color=button_text_color, command=open_l, fg_color=button_color, hover_color=button_hover_color)
         view_more.grid(row=3, column=2, pady=(0,5), sticky="e", padx=10)
 
         def on_closing():
