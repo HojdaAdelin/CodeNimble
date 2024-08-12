@@ -24,7 +24,7 @@ class RightPanel(ct.CTkFrame):
         self.grid_rowconfigure(6, weight=0)
         self.terminal = terminal
         # Label-ul pentru input
-        self.input_label = ct.CTkLabel(self, text="Input Label")
+        self.input_label = ct.CTkLabel(self, text="Input")
         self.input_label.grid(row=0, column=0, padx=10, pady=5, sticky="n")
 
         # Textbox pentru input
@@ -32,7 +32,7 @@ class RightPanel(ct.CTkFrame):
         self.input_box.grid(row=1, column=0, padx=10, pady=(0,5), sticky="nsew")
 
         # Label-ul pentru output
-        self.output_label = ct.CTkLabel(self, text="Output Label")
+        self.output_label = ct.CTkLabel(self, text="Output")
         self.output_label.grid(row=2, column=0, padx=10, pady=(0,5), sticky="n")
 
         # Textbox pentru output

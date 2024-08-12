@@ -27,7 +27,7 @@ def update_theme(menu, home, file_m, edit, view, template, textures, utility,
     select_template_window.title("CodeNimble - Update theme")
     select_template_window.iconbitmap("images/logo.ico")
     
-    fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+    fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
 
     w = 400 
     h = 500 
@@ -78,7 +78,7 @@ def update_theme(menu, home, file_m, edit, view, template, textures, utility,
                                                                                          statusbar_instance, scroll, self, treeview_frame, treeview_frame_menu, treeview_frame_folder_menu,
                                                                                          scroll_tab_bar)
         
-    use_button = ctk.CTkButton(select_template_window, text="Use", width=200, command=update_theme)
+    use_button = ctk.CTkButton(select_template_window, text="Use", width=200, command=update_theme, fg_color=button_color, hover_color=button_hover_color, text_color=button_text_color)
     use_button.pack(pady=(10, 0))
 
     def on_closing():

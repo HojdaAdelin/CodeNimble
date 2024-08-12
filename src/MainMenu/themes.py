@@ -98,6 +98,7 @@ def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, 
                 widget.terminal.configure(fg_color=config['terminal']['fg_color'], bg_color=config['terminal']['bg_color'])
                 widget.terminal.textbox.configure(fg_color=config['terminal']['textbox_color'], text_color=config['terminal']['text_color'])
             elif widget_name == 'tree':
+                widget.submit_code.configure(fg_color=config['button_color'], hover_color=config['button_hover_color'], text_color=config['button_text_color'])
                 widget.configure(fg_color=config['fg_color'])
                 widget.treestyle.configure("Treeview",
                                            background=config['treestyle']['Treeview']['background'],
@@ -114,6 +115,9 @@ def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, 
                 win.right_panel_frame.input_box.configure(fg_color=config['input']['fg_color'], text_color=config['input']['text_color'])
                 win.right_panel_frame.output_box.configure(fg_color=config['output']['fg_color'], text_color=config['output']['text_color'])
                 win.right_panel_frame.expected_box.configure(fg_color=config['output']['fg_color'], text_color=config['output']['text_color'])
+            elif widget_name == 'win':
+                widget.configure(fg_color=config['fg_color'])
+                widget.right_panel_frame.fetch.configure(fg_color=config['button_color'], hover_color=config['button_hover_color'], text_color=config['text_color'])
             else:
                 widget.configure(**config)
         except ValueError as e:
@@ -148,5 +152,8 @@ def return_default_win_color(init):
     text_bg = default_window.get("text_bg")
     text = default_window.get("text")
     hover_color = default_window.get("hover_color")
+    button_color = default_window.get("button_color")
+    button_hover_color = default_window.get("button_hover_color")
+    button_text_color = default_window.get("button_text_color")
     
-    return fg_color, text_bg, text, hover_color
+    return fg_color, text_bg, text, hover_color, button_color, button_hover_color, button_text_color

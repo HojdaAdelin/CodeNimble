@@ -28,7 +28,7 @@ class PbinfoInterface(ct.CTk):
     SOLUTION_URL_TEMPLATE = 'https://new.pbinfo.ro/json/solutie/'
     def __init__(self,text,terminal, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.bg_color, self.text_bg, self.text_color, self.hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        self.bg_color, self.text_bg, self.text_color, self.hover_color, self.button_color, self.button_hover_color, self.button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.configure(fg_color = self.bg_color)
         self.iconbitmap("images/logo.ico")
         self.geometry("650x550")
@@ -75,12 +75,12 @@ class PbinfoInterface(ct.CTk):
         self.password.grid(row=1, column=1, sticky="n", padx=10)
         self.problem_id.grid(row=1, column=2, sticky="ne", padx=10)
         # Row 3 & 4
-        self.mode1 = ct.CTkButton(self,text="Copy from editor",command=self.get_textbox_code)
+        self.mode1 = ct.CTkButton(self,text="Copy from editor",command=self.get_textbox_code, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.textbox = ct.CTkTextbox(self, fg_color=self.text_bg, corner_radius=0, text_color=self.text_color)
         self.mode1.grid(row=2, column=1, sticky="n", pady=10)
         self.textbox.grid(row=3, column=0,columnspan=3, sticky="nswe", padx=10)
         # Row 5
-        self.submit = ct.CTkButton(self, text="Submit", command=self.unit)
+        self.submit = ct.CTkButton(self, text="Submit", command=self.unit, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.submit.grid(row=4, column=1, sticky="n", pady=10)
         self.sol_id = ct.CTkLabel(self, text="Solution ID:", text_color=self.text_color, font=("", 20))
         self.score_result = ct.CTkLabel(self, text="Score:", text_color=self.text_color, font=("", 20))

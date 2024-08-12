@@ -34,6 +34,7 @@
 30. New change log in app
 31. Run python files
 32. New local server interface
+33. Added buttons for theme system
 
 ### Fixed/Changes:
 

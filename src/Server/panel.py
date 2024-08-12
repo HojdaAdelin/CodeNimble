@@ -20,7 +20,7 @@ class ServerPanel(ctk.CTk):
         self.previous_clients = None
         self.main = main
 
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, self.button_color, self.button_hover_color, self.button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.window(fg_cl)
         self.title_color()
         self.gui(text_bg, text,hover_color)
@@ -33,11 +33,11 @@ class ServerPanel(ctk.CTk):
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
-        self.start_server = ctk.CTkButton(self, text="Start Server", font=('Consolas', 24),command=self.start_server)
+        self.start_server = ctk.CTkButton(self, text="Start Server", font=('Consolas', 24),command=self.start_server, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.start_server.grid(row=0,column=0,padx=(20,0),pady=(20, 0))
-        self.join_server = ctk.CTkButton(self, text="Join Server", font=('Consolas', 24),command=self.main.start_client)
+        self.join_server = ctk.CTkButton(self, text="Join Server", font=('Consolas', 24),command=self.main.start_client, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.join_server.grid(row=0,column=1,padx=(10,10),pady=(20, 0))
-        self.disconnect_server = ctk.CTkButton(self, text="Disconnect", font=('Consolas', 24),command=self.disconnect_client)
+        self.disconnect_server = ctk.CTkButton(self, text="Disconnect", font=('Consolas', 24),command=self.disconnect_client, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.disconnect_server.grid(row=0,column=2,padx=(0,20),pady=(20, 0))
         self.table = CTkTable(master=self, row=0, column=2, values=[["Name", "Address"]],
                               font=('Consolas', 20),

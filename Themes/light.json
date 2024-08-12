@@ -134,9 +134,15 @@
         }
     },
     "win": {
+        "button_color": "#b0b0b0",
+        "button_hover_color": "#cccccc",
+        "text_color": "white",
         "fg_color": "white"
     },
     "tree": {
+        "button_color": "#b0b0b0",
+        "button_hover_color": "#cccccc",
+        "button_text_color": "white",
         "fg_color": "white",
         "treestyle": {
             "Treeview": {
@@ -184,6 +190,9 @@
         "fg_color": "white",
         "text_bg": "#f0f0f0",
         "text": "black",
-        "hover_color": "#ebebeb"
+        "hover_color": "#ebebeb",
+        "button_color": "#b0b0b0",
+        "button_hover_color": "#cccccc",
+        "button_text_color": "white"
     }
 }

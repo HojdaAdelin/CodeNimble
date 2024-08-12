@@ -21,7 +21,7 @@ class SettingsApp(ct.CTk):
 
         self.status = status
 
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, self.button_color, self.button_hover_color, self.button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.window(fg_cl)
         self.gui(fg_cl, text_bg, text)
         self.title_color()
@@ -95,7 +95,7 @@ class SettingsApp(ct.CTk):
                                       variable=self.session_var, command=self.update_session)
         self.session_box.pack(padx=5,pady=5)
 
-        self.reset_session = ct.CTkButton(self.center_frame,text="Reset Session", width=100, command=session.reset_session())
+        self.reset_session = ct.CTkButton(self.center_frame,text="Reset Session", width=100, command=session.reset_session(), fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.reset_session.pack(padx=5,pady=5)
 
     def update_notifications(self):

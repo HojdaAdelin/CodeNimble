@@ -134,9 +134,15 @@
         }
     },
     "win": {
+        "button_color": "#1a3275",
+        "button_hover_color": "#3e518c",
+        "text_color": "white",
         "fg_color": "#1f1f3b"
     },
     "tree": {
+        "button_color": "#1a3275",
+        "button_hover_color": "#3e518c",
+        "button_text_color": "white",
         "fg_color": "#1f1f3b",
         "treestyle": {
             "Treeview": {
@@ -184,6 +190,9 @@
         "fg_color": "#19184a",
         "text_bg": "#1a3275",
         "text": "white",
-        "hover_color": "#1c3373"
+        "hover_color": "#1c3373",
+        "button_color": "#1a3275",
+        "button_hover_color": "#3e518c",
+        "button_text_color": "white"
     }
 }

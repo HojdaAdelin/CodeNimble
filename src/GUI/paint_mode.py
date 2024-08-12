@@ -27,15 +27,15 @@ class PaintApp(ctk.CTk):
         self.tool_bar.pack(fill=tk.X)
 
         # Button 1: Pencil
-        self.btn_pencil = ctk.CTkButton(self.tool_bar, text="Pencil", command=self.use_pencil)
+        self.btn_pencil = ctk.CTkButton(self.tool_bar, text="Pencil", command=self.use_pencil,fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.btn_pencil.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Button 2: Eraser
-        self.btn_eraser = ctk.CTkButton(self.tool_bar, text="Eraser", command=self.use_eraser)
+        self.btn_eraser = ctk.CTkButton(self.tool_bar, text="Eraser", command=self.use_eraser,fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.btn_eraser.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Button 3: Clear
-        self.btn_clear = ctk.CTkButton(self.tool_bar, text="Clear", command=self.clear_canvas)
+        self.btn_clear = ctk.CTkButton(self.tool_bar, text="Clear", command=self.clear_canvas,fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.btn_clear.pack(side=tk.LEFT, padx=5, pady=5)
 
         # Color squares
@@ -49,7 +49,7 @@ class PaintApp(ctk.CTk):
         # Tab buttons
         self.tab_buttons = []
         for i in range(5):
-            tab_button = ctk.CTkButton(self.tool_bar, text=f"#{i+1}", width=65, height=25, command=lambda i=i: self.switch_tab(i))
+            tab_button = ctk.CTkButton(self.tool_bar, text=f"#{i+1}", width=65, height=25, command=lambda i=i: self.switch_tab(i),fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
             tab_button.pack(side=tk.LEFT, padx=5, pady=5)
             self.tab_buttons.append(tab_button)
 
@@ -75,7 +75,7 @@ class PaintApp(ctk.CTk):
         themes.title_bar_color_handle(self)
 
     def theme(self):
-        self.bg_color, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        self.bg_color, text_bg, self.text, hover_color, self.button_color, self.button_hover_color, self.button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
 
     def set_icon(self, icon_path):
         try:

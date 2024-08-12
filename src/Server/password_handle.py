@@ -17,7 +17,7 @@ class PasswordHandle(ctk.CTk):
     def __init__(self, textbox):
         super().__init__()
         self.textbox = textbox
-        fg_cl, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_cl, text_bg, text, hover_color, self.button_color, self.button_hover_color, self.button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.window(fg_cl)
         self.gui(fg_cl, text_bg, text)
         self.title_color()
@@ -39,7 +39,7 @@ class PasswordHandle(ctk.CTk):
         self.entry = ctk.CTkEntry(self, width=300, fg_color=text_bg, text_color=text)
         self.entry.pack(pady=10)
 
-        self.save_button = ctk.CTkButton(self, text="Enter", command=self.password_handle)
+        self.save_button = ctk.CTkButton(self, text="Enter", command=self.password_handle, fg_color=self.button_color, hover_color=self.button_hover_color, text_color=self.button_text_color)
         self.save_button.pack(pady=20)
 
         self.statusbar = ctk.CTkLabel(self, text="", fg_color=fg_cl, text_color=text)

@@ -23,7 +23,7 @@ class Kilotools(ct.CTk):
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
         }
         self.contest_info()
-        self.fg_cl, self.text_bg, self.text, self.hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        self.fg_cl, self.text_bg, self.text, self.hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.configure(fg_color = self.fg_cl, bg_color = self.fg_cl)
         themes.title_bar_color_handle(self)
         self.gui()
