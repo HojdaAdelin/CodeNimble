@@ -33,7 +33,7 @@ class RecentDrop:
         self.master.bind("<Button-1>", self.check_click_outside)
         self.listbox.bind("<Double-1>", self.open_folder)
 
-        fg_color, text_bg, text, hover_color = themes.return_default_win_color(check.get_config_value("theme"))
+        fg_color, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
         self.listbox.configure(bg=fg_color, fg=text)
 
     def toggle_visibility(self):
