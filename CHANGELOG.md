@@ -37,6 +37,7 @@
 33. Added buttons for theme system
 34. Clear terminal function
 35. Code formatting
+36. Output comparator
 
 ### Fixed/Changes:
 

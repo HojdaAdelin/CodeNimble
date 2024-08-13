@@ -120,6 +120,7 @@ def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, 
             elif widget_name == 'win':
                 widget.configure(fg_color=config['fg_color'])
                 widget.right_panel_frame.fetch.configure(fg_color=config['button_color'], hover_color=config['button_hover_color'], text_color=config['text_color'])
+                widget.right_panel_frame.diff.configure(fg_color=config['button_color'], hover_color=config['button_hover_color'], text_color=config['text_color'])
             else:
                 widget.configure(**config)
         except ValueError as e:
