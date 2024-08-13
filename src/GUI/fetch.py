@@ -66,12 +66,6 @@ class FetchWindow(ct.CTk):
         self.fetch_button.grid(row=2, column=0, columnspan=2, padx=10, pady=(0, 10), sticky="nwe")
 
     def fetch(self):
-        if self.site.get().strip() == "Pbinfo" or self.site.get().strip() == "Kilonova" or self.site.get().strip() == "Codeforces" or self.site.get().strip() == "AtCoder":
-            pass
-        else:
-            messagebox.showerror("Error", "Invalid platform!")
-            return
-
         if len(self.id.get().strip()) == 0:
             messagebox.showerror("Error", "Please enter a valid problem ID!")
             return
@@ -100,5 +94,8 @@ class FetchWindow(ct.CTk):
             self.right_panel.input_box.insert("1.0", self.intrare)
             self.right_panel.expected_box.delete("1.0", "end")
             self.right_panel.expected_box.insert("1.0", self.iesire)
+        else:
+            messagebox.showerror("Error", "Invalid platform!")
+            return
     
         

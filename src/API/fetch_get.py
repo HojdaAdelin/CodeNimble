@@ -11,32 +11,23 @@ def fetch_pbinfo(terminal,id):
     }
 
     response = requests.get(url, headers=headers)
-    sys.stdout.reconfigure(encoding='utf-8')
 
-    if response.status_code == 200:
-        try:
+    data = response.json()
             
-            data = response.json()
+    enunt = data['problema']['enunt_html']
             
-            enunt = data['problema']['enunt_html']
-            
-            soup = BeautifulSoup(enunt, 'html.parser')
+    soup = BeautifulSoup(enunt, 'html.parser')
         
-            pre_sections = soup.find_all('pre')
+    pre_sections = soup.find_all('pre')
             
-            if len(pre_sections) >= 2:
-                # Considerăm că primele două secțiuni <pre> sunt pentru Intrare și Ieșire
-                intrare_text = pre_sections[0].get_text(strip=True)
-                iesire_text = pre_sections[1].get_text(strip=True)
-                
-                return intrare_text, iesire_text
-            else:
-                terminal.notification("[Pbinfo - Error]: Intrare & Iesire doesn't exist")
-        except ValueError as e:
-            terminal.notification(f"[Pbinfo - Error]: {e}")
+    if len(pre_sections) >= 2:
+        # Considerăm că primele două secțiuni <pre> sunt pentru Intrare și Ieșire
+        intrare_text = pre_sections[0].get_text(strip=True)
+        iesire_text = pre_sections[1].get_text(strip=True)
+        return intrare_text, iesire_text
     else:
-        terminal.notification(f"[Pbinfo - Error]: {response.status_code}")
-
+        terminal.notification("[Pbinfo - Error]: Intrare & Iesire doesn't exist")
+    
 def fetch_kilonova(terminal, id):
     url = f'https://kilonova.ro/problems/{id}'
 

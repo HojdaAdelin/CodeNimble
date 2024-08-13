@@ -115,8 +115,8 @@ def custom_template():
     
     fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
 
-    w = 500 
-    h = 600 
+    w = 460 
+    h = 560 
     ws = create_template_window.winfo_screenwidth()
     hs = create_template_window.winfo_screenheight()
     x = (ws / 2 + 500) - (w / 2)
@@ -131,7 +131,7 @@ def custom_template():
         os.makedirs(tmp_folder)
 
     name_label = ctk.CTkLabel(create_template_window, text="Name:", font=("Arial", 20), fg_color=fg_cl, text_color=text)
-    name_label.pack(pady=(40, 0))
+    name_label.pack(pady=(20, 0))
     name_box = tk.Entry(create_template_window, width=32, font=("Arial", 30), bg=text_bg, foreground=text, 
                         insertbackground='white',
                         selectbackground="#616161", borderwidth=0)
