@@ -1,6 +1,8 @@
 import tkinter as tk
+from tkinter import messagebox
 import customtkinter as ctk
 from ctypes import byref, sizeof, c_int, windll
+import black
 
 find_window_opened = False
 replace_window_opened = False
@@ -13,6 +15,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from MainMenu import themes
+from MainMenu import file_menu
 from Config import check
 
 def undo_text(widget, root):
@@ -228,3 +231,24 @@ def clear_text(text, root, status):
     text.delete("1.0", tk.END)
     root.redraw()
     status.update_text("Clear text")
+
+def formatting(text, win):
+    file_path = file_menu.current_file()
+    if file_path is None:
+        messagebox.showerror("Error", "No files are open.")
+        return
+    if file_path.endswith(".py"):
+        code = text.get("1.0", "end-1c")
+        
+        try:
+            formatted_code = black.format_str(code, mode=black.Mode())
+        except black.NothingChanged:
+            formatted_code = code
+        
+        text.delete("1.0", "end")
+        text.insert("1.0", formatted_code)
+        win.redraw()
+        win.highlight_all()
+    else:
+        messagebox.showerror("Error", "Only python files are supported for now!")
+        return

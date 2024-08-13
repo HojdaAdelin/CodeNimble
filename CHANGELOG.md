@@ -36,6 +36,7 @@
 32. New local server interface
 33. Added buttons for theme system
 34. Clear terminal function
+35. Code formatting
 
 ### Fixed/Changes:
 

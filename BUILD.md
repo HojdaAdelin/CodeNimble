@@ -15,6 +15,7 @@ To build from source you need to clone this repo:
     pip install CTkMenuBar
     pip install CTkTable
     pip install pywinstyles
+    pip install black
     ```
 
 2. Fiind the source of the custom tkinter library
