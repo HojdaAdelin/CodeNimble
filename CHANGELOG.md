@@ -35,6 +35,7 @@
 31. Run python files
 32. New local server interface
 33. Added buttons for theme system
+34. Clear terminal function
 
 ### Fixed/Changes:
 

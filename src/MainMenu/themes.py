@@ -97,6 +97,8 @@ def use_theme(init, menu_bar, cascade1, cascade2, cascade3, cascade4, cascade5, 
                 widget.suggestions.scrollbar.configure(fg_color=config['suggestions']['bg'],button_color=config['suggestions']['fg'],button_hover_color=config['suggestions']['selectbackground'])
                 widget.terminal.configure(fg_color=config['terminal']['fg_color'], bg_color=config['terminal']['bg_color'])
                 widget.terminal.textbox.configure(fg_color=config['terminal']['textbox_color'], text_color=config['terminal']['text_color'])
+                widget.terminal.clear_button.configure(text_color=config['terminal']['text_color'], fg_color=config['scrollbar']['button_color'], hover_color=config['scrollbar']['button_hover_color'])
+
             elif widget_name == 'tree':
                 widget.submit_code.configure(fg_color=config['button_color'], hover_color=config['button_hover_color'], text_color=config['button_text_color'])
                 widget.configure(fg_color=config['fg_color'])
