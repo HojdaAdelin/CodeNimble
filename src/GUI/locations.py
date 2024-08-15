@@ -7,8 +7,8 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
-from MainMenu import themes
-from MainMenu import view_menu
+from Core import themes
+from Core import view_menu
 
 class RecentDrop:
     def __init__(self, master, lista_elemente, treeview, textbox):

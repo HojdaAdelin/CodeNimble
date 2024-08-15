@@ -15,7 +15,7 @@ sys.path.append(parent_dir)
 
 from Config import check
 from API import get_version
-from MainMenu import themes
+from Core import themes
 
 def exit_application(root):
     exit()

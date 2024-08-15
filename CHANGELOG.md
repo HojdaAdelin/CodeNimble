@@ -49,6 +49,7 @@
 6. Changed treeview indicator
 7. Removed Guide from Home
 8. Fixed run
+9. Fixed tab function for suggestions
 
 # Version: 1.5
 

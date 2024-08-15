@@ -11,9 +11,9 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
-from MainMenu import view_menu
-from MainMenu import themes
-from MainMenu import session
+from Core import view_menu
+from Core import themes
+from Core import session
 
 class SettingsApp(ct.CTk):
     def __init__(self, status):
