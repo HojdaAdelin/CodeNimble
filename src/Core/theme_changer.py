@@ -9,7 +9,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
-from MainMenu import themes
+from Core import themes
 
 use_template_window = None
 

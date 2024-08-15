@@ -14,26 +14,26 @@ current_dir = os.path.dirname(__file__)
 parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
-from MainMenu import misc
-from MainMenu import file_menu
-from MainMenu import edit_menu
-from MainMenu import view_menu
-from MainMenu import template_menu
-from MainMenu import themes
+from Core import misc
+from Core import file_menu
+from Core import edit_menu
+from Core import view_menu
+from Core import template_menu
+from Core import themes
 from GUI import textbox
 from GUI import statusbar
 from Config import check
 from API import get_version
-from MainMenu import run
+from Core import run
 from GUI import treeview
 from GUI import paint_mode
 from Server import panel
-from MainMenu import profile
-from MainMenu import settings
-from MainMenu import session
+from Core import profile
+from Core import settings
+from Core import session
 from GUI import locations
-from MainMenu import recent
-from MainMenu import theme_changer
+from Core import recent
+from Core import theme_changer
 from GUI import snippet_code
 from API import kilo 
 from GUI import right_panel
@@ -85,6 +85,7 @@ class MainWindow(ct.CTk):
         edit_drop = CustomDropdownMenu(widget=edit, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         edit_drop.add_option(option="Undo                           Ctrl+Z", command=lambda:edit_menu.undo_text(scroll.text, scroll))
         edit_drop.add_option(option="Redo                           Ctrl+Y", command=lambda:edit_menu.redo_text(scroll.text, scroll))
+        edit_drop.add_option(option="Code formatting", command=lambda:edit_menu.formatting(scroll.text, scroll))
         edit_drop.add_separator()
         edit_drop.add_option(option="Cut                              Ctrl+X", command=lambda:edit_menu.cut_text(scroll.text, scroll))
         edit_drop.add_option(option="Copy                           Ctrl+C", command=lambda:edit_menu.copy_text(scroll.text, scroll))

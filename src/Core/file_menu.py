@@ -14,10 +14,10 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
-from MainMenu import edit_menu
-from MainMenu import themes
-from MainMenu import recent
-from MainMenu import view_menu
+from Core import edit_menu
+from Core import themes
+from Core import recent
+from Core import view_menu
 
 opened_filename = None
 opened_folder_path = None

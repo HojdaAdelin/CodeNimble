@@ -12,13 +12,13 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from Config import check
-from MainMenu import view_menu
-from MainMenu import file_menu
+from Core import view_menu
+from Core import file_menu
 from GUI import filetab
 from Server import server
 from Server import client
-from MainMenu import run
-from MainMenu import themes
+from Core import run
+from Core import themes
 from Server import password_handle
 from GUI import terminal
 from GUI import suggestions
@@ -121,6 +121,7 @@ class ScrollText(tk.Frame):
     def add_tab(self, event):
         if self.suggestions.handle_case() == True:
             self.suggestions.handle_tab()
+            return 'break'
         else:
             self.text.insert(tk.INSERT, "    ")
             return 'break'

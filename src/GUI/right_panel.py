@@ -8,6 +8,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
 sys.path.append(parent_dir)
 
 from GUI import fetch
+from GUI import comparator
 
 class RightPanel(ct.CTkFrame):
     def __init__(self, master,terminal, *args, **kwargs):
@@ -22,6 +23,7 @@ class RightPanel(ct.CTkFrame):
         self.grid_rowconfigure(4, weight=0)
         self.grid_rowconfigure(5, weight=1)
         self.grid_rowconfigure(6, weight=0)
+        self.grid_rowconfigure(7, weight=0)
         self.terminal = terminal
         # Label-ul pentru input
         self.input_label = ct.CTkLabel(self, text="Input")
@@ -48,9 +50,16 @@ class RightPanel(ct.CTkFrame):
         self.expected_box.grid(row=5, column=0, padx=10, pady=(0,10), sticky="nsew")
 
         # Partea inferioara
+        self.diff = ct.CTkButton(self,text="Output comparator", font=("", 16), command=self.comparator_window)
+        self.diff.grid(row=6, column=0, padx=10, pady=(0, 5), sticky="swe")
+
         self.fetch = ct.CTkButton(self,text="Fetch test cases", font=("", 16), command=self.fetch_window)
-        self.fetch.grid(row=6, column=0, padx=10, pady=(0, 5), sticky="swe")
+        self.fetch.grid(row=7, column=0, padx=10, pady=(0, 5), sticky="swe")
 
     def fetch_window(self):
         fetch_win = fetch.FetchWindow(self.terminal, self)
         fetch_win.mainloop()
+
+    def comparator_window(self):
+        comparator_window = comparator.OutputComparator(self)
+        comparator_window.mainloop()

@@ -36,6 +36,8 @@
 32. New local server interface
 33. Added buttons for theme system
 34. Clear terminal function
+35. Code formatting
+36. Output comparator
 
 ### Fixed/Changes:
 
@@ -47,6 +49,7 @@
 6. Changed treeview indicator
 7. Removed Guide from Home
 8. Fixed run
+9. Fixed tab function for suggestions
 
 # Version: 1.5
 
