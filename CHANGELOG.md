@@ -38,6 +38,7 @@
 34. Clear terminal function
 35. Code formatting
 36. Output comparator
+37. Added highlight color palette to Themes json
 
 ### Fixed/Changes:
 
