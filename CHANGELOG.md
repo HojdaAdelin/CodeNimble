@@ -39,6 +39,7 @@
 35. Code formatting
 36. Output comparator
 37. Added highlight color palette to Themes json
+38. PAINT: When clicking on a color it will change into pencil
 
 ### Fixed/Changes:
 
