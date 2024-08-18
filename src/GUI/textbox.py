@@ -36,9 +36,9 @@ class ScrollText(tk.Frame):
         self.server = None
         self.client = None
         self.password = None
+        self.COLORS = {}
         font_size = check.get_config_value("zoom") or 28
         self.specific_patterns()
-        self.colors()
         self.gui(font_size)
         self.configure_tags()
         self.binding()
@@ -211,44 +211,10 @@ class ScrollText(tk.Frame):
             "string_single": r"'.*?'",
         }
     
-    def colors(self):
-        self.COLORS = {
-            "for": "#a83264",
-            "do": "#a83264",
-            "while": "#a83264",
-            "if": "#a83264",
-            "else": "#a83264",
-            "int": "orange",
-            "return": "orange",
-            "long": "orange",
-            "short": "orange",
-            "unsigned": "orange",
-            "string": "orange",
-            "float": "orange",
-            "double": "orange",
-            "static": "orange",
-            "bool": "orange",
-            "true": "#2f5ea3",
-            "false": "#2f5ea3",
-            "cout": "#328da8",
-            "cin": "#328da8",
-            "std": "#328da8",
-            "paren": "#3265d1",
-            "number": "#f77d3b",
-            "arrow_right": "#3265d1",
-            "arrow_left": "#3265d1",
-            "colon": "#3265d1",
-            "semicolon": "#3265d1",
-            "question": "#3265d1",
-            "excl": "#3265d1",
-            "pointer": "#3265d1",
-            "equal": "#3265d1",
-            "include": "green",
-            "comment": "green",
-            "string_double": "green",
-            "string_single": "green",
-        }
-
+    def colors(self, color_pal):
+        self.COLORS = color_pal
+        self.configure_tags()
+        
     def configure_tags(self):
         for tag, color in self.COLORS.items():
             self.text.tag_configure(tag, foreground=color)

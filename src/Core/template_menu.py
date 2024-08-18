@@ -70,7 +70,7 @@ int main()
     return 0;
 }"""
 
-def create_template(textbox, root, statusbar, op):
+def create_template(textbox, root, statusbar, op, tree):
     template_text = """"""
     ext = ""
     ext_misc = ""
@@ -94,10 +94,9 @@ def create_template(textbox, root, statusbar, op):
         template_text = competitive_text
         ext_misc = "C++ Competitive"
         ext = ".cpp"
-    # Inserarea textului în textbox
     edit_menu.clear_text(textbox, root, statusbar)
     textbox.insert("1.0", template_text)
-    file_menu.create_file(template_text, ext)
+    file_menu.create_file(template_text, ext, tree)
     statusbar.update_text("Used " + ext_misc + " template")
     root.redraw()
     root.tab_bar.add_tab(file_menu.current_file())
@@ -186,7 +185,7 @@ def custom_template():
 
 use_template_window = None
 
-def use_template(textbox, root, statusbar):
+def use_template(textbox, root, statusbar, tree):
     global use_template_window
     if use_template_window:
         return
@@ -250,7 +249,7 @@ def use_template(textbox, root, statusbar):
         
         edit_menu.clear_text(textbox, root, statusbar)
         textbox.insert("1.0", template_content)
-        file_menu.create_file(template_content, extension)
+        file_menu.create_file(template_content, extension, tree)
         statusbar.update_text(f"Used template {template_file}")
         root.redraw()
         root.tab_bar.add_tab(file_menu.current_file())

@@ -117,6 +117,7 @@ class PaintApp(ctk.CTk):
 
     def change_pencil_color(self, color):
         self.pencil_color = color
+        self.use_pencil()
 
     def switch_tab(self, index):
         self.show_canvas(index)

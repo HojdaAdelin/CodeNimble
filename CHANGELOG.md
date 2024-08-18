@@ -38,6 +38,8 @@
 34. Clear terminal function
 35. Code formatting
 36. Output comparator
+37. Added highlight color palette to Themes json
+38. PAINT: When clicking on a color it will change into pencil
 
 ### Fixed/Changes:
 
@@ -50,6 +52,7 @@
 7. Removed Guide from Home
 8. Fixed run
 9. Fixed tab function for suggestions
+10. Fixed templates
 
 # Version: 1.5
 
