@@ -199,22 +199,30 @@ def return_file():
     else:
         return ".txt"  
 
-def create_file(text, ext):
+def create_file(text, ext, tree):
     global opened_filename
+    global opened_folder_path
+    
+    # File name
+    if opened_folder_path:
+        filename = opened_folder_path +"/template" + ext 
+    else:
+        filename = "template" + ext
 
-    filename = "template" + ext  # Numele de fișier implicit
-
-    # Verifică dacă fișierul cu numele implicit există deja
     count = 1
     while os.path.exists(filename):
-        filename = f"template{count}" + ext
+        if opened_folder_path:
+            filename = opened_folder_path + f"/template{count}" + ext
+        else:
+            filename = f"template{count}" + ext
         count += 1
 
-    # Creează fișierul .cpp și deschide-l pentru scriere
     with open(filename, "w") as file:
         file.write(text)
-    # Actualizează variabila globală opened_filename
     opened_filename = filename
+    
+    if opened_folder_path:
+        tree.reload_treeview(opened_folder_path if opened_folder_path else os.getcwd())
 
 def open_default_file(text, window, status_bar):
     global opened_filename
