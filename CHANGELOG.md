@@ -54,6 +54,7 @@
 9. Fixed tab function for suggestions
 10. Fixed templates
 11. Fixed double paste issue
+12. UTF-8 support
 
 # Version: 1.5
 
