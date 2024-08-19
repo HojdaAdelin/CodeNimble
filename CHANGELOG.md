@@ -40,6 +40,7 @@
 36. Output comparator
 37. Added highlight color palette to Themes json
 38. PAINT: When clicking on a color it will change into pencil
+39. Go to line feature
 
 ### Fixed/Changes:
 
@@ -53,6 +54,8 @@
 8. Fixed run
 9. Fixed tab function for suggestions
 10. Fixed templates
+11. Fixed double paste issue
+12. UTF-8 support
 
 # Version: 1.5
 

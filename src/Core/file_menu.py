@@ -43,7 +43,7 @@ def open_file(text, window, status_bar):
     if filename:
         opened_filename = filename 
 
-        with open(filename, "r") as file:
+        with open(filename, "r", encoding="utf-8") as file:
             file_content = file.read()
 
             text.delete("1.0", tk.END) 
@@ -92,7 +92,7 @@ def save_file(text, status_bar):
     if opened_filename:
         content = text.get("1.0", "end-1c")
 
-        with open(opened_filename, "w") as file:
+        with open(opened_filename, "w", encoding="utf-8") as file:
             file.write(content)
         status_bar.update_text("Saved: " + opened_filename)
     else:
@@ -110,7 +110,7 @@ def save_as_file(text, status_bar):
     if filename:
         opened_filename = filename 
 
-        with open(filename, "w") as file:
+        with open(filename, "w", encoding="utf-8") as file:
             file.write(content)
         status_bar.update_text("Saved: " + opened_filename)
 
@@ -217,7 +217,7 @@ def create_file(text, ext, tree):
             filename = f"template{count}" + ext
         count += 1
 
-    with open(filename, "w") as file:
+    with open(filename, "w", encoding="utf-8") as file:
         file.write(text)
     opened_filename = filename
     
@@ -279,7 +279,7 @@ def open_file_by_path(textbox, status_bar, path):
     if os.path.exists(path):
       try:
         
-        with open(path, "r") as file:
+        with open(path, "r", encoding="utf-8") as file:
           file_content = file.read()
 
         opened_filename = path

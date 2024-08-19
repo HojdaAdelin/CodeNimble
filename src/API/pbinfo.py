@@ -71,6 +71,10 @@ class PbinfoInterface(ct.CTk):
         self.username = ct.CTkEntry(self,text_color=self.text_color, fg_color=self.bg_color)
         self.password = ct.CTkEntry(self,text_color=self.text_color, fg_color=self.bg_color)
         self.problem_id = ct.CTkEntry(self,text_color=self.text_color, fg_color=self.bg_color)
+        if check.get_config_value("username"):
+            self.username.insert("0",check.get_config_value("username"))
+        if check.get_config_value("password"):
+            self.password.insert("0",check.get_config_value("password"))
         self.username.grid(row=1, column=0, sticky="nw", padx=10)
         self.password.grid(row=1, column=1, sticky="n", padx=10)
         self.problem_id.grid(row=1, column=2, sticky="ne", padx=10)
@@ -254,6 +258,8 @@ class PbinfoInterface(ct.CTk):
         solution_id = self.submit_solution(local_ip)
         self.sol_id.configure(text=f"Solution ID: {solution_id}")
         self.fetch_solution_score(solution_id)
+        check.update_config_file("username", self.login_payload['user'])
+        check.update_config_file("password", self.login_payload['parola'])
 
     def get_textbox_code(self):
         self.textbox.delete("1.0", "end")
