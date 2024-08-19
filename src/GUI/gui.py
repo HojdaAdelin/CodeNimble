@@ -91,6 +91,7 @@ class MainWindow(ct.CTk):
         edit_drop.add_separator()
         edit_drop.add_option(option="Find                             Ctrl+F", command=lambda:edit_menu.find_text(scroll.text, scroll))
         edit_drop.add_option(option="Replace                      Ctrl+H", command=lambda:edit_menu.replace_text(scroll.text, scroll))
+        edit_drop.add_option(option="Go to line                    Ctrl+G", command=lambda:edit_menu.go_to_line(scroll.text, scroll))
 
         view_drop = CustomDropdownMenu(widget=view, font=("", 20), corner_radius=4, separator_color="#b0b0b0")
         view_drop.add_option(option="Zoom in                        Ctrl+ =", command=lambda:view_menu.zoom_in(scroll))
@@ -200,6 +201,7 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())
         scroll.text.bind("<Control-MouseWheel>", lambda event:self.mouse_wheel(event=event))
         pywinstyles.apply_dnd(scroll.text, self.drag_file)
+        scroll.text.bind("<Control-g>", lambda event:edit_menu.go_to_line(scroll.text, scroll))
         scroll.text.bind("<Control-z>", lambda event: edit_menu.undo_text(scroll.text, scroll))
         #scroll.text.bind("<Control-a>", lambda event:edit_menu.select_all(scroll.text))
 

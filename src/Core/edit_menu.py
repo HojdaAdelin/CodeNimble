@@ -263,3 +263,65 @@ def formatting(text, win):
     else:
         messagebox.showerror("Error", "Only python files are supported for now!")
         return
+go_to_line_window = False
+def go_to_line(textbox, root):
+    global go_to_line_window
+
+    if not go_to_line_window:
+        go_to_line_window = True
+        find_window = ctk.CTk()
+        find_window.title("CodeNimble - Go To Line")
+
+        # Configurarea culorilor (presupun că `themes.return_default_win_color` returnează culori valide)
+        fg_cl, text_bg, text, hover_color, button_color, button_hover_color, button_text_color = themes.return_default_win_color(check.get_config_value("theme"))
+
+        # Dimensiunile ferestrei
+        w = 300 
+        h = 100 
+
+        ws = find_window.winfo_screenwidth()
+        hs = find_window.winfo_screenheight()
+
+        x = (ws/2 + 500) - (w/2)
+        y = (hs/2 + 200) - (h/2)
+
+        find_window.geometry(f'{w}x{h}+{int(x)}+{int(y)}')
+        find_window.resizable(False, False)
+        find_window.iconbitmap("images/logo.ico")
+        find_window.configure(fg_color=fg_cl)
+
+        # Entry pentru introducerea numărului de linie
+        text_box = tk.Entry(find_window, width=25, font=("Arial", 30), bg=text_bg, fg=text, 
+                            insertbackground='white', selectbackground="#616161", borderwidth=0)
+        text_box.pack(pady=(40,30))
+
+        def find():
+            line_number = text_box.get().strip()
+
+            if line_number.isdigit():  # Verificăm dacă este un număr întreg valid
+                line_index = f"{line_number}.0"
+
+                try:
+                    textbox.mark_set(tk.INSERT, line_index)
+                    textbox.see(line_index)
+                    root.redraw()
+                except tk.TclError:
+                    pass
+            else:
+                messagebox.showerror("Error", "Invalid number")
+
+        find_button = ctk.CTkButton(find_window, text="Go", command=find, fg_color=button_color, 
+                                    hover_color=button_hover_color, text_color=button_text_color)
+        find_button.pack(pady=(0,10))
+
+        def on_closing():
+            global go_to_line_window
+            go_to_line_window = False
+            root.redraw()
+            root.highlight_all()
+            find_window.destroy()
+
+        themes.title_bar_color_handle(find_window)
+
+        find_window.protocol("WM_DELETE_WINDOW", on_closing)
+        find_window.mainloop()
