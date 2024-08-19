@@ -19,12 +19,12 @@ from Core import file_menu
 from Config import check
 
 def undo_text(widget, root):
-    try:
-        widget.edit_undo()
-        root.redraw()
-        root.highlight_all()
-    except tk.TclError:
-        pass
+    
+    widget.edit_undo()
+    root.redraw()
+    root.highlight_all()
+    return "break"
+    
 
 def redo_text(widget, root):
     try:
@@ -41,10 +41,20 @@ def copy_text(text, root):
     root.redraw()
 
 def paste_text(text, root):
-    clipboard_text = text.clipboard_get()
-    text.insert(tk.INSERT, clipboard_text)
-    root.redraw()
-    root.highlight_all()
+    try:
+        clipboard_text = root.clipboard_get()  
+
+        if text.tag_ranges(tk.SEL):
+            text.delete(tk.SEL_FIRST, tk.SEL_LAST)  
+
+        text.insert(tk.INSERT, clipboard_text)
+        
+        root.redraw()
+        root.highlight_all()
+        
+    except tk.TclError:
+        pass 
+
     return "break"
 
 def cut_text(text, root):
@@ -65,6 +75,7 @@ def select_all(text):
     text.tag_add(tk.SEL, "1.0", tk.END)
     text.mark_set(tk.INSERT, "1.0")
     text.see(tk.INSERT)
+    return "break"
 
 def find_text(scroll_text, scroll):
     global find_window_opened

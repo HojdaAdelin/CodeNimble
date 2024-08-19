@@ -53,6 +53,7 @@
 8. Fixed run
 9. Fixed tab function for suggestions
 10. Fixed templates
+11. Fixed double paste issue
 
 # Version: 1.5
 

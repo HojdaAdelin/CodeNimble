@@ -149,12 +149,14 @@ class ScrollText(tk.Frame):
 
     def redraw(self):
         global ante_font
+        """
         if self.text.tag_ranges(tk.SEL):
             selection_start = self.text.index(tk.SEL_FIRST)
             selection_end = self.text.index(tk.SEL_LAST)
         else:
             selection_start = None
             selection_end = None
+        """
 
         if file_menu.return_file() == ".cpp" or file_menu.return_file() == ".py":
             self.highlight_syntax()
@@ -168,8 +170,8 @@ class ScrollText(tk.Frame):
             self.suggestions.suggestions_text.configure(font=("", font_size))
             self.suggestions.tags_text.configure(font=("", font_size))
 
-        if selection_start and selection_end:
-            self.text.tag_add(tk.SEL, selection_start, selection_end)
+        #if selection_start and selection_end:
+            #self.text.tag_add(tk.SEL, selection_start, selection_end)
 
         self.on_text_change()
 

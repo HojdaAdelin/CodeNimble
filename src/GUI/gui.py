@@ -200,6 +200,8 @@ class MainWindow(ct.CTk):
         scroll.text.bind("<Control-Shift-R>", lambda event:scroll.redraw())
         scroll.text.bind("<Control-MouseWheel>", lambda event:self.mouse_wheel(event=event))
         pywinstyles.apply_dnd(scroll.text, self.drag_file)
+        scroll.text.bind("<Control-z>", lambda event: edit_menu.undo_text(scroll.text, scroll))
+        #scroll.text.bind("<Control-a>", lambda event:edit_menu.select_all(scroll.text))
 
         # General configuration
         ct.set_appearance_mode("dark")
