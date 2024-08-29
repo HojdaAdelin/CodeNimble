@@ -33,10 +33,10 @@ class MainView(QMainWindow):
         self.setWindowIcon(QIcon('images/png-logo.png'))
         with open('config.json', 'r') as file:
             self.config = json.load(file)
-        with open('Themes/themes.json', 'r') as file:
+        with open(f'Themes/{self.config.get("theme")}.json', 'r') as file:
             themes = json.load(file)
         
-        self.theme = themes.get("dark", themes['dark'])
+        self.theme = themes
         self.view_manager = view_manager.ViewManager(self.config, self)
         # Crearea meniului
         self.create_menu()
@@ -402,7 +402,19 @@ class MainView(QMainWindow):
         font_family = self.config.get('font_family', 'Consolas')
         font_size = self.config.get('font_size', '18px')
 
-        
+        self.splitter.setStyleSheet(f"""
+            QSplitter::handle {{
+                background-color: {self.theme['background_color']};
+            }}
+            QSplitter::handle:horizontal {{
+                background-color: {self.theme['background_color']};  
+            }}
+            QSplitter::handle:vertical {{
+                background-color: {self.theme['background_color']}; 
+            }}
+        """)
+
+
         self.editor.setStyleSheet(f"""
             QPlainTextEdit {{
                 background-color: {self.theme['editor_background']};

@@ -13,7 +13,7 @@ class StatusBar(QFrame):
         self.current_version = "2.0"
         self.latest_version = scrap.get_latest_version_from_github("HojdaAdelin", "CodeNimble")
         self.text = ""
-        self.hv_color = theme.get("button_hover_color")
+        self.hv_color = theme.get("status_bar_hover")
         self.based_color = theme.get("status_bar_background")
         self.ctn_words_color = theme.get("ctn_words")
         self.num_lines = 0
@@ -95,7 +95,7 @@ class StatusBar(QFrame):
         self.status_label.setStyleSheet(f"color: {theme['text_color']};")
         self.num_stats_label.setStyleSheet(f"color: {theme['text_color']};")
         self.server_status.setStyleSheet(f"color: {theme['text_color']};")
-        self.hv_color = theme.get("status_bar_hover", "#4d4d4d")
+        self.hv_color = theme.get("button_hover_color", "#4d4d4d")
         self.based_color = theme["status_bar_background"]
 
     def start_timer(self, event):
