@@ -1,0 +1,26 @@
+{
+    "background_color": "#333333",
+    "text_color": "#ffffff",
+    "button_color": "#555555",
+    "button_hover_color": "#777777",
+    "border_color": "#444444",           
+    "item_hover_background_color": "#555555", 
+    "item_hover_text_color": "#ffffff",  
+    "separator_color": "#444444",
+    "highlight_color": "#555555",
+    "line_number_background": "#454545",
+    "line_number_text_color": "#bfbfbf",
+    "editor_background": "#454545",
+    "editor_foreground": "#ffffff",
+    "selection_background_color": "#333333",
+    "status_bar_background": "#333333",
+    "ctn_words": "#444444",
+        
+    "keyword_color": "#C678DD",
+    "string_color": "#98C379",
+    "comment_color": "#717a8a",
+    "include_color": "#717a8a", 
+    "parenthesis_color": "#e06c75",
+    "number_color": "#d19a66",
+    "symbol_color": "#56b6c2"
+}
