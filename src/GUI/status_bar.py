@@ -97,6 +97,8 @@ class StatusBar(QFrame):
         self.server_status.setStyleSheet(f"color: {theme['text_color']};")
         self.hv_color = theme.get("button_hover_color", "#4d4d4d")
         self.based_color = theme["status_bar_background"]
+        self.run_img.setStyleSheet(f"background-color: {self.based_color};")
+        self.timer.setStyleSheet(f"background-color: {self.based_color};")
 
     def start_timer(self, event):
         if not self.running:

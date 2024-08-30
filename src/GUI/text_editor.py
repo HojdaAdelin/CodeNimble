@@ -20,7 +20,7 @@ class CodeEditor(QPlainTextEdit):
         super().__init__()
         self.theme = theme
         self.highlighter = CPPHighlighter(self.document(), self.theme)
-        self.apply_theme()
+        self.apply_theme(self.theme)
         self.line_number_area = LineNumberArea(self)
         self.setFrameStyle(QPlainTextEdit.NoFrame)
         self.setLineWrapMode(QPlainTextEdit.NoWrap)
@@ -43,12 +43,13 @@ class CodeEditor(QPlainTextEdit):
         self.font = QFont("Courier", font_size)
         self.setFont(self.font)
 
-    def apply_theme(self):
-        highlight_color = self.theme.get("highlight_color", "#ffff99")
+    def apply_theme(self, theme):
+        highlight_color = theme.get("highlight_color", "#ffff99")
         self.highlight_color = QColor(highlight_color)
-        self.background_color = QColor(self.theme["line_number_background"])
-        self.foreground_color = QColor(self.theme["line_number_text_color"])
-        self.highlighter.setTheme(self.theme)
+        self.highlight_current_line()
+        self.background_color = QColor(theme["line_number_background"])
+        self.foreground_color = QColor(theme["line_number_text_color"])
+        self.highlighter.setTheme(theme)
 
     def line_number_area_width(self):
         digits = 1
