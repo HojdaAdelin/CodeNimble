@@ -422,6 +422,9 @@ class MainView(QMainWindow):
         self.version_window = info_win.VersionWindow(self.theme)
         self.version_window.show_window()
 
+    def get_theme(self):
+        return self.theme
+
     def change_theme(self, theme):
         self.config['theme'] = theme
         with open('config.json', 'w') as file:
@@ -437,6 +440,7 @@ class MainView(QMainWindow):
         self.status_bar.apply_theme(self.theme)
         self.tree_view.apply_theme(self.theme)
         self.right_panel.apply_theme(self.theme)
+        self.tab_bar.apply_stylesheet(self.theme)
         self.splitter.setStyleSheet(f"""
             QSplitter::handle {{
                 background-color: {self.theme['background_color']};

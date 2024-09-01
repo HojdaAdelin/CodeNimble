@@ -27,6 +27,41 @@ class ThemeManager:
             listbox = QtWidgets.QListWidget()
             listbox.setFont(QtGui.QFont("Arial", 16))
             layout.addWidget(listbox)
+            tm = self.win.get_theme()
+            theme_window.setStyleSheet(f"""
+                QWidget {{
+                    background-color: {tm['background_color']};
+                }}
+                QPushButton {{
+                    background-color: {tm['button_color']};
+                    color: {tm['text_color']};
+                }}
+                QPushButton:hover {{
+                    background-color: {tm['button_hover_color']};
+                }}
+                QLineEdit {{
+                    background-color: {tm['editor_background']};
+                    color: {tm['editor_foreground']};
+                    border: 1px solid {tm['border_color']};
+                }}
+                QPlainTextEdit {{
+                    background-color: {tm['editor_background']};
+                    color: {tm['editor_foreground']};
+                    border: 1px solid {tm['border_color']};
+                }}
+                QListWidget {{
+                    background-color: {tm['editor_background']};
+                    color: {tm['editor_foreground']};
+                    border: 1px solid {tm['border_color']};
+                }}
+                QListWidget::item:selected {{
+                    background-color: {tm['item_hover_background_color']};
+                    color: {tm['item_hover_text_color']};
+                }}
+                QLabel {{
+                    color: {tm['text_color']};
+                }}
+                """)
 
             tmp_folder = "Themes"
             if not os.path.isdir(tmp_folder):

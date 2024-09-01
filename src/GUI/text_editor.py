@@ -2,7 +2,72 @@ import json
 import re
 from PySide6.QtCore import Slot, Qt, QRect, QSize, QEvent, QTimer, QStringListModel
 from PySide6.QtGui import QColor, QPainter, QTextFormat, QFont, QTextCharFormat, QSyntaxHighlighter, QKeyEvent, QTextCursor
-from PySide6.QtWidgets import QPlainTextEdit, QWidget, QTextEdit, QListView, QListWidget
+from PySide6.QtWidgets import QPlainTextEdit, QWidget, QTextEdit, QListView, QListWidget, QCompleter
+
+class SuggestionManager:
+    def __init__(self, theme):
+        self.theme = theme
+        self.keywords = [
+            "auto", "break", "case", "char", "const", "continue", "default", "do",
+            "double", "else", "enum", "extern", "float", "goto", "using",
+            "long", "register", "return", "short", "signed", "sizeof", "static",
+            "struct", "switch", "typedef", "union", "unsigned", "void", "volatile",
+            "class", "namespace", "try", "catch", "throw", "public", "private", "protected",
+            "virtual", "friend", "operator", "template", "this", "new", "delete"
+        ]
+        self.functions = [
+            "cout", "cin", "endl", "printf", "scanf", "malloc", "free", "memcpy", "strlen"
+        ]
+        self.completer = None
+
+    def get_all_suggestions(self):
+        return self.keywords + self.functions
+
+    def create_completer(self, widget):
+        words = self.get_all_suggestions()
+        self.completer = QCompleter(words)
+        self.completer.setWidget(widget)
+        self.completer.setCompletionMode(QCompleter.PopupCompletion)
+        self.completer.setCaseSensitivity(Qt.CaseInsensitive)
+        self.completer.popup().setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        
+        # Setarea unui QListView personalizat ca popup
+        list_view = QListView()
+        self.completer.setPopup(list_view)
+        
+        self.apply_theme(self.theme) 
+
+        return self.completer
+    
+    def set_completer_font_size(self, size):
+        popup = self.completer.popup()
+        font = popup.font()
+        font.setPointSize(size)
+        popup.setFont(font)
+
+    def apply_theme(self, theme):
+        
+        # Aplicare stil CSS
+        self.completer.popup().setStyleSheet(f"""
+              QListView {{
+                background-color: {theme['treeview_background']};
+                color: {theme['text_color']};
+            }}
+            QListView::item:selected {{
+                background-color: {theme['item_hover_background_color']};
+                color: {theme['item_hover_text_color']};
+            }}
+        """)
+
+    def insert_completion(self, completion, text_cursor):
+        extra = len(completion) - len(self.completer.completionPrefix())
+        text_cursor.movePosition(QTextCursor.Left)
+        text_cursor.movePosition(QTextCursor.EndOfWord)
+        text_cursor.insertText(completion[-extra:])
+        return text_cursor
+
+    def should_show_popup(self, completion_prefix):
+        return len(completion_prefix) >= 1
 
 class LineNumberArea(QWidget):
     def __init__(self, editor):
@@ -20,14 +85,17 @@ class CodeEditor(QPlainTextEdit):
         super().__init__()
         self.theme = theme
         self.highlighter = CPPHighlighter(self.document(), self.theme)
-        self.apply_theme(self.theme)
         self.line_number_area = LineNumberArea(self)
         self.setFrameStyle(QPlainTextEdit.NoFrame)
         self.setLineWrapMode(QPlainTextEdit.NoWrap)
 
         self.config = config
-        self.apply_settings()
 
+        self.suggestion_manager = SuggestionManager(self.theme)
+        self.completer = self.suggestion_manager.create_completer(self)
+        self.completer.activated.connect(self.insert_completion)
+        self.apply_settings()
+        self.apply_theme(self.theme)
         # Conectează semnalele și sloturile
         self.blockCountChanged[int].connect(self.update_line_number_area_width)
         self.updateRequest[QRect, int].connect(self.update_line_number_area)
@@ -42,6 +110,7 @@ class CodeEditor(QPlainTextEdit):
         font_size = int(font_size_str)
         self.font = QFont("Courier", font_size)
         self.setFont(self.font)
+        self.suggestion_manager.set_completer_font_size(font_size-5)
 
     def apply_theme(self, theme):
         highlight_color = theme.get("highlight_color", "#ffff99")
@@ -50,6 +119,7 @@ class CodeEditor(QPlainTextEdit):
         self.background_color = QColor(theme["line_number_background"])
         self.foreground_color = QColor(theme["line_number_text_color"])
         self.highlighter.setTheme(theme)
+        self.suggestion_manager.apply_theme(theme)
 
     def line_number_area_width(self):
         digits = 1
@@ -60,6 +130,34 @@ class CodeEditor(QPlainTextEdit):
 
         space = 3 + self.fontMetrics().horizontalAdvance('9') * digits
         return space
+
+    # Code suggestions
+
+    def insert_completion(self, completion):
+        tc = self.textCursor()
+        tc = self.suggestion_manager.insert_completion(completion, tc)
+        self.setTextCursor(tc)
+
+    def text_under_cursor(self):
+        tc = self.textCursor()
+        tc.select(QTextCursor.WordUnderCursor)
+        return tc.selectedText()
+    
+    def update_completion(self):
+        completion_prefix = self.text_under_cursor()
+
+        if self.suggestion_manager.should_show_popup(completion_prefix):
+            if completion_prefix != self.completer.completionPrefix():
+                self.completer.setCompletionPrefix(completion_prefix)
+                self.completer.popup().setCurrentIndex(
+                    self.completer.completionModel().index(0, 0))
+
+            cr = self.cursorRect()
+            cr.setWidth(self.completer.popup().sizeHintForColumn(0) +
+                        self.completer.popup().verticalScrollBar().sizeHint().width() + 30)
+            self.completer.complete(cr)
+        else:
+            self.completer.popup().hide()
 
     def resizeEvent(self, e):
         super().resizeEvent(e)
@@ -152,6 +250,22 @@ class CodeEditor(QPlainTextEdit):
 
 
     def keyPressEvent(self, event):
+        if self.completer and self.completer.popup().isVisible():
+            if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
+                current_item = self.completer.popup().currentIndex().data()
+                if current_item:
+                    self.insert_completion(current_item)
+                    self.completer.popup().hide()
+                    event.accept()
+                    return
+            elif event.key() == Qt.Key_Escape:
+                self.completer.popup().hide()
+                event.accept()
+                return
+            elif event.key() in (Qt.Key_Up, Qt.Key_Down, Qt.Key_PageUp, Qt.Key_PageDown):
+                self.completer.popup().keyPressEvent(event)
+                return
+
         if event.key() == Qt.Key_Backspace and event.modifiers() == Qt.ControlModifier:
             super().keyPressEvent(event)
             return
@@ -166,10 +280,12 @@ class CodeEditor(QPlainTextEdit):
 
         if event.key() == Qt.Key_Backspace and not event.modifiers():
             self.handleBackspace()
+            self.update_completion()
             return
 
         # Altele (de exemplu, săgețile)
         super().keyPressEvent(event)
+        self.update_completion()
 
     def handleNewLine(self):
         cursor = self.textCursor()
@@ -320,7 +436,7 @@ class CPPHighlighter(QSyntaxHighlighter):
         # Format pentru keyword-uri
         keyword_format = QTextCharFormat()
         keyword_format.setForeground(QColor(self.theme.get("keyword_color", "#C678DD")))
-        keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector)\b'
+        keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin)\b'
         self.add_mapping(keywords, keyword_format)
 
         # Format pentru stringuri între ghilimele

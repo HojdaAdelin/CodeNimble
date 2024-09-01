@@ -51,7 +51,7 @@ class StatusBar(QFrame):
         self.server_status.setStyleSheet(f"color: {self.theme['text_color']};")
 
         image_path = "images/run.png"  # Actualizează calea dacă este necesar
-        pixmap = QPixmap(image_path).scaled(25, 25, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        pixmap = QPixmap(image_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.run_img = QLabel(self)
         self.run_img.setPixmap(pixmap)
         self.run_img.setStyleSheet(f"background-color: {self.based_color};")
