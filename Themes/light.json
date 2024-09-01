@@ -1,5 +1,6 @@
 {
     "background_color": "#FFFFFF", 
+    "treeview_background": "#EEEEEE",
     "text_color": "#333333", 
     "button_color": "#DDDDDD", 
     "button_hover_color": "#CCCCCC", 

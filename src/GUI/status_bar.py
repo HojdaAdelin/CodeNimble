@@ -51,7 +51,7 @@ class StatusBar(QFrame):
         self.server_status.setStyleSheet(f"color: {self.theme['text_color']};")
 
         image_path = "images/run.png"  # Actualizează calea dacă este necesar
-        pixmap = QPixmap(image_path).scaled(25, 25, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        pixmap = QPixmap(image_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.run_img = QLabel(self)
         self.run_img.setPixmap(pixmap)
         self.run_img.setStyleSheet(f"background-color: {self.based_color};")
@@ -97,6 +97,8 @@ class StatusBar(QFrame):
         self.server_status.setStyleSheet(f"color: {theme['text_color']};")
         self.hv_color = theme.get("button_hover_color", "#4d4d4d")
         self.based_color = theme["status_bar_background"]
+        self.run_img.setStyleSheet(f"background-color: {self.based_color};")
+        self.timer.setStyleSheet(f"background-color: {self.based_color};")
 
     def start_timer(self, event):
         if not self.running:

@@ -18,6 +18,7 @@ from Core import edit_manager
 from Core import misc_manager
 from Core import code_style
 from Core import view_manager
+from Core import theme_manager
 import sys
 
 class MainView(QMainWindow):
@@ -26,6 +27,7 @@ class MainView(QMainWindow):
 
         # Instance
         self.file_manager = file_manager.FileManager()
+        self.theme_manager = theme_manager.ThemeManager(self)
 
         self.setWindowTitle("Code Nimble")
         self.setGeometry(100, 100, 800, 600)
@@ -244,12 +246,22 @@ class MainView(QMainWindow):
         template_menu.addAction(QAction("Snippets Code", self))
 
         # Crearea acțiunilor pentru Textures
-        textures_menu.addAction(QAction("Light theme", self))
-        textures_menu.addAction(QAction("Dark theme", self))
-        textures_menu.addAction(QAction("Ocean theme", self))
-        textures_menu.addAction(QAction("Dark-blue theme", self))
+        light_theme_action = QAction("Light theme", self)
+        light_theme_action.triggered.connect(self.light_theme_core)
+        textures_menu.addAction(light_theme_action)
+        dark_theme_action = QAction("Dark theme", self)
+        dark_theme_action.triggered.connect(self.dark_theme_core)
+        textures_menu.addAction(dark_theme_action)
+        ocean_theme_action = QAction("Ocean theme", self)
+        ocean_theme_action.triggered.connect(self.ocean_theme_core)
+        textures_menu.addAction(ocean_theme_action)
+        dark_blue_theme_action = QAction("Dark-blue theme", self)
+        dark_blue_theme_action.triggered.connect(self.dark_blue_theme_core)
+        textures_menu.addAction(dark_blue_theme_action)
         textures_menu.addSeparator()
-        textures_menu.addAction(QAction("Theme changer", self))
+        theme_changer_core = QAction("Theme changer", self)
+        theme_changer_core.triggered.connect(self.theme_view_core)
+        textures_menu.addAction(theme_changer_core)
 
         # Crearea acțiunilor pentru Utility
         run_action = QAction("Run", self, shortcut="F5")
@@ -275,6 +287,18 @@ class MainView(QMainWindow):
         menubar.addMenu(template_menu)
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
+
+    def dark_theme_core(self):
+        self.theme_manager.use_theme("dark")
+    def light_theme_core(self):
+        self.theme_manager.use_theme("light")
+    def ocean_theme_core(self):
+        self.theme_manager.use_theme("ocean")
+    def dark_blue_theme_core(self):
+        self.theme_manager.use_theme("dark-blue")
+
+    def theme_view_core(self):
+        self.theme_win = self.theme_manager.manager_view()
 
     def pre_input_run_core(self):
         run.pre_input_run(self.editor, self.right_panel, self.file_manager)
@@ -398,10 +422,25 @@ class MainView(QMainWindow):
         self.version_window = info_win.VersionWindow(self.theme)
         self.version_window.show_window()
 
+    def get_theme(self):
+        return self.theme
+
+    def change_theme(self, theme):
+        self.config['theme'] = theme
+        with open('config.json', 'w') as file:
+            json.dump(self.config, file,indent=4)
+        with open(f'Themes/{self.config.get("theme")}.json', 'r') as file:
+            self.theme = json.load(file)
+        self.load_theme()
+
     def load_theme(self):
         font_family = self.config.get('font_family', 'Consolas')
         font_size = self.config.get('font_size', '18px')
-
+        self.editor.apply_theme(self.theme)
+        self.status_bar.apply_theme(self.theme)
+        self.tree_view.apply_theme(self.theme)
+        self.right_panel.apply_theme(self.theme)
+        self.tab_bar.apply_stylesheet(self.theme)
         self.splitter.setStyleSheet(f"""
             QSplitter::handle {{
                 background-color: {self.theme['background_color']};
@@ -413,7 +452,6 @@ class MainView(QMainWindow):
                 background-color: {self.theme['background_color']}; 
             }}
         """)
-
 
         self.editor.setStyleSheet(f"""
             QPlainTextEdit {{

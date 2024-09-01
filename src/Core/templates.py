@@ -102,6 +102,11 @@ def apply_theme(widget, theme):
             color: {theme['editor_foreground']};
             border: 1px solid {theme['border_color']};
         }}
+        QListWidget {{
+            background-color: {theme['editor_background']};
+            color: {theme['editor_foreground']};
+            border: 1px solid {theme['border_color']};
+        }}
         QListWidget::item:selected {{
             background-color: {theme['item_hover_background_color']};
             color: {theme['item_hover_text_color']};

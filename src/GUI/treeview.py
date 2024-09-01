@@ -52,12 +52,12 @@ class TreeView(QWidget):
     def apply_theme(self, theme):
         self.tree.setStyleSheet(f"""
             QTreeView {{
-                background-color: {theme['background_color']};
+                background-color: {theme['treeview_background']};
                 color: {theme['text_color']};
                 selection-background-color: {theme['selection_background_color']};
             }}
             QTreeView::item {{
-                background-color: {theme['background_color']};
+                background-color: {theme['treeview_background']};
                 color: {theme['text_color']};
             }}
             QTreeView::item:selected {{

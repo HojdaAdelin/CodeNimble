@@ -79,7 +79,7 @@ class RightPanel(QWidget):
         self.fetch_win.show()
 
     def apply_theme(self, theme):
-        # Aplicarea temei pentru fiecare element din RightPanel
+        
         self.setStyleSheet(f"""
             background-color: {theme.get("background_color")};
             color: {theme.get("text_color")};

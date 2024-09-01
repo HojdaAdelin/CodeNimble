@@ -37,7 +37,7 @@ class TabBar(QWidget):
 
         self.layout.addWidget(self.tab_widget)
 
-        self.apply_stylesheet()
+        self.apply_stylesheet(self.theme)
 
         # Conectarea semnalelor
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
@@ -45,15 +45,15 @@ class TabBar(QWidget):
         self.tab_widget.tabBar().tabBarDoubleClicked.connect(self.on_tab_double_click)
         self.tab_widget.tabBar().installEventFilter(self)
     
-    def apply_stylesheet(self):
+    def apply_stylesheet(self, theme):
         # Stilizare personalizată pentru tab-uri
         self.tab_widget.setStyleSheet(f"""
             QTabWidget::pane {{
                 border: 0;
             }}
             QTabBar::tab {{
-                background: {self.theme['background_color']};
-                color: {self.theme['text_color']};
+                background: {theme['background_color']};
+                color: {theme['text_color']};
                 padding: 5px 10px;
                 margin: 2px;
                 border-radius: 4px;
@@ -61,12 +61,12 @@ class TabBar(QWidget):
                 max-width: 200px;
             }}
             QTabBar::tab:selected {{
-                background: {self.theme['button_color']};
-                color: {self.theme['text_color']};
+                background: {theme['button_color']};
+                color: {theme['text_color']};
             }}
             QTabBar::tab:!selected {{
-                background: {self.theme['background_color']};
-                color: {self.theme['text_color']};
+                background: {theme['background_color']};
+                color: {theme['text_color']};
             }}
             QTabBar::close-button {{
                 image: url('images/close.png'); 

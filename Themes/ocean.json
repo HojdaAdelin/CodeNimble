@@ -1,5 +1,6 @@
 {
     "background_color": "#1B3B4F", 
+    "treeview_background": "#1B3B4F",
     "text_color": "#A8C6DF", 
     "button_color": "#2A5674", 
     "button_hover_color": "#347A9D", 
@@ -8,7 +9,7 @@
     "item_hover_text_color": "#A8C6DF", 
     "separator_color": "#3D6A82", 
     "highlight_color": "#2A5674", 
-    "line_number_background": "#2E4D64", 
+    "line_number_background": "#1F4A60", 
     "line_number_text_color": "#7DA3BA", 
     "editor_background": "#1F4A60", 
     "editor_foreground": "#A8C6DF", 
