@@ -20,6 +20,7 @@ from Core import misc_manager
 from Core import code_style
 from Core import view_manager
 from Core import theme_manager
+from Tools import pbinfo
 import sys
 
 class MainView(QMainWindow):
@@ -277,7 +278,9 @@ class MainView(QMainWindow):
         utility_menu.addSeparator()
         utility_menu.addAction(QAction("Local Server (Beta)", self))
         utility_menu.addSeparator()
-        utility_menu.addAction(QAction("Submit code", self))
+        pbinfo_tools_action = QAction("Submit code", self)
+        pbinfo_tools_action.triggered.connect(self.pbinfo_tools_core)
+        utility_menu.addAction(pbinfo_tools_action)
         kilo_tools_action = QAction("Kilonova tools", self)
         kilo_tools_action.triggered.connect(self.kilo_tools_core)
         utility_menu.addAction(kilo_tools_action)
@@ -290,6 +293,10 @@ class MainView(QMainWindow):
         menubar.addMenu(template_menu)
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
+
+    def pbinfo_tools_core(self):
+        self.pbinfo_win = pbinfo.PbinfoInterface(self.editor, self.theme, self.config)
+        self.pbinfo_win.show()
 
     def kilo_tools_core(self):
         self.kilo_win = kilo_tools.Kilotools(self.theme)
