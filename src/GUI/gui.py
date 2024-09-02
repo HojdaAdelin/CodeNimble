@@ -276,8 +276,6 @@ class MainView(QMainWindow):
         paint_action.triggered.connect(self.paint_core)
         utility_menu.addAction(paint_action)
         utility_menu.addSeparator()
-        utility_menu.addAction(QAction("Local Server (Beta)", self))
-        utility_menu.addSeparator()
         pbinfo_tools_action = QAction("Submit code", self)
         pbinfo_tools_action.triggered.connect(self.pbinfo_tools_core)
         utility_menu.addAction(pbinfo_tools_action)
