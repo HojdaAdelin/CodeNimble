@@ -10,6 +10,7 @@ from GUI import status_bar
 from GUI import tab_bar
 from GUI import right_panel
 from GUI import paint
+from GUI import kilo_tools
 from Core import run
 from Core import templates
 from Core import web
@@ -19,6 +20,7 @@ from Core import misc_manager
 from Core import code_style
 from Core import view_manager
 from Core import theme_manager
+from Tools import pbinfo
 import sys
 
 class MainView(QMainWindow):
@@ -274,10 +276,12 @@ class MainView(QMainWindow):
         paint_action.triggered.connect(self.paint_core)
         utility_menu.addAction(paint_action)
         utility_menu.addSeparator()
-        utility_menu.addAction(QAction("Local Server (Beta)", self))
-        utility_menu.addSeparator()
-        utility_menu.addAction(QAction("Submit code", self))
-        utility_menu.addAction(QAction("Kilonova tools", self))
+        pbinfo_tools_action = QAction("Submit code", self)
+        pbinfo_tools_action.triggered.connect(self.pbinfo_tools_core)
+        utility_menu.addAction(pbinfo_tools_action)
+        kilo_tools_action = QAction("Kilonova tools", self)
+        kilo_tools_action.triggered.connect(self.kilo_tools_core)
+        utility_menu.addAction(kilo_tools_action)
 
         # Adăugarea meniurilor la menubar
         menubar.addMenu(home_menu)
@@ -287,6 +291,14 @@ class MainView(QMainWindow):
         menubar.addMenu(template_menu)
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
+
+    def pbinfo_tools_core(self):
+        self.pbinfo_win = pbinfo.PbinfoInterface(self.editor, self.theme, self.config)
+        self.pbinfo_win.show()
+
+    def kilo_tools_core(self):
+        self.kilo_win = kilo_tools.Kilotools(self.theme)
+        self.kilo_win.show()
 
     def dark_theme_core(self):
         self.theme_manager.use_theme("dark")
