@@ -496,6 +496,10 @@ class MainView(QMainWindow):
                 font-family: {font_family};
                 font-size: {font_size};
             }}
+            QMenuBar::item:selected {{
+                background-color: {self.theme['item_hover_background_color']};
+                color: {self.theme['item_hover_text_color']};
+            }}
             QMenu {{
                 background-color: {self.theme['background_color']};
                 color: {self.theme['text_color']};

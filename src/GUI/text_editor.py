@@ -381,26 +381,41 @@ class CodeEditor(QPlainTextEdit):
     def handleBackspace(self):
         cursor = self.textCursor()
         
+        # Dacă există text selectat, îl ștergem și ieșim din funcție
         if cursor.hasSelection():
             cursor.removeSelectedText()
             return
-
-        if not cursor.atStart():
-            cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
-            char_before = cursor.selectedText()
+        
+        # Verificăm dacă nu suntem la începutul documentului
+        if cursor.atStart():
+            return
+        
+        # Salvăm poziția curentă
+        position = cursor.position()
+        
+        # Obținem caracterul de dinainte de cursor
+        cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+        char_before = cursor.selectedText()
+        
+        # Definim perechile de caractere
+        pairs = {"(": ")", "[": "]", "{": "}", "\"": "\"", "'": "'"}
+        
+        # Verificăm dacă caracterul de dinainte este o deschidere de paranteză
+        if char_before in pairs:
+            # Salvăm selecția curentă
+            cursor.setPosition(position)
+            # Selectăm caracterul următor
+            cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
+            char_after = cursor.selectedText()
             
-            if char_before in "([{\"'":
-                cursor.movePosition(QTextCursor.Right)
-                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor)
-                char_after = cursor.selectedText()
-                
-                pairs = {"(": ")", "[": "]", "{": "}", "\"": "\"", "'": "'"}
-                
-                if char_after == pairs.get(char_before):
-                    cursor.removeSelectedText()
-                    cursor.deletePreviousChar()
-                    return
-
+            # Dacă caracterul următor este perechea potrivită, ștergem ambele caractere
+            if char_after == pairs[char_before]:
+                cursor.removeSelectedText()
+                cursor.deletePreviousChar()
+                return
+        
+        # Dacă nu am șters o pereche, ștergem doar caracterul anterior
+        cursor.setPosition(position)
         cursor.deletePreviousChar()
 
     def insertSuggestion(self, text):

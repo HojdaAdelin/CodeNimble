@@ -65,7 +65,7 @@ class FileManager:
     
     def open_folder(self, treeview,win, folder_dialog_title="Open Folder"):
         foldername = QFileDialog.getExistingDirectory(None, folder_dialog_title, "", QFileDialog.ShowDirsOnly)
-
+        
         if foldername:
             self.opened_foldername = foldername
             treeview.model.setRootPath(foldername)
