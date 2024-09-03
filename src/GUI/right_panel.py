@@ -10,8 +10,9 @@ from Server import server
 from Server import client
 
 class RightPanel(QWidget):
-    def __init__(self, theme, *args, **kwargs):
+    def __init__(self, theme,win, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.win = win
         self.theme = theme
         self.server = None
         self.client = None
@@ -151,13 +152,17 @@ class RightPanel(QWidget):
         self.user_name = self.config.get('profile_name')
 
     def start_server_option(self):
-        self.server = server.ServerManager(password="1234")
+        if self.password_entry.text() == "":
+            QMessageBox.information(self, "Info", "You need to enter the password!")
+            return
+        self.server = server.ServerManager(password=self.password_entry.text())
         
         def start_server_thread():
             try:
                 self.server.start_server()
             except Exception as e:
                 print(f"Eroare la pornirea serverului: {e}")
+                return
         
         # Pornim serverul pe un thread separat
         server_thread = threading.Thread(target=start_server_thread)
@@ -165,26 +170,38 @@ class RightPanel(QWidget):
         server_thread.start()
 
         if not self.client:
-            self.client = client.ClientManager(name=self.user_name, password="1234", gui=self)
+            self.client = client.ClientManager(name=self.user_name, password=self.password_entry.text(), gui=self)
             self.client.connect_to_server()
+            self.win.status_bar.update_server("connected")
+
 
     def connect_to_server(self):
+        if self.password_entry.text() == "":
+            QMessageBox.information(self, "Info", "You need to enter the password!")
+            return
         if self.client:
             QMessageBox.information(self,"Info", "Already connected to the server.")
         else:
-            self.client = client.ClientManager(name=self.user_name, password="1234", gui=self)
-            self.client.connect_to_server()
+            self.client = client.ClientManager(name=self.user_name, password=self.password_entry.text(), gui=self)
+            self.win.status_bar.update_server("connected")
+            if not self.client.connect_to_server():  
+                QMessageBox.critical(self, "Error", "Server error or wrong password!")
+                self.client = None
+                self.win.status_bar.update_server("none")
 
+            
     def disconnect_from_server(self):
         if self.client:
             self.client.disconnect()
             self.client = None
+            self.win.status_bar.update_server("none")
 
     def send_message(self):
         message = self.entry.text()
         if message and self.client:
             self.client.send_message(message)
             self.entry.clear()
+            self.append_to_textbox(f"You: {message}")
 
     def append_to_textbox(self, message):
         self.server_textbox.appendPlainText(message)

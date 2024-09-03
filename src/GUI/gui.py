@@ -81,7 +81,7 @@ class MainView(QMainWindow):
         self.edit_manager = edit_manager.EditManager(self.editor)
         self.splitter.addWidget(self.container)
 
-        self.right_panel = right_panel.RightPanel(self.theme)
+        self.right_panel = right_panel.RightPanel(self.theme, self)
         self.right_panel.setMaximumWidth(300)
         self.right_panel.setMinimumWidth(200)
         self.splitter.addWidget(self.right_panel)

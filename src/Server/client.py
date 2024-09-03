@@ -20,11 +20,11 @@ class ClientManager:
         except ConnectionRefusedError:
             print("Conexiune esuata: Serverul nu este pornit sau nu este disponibil.")
             self.client_socket.close()
-            return
+            return False
         except socket.error as e:
             print(f"Eroare la conectare: {e}")
             self.client_socket.close()
-            return
+            return False
 
         # Trimiterea parolei
         print(f"Trimit parola: '{self.password}'")
@@ -35,7 +35,7 @@ class ClientManager:
         if response != "OK":
             print(f"Conectare esuată: {response}")
             self.client_socket.close()
-            return
+            return False
         
         # Trimiterea numelui clientului după confirmarea parolei
         print(f"Trimit numele: '{self.name}'")
@@ -45,6 +45,7 @@ class ClientManager:
         
         # Pornește un thread pentru a asculta mesajele de la server
         threading.Thread(target=self.receive_messages, daemon=True).start()
+        return True
 
     def send_message(self, message):
         """Trimiterea unui mesaj către server."""
