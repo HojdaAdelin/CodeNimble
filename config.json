@@ -2,6 +2,10 @@
     "font_family": "Arial",
     "font_size": "20px",
     "editor_font_size": "20",
-    "profile_name": "Adelin",
-    "theme": "dark"
+    "profile_name": "user",
+    "theme": "dark",
+    "session": {
+        "opened_folder": null,
+        "opened_file": null
+    }
 }

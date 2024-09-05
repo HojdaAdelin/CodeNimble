@@ -8,7 +8,17 @@ class FileManager:
         self.opened_filename = None
         self.opened_foldername = None
 
-    def open_file(self, text_widget: QTextEdit,tab_bar, file_dialog_title="Open File"):
+    def open_file(self, text_widget: QTextEdit,tab_bar,path=None, file_dialog_title="Open File"):
+        if path:
+            tab_bar.add_tab(path)
+            self.opened_filename = path
+
+            with open(path, "r", encoding="utf-8") as file:
+                file_content = file.read()
+
+                text_widget.clear()
+                text_widget.setPlainText(file_content)
+            return
         filename, _ = QFileDialog.getOpenFileName(None, file_dialog_title, "", "All files (*.*)")
         
         if filename:
@@ -63,7 +73,13 @@ class FileManager:
     def get_opened_foldername(self):
         return self.opened_foldername
     
-    def open_folder(self, treeview,win, folder_dialog_title="Open Folder"):
+    def open_folder(self, treeview,win,path=None, folder_dialog_title="Open Folder"):
+        if path:
+            self.opened_foldername = path
+            treeview.model.setRootPath(path)
+            treeview.tree.setRootIndex(treeview.model.index(path))
+            win.splitter.setSizes([250] + win.splitter.sizes()[1:])
+            return
         foldername = QFileDialog.getExistingDirectory(None, folder_dialog_title, "", QFileDialog.ShowDirsOnly)
         
         if foldername:
