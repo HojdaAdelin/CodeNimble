@@ -245,7 +245,7 @@ class MainView(QMainWindow):
         use_template_action = QAction("Use Template", self, shortcut="Ctrl+Shift+T")
         use_template_action.triggered.connect(self.use_template_core)
         template_menu.addAction(use_template_action)
-        template_menu.addAction(QAction("Snippets Code", self))
+        #template_menu.addAction(QAction("Snippets Code", self))
 
         # Crearea acțiunilor pentru Textures
         light_theme_action = QAction("Light theme", self)

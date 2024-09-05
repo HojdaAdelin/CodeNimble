@@ -451,7 +451,7 @@ class CPPHighlighter(QSyntaxHighlighter):
         # Format pentru keyword-uri
         keyword_format = QTextCharFormat()
         keyword_format.setForeground(QColor(self.theme.get("keyword_color", "#C678DD")))
-        keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin)\b'
+        keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin|short|import|print|printf|max|min)\b'
         self.add_mapping(keywords, keyword_format)
 
         # Format pentru stringuri între ghilimele
@@ -467,7 +467,7 @@ class CPPHighlighter(QSyntaxHighlighter):
         comment_format.setForeground(QColor(self.theme.get("comment_color", "#5C6370")))
         self.add_mapping(r'\/\/.*', comment_format)
         self.add_mapping(r'\/\*.*?\*\/', comment_format)  # Comentarii de tip bloc
-
+        self.add_mapping(r'\#.*', comment_format)
         # Format pentru paranteze
         parenthesis_format = QTextCharFormat()
         parenthesis_format.setForeground(QColor(self.theme.get("parenthesis_color", "#e06c75")))
