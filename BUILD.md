@@ -10,11 +10,7 @@ To build from source you need to clone this repo:
     - CTkTable
     - Pywinstyles
     ```sh
-    pip install customtkinter
-    pip install tkinter
-    pip install CTkMenuBar
-    pip install CTkTable
-    pip install pywinstyles
+    pip install PySide6
     pip install black
     ```
 

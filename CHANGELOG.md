@@ -3,44 +3,34 @@
 ### Added:
 
 1. Server status in status bar
-2. Auto save file after 5s
-3. Ctrl+roler bind
-4. Refresh editor (Ctrl+Shift+R)
-5. Save session
-6. Summer theme
-7. Drag files
-8. Exit accelerator
-9. Open recent
-10. LAN password
-11. Terminal inside editor
-12. Theme changer
-13. Added tags in suggestions
-14. Snippet code interface
-15. Snippets code in suggestions
-16. Kilonova.ro tools 
-17. Python support
-18. Scrollbar in suggestions
-19. Right panel
-20. New input & output system
-21. Expected output and check test casses
-22. Submit code to pbinfo.ro directly from the app
-23. Open site function in Home
-24. New code highlight system
-25. New submit code button
-26. Fetch test cases: pbinfo.ro support
-27. Fetch test cases: kilonova.ro support
-28. Fetch test cases: codeforces.com support
-29. Fetch test cases: atcoder.jp support
-30. New change log in app
-31. Run python files
-32. New local server interface
-33. Added buttons for theme system
-34. Clear terminal function
-35. Code formatting
-36. Output comparator
-37. Added highlight color palette to Themes json
-38. PAINT: When clicking on a color it will change into pencil
-39. Go to line feature
+2. Save session
+3. Dark-blue theme
+4. LAN password
+5. Theme changer
+6. Kilonova.ro tools 
+7. Python support
+8. Scrollbar in suggestions
+9. Right panel
+10. New input & output system
+11. Expected output and check test casses
+12. Submit code to pbinfo.ro directly from the app
+13. Open site function in Home
+14. New code highlight system
+15. New submit code button
+16. Fetch test cases: pbinfo.ro support
+17. Fetch test cases: kilonova.ro support
+18. Fetch test cases: codeforces.com support
+19. Fetch test cases: atcoder.jp support
+20. New change log in app
+21. Run python files
+22. New local server interface
+23. Added buttons for theme system
+24. Clear terminal function
+25. Code formatting
+26. Output comparator
+27. Added highlight color palette to Themes json
+28. PAINT: When clicking on a color it will change into pencil
+29. Go to line feature
 
 ### Fixed/Changes:
 

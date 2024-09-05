@@ -15,7 +15,8 @@ class OutputComparator(QMainWindow):
         # Creează un frame pentru a conține TextBox-ul și scrollbars
         frame = QFrame(self)
         layout = QVBoxLayout(frame)
-        
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
         # Creează TextBox-ul folosind QTextEdit
         self.textbox = QTextEdit(self)
         self.textbox.setReadOnly(True)

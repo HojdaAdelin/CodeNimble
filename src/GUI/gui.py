@@ -20,8 +20,10 @@ from Core import misc_manager
 from Core import code_style
 from Core import view_manager
 from Core import theme_manager
+from Core import session
 from Tools import pbinfo
 import sys
+import os
 
 class MainView(QMainWindow):
     def __init__(self):
@@ -35,8 +37,23 @@ class MainView(QMainWindow):
         self.setGeometry(100, 100, 800, 600)
         self.setMinimumSize(500, 400)
         self.setWindowIcon(QIcon('images/png-logo.png'))
+        if not os.path.isfile("config.json"):
+            default_config = {
+                "font_family": "Arial",
+                "font_size": "20px",
+                "editor_font_size": "20",
+                "profile_name": "user",
+                "theme": "dark",
+                "session": {
+                    "opened_folder": "",
+                    "opened_file": ""
+                }
+            }
+            with open('config.json', 'w') as file:
+                json.dump(default_config, file, indent=4)
+    
         with open('config.json', 'r') as file:
-            self.config = json.load(file)
+                self.config = json.load(file)
         with open(f'Themes/{self.config.get("theme")}.json', 'r') as file:
             themes = json.load(file)
         
@@ -100,6 +117,7 @@ class MainView(QMainWindow):
 
         # Aplicarea temei "dark"
         self.load_theme()
+        session.session_engine(self)
 
     def create_menu(self):
         menubar = self.menuBar()
@@ -156,7 +174,12 @@ class MainView(QMainWindow):
         save_as_file_action.triggered.connect(self.save_as_file_core)
         file_menu.addAction(save_as_file_action)
         file_menu.addSeparator()
-        file_menu.addAction(QAction("Save session", self))
+        save_session_action = QAction("Save session", self)
+        save_session_action.triggered.connect(self.save_session_core)
+        file_menu.addAction(save_session_action)
+        reset_session_action = QAction("Reset session", self)
+        reset_session_action.triggered.connect(self.reset_session_core)
+        file_menu.addAction(reset_session_action)
 
         # Crearea acțiunilor pentru Edit
         undo_action = QAction("Undo", self, shortcut="Ctrl+Z")
@@ -245,7 +268,7 @@ class MainView(QMainWindow):
         use_template_action = QAction("Use Template", self, shortcut="Ctrl+Shift+T")
         use_template_action.triggered.connect(self.use_template_core)
         template_menu.addAction(use_template_action)
-        template_menu.addAction(QAction("Snippets Code", self))
+        #template_menu.addAction(QAction("Snippets Code", self))
 
         # Crearea acțiunilor pentru Textures
         light_theme_action = QAction("Light theme", self)
@@ -291,6 +314,12 @@ class MainView(QMainWindow):
         menubar.addMenu(template_menu)
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
+
+    def save_session_core(self):
+        session.save_session(self.file_manager)
+
+    def reset_session_core(self):
+        session.reset_session()
 
     def pbinfo_tools_core(self):
         self.pbinfo_win = pbinfo.PbinfoInterface(self.editor, self.theme, self.config)
@@ -495,6 +524,10 @@ class MainView(QMainWindow):
             QMenuBar::item {{
                 font-family: {font_family};
                 font-size: {font_size};
+            }}
+            QMenuBar::item:selected {{
+                background-color: {self.theme['item_hover_background_color']};
+                color: {self.theme['item_hover_text_color']};
             }}
             QMenu {{
                 background-color: {self.theme['background_color']};
