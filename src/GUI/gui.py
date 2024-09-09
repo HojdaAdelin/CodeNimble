@@ -17,7 +17,6 @@ from Core import web
 from Core import file_manager
 from Core import edit_manager
 from Core import misc_manager
-from Core import code_style
 from Core import view_manager
 from Core import theme_manager
 from Core import session
@@ -188,9 +187,6 @@ class MainView(QMainWindow):
         redo_action = QAction("Redo", self, shortcut="Ctrl+Y")
         redo_action.triggered.connect(self.redo_core)
         edit_menu.addAction(redo_action)
-        format_action = QAction("Code formatting", self)
-        format_action.triggered.connect(self.code_formatting_core)
-        edit_menu.addAction(format_action)
         edit_menu.addSeparator()
         cut_action = QAction("Cut", self, shortcut="Ctrl+X")
         cut_action.triggered.connect(self.cut_core)
@@ -392,9 +388,6 @@ class MainView(QMainWindow):
 
     def zoom_out_core(self):
         self.view_manager.zoom_out()
-
-    def code_formatting_core(self):
-        code_style.formatting(self.editor, self.file_manager)
 
     def find_core(self):
         misc = misc_manager.MiscManager(self.editor, self.theme)
