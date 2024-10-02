@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QLabel, QHBoxLayout
+from PySide6.QtWidgets import QFrame, QLabel, QHBoxLayout, QWidget, QScrollArea, QVBoxLayout
 from PySide6.QtGui import QPixmap, QMouseEvent, QFont, QEnterEvent
 from PySide6.QtCore import Qt, QTimer
 from Tools import scrap
@@ -22,6 +22,7 @@ class StatusBar(QFrame):
         self.running = False
         self.timer_paused = False
         self.elapsed_time = timedelta(0)
+        self.msg_log = []
         self.setStyleSheet(f"background-color: {self.based_color};")
         self.setup_ui()
         self.apply_theme(theme)
@@ -115,7 +116,48 @@ class StatusBar(QFrame):
             default_icon_path = "images/bell-default.png"
             new_pixmap = QPixmap(default_icon_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.server_icon.setPixmap(new_pixmap)
+            self.show_inbox_popup()
 
+    def show_inbox_popup(self):
+        # Creează un QWidget care va afișa lista de mesaje
+        if hasattr(self, 'inbox_popup') and self.inbox_popup.isVisible():
+            return
+        self.inbox_popup = QWidget(self.main)
+        self.inbox_popup.setStyleSheet(
+            "background-color: rgba(0, 0, 0, 180); color: white; border-radius: 5px; padding: 5px;"
+        )
+
+        # Creează un layout vertical pentru a afișa toate mesajele
+        layout = QVBoxLayout(self.inbox_popup)
+
+        # Adaugă fiecare mesaj din msg_log într-un QLabel
+        for message in reversed(self.msg_log):  # Afișează mesajele în ordinea inversă
+            msg_label = QLabel(message)
+            msg_label.setStyleSheet("color: white;")
+            layout.addWidget(msg_label)
+
+        # Ajustează dimensiunea popup-ului în funcție de conținut
+        self.inbox_popup.adjustSize()
+
+        # Calculează coordonatele pentru a-l poziționa deasupra iconiței
+        global_pos = self.server_icon.mapToGlobal(self.server_icon.rect().center())
+        main_pos = self.main.mapFromGlobal(global_pos)
+        popup_x = main_pos.x() - self.inbox_popup.width() // 2
+        popup_y = main_pos.y() - self.inbox_popup.height() - 10
+
+        self.inbox_popup.move(popup_x, popup_y)
+
+        # Afișează și ridică popup-ul deasupra altor elemente
+        self.inbox_popup.raise_()
+        self.inbox_popup.show()
+
+        # Focus pe popup, îl ascunde când utilizatorul dă click pe altceva
+        self.inbox_popup.setFocus()
+        self.inbox_popup.focusOutEvent = self.hide_inbox_popup
+
+    def hide_inbox_popup(self, event):
+        # Ascunde popup-ul când acesta pierde focusul
+        self.inbox_popup.hide()
 
     def toggle_inbox_icon(self, text):
         update_icon_path = "images/bell-update.png"
@@ -144,9 +186,10 @@ class StatusBar(QFrame):
         # Afișează și ridică popup-ul deasupra altor elemente
         self.popup_label.raise_()
         self.popup_label.show()
+        self.msg_log.append(text)
 
         # Folosește un timer pentru a ascunde popup-ul după 3 secunde
-        QTimer.singleShot(1500, self.popup_label.hide)
+        QTimer.singleShot(2000, self.popup_label.hide)
 
     def start_timer(self, event):
         if not self.running:
