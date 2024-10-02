@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QLabel, QHBoxLayout
+from PySide6.QtWidgets import QFrame, QLabel, QHBoxLayout, QWidget, QScrollArea, QVBoxLayout
 from PySide6.QtGui import QPixmap, QMouseEvent, QFont, QEnterEvent
 from PySide6.QtCore import Qt, QTimer
 from Tools import scrap
@@ -22,9 +22,11 @@ class StatusBar(QFrame):
         self.running = False
         self.timer_paused = False
         self.elapsed_time = timedelta(0)
+        self.msg_log = []
         self.setStyleSheet(f"background-color: {self.based_color};")
         self.setup_ui()
         self.apply_theme(theme)
+        self.server_icon.mousePressEvent = self.on_inbox_icon_click
 
     def setup_ui(self):
         font_size = 12
@@ -50,6 +52,13 @@ class StatusBar(QFrame):
         self.server_status.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
         self.server_status.setStyleSheet(f"color: {self.theme['text_color']};")
 
+        # Create server icon label and set the default icon (bell-default.png)
+        self.server_icon = QLabel(self)
+        default_icon_path = "images/bell-default.png"  # Path to bell-default image
+        pixmap = QPixmap(default_icon_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.server_icon.setPixmap(pixmap)
+        self.server_icon.setStyleSheet(f"background-color: {self.based_color};")
+
         image_path = "images/run.png"  # Actualizează calea dacă este necesar
         pixmap = QPixmap(image_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.run_img = QLabel(self)
@@ -68,6 +77,7 @@ class StatusBar(QFrame):
         layout.addWidget(self.new_version_label)
         layout.addWidget(self.timer)
         layout.addStretch()  # Spacer to push the following elements to the right
+        layout.addWidget(self.server_icon)
         layout.addWidget(self.server_status)
         layout.addWidget(self.run_img)
         layout.addWidget(self.num_stats_label)
@@ -99,6 +109,87 @@ class StatusBar(QFrame):
         self.based_color = theme["status_bar_background"]
         self.run_img.setStyleSheet(f"background-color: {self.based_color};")
         self.timer.setStyleSheet(f"background-color: {self.based_color};")
+        self.server_icon.setStyleSheet(f"background-color: {self.based_color};")
+
+    def on_inbox_icon_click(self, event: QMouseEvent):
+        if event.button() == Qt.LeftButton:  # Verifică dacă s-a dat click stânga
+            default_icon_path = "images/bell-default.png"
+            new_pixmap = QPixmap(default_icon_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.server_icon.setPixmap(new_pixmap)
+            self.show_inbox_popup()
+
+    def show_inbox_popup(self):
+        # Creează un QWidget care va afișa lista de mesaje
+        if hasattr(self, 'inbox_popup') and self.inbox_popup.isVisible():
+            return
+        self.inbox_popup = QWidget(self.main)
+        self.inbox_popup.setStyleSheet(
+            "background-color: rgba(0, 0, 0, 180); color: white; border-radius: 5px; padding: 5px;"
+        )
+
+        # Creează un layout vertical pentru a afișa toate mesajele
+        layout = QVBoxLayout(self.inbox_popup)
+
+        # Adaugă fiecare mesaj din msg_log într-un QLabel
+        for message in reversed(self.msg_log):  # Afișează mesajele în ordinea inversă
+            msg_label = QLabel(message)
+            msg_label.setStyleSheet("color: white;")
+            layout.addWidget(msg_label)
+
+        # Ajustează dimensiunea popup-ului în funcție de conținut
+        self.inbox_popup.adjustSize()
+
+        # Calculează coordonatele pentru a-l poziționa deasupra iconiței
+        global_pos = self.server_icon.mapToGlobal(self.server_icon.rect().center())
+        main_pos = self.main.mapFromGlobal(global_pos)
+        popup_x = main_pos.x() - self.inbox_popup.width() // 2
+        popup_y = main_pos.y() - self.inbox_popup.height() - 10
+
+        self.inbox_popup.move(popup_x, popup_y)
+
+        # Afișează și ridică popup-ul deasupra altor elemente
+        self.inbox_popup.raise_()
+        self.inbox_popup.show()
+
+        # Focus pe popup, îl ascunde când utilizatorul dă click pe altceva
+        self.inbox_popup.setFocus()
+        self.inbox_popup.focusOutEvent = self.hide_inbox_popup
+
+    def hide_inbox_popup(self, event):
+        # Ascunde popup-ul când acesta pierde focusul
+        self.inbox_popup.hide()
+
+    def toggle_inbox_icon(self, text):
+        update_icon_path = "images/bell-update.png"
+        new_pixmap = QPixmap(update_icon_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.server_icon.setPixmap(new_pixmap)
+        self.popup_inbox(text)
+
+    def popup_inbox(self, text):
+        # Creează un QLabel care va funcționa ca popup pe fereastra principală (self.main)
+        self.popup_label = QLabel(text, self.main)  # Adaugă pe self.main, nu pe self (status bar)
+        self.popup_label.setStyleSheet(
+            "background-color: rgba(0, 0, 0, 180); color: white; border-radius: 5px; padding: 5px;"
+        )
+
+        # Ajustează dimensiunea în funcție de text
+        self.popup_label.adjustSize()
+
+        # Calculează coordonatele pentru a-l poziționa deasupra iconiței, raportat la fereastra principală
+        global_pos = self.server_icon.mapToGlobal(self.server_icon.rect().center())
+        main_pos = self.main.mapFromGlobal(global_pos)
+        popup_x = main_pos.x() - self.popup_label.width() // 2
+        popup_y = main_pos.y() - self.popup_label.height() - 10  # 5 pixeli deasupra iconiței
+
+        self.popup_label.move(popup_x, popup_y)
+
+        # Afișează și ridică popup-ul deasupra altor elemente
+        self.popup_label.raise_()
+        self.popup_label.show()
+        self.msg_log.append(text)
+
+        # Folosește un timer pentru a ascunde popup-ul după 3 secunde
+        QTimer.singleShot(2000, self.popup_label.hide)
 
     def start_timer(self, event):
         if not self.running:
@@ -141,7 +232,7 @@ class StatusBar(QFrame):
     def on_timer_click(self, event: QMouseEvent):
         if event.button() == Qt.LeftButton:
             self.start_timer(event)
-        elif event.button() == Qt.MiddleButton:  # Detect middle mouse button click
+        elif event.button() == Qt.MiddleButton:  
             self.reset_timer()
 
     def reset_timer(self):

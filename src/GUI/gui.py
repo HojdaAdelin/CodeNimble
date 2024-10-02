@@ -423,18 +423,23 @@ class MainView(QMainWindow):
 
     def open_folder_core(self):
         self.file_manager.open_folder(self.tree_view, self)
+        self.status_bar.toggle_inbox_icon("Opened a folder!")
 
     def close_folder_core(self):
         self.file_manager.close_folder(self.tree_view, self)
+        self.status_bar.toggle_inbox_icon("Closed the folder!")
 
     def save_file_core(self):
         self.file_manager.save_file(self.editor)
+        self.status_bar.toggle_inbox_icon("Saved the file!")
 
     def save_as_file_core(self):
         self.file_manager.save_as_file(self.editor)
+        self.status_bar.toggle_inbox_icon("Saved a file as!")
 
     def open_file_core(self):
         self.file_manager.open_file(self.editor, self.tab_bar)
+        self.status_bar.toggle_inbox_icon("Opened a new file!")
 
     def exit_app(self):
         sys.exit(0)
