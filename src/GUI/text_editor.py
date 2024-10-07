@@ -299,36 +299,44 @@ class CodeEditor(QPlainTextEdit):
             "INT": "int () {\n\n}",
             "CPP": "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n\n    return 0;\n}"
         }
-
-        if current_line in completions:
-            code = completions[current_line]
+        if current_line in completions or current_line.startswith("FOR-"):
+            # Obținem codul de completare de bază
+            if current_line in completions:
+                code = completions[current_line]
+            elif current_line.startswith("FOR-"):
+                # Extragem litera variabilei (de exemplu FOR-J => litera va fi 'J')
+                variable = current_line.split('-')[1] if len(current_line.split('-')) > 1 else 'i'
+                code = re.sub(r'\bi\b', variable.lower(), completions["FOR"])
+            
+            # Ștergem linia curentă și inserăm șablonul
             cursor.select(QTextCursor.BlockUnderCursor)
             cursor.removeSelectedText()
             cursor.insertText(code)
+
+            # Poziționăm cursorul la începutul blocului pentru a edita după inserție
             cursor.movePosition(QTextCursor.StartOfBlock)
 
-            # Poziționăm cursorul în funcție de cuvântul cheie
+            # Comportament specific pentru fiecare comandă
             if current_line == "IF":
                 cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
-                cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
-            elif current_line == "FOR":
-                pos = code.index("n")
+                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            elif current_line.startswith("FOR"):
+                # Mutăm cursorul pentru a ajunge la prima poziție de editare (după 'n')
+                pos = code.index("n")  # Poziția lui 'n' în for(int i = 1; i <= n; i++) {...}
                 cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.Right, QTextCursor.KeepAnchor, pos)
-                cursor.movePosition(QTextCursor.Left, QTextCursor.KeepAnchor)
+                cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor, pos + 1)  # Mutăm la poziția lui 'n'
             elif current_line == "WHILE":
                 cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
-                cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
+                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
             elif current_line == "INT":
                 cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
-                cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
+                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
             elif current_line == "CPP":
                 cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
-                cursor.movePosition(QTextCursor.StartOfBlock, QTextCursor.KeepAnchor)
+                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+            
+            # Setăm cursorul la poziția corectă pentru utilizator
+            self.setTextCursor(cursor)
             return
 
         # Check if the cursor is between brackets
@@ -454,6 +462,21 @@ class CPPHighlighter(QSyntaxHighlighter):
         keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin|short|import|print|printf|max|min)\b'
         self.add_mapping(keywords, keyword_format)
 
+        # Format pentru simboluri
+        symbol_format = QTextCharFormat()
+        symbol_format.setForeground(QColor(self.theme.get("symbol_color", "#56b6c2")))
+        self.add_mapping(r'[\-*%&|^!~<>=?:;]', symbol_format)
+
+        # Format pentru cifre
+        number_format = QTextCharFormat()
+        number_format.setForeground(QColor(self.theme.get("number_color", "#d19a66")))
+        self.add_mapping(r'\b\d+\b', number_format)
+
+        # Format pentru paranteze
+        parenthesis_format = QTextCharFormat()
+        parenthesis_format.setForeground(QColor(self.theme.get("parenthesis_color", "#e06c75")))
+        self.add_mapping(r'[()\[\]{}]', parenthesis_format)
+
         # Format pentru stringuri între ghilimele
         string_format = QTextCharFormat()
         string_format.setForeground(QColor(self.theme.get("string_color", "#98C379")))
@@ -468,20 +491,6 @@ class CPPHighlighter(QSyntaxHighlighter):
         self.add_mapping(r'\/\/.*', comment_format)
         self.add_mapping(r'\/\*.*?\*\/', comment_format)  # Comentarii de tip bloc
         self.add_mapping(r'\#.*', comment_format)
-        # Format pentru paranteze
-        parenthesis_format = QTextCharFormat()
-        parenthesis_format.setForeground(QColor(self.theme.get("parenthesis_color", "#e06c75")))
-        self.add_mapping(r'[()\[\]{}]', parenthesis_format)
-
-        # Format pentru cifre
-        number_format = QTextCharFormat()
-        number_format.setForeground(QColor(self.theme.get("number_color", "#d19a66")))
-        self.add_mapping(r'\b\d+\b', number_format)
- 
-        # Format pentru simboluri
-        symbol_format = QTextCharFormat()
-        symbol_format.setForeground(QColor(self.theme.get("symbol_color", "#56b6c2")))
-        self.add_mapping(r'[\-*%&|^!~<>=?:;]', symbol_format)
 
     def add_mapping(self, pattern, format):
         self._mappings[pattern] = format

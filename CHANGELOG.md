@@ -1,3 +1,15 @@
+# Version 2.1
+
+### Added:
+
+1. Inbox
+2. FOR-{} completions e.g FOR-J, FOR-X -> int j, int x -> for()
+3. Author Details -> Templates
+
+### Fixed/Changes:
+
+1. Highlighter improvement 
+
 # Version 2.0
 
 ### Added:
