@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QApplication,QSplitter, QMainWindow, QMenuBar, QMenu, QVBoxLayout, QWidget, QHBoxLayout
-from PySide6.QtGui import QIcon, QAction
+from PySide6.QtGui import QIcon, QAction, QTextCursor
 from PySide6.QtCore import Qt
 import json
 from GUI import text_editor
@@ -252,11 +252,14 @@ class MainView(QMainWindow):
         html_template_action.triggered.connect(self.html_template_core)
         comp_template_action = QAction("C++ Competitive", self)
         comp_template_action.triggered.connect(self.comp_template_core)
+        auth_template_action = QAction("Author Details", self)
+        auth_template_action.triggered.connect(self.auth_details)
         template_menu.addAction(cpp_template_action)
         template_menu.addAction(c_template_action)
         template_menu.addAction(java_template_action)
         template_menu.addAction(html_template_action)
         template_menu.addAction(comp_template_action)
+        template_menu.addAction(auth_template_action)
         template_menu.addSeparator()
         create_template_action = QAction("Create Template", self)
         create_template_action.triggered.connect(self.create_template_core)
@@ -310,6 +313,13 @@ class MainView(QMainWindow):
         menubar.addMenu(template_menu)
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
+
+    def auth_details(self):
+        author_info = "// Author: \n// School: \n// Date: \n// Specific algorithm:\n"
+        cursor = self.editor.textCursor() 
+        cursor.movePosition(QTextCursor.Start)  
+        cursor.insertText(author_info + "\n")  
+        self.editor.setTextCursor(cursor) 
 
     def save_session_core(self):
         session.save_session(self.file_manager)

@@ -4,6 +4,7 @@
 
 1. Inbox
 2. FOR-{} completions e.g FOR-J, FOR-X -> int j, int x -> for()
+3. Author Details -> Templates
 
 # Version 2.0
 
