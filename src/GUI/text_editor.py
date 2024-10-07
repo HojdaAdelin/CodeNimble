@@ -462,6 +462,21 @@ class CPPHighlighter(QSyntaxHighlighter):
         keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin|short|import|print|printf|max|min)\b'
         self.add_mapping(keywords, keyword_format)
 
+        # Format pentru simboluri
+        symbol_format = QTextCharFormat()
+        symbol_format.setForeground(QColor(self.theme.get("symbol_color", "#56b6c2")))
+        self.add_mapping(r'[\-*%&|^!~<>=?:;]', symbol_format)
+
+        # Format pentru cifre
+        number_format = QTextCharFormat()
+        number_format.setForeground(QColor(self.theme.get("number_color", "#d19a66")))
+        self.add_mapping(r'\b\d+\b', number_format)
+
+        # Format pentru paranteze
+        parenthesis_format = QTextCharFormat()
+        parenthesis_format.setForeground(QColor(self.theme.get("parenthesis_color", "#e06c75")))
+        self.add_mapping(r'[()\[\]{}]', parenthesis_format)
+
         # Format pentru stringuri între ghilimele
         string_format = QTextCharFormat()
         string_format.setForeground(QColor(self.theme.get("string_color", "#98C379")))
@@ -476,20 +491,6 @@ class CPPHighlighter(QSyntaxHighlighter):
         self.add_mapping(r'\/\/.*', comment_format)
         self.add_mapping(r'\/\*.*?\*\/', comment_format)  # Comentarii de tip bloc
         self.add_mapping(r'\#.*', comment_format)
-        # Format pentru paranteze
-        parenthesis_format = QTextCharFormat()
-        parenthesis_format.setForeground(QColor(self.theme.get("parenthesis_color", "#e06c75")))
-        self.add_mapping(r'[()\[\]{}]', parenthesis_format)
-
-        # Format pentru cifre
-        number_format = QTextCharFormat()
-        number_format.setForeground(QColor(self.theme.get("number_color", "#d19a66")))
-        self.add_mapping(r'\b\d+\b', number_format)
- 
-        # Format pentru simboluri
-        symbol_format = QTextCharFormat()
-        symbol_format.setForeground(QColor(self.theme.get("symbol_color", "#56b6c2")))
-        self.add_mapping(r'[\-*%&|^!~<>=?:;]', symbol_format)
 
     def add_mapping(self, pattern, format):
         self._mappings[pattern] = format
