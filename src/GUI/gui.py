@@ -98,8 +98,8 @@ class MainView(QMainWindow):
         self.splitter.addWidget(self.container)
 
         self.right_panel = right_panel.RightPanel(self.theme, self)
-        self.right_panel.setMaximumWidth(300)
-        self.right_panel.setMinimumWidth(200)
+        self.right_panel.setMaximumWidth(500)
+        self.right_panel.setMinimumWidth(300)
         self.splitter.addWidget(self.right_panel)
 
         # Configurarea dimensiunilor splitter-ului

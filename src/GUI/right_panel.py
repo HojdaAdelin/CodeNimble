@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import (
     QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox
 )
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt
 import threading 
 import json
@@ -21,7 +22,8 @@ class RightPanel(QWidget):
         self.setLayout(self.main_layout)
 
         self.functions = QComboBox(self)
-        self.functions.addItems(["Testing", "Server"])
+        self.functions.addItems(["Testing", "Problem viewer", "Server"])
+        self.functions.setItemText
         self.functions.currentIndexChanged.connect(self.toggle_tabs)
         self.main_layout.addWidget(self.functions)
         
@@ -138,6 +140,14 @@ class RightPanel(QWidget):
         
         # Adăugăm widget-ul „Server” în stacked_widget
         self.stacked_widget.addWidget(self.server_widget)
+
+        # Problem viewer
+        self.server_pb_view_widget = QWidget()
+        self.server_pb_view_layout = QVBoxLayout(self.server_pb_view_widget)
+        self.server_pb_view_widget.setLayout(self.server_pb_view_layout)
+        self.browser = QWebEngineView()
+        self.server_pb_view_layout.addWidget(self.browser)
+        self.stacked_widget.addWidget(self.server_pb_view_widget)
         
         # Aplicarea temei
         self.apply_theme(self.theme)
@@ -146,10 +156,12 @@ class RightPanel(QWidget):
         self.user_name = self.config.get('profile_name')
 
     def toggle_tabs(self):
-        curr_funct = self.functions.currentText()
-        if curr_funct == "Testing":
+        curr_funct = self.functions.currentIndex()
+        if curr_funct == 0:
             self.show_testing_tab()
-        elif curr_funct == "Server":
+        elif curr_funct == 1:
+            self.show_pb_view_tab()
+        elif curr_funct == 2:
             self.show_server_tab()
 
     def start_server_option(self):
@@ -212,6 +224,9 @@ class RightPanel(QWidget):
 
     def show_server_tab(self):
         self.stacked_widget.setCurrentWidget(self.server_widget)
+
+    def show_pb_view_tab(self):
+        self.stacked_widget.setCurrentWidget(self.server_pb_view_widget)
 
     def diff_core(self):
         self.diff_win = diff.OutputComparator(self, self.theme)
@@ -277,6 +292,7 @@ class RightPanel(QWidget):
                 background-color: {theme.get("button_color")};
                 color: {theme.get("text_color")};
                 padding: 5px;
+                border: 1px solid {theme.get('border_color')};
             }}
             QPushButton:hover {{
                 background-color: {theme.get("button_hover_color")};
