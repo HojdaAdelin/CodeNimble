@@ -10,6 +10,8 @@
 2. FOR-{} completions e.g FOR-J, FOR-X -> int j, int x -> for()
 3. Author Details -> Templates
 4. New tab switch mode in right frame
+5. "neutral-green.json" theme
+6. "vulcano.json" theme
 
 ### Fixed/Changes:
 
