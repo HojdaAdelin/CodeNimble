@@ -12,10 +12,12 @@
 4. New tab switch mode in right frame
 5. "neutral-green.json" theme
 6. "vulcano.json" theme
+7. Credits in config.json 
 
 ### Fixed/Changes:
 
 1. Highlighter improvement 
+2. Changed the pbinfo interface
 
 # Version 2.0
 

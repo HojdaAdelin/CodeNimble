@@ -46,6 +46,10 @@ class MainView(QMainWindow):
                 "session": {
                     "opened_folder": "",
                     "opened_file": ""
+                },
+                "credits": {
+                    "username": "",
+                    "password": ""
                 }
             }
             with open('config.json', 'w') as file:

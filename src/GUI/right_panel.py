@@ -146,6 +146,7 @@ class RightPanel(QWidget):
         self.server_pb_view_layout = QVBoxLayout(self.server_pb_view_widget)
         self.server_pb_view_widget.setLayout(self.server_pb_view_layout)
         self.browser = QWebEngineView()
+        self.browser.setUrl("https://www.google.com/")
         self.server_pb_view_layout.addWidget(self.browser)
         self.stacked_widget.addWidget(self.server_pb_view_widget)
         
