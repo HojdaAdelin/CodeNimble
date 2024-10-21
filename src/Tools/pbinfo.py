@@ -56,6 +56,8 @@ class PbinfoInterface(QMainWindow):
             QPushButton {{
                 background-color: {theme.get('button_color', '#555')};
                 color: {theme.get('button_text_color', '#fff')};
+                padding: 5px;
+                border: 1px solid {theme.get('border_color')};
             }}
             QPushButton:hover {{
                 background-color: {theme.get('button_hover_color', '#777')};
@@ -63,6 +65,8 @@ class PbinfoInterface(QMainWindow):
             QLineEdit, QTextEdit {{
                 background-color: {theme.get('editor_background', '#333')};
                 color: {theme.get('text_color', '#fff')};
+                border: 1px solid {theme.get("border_color")};
+                padding: 5px;
             }}
         """
         self.setStyleSheet(stylesheet)
@@ -88,10 +92,12 @@ class PbinfoInterface(QMainWindow):
         self.password = QLineEdit()
         self.problem_id = QLineEdit()
 
-        #if self.config.get("username"):
-            #self.username.setText(self.config["username"])
-        #if self.config.get("password"):
-            #self.password.setText(self.config["password"])
+        self.password.setEchoMode(QLineEdit.Password)
+
+        if self.config.get("credits", {}).get("username"):
+            self.username.setText(self.config["credits"]["username"])
+        if self.config.get("credits", {}).get("password"):
+            self.password.setText(self.config["credits"]["password"])
 
         layout.addWidget(self.username, 1, 0, Qt.AlignLeft)
         layout.addWidget(self.password, 1, 1, Qt.AlignCenter)
@@ -281,8 +287,12 @@ class PbinfoInterface(QMainWindow):
         solution_id = self.submit_solution(local_ip)
         self.sol_id.setText(f"Solution ID: {solution_id}")
         self.fetch_solution_score(solution_id)
-        #self.config["username"] = self.login_payload['user']
-        #self.config["password"] = self.login_payload['parola']
+        with open('config.json', 'r') as config_file:
+            config_data = json.load(config_file)
+        config_data["credits"]["username"] = self.login_payload['user']
+        config_data["credits"]["password"] = self.login_payload['parola']
+        with open('config.json', 'w') as config_file:
+            json.dump(config_data, config_file, indent=4)
 
     def get_textbox_code(self):
         self.textbox.clear()

@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import (
-    QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox
+    QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox
 )
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt
 import threading 
 import json
@@ -19,17 +20,12 @@ class RightPanel(QWidget):
         # Crearea layout-ului principal
         self.main_layout = QVBoxLayout(self)
         self.setLayout(self.main_layout)
-        
-        # Crearea butoanelor de taburi
-        self.tab_buttons = QWidget()
-        self.tab_buttons_layout = QGridLayout(self.tab_buttons)
-        self.main_layout.addWidget(self.tab_buttons)
-        
-        self.testing_button = QPushButton("Testing", self, clicked=self.show_testing_tab)
-        self.server_button = QPushButton("Server", self, clicked=self.show_server_tab)
-        
-        self.tab_buttons_layout.addWidget(self.testing_button, 0, 0)
-        self.tab_buttons_layout.addWidget(self.server_button, 0, 1)
+
+        self.functions = QComboBox(self)
+        self.functions.addItems(["Testing", "Problem viewer", "Server"])
+        self.functions.setItemText
+        self.functions.currentIndexChanged.connect(self.toggle_tabs)
+        self.main_layout.addWidget(self.functions)
         
         # Crearea QStackedWidget pentru a comuta între tab-uri
         self.stacked_widget = QStackedWidget()
@@ -144,12 +140,30 @@ class RightPanel(QWidget):
         
         # Adăugăm widget-ul „Server” în stacked_widget
         self.stacked_widget.addWidget(self.server_widget)
+
+        # Problem viewer
+        self.server_pb_view_widget = QWidget()
+        self.server_pb_view_layout = QVBoxLayout(self.server_pb_view_widget)
+        self.server_pb_view_widget.setLayout(self.server_pb_view_layout)
+        self.browser = QWebEngineView()
+        self.browser.setUrl("https://www.google.com/")
+        self.server_pb_view_layout.addWidget(self.browser)
+        self.stacked_widget.addWidget(self.server_pb_view_widget)
         
         # Aplicarea temei
         self.apply_theme(self.theme)
         with open('config.json', 'r') as file:
             self.config = json.load(file)
         self.user_name = self.config.get('profile_name')
+
+    def toggle_tabs(self):
+        curr_funct = self.functions.currentIndex()
+        if curr_funct == 0:
+            self.show_testing_tab()
+        elif curr_funct == 1:
+            self.show_pb_view_tab()
+        elif curr_funct == 2:
+            self.show_server_tab()
 
     def start_server_option(self):
         if self.password_entry.text() == "":
@@ -212,6 +226,9 @@ class RightPanel(QWidget):
     def show_server_tab(self):
         self.stacked_widget.setCurrentWidget(self.server_widget)
 
+    def show_pb_view_tab(self):
+        self.stacked_widget.setCurrentWidget(self.server_pb_view_widget)
+
     def diff_core(self):
         self.diff_win = diff.OutputComparator(self, self.theme)
         self.diff_win.show()
@@ -226,7 +243,13 @@ class RightPanel(QWidget):
             background-color: {theme.get("background_color")};
             color: {theme.get("text_color")};
         """)
-
+        self.functions.setStyleSheet(f"""
+                                     color: {theme.get('text_color')};
+                                     background-color: {theme.get('editor_background')};
+                                     border: 1px solid {theme.get('border_color')};
+                                     font-size: 14px;
+                                     padding: 4px;
+                                     """)
         self.input_label.setStyleSheet(f"color: {theme.get('text_color')};")
         self.output_label.setStyleSheet(f"color: {theme.get('text_color')};")
         self.expected_label.setStyleSheet(f"color: {theme.get('text_color')};")
@@ -270,6 +293,7 @@ class RightPanel(QWidget):
                 background-color: {theme.get("button_color")};
                 color: {theme.get("text_color")};
                 padding: 5px;
+                border: 1px solid {theme.get('border_color')};
             }}
             QPushButton:hover {{
                 background-color: {theme.get("button_hover_color")};
@@ -278,8 +302,6 @@ class RightPanel(QWidget):
         self.diff.setStyleSheet(button_style)
         self.fetch.setStyleSheet(button_style)
         self.send_button.setStyleSheet(button_style)
-        self.testing_button.setStyleSheet(button_style)
-        self.server_button.setStyleSheet(button_style)
         self.connect_button.setStyleSheet(button_style)
         self.disconnect_button.setStyleSheet(button_style)
         self.start_server.setStyleSheet(button_style)

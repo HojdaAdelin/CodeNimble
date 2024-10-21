@@ -1,14 +1,25 @@
 # Version 2.1
 
+### Major improvements:
+
+1. Problem viewer -> mini google inside the app
+
 ### Added:
 
 1. Inbox
 2. FOR-{} completions e.g FOR-J, FOR-X -> int j, int x -> for()
 3. Author Details -> Templates
+4. New tab switch mode in right frame
+5. "neutral-green.json" theme
+6. "vulcano.json" theme
+7. Credits in config.json 
+8. Tool bar in left frame
 
 ### Fixed/Changes:
 
 1. Highlighter improvement 
+2. Changed the pbinfo interface
+3. Fixed resized window bug
 
 # Version 2.0
 

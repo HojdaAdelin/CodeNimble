@@ -1,11 +1,15 @@
 {
     "font_family": "Arial",
     "font_size": "20px",
-    "editor_font_size": "20",
+    "editor_font_size": 25,
     "profile_name": "user",
     "theme": "dark-blue",
     "session": {
         "opened_folder": null,
         "opened_file": null
+    },
+    "credits": {
+        "username": "test_ade",
+        "password": "ArT456:/"
     }
 }
