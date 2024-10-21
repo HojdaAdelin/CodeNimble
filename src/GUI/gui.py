@@ -11,6 +11,7 @@ from GUI import tab_bar
 from GUI import right_panel
 from GUI import paint
 from GUI import kilo_tools
+from GUI import toolbar
 from Core import run
 from Core import templates
 from Core import web
@@ -34,7 +35,7 @@ class MainView(QMainWindow):
 
         self.setWindowTitle("Code Nimble")
         self.setGeometry(100, 100, 800, 600)
-        self.setMinimumSize(500, 400)
+        self.setMinimumSize(850, 400)
         self.setWindowIcon(QIcon('images/png-logo.png'))
         if not os.path.isfile("config.json"):
             default_config = {
@@ -81,11 +82,23 @@ class MainView(QMainWindow):
         # Adăugarea splitter-ului în layout
         self.layout.addWidget(self.splitter)
 
-        # Configurarea TreeView
+        # Left frame
+        self.left_panel = QWidget()
+
+        self.left_layout = QVBoxLayout(self.left_panel)
+        self.left_layout.setContentsMargins(0, 0, 0, 0)
+        self.left_layout.setSpacing(0)
+
         self.tree_view = treeview.TreeView(self.theme, self)
-        self.tree_view.setMinimumWidth(250)  # Setează o lățime minimă pentru TreeView
-        self.tree_view.setMaximumWidth(400)
-        self.splitter.addWidget(self.tree_view)
+
+        self.left_panel.setMinimumWidth(250) 
+        self.left_panel.setMaximumWidth(400)
+
+        self.tool_bar = toolbar.ToolBar(self.theme, self)
+
+        self.left_layout.addWidget(self.tree_view)
+        self.left_layout.addWidget(self.tool_bar)
+        self.splitter.addWidget(self.left_panel)
 
         # Configurarea editorului de cod
         self.editor = text_editor.CodeEditor(self.config, self.theme)
@@ -494,6 +507,7 @@ class MainView(QMainWindow):
         self.tree_view.apply_theme(self.theme)
         self.right_panel.apply_theme(self.theme)
         self.tab_bar.apply_stylesheet(self.theme)
+        self.tool_bar.apply_theme(self.theme)
         self.splitter.setStyleSheet(f"""
             QSplitter::handle {{
                 background-color: {self.theme['background_color']};
