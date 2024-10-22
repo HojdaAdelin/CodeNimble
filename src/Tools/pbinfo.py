@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QTextEdit, QMessageBox, QGridLayout, QWidget
+from PySide6.QtWidgets import QMainWindow, QLabel, QLineEdit, QPushButton, QTextEdit, QMessageBox, QGridLayout, QWidget
 from PySide6.QtGui import QIcon, QFont
 from PySide6.QtCore import Qt
 import json
@@ -6,7 +6,6 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import asyncio
-from pyee import AsyncIOEventEmitter
 from aiortc import RTCPeerConnection
 import time
 

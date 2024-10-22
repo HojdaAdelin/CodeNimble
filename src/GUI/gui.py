@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication,QSplitter, QMainWindow, QMenuBar, QMenu, QVBoxLayout, QWidget, QHBoxLayout
+from PySide6.QtWidgets import QSplitter, QMainWindow, QMenu, QVBoxLayout, QWidget
 from PySide6.QtGui import QIcon, QAction, QTextCursor
 from PySide6.QtCore import Qt
 import json

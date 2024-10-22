@@ -1,3 +1,11 @@
+# Version 2.1.1
+
+### Added:
+
+### Fixed/Changes:
+
+1. Fixed application size -> problem viewer can't be used for now
+
 # Version 2.1
 
 ### Major improvements:

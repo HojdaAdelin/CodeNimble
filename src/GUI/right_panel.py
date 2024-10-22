@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (
     QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox
 )
-from PySide6.QtWebEngineWidgets import QWebEngineView
+
 from PySide6.QtCore import Qt
 import threading 
 import json
@@ -22,7 +22,7 @@ class RightPanel(QWidget):
         self.setLayout(self.main_layout)
 
         self.functions = QComboBox(self)
-        self.functions.addItems(["Testing", "Problem viewer", "Server"])
+        self.functions.addItems(["Testing", "Submit code", "Server"])
         self.functions.setItemText
         self.functions.currentIndexChanged.connect(self.toggle_tabs)
         self.main_layout.addWidget(self.functions)
@@ -141,14 +141,11 @@ class RightPanel(QWidget):
         # Adăugăm widget-ul „Server” în stacked_widget
         self.stacked_widget.addWidget(self.server_widget)
 
-        # Problem viewer
-        self.server_pb_view_widget = QWidget()
-        self.server_pb_view_layout = QVBoxLayout(self.server_pb_view_widget)
-        self.server_pb_view_widget.setLayout(self.server_pb_view_layout)
-        self.browser = QWebEngineView()
-        self.browser.setUrl("https://www.google.com/")
-        self.server_pb_view_layout.addWidget(self.browser)
-        self.stacked_widget.addWidget(self.server_pb_view_widget)
+        # Submit code
+        self.submit_widget = QWidget()
+        self.submit_layout = QVBoxLayout(self.submit_widget)
+        self.submit_widget.setLayout(self.submit_layout)
+        self.stacked_widget.addWidget(self.submit_widget)
         
         # Aplicarea temei
         self.apply_theme(self.theme)
@@ -161,7 +158,7 @@ class RightPanel(QWidget):
         if curr_funct == 0:
             self.show_testing_tab()
         elif curr_funct == 1:
-            self.show_pb_view_tab()
+            self.show_submit_tab()
         elif curr_funct == 2:
             self.show_server_tab()
 
@@ -226,8 +223,8 @@ class RightPanel(QWidget):
     def show_server_tab(self):
         self.stacked_widget.setCurrentWidget(self.server_widget)
 
-    def show_pb_view_tab(self):
-        self.stacked_widget.setCurrentWidget(self.server_pb_view_widget)
+    def show_submit_tab(self):
+        self.stacked_widget.setCurrentWidget(self.submit_widget)
 
     def diff_core(self):
         self.diff_win = diff.OutputComparator(self, self.theme)

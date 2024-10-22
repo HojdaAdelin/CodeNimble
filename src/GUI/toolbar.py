@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QLabel
+from PySide6.QtWidgets import QWidget, QPushButton, QVBoxLayout
 
 class ToolBar(QWidget):
     def __init__(self, theme, win):

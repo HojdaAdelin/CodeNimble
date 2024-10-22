@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
-from PySide6.QtGui import QIcon, QFont, QColor, QPalette
+from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
+from PySide6.QtGui import QIcon, QFont, QColor
 from PySide6.QtCore import Qt
 import sys
 from Tools import scrap

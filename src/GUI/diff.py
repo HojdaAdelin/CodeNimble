@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QTextEdit, QFrame, QVBoxLayout, QHBoxLayout, QScrollBar
+from PySide6.QtWidgets import QMainWindow, QTextEdit, QFrame, QVBoxLayout, QScrollBar
 from PySide6.QtGui import QTextCursor, QColor, QFont, QIcon
 from PySide6.QtCore import Qt
 

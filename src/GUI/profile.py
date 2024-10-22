@@ -1,8 +1,6 @@
 import json
-from PySide6.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QMessageBox
+from PySide6.QtWidgets import QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QMessageBox
 from PySide6.QtGui import QIcon, QFont, QColor
-from PySide6.QtCore import Qt
-import sys
 
 class ProfileWindow(QWidget):
     def __init__(self, theme=None):

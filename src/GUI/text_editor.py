@@ -1,8 +1,7 @@
-import json
 import re
-from PySide6.QtCore import Slot, Qt, QRect, QSize, QEvent, QTimer, QStringListModel
+from PySide6.QtCore import Slot, Qt, QRect, QSize, QEvent
 from PySide6.QtGui import QColor, QPainter, QTextFormat, QFont, QTextCharFormat, QSyntaxHighlighter, QKeyEvent, QTextCursor
-from PySide6.QtWidgets import QPlainTextEdit, QWidget, QTextEdit, QListView, QListWidget, QCompleter
+from PySide6.QtWidgets import QPlainTextEdit, QWidget, QTextEdit, QListView, QCompleter
 
 class SuggestionManager:
     def __init__(self, theme):

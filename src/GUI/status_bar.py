@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QLabel, QHBoxLayout, QWidget, QScrollArea, QVBoxLayout
+from PySide6.QtWidgets import QFrame, QLabel, QHBoxLayout, QWidget, QVBoxLayout
 from PySide6.QtGui import QPixmap, QMouseEvent, QFont, QEnterEvent
 from PySide6.QtCore import Qt, QTimer
 from Tools import scrap

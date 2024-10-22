@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFrame, QStackedWidget
+from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QPushButton,QFrame, QStackedWidget
 from PySide6.QtGui import QIcon, QColor, QPainter, QPen, QPixmap
-from PySide6.QtCore import Qt, QPoint, QRect
+from PySide6.QtCore import Qt
 import sys
 
 class CanvasWidget(QWidget):
