@@ -2,6 +2,8 @@
 
 ### Added:
 
+1. Monokai & winter themes
+
 ### Fixed/Changes:
 
 1. Fixed application size -> problem viewer can't be used for now
