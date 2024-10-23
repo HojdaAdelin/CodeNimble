@@ -8,17 +8,17 @@ import threading
 import time
 
 
-def run(text_widget, file_manager):
+def run(text_widget, file_manager,win):
     file_path = file_manager.get_opened_filename()
     if file_path is None:
-        QMessageBox.critical(None, "Error", "No files are open.")
+        win.status_bar.toggle_inbox_icon(f"No files are open.", "red")
         return
     if file_path.endswith(".cpp"):
         run_cpp_file(text_widget, file_manager)
     elif file_path.endswith(".py"):
         run_python_file(text_widget, file_manager)
     else:
-        QMessageBox.critical(None, "Error", "Only .cpp & .py files can be run.")
+        win.status_bar.toggle_inbox_icon(f"Only .cpp & .py files can be run.", "red")
         return
 
 def run_cpp_file(text_widget, file_manager):
@@ -89,20 +89,20 @@ def run_python_file(text_widget, file_manager):
     if os.path.exists(error_log):
         os.remove(error_log)
 
-def pre_input_run(text_widget, right_panel, file_manager):
+def pre_input_run(text_widget, right_panel, file_manager, win):
     file_path = file_manager.get_opened_filename()
     if file_path is None:
-        QMessageBox.critical(None, "Error", "No files are open.")
+        win.status_bar.toggle_inbox_icon(f"No files are open.", "red")
         return
     
     if not file_path.endswith(".cpp"):
-        QMessageBox.critical(None, "Error", "Only .cpp files can be run.")
+        win.status_bar.toggle_inbox_icon(f"Only .cpp files can be run.", "red")
         return
     
     code_content = text_widget.toPlainText()
     pre_input = right_panel.input_box.toPlainText().strip()
     if len(pre_input) == 0:
-        QMessageBox.critical(None, "Error", "You need to set the pre-input from right panel!")
+        win.status_bar.toggle_inbox_icon(f"You need to set the pre-input from right panel!", "orange")
         return
     
     current_file_dir = os.path.dirname(file_path)

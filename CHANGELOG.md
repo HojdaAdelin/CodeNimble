@@ -3,10 +3,12 @@
 ### Added:
 
 1. Monokai & winter themes
+2. New inbox messages
 
 ### Fixed/Changes:
 
 1. Fixed application size -> problem viewer can't be used for now
+2. Changed inbox style
 
 # Version 2.1
 

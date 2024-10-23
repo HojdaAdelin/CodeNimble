@@ -87,9 +87,11 @@ class FileManager:
             treeview.model.setRootPath(foldername)
             treeview.tree.setRootIndex(treeview.model.index(foldername))
             win.splitter.setSizes([250] + win.splitter.sizes()[1:])
+            win.status_bar.toggle_inbox_icon(f"Opened: {foldername}")
 
     def close_folder(self, treeview, win):
         if self.opened_foldername:
+            win.status_bar.toggle_inbox_icon(f"Closed: {self.opened_foldername}", "orange")
             self.opened_foldername = None
             treeview.model.setRootPath(QDir.rootPath())
             treeview.tree.setRootIndex(treeview.model.index(QDir.rootPath()))
