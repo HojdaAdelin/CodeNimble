@@ -10,6 +10,7 @@
 1. Fixed application size -> problem viewer can't be used for now
 2. Changed inbox style
 3. Changed profile & new file dialog interfaces
+4. Go to line, find & replace redesign
 
 # Version 2.1
 

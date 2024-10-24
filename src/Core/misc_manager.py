@@ -31,16 +31,19 @@ class MiscManager:
                 color: {self.theme['text_color']};
             }}
             QLineEdit {{
-                background-color: {self.theme['background_color']};
-                color: {self.theme['text_color']};
-                border: 1px solid {self.theme['highlight_color']};
+                background-color: {self.theme.get("editor_background")};
+                color: {self.theme.get("editor_foreground")};
+                border: 1px solid {self.theme.get("border_color")};
+                padding: 5px;
             }}
             QPushButton {{
-                background-color: {self.theme['button_color']};
-                color: {self.theme['text_color']};
+                background-color: {self.theme.get("button_color")};
+                color: {self.theme.get("text_color")};
+                padding: 5px;
+                border: 1px solid {self.theme.get('border_color')};
             }}
             QPushButton:hover {{
-                background-color: {self.theme['button_hover_color']};
+                background-color: {self.theme.get("button_hover_color")};
             }}
         """)
 
@@ -107,16 +110,19 @@ class MiscManager:
                 color: {self.theme['text_color']};
             }}
             QLineEdit {{
-                background-color: {self.theme['background_color']};
-                color: {self.theme['text_color']};
-                border: 1px solid {self.theme['highlight_color']};
+                background-color: {self.theme.get("editor_background")};
+                color: {self.theme.get("editor_foreground")};
+                border: 1px solid {self.theme.get("border_color")};
+                padding: 5px;
             }}
             QPushButton {{
-                background-color: {self.theme['button_color']};
-                color: {self.theme['text_color']};
+                background-color: {self.theme.get("button_color")};
+                color: {self.theme.get("text_color")};
+                padding: 5px;
+                border: 1px solid {self.theme.get('border_color')};
             }}
             QPushButton:hover {{
-                background-color: {self.theme['button_hover_color']};
+                background-color: {self.theme.get("button_hover_color")};
             }}
         """)
 
@@ -220,16 +226,19 @@ class MiscManager:
                 color: {self.theme['text_color']};
             }}
             QLineEdit {{
-                background-color: {self.theme['background_color']};
-                color: {self.theme['text_color']};
-                border: 1px solid {self.theme['highlight_color']};
+                background-color: {self.theme.get("editor_background")};
+                color: {self.theme.get("editor_foreground")};
+                border: 1px solid {self.theme.get("border_color")};
+                padding: 5px;
             }}
             QPushButton {{
-                background-color: {self.theme['button_color']};
-                color: {self.theme['text_color']};
+                background-color: {self.theme.get("button_color")};
+                color: {self.theme.get("text_color")};
+                padding: 5px;
+                border: 1px solid {self.theme.get('border_color')};
             }}
             QPushButton:hover {{
-                background-color: {self.theme['button_hover_color']};
+                background-color: {self.theme.get("button_hover_color")};
             }}
         """)
 
