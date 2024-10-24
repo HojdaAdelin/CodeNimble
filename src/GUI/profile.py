@@ -1,6 +1,7 @@
 import json
 from PySide6.QtWidgets import QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QMessageBox
 from PySide6.QtGui import QIcon, QFont, QColor
+from PySide6.QtCore import Qt
 
 class ProfileWindow(QWidget):
     def __init__(self, theme=None):
@@ -24,7 +25,7 @@ class ProfileWindow(QWidget):
         self.save_button = QPushButton("Save")
 
         # Setează fontul pentru widget-uri
-        font = QFont("Consolas", 18)
+        font = QFont("Consolas", 16)
         self.profile_name_label.setFont(font)
         self.profile_name_entry.setFont(font)
         self.save_button.setFont(font)
@@ -33,7 +34,7 @@ class ProfileWindow(QWidget):
         self.save_button.clicked.connect(self.save_profile_name)
         layout.addStretch()
         # Adaugă widget-urile la layout
-        layout.addWidget(self.profile_name_label)
+        layout.addWidget(self.profile_name_label,alignment=Qt.AlignCenter)
         layout.addWidget(self.profile_name_entry)
         layout.addWidget(self.save_button)
         layout.addStretch()
@@ -58,37 +59,23 @@ class ProfileWindow(QWidget):
         self.profile_name_label.setStyleSheet(f"color: {text_color.name()};")
 
         # Setează stilul pentru câmpul de text
-        self.profile_name_entry.setStyleSheet(f"background-color: {entry_bg.name()}; color: {entry_fg.name()};")
+        self.profile_name_entry.setStyleSheet(f"""
+            background-color: {self.theme.get("editor_background")};
+            color: {self.theme.get("editor_foreground")};
+            border: 1px solid {self.theme.get("border_color")};
+            padding: 5px;
+        """)
 
-        # Setează stilul pentru buton
-        self.save_button.setStyleSheet(f"""
-            background-color: {button_color.name()};
-            color: {text_color.name()};
-            border: none;
-            padding: 10px;
-        """)
-        self.save_button.setStyleSheet(f"""
-            background-color: {button_color.name()};
-            color: {text_color.name()};
-            border: none;
-            padding: 10px;
-        """)
-        self.save_button.setStyleSheet(f"""
-            background-color: {button_color.name()};
-            color: {text_color.name()};
-            border: none;
-            padding: 10px;
-        """)
         # Setează stilul pentru hover (necesită un stil CSS pentru hover)
         self.save_button.setStyleSheet(f"""
             QPushButton {{
-                background-color: {button_color.name()};
-                color: {text_color.name()};
-                border: none;
-                padding: 10px;
+                background-color: {self.theme.get("button_color")};
+                color: {self.theme.get("text_color")};
+                padding: 5px;
+                border: 1px solid {self.theme.get('border_color')};
             }}
             QPushButton:hover {{
-                background-color: {button_hover_color.name()};
+                background-color: {self.theme.get("button_hover_color")};
             }}
         """)
 

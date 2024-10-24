@@ -3,13 +3,13 @@
     "font_size": "20px",
     "editor_font_size": 25,
     "profile_name": "user",
-    "theme": "winter",
+    "theme": "dark-blue",
     "session": {
         "opened_folder": null,
         "opened_file": null
     },
     "credits": {
-        "username": "test_ade",
-        "password": "ArT456:/"
+        "username": "",
+        "password": ""
     }
 }
