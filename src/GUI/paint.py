@@ -50,8 +50,8 @@ class CanvasWidget(QWidget):
         self.update()
 
 class PaintApp(QMainWindow):
-    def __init__(self, theme):
-        super().__init__()
+    def __init__(self, theme,parent=None):
+        super().__init__(parent)
 
         self.setWindowTitle("Paint Mode")
         self.setGeometry(100, 100, 1000, 600)

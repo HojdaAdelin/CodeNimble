@@ -18,8 +18,8 @@ class PbinfoInterface(QMainWindow):
     SUBMIT_URL = 'https://new.pbinfo.ro/probleme/incarcare-solutie/1'
     SOLUTION_URL_TEMPLATE = 'https://new.pbinfo.ro/json/solutie/'
 
-    def __init__(self, text, theme=None, config=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, text, theme=None, config=None,parent=None, *args, **kwargs):
+        super().__init__(parent,*args, **kwargs)
         
         self.theme = theme or {}
         self.config = config or {}

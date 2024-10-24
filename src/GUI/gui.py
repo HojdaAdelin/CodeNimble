@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QSplitter, QMainWindow, QMenu, QVBoxLayout, QWidget
 from PySide6.QtGui import QIcon, QAction, QTextCursor
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QCoreApplication
 import json
 from GUI import text_editor
 from GUI import info_win
@@ -134,6 +134,7 @@ class MainView(QMainWindow):
         # Aplicarea temei "dark"
         self.load_theme()
         session.session_engine(self)
+
 
     def create_menu(self):
         menubar = self.menuBar()
@@ -345,11 +346,11 @@ class MainView(QMainWindow):
         session.reset_session()
 
     def pbinfo_tools_core(self):
-        self.pbinfo_win = pbinfo.PbinfoInterface(self.editor, self.theme, self.config)
+        self.pbinfo_win = pbinfo.PbinfoInterface(self.editor, self.theme, self.config,parent=self)
         self.pbinfo_win.show()
 
     def kilo_tools_core(self):
-        self.kilo_win = kilo_tools.Kilotools(self.theme)
+        self.kilo_win = kilo_tools.Kilotools(self.theme,parent=self)
         self.kilo_win.show()
 
     def dark_theme_core(self):
@@ -371,7 +372,7 @@ class MainView(QMainWindow):
         run.run(self.editor, self.file_manager,self)
 
     def paint_core(self):
-        self.paint_window = paint.PaintApp(self.theme)
+        self.paint_window = paint.PaintApp(self.theme,parent=self)
         self.paint_window.show()
 
     def cpp_template_core(self):

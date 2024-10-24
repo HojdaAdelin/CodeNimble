@@ -5,7 +5,7 @@ import sys
 from Tools import scrap
 
 def get_current_version():
-    return "2.0"
+    return "2.1.1"
 
 class VersionWindow(QWidget):
     def __init__(self, theme=None):
