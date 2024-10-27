@@ -22,6 +22,7 @@ from Core import view_manager
 from Core import theme_manager
 from Core import session
 from Tools import pbinfo
+from Update import internal
 import sys
 import os
 
@@ -44,6 +45,7 @@ class MainView(QMainWindow):
                 "editor_font_size": "20",
                 "profile_name": "user",
                 "theme": "dark",
+                "version": "",
                 "session": {
                     "opened_folder": "",
                     "opened_file": ""
@@ -151,6 +153,9 @@ class MainView(QMainWindow):
         version_action = QAction("Version", self)
         version_action.triggered.connect(self.open_version_win)
         home_menu.addAction(version_action)
+        check_for_updates_action = QAction("Check for updates", self)
+        check_for_updates_action.triggered.connect(self.update_core)
+        home_menu.addAction(check_for_updates_action)
         log_action = QAction("Change log", self)
         log_action.triggered.connect(self.log_web)
         home_menu.addAction(log_action)
@@ -331,6 +336,9 @@ class MainView(QMainWindow):
         menubar.addMenu(template_menu)
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
+
+    def update_core(self):
+        internal.check_for_updates()
 
     def auth_details(self):
         author_info = "// Author: \n// School: \n// Date: \n// Specific algorithm:\n"

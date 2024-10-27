@@ -4,6 +4,7 @@
 
 1. Monokai & winter themes
 2. New inbox messages
+3. Update system(BETA)
 
 ### Fixed/Changes:
 

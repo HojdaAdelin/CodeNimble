@@ -1,0 +1,16 @@
+{
+    "font_family": "Arial",
+    "font_size": "20px",
+    "editor_font_size": "20",
+    "profile_name": "user",
+    "theme": "dark",
+    "version": "2.1",
+    "session": {
+        "opened_folder": "",
+        "opened_file": ""
+    },
+    "credits": {
+        "username": "",
+        "password": ""
+    }
+}
