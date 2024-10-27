@@ -12,10 +12,11 @@ class SuggestionManager:
             "long", "register", "return", "short", "signed", "sizeof", "static",
             "struct", "switch", "typedef", "union", "unsigned", "void", "volatile",
             "class", "namespace", "try", "catch", "throw", "public", "private", "protected",
-            "virtual", "friend", "operator", "template", "this", "new", "delete"
+            "virtual", "friend", "operator", "template", "this", "new", "delete","vector",
+            "queue", "map", "unordered_map"
         ]
         self.functions = [
-            "cout", "cin", "endl", "printf", "scanf", "malloc", "free", "memcpy", "strlen"
+            "cout", "cin", "endl", "printf", "scanf", "malloc", "free", "memcpy", "strlen", "strchr", "strcmp"
         ]
         self.completer = None
 
@@ -458,7 +459,7 @@ class CPPHighlighter(QSyntaxHighlighter):
         # Format pentru keyword-uri
         keyword_format = QTextCharFormat()
         keyword_format.setForeground(QColor(self.theme.get("keyword_color", "#C678DD")))
-        keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin|short|import|print|printf|max|min)\b'
+        keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin|short|import|print|printf|max|min|strchr|strlen|strcmp)\b'
         self.add_mapping(keywords, keyword_format)
 
         # Format pentru simboluri

@@ -12,6 +12,7 @@
 3. Changed profile & new file dialog interfaces
 4. Go to line, find & replace redesign
 5. Fixed some interfaces exit when close the main instance
+6. Changed autocompletion keywords & highlighter
 
 # Version 2.1
 
