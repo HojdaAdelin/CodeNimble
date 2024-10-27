@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QApplication,QSplitter, QMainWindow, QMenuBar, QMenu, QVBoxLayout, QWidget, QHBoxLayout
+from PySide6.QtWidgets import QSplitter, QMainWindow, QMenu, QVBoxLayout, QWidget
 from PySide6.QtGui import QIcon, QAction, QTextCursor
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QCoreApplication
 import json
 from GUI import text_editor
 from GUI import info_win
@@ -22,6 +22,7 @@ from Core import view_manager
 from Core import theme_manager
 from Core import session
 from Tools import pbinfo
+from Update import internal
 import sys
 import os
 
@@ -44,6 +45,7 @@ class MainView(QMainWindow):
                 "editor_font_size": "20",
                 "profile_name": "user",
                 "theme": "dark",
+                "version": "",
                 "session": {
                     "opened_folder": "",
                     "opened_file": ""
@@ -135,6 +137,7 @@ class MainView(QMainWindow):
         self.load_theme()
         session.session_engine(self)
 
+
     def create_menu(self):
         menubar = self.menuBar()
         # Crearea meniurilor și acțiunilor
@@ -150,6 +153,9 @@ class MainView(QMainWindow):
         version_action = QAction("Version", self)
         version_action.triggered.connect(self.open_version_win)
         home_menu.addAction(version_action)
+        check_for_updates_action = QAction("Check for updates", self)
+        check_for_updates_action.triggered.connect(self.update_core)
+        home_menu.addAction(check_for_updates_action)
         log_action = QAction("Change log", self)
         log_action.triggered.connect(self.log_web)
         home_menu.addAction(log_action)
@@ -331,6 +337,9 @@ class MainView(QMainWindow):
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
 
+    def update_core(self):
+        internal.check_for_updates()
+
     def auth_details(self):
         author_info = "// Author: \n// School: \n// Date: \n// Specific algorithm:\n"
         cursor = self.editor.textCursor() 
@@ -345,11 +354,11 @@ class MainView(QMainWindow):
         session.reset_session()
 
     def pbinfo_tools_core(self):
-        self.pbinfo_win = pbinfo.PbinfoInterface(self.editor, self.theme, self.config)
+        self.pbinfo_win = pbinfo.PbinfoInterface(self.editor, self.theme, self.config,parent=self)
         self.pbinfo_win.show()
 
     def kilo_tools_core(self):
-        self.kilo_win = kilo_tools.Kilotools(self.theme)
+        self.kilo_win = kilo_tools.Kilotools(self.theme,parent=self)
         self.kilo_win.show()
 
     def dark_theme_core(self):
@@ -365,13 +374,13 @@ class MainView(QMainWindow):
         self.theme_win = self.theme_manager.manager_view()
 
     def pre_input_run_core(self):
-        run.pre_input_run(self.editor, self.right_panel, self.file_manager)
+        run.pre_input_run(self.editor, self.right_panel, self.file_manager,self)
 
     def run_core(self):
-        run.run(self.editor, self.file_manager)
+        run.run(self.editor, self.file_manager,self)
 
     def paint_core(self):
-        self.paint_window = paint.PaintApp(self.theme)
+        self.paint_window = paint.PaintApp(self.theme,parent=self)
         self.paint_window.show()
 
     def cpp_template_core(self):
@@ -450,23 +459,18 @@ class MainView(QMainWindow):
 
     def open_folder_core(self):
         self.file_manager.open_folder(self.tree_view, self)
-        self.status_bar.toggle_inbox_icon("Opened a folder!")
 
     def close_folder_core(self):
         self.file_manager.close_folder(self.tree_view, self)
-        self.status_bar.toggle_inbox_icon("Closed the folder!")
 
     def save_file_core(self):
         self.file_manager.save_file(self.editor)
-        self.status_bar.toggle_inbox_icon("Saved the file!")
 
     def save_as_file_core(self):
         self.file_manager.save_as_file(self.editor)
-        self.status_bar.toggle_inbox_icon("Saved a file as!")
 
     def open_file_core(self):
         self.file_manager.open_file(self.editor, self.tab_bar)
-        self.status_bar.toggle_inbox_icon("Opened a new file!")
 
     def exit_app(self):
         sys.exit(0)

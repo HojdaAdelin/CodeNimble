@@ -1,12 +1,12 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget
+from PySide6.QtWidgets import QLabel, QMainWindow
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon, QFont
 
 from Tools import kilonova
 
-class Kilotools(QWidget):
-    def __init__(self,theme):
-        super().__init__()
+class Kilotools(QMainWindow):
+    def __init__(self,theme,parent=None):
+        super().__init__(parent)
         self.theme = theme
         self.setWindowTitle("Code Nimble - Kilonova tools")
         self.setGeometry(100, 100, 600, 200)

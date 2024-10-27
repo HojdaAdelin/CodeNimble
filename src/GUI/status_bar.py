@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QLabel, QHBoxLayout, QWidget, QScrollArea, QVBoxLayout
+from PySide6.QtWidgets import QFrame, QLabel, QHBoxLayout, QWidget, QVBoxLayout
 from PySide6.QtGui import QPixmap, QMouseEvent, QFont, QEnterEvent
 from PySide6.QtCore import Qt, QTimer
 from Tools import scrap
@@ -23,6 +23,7 @@ class StatusBar(QFrame):
         self.timer_paused = False
         self.elapsed_time = timedelta(0)
         self.msg_log = []
+        self.msg_colors = []
         self.setStyleSheet(f"background-color: {self.based_color};")
         self.setup_ui()
         self.apply_theme(theme)
@@ -124,16 +125,16 @@ class StatusBar(QFrame):
             return
         self.inbox_popup = QWidget(self.main)
         self.inbox_popup.setStyleSheet(
-            "background-color: rgba(0, 0, 0, 180); color: white; border-radius: 5px; padding: 5px;"
+            "background-color: rgba(0, 0, 0, 80); color: white; border-radius: 5px; padding: 5px;"
         )
 
         # Creează un layout vertical pentru a afișa toate mesajele
         layout = QVBoxLayout(self.inbox_popup)
 
         # Adaugă fiecare mesaj din msg_log într-un QLabel
-        for message in reversed(self.msg_log):  # Afișează mesajele în ordinea inversă
+        for i, message in enumerate(reversed(self.msg_log)):  # Afișează mesajele în ordinea inversă
             msg_label = QLabel(message)
-            msg_label.setStyleSheet("color: white;")
+            msg_label.setStyleSheet(f"color: {self.msg_colors[-(i+1)]};")  # Aplica culoarea corespunzătoare
             layout.addWidget(msg_label)
 
         # Ajustează dimensiunea popup-ului în funcție de conținut
@@ -159,17 +160,17 @@ class StatusBar(QFrame):
         # Ascunde popup-ul când acesta pierde focusul
         self.inbox_popup.hide()
 
-    def toggle_inbox_icon(self, text):
+    def toggle_inbox_icon(self, text, color="#FFFFFF"):
         update_icon_path = "images/bell-update.png"
         new_pixmap = QPixmap(update_icon_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.server_icon.setPixmap(new_pixmap)
-        self.popup_inbox(text)
+        self.popup_inbox(text, color)
 
-    def popup_inbox(self, text):
+    def popup_inbox(self, text, color):
         # Creează un QLabel care va funcționa ca popup pe fereastra principală (self.main)
         self.popup_label = QLabel(text, self.main)  # Adaugă pe self.main, nu pe self (status bar)
         self.popup_label.setStyleSheet(
-            "background-color: rgba(0, 0, 0, 180); color: white; border-radius: 5px; padding: 5px;"
+            f"background-color: rgba(0, 0, 0, 80); color: {color}; border-radius: 5px; padding: 5px;"
         )
 
         # Ajustează dimensiunea în funcție de text
@@ -187,6 +188,7 @@ class StatusBar(QFrame):
         self.popup_label.raise_()
         self.popup_label.show()
         self.msg_log.append(text)
+        self.msg_colors.append(color)
 
         # Folosește un timer pentru a ascunde popup-ul după 3 secunde
         QTimer.singleShot(2000, self.popup_label.hide)

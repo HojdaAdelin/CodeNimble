@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QTextEdit, QMessageBox, QGridLayout, QWidget
+from PySide6.QtWidgets import QMainWindow, QLabel, QLineEdit, QPushButton, QTextEdit, QMessageBox, QGridLayout, QWidget
 from PySide6.QtGui import QIcon, QFont
 from PySide6.QtCore import Qt
 import json
@@ -6,7 +6,6 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import asyncio
-from pyee import AsyncIOEventEmitter
 from aiortc import RTCPeerConnection
 import time
 
@@ -19,8 +18,8 @@ class PbinfoInterface(QMainWindow):
     SUBMIT_URL = 'https://new.pbinfo.ro/probleme/incarcare-solutie/1'
     SOLUTION_URL_TEMPLATE = 'https://new.pbinfo.ro/json/solutie/'
 
-    def __init__(self, text, theme=None, config=None, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, text, theme=None, config=None,parent=None, *args, **kwargs):
+        super().__init__(parent,*args, **kwargs)
         
         self.theme = theme or {}
         self.config = config or {}

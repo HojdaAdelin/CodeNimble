@@ -104,16 +104,13 @@ class FetchWindow(QWidget):
         
         if platform == "Pbinfo":
             intrare, iesire = fetch.fetch_pbinfo(self.id.text().strip())
-            self.right_panel.browser.setUrl(f"https://www.pbinfo.ro/probleme/{self.id.text().strip()}")
         elif platform == "Kilonova":
             intrare, iesire = fetch.fetch_kilonova(self.id.text().strip())
-            self.right_panel.browser.setUrl(f"https://kilonova.ro/problems/{self.id.text().strip()}")
         elif platform == "Codeforces":
             contest_id = self.contest_id_for_cf.text().strip()
             intrare, iesire = fetch.fetch_codeforce(contest_id=contest_id, problem_id=problem_id)
         elif platform == "AtCoder":
             intrare, iesire = fetch.fetch_atcoder(self.id.text().strip())
-            self.right_panel.browser.setUrl(f"{self.id.text().strip()}")
         else:
             QMessageBox.critical(self, "Error", "Invalid platform!")
             return
@@ -123,4 +120,4 @@ class FetchWindow(QWidget):
         self.right_panel.expected_box.clear()
         self.right_panel.expected_box.setPlainText(iesire)
         self.right_panel.functions.setItemText(0, f"Testing-{platform}#{self.id.text().strip()}")
-        self.right_panel.functions.setItemText(1, f"Problem viewer-{platform}#{self.id.text().strip()}")
+        

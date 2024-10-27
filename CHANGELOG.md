@@ -1,3 +1,20 @@
+# Version 2.1.1
+
+### Added:
+
+1. Monokai & winter themes
+2. New inbox messages
+3. Update system(BETA)
+
+### Fixed/Changes:
+
+1. Fixed application size -> problem viewer can't be used for now
+2. Changed inbox style
+3. Changed profile & new file dialog interfaces
+4. Go to line, find & replace redesign
+5. Fixed some interfaces exit when close the main instance
+6. Changed autocompletion keywords & highlighter
+
 # Version 2.1
 
 ### Major improvements:

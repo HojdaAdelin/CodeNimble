@@ -87,9 +87,11 @@ class FileManager:
             treeview.model.setRootPath(foldername)
             treeview.tree.setRootIndex(treeview.model.index(foldername))
             win.splitter.setSizes([250] + win.splitter.sizes()[1:])
+            win.status_bar.toggle_inbox_icon(f"Opened: {foldername}")
 
     def close_folder(self, treeview, win):
         if self.opened_foldername:
+            win.status_bar.toggle_inbox_icon(f"Closed: {self.opened_foldername}", "orange")
             self.opened_foldername = None
             treeview.model.setRootPath(QDir.rootPath())
             treeview.tree.setRootIndex(treeview.model.index(QDir.rootPath()))
@@ -153,22 +155,23 @@ class FileManager:
             # Apply styles to the text box
             self.text_box.setStyleSheet(f"""
                 QLineEdit {{
-                    background-color: {theme['editor_background']};
-                    color: {theme['text_color']};
-                    border: none;
+                    background-color: {theme.get("editor_background")};
+                    color: {theme.get("editor_foreground")};
+                    border: 1px solid {theme.get("border_color")};
+                    padding: 5px;
                 }}
             """)
 
             # Apply styles to the create button
             self.create_button.setStyleSheet(f"""
                 QPushButton {{
-                    background-color: {theme['button_color']};
-                    color: {theme['text_color']};
-                    border: none;
-                    padding: 5px 10px;
+                    background-color: {theme.get("button_color")};
+                    color: {theme.get("text_color")};
+                    padding: 5px;
+                    border: 1px solid {theme.get('border_color')};
                 }}
                 QPushButton:hover {{
-                    background-color: {theme['button_hover_color']};
+                    background-color: {theme.get("button_hover_color")};
                 }}
             """)
 

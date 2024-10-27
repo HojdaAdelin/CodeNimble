@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFrame, QStackedWidget
+from PySide6.QtWidgets import QMainWindow, QWidget, QHBoxLayout, QPushButton,QFrame, QStackedWidget
 from PySide6.QtGui import QIcon, QColor, QPainter, QPen, QPixmap
-from PySide6.QtCore import Qt, QPoint, QRect
+from PySide6.QtCore import Qt
 import sys
 
 class CanvasWidget(QWidget):
@@ -50,8 +50,8 @@ class CanvasWidget(QWidget):
         self.update()
 
 class PaintApp(QMainWindow):
-    def __init__(self, theme):
-        super().__init__()
+    def __init__(self, theme,parent=None):
+        super().__init__(parent)
 
         self.setWindowTitle("Paint Mode")
         self.setGeometry(100, 100, 1000, 600)

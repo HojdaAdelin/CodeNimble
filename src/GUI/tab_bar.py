@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import (
-    QWidget, QHBoxLayout, QTabWidget, QTabBar, QMessageBox, QApplication
+    QWidget, QHBoxLayout, QTabWidget, QMessageBox
 )
-from PySide6.QtCore import Qt, QEvent, Signal, QObject
-from PySide6.QtGui import QFontMetrics, QFont, QMouseEvent, QIcon, QShortcut, QKeySequence
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QMouseEvent, QShortcut, QKeySequence
 import os
 
 class TabBar(QWidget):
