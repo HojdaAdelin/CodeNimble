@@ -153,7 +153,7 @@ class MainView(QMainWindow):
         version_action = QAction("Version", self)
         version_action.triggered.connect(self.open_version_win)
         home_menu.addAction(version_action)
-        check_for_updates_action = QAction("Check for updates", self)
+        check_for_updates_action = QAction("Check for updates (BETA)", self)
         check_for_updates_action.triggered.connect(self.update_core)
         home_menu.addAction(check_for_updates_action)
         log_action = QAction("Change log", self)
@@ -338,7 +338,7 @@ class MainView(QMainWindow):
         menubar.addMenu(utility_menu)
 
     def update_core(self):
-        internal.check_for_updates()
+        internal.check_for_updates(self.status_bar)
 
     def auth_details(self):
         author_info = "// Author: \n// School: \n// Date: \n// Specific algorithm:\n"

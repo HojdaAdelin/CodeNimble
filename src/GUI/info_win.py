@@ -5,7 +5,7 @@ import sys
 from Tools import scrap
 
 def get_current_version():
-    return "2.1.1"
+    return "2.1.5"
 
 class VersionWindow(QWidget):
     def __init__(self, theme=None):
@@ -18,7 +18,7 @@ class VersionWindow(QWidget):
         self.setWindowIcon(QIcon("images/logo.ico"))
         
         # Dimensiunile ferestrei
-        self.setFixedSize(300, 100)
+        self.setFixedSize(350, 100)
         
         # Setare layout
         layout = QVBoxLayout()
