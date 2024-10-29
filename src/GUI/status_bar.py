@@ -3,6 +3,7 @@ from PySide6.QtGui import QPixmap, QMouseEvent, QFont, QEnterEvent
 from PySide6.QtCore import Qt, QTimer
 from Tools import scrap
 from datetime import datetime, timedelta
+from datetime import datetime
 
 class StatusBar(QFrame):
     def __init__(self, text_widget, theme, main):
@@ -119,6 +120,13 @@ class StatusBar(QFrame):
             self.server_icon.setPixmap(new_pixmap)
             self.show_inbox_popup()
 
+    def time_sec_h(self):
+        acum = datetime.now()
+        ora = acum.hour
+        minut = acum.minute
+        secunda = acum.second
+        return ora, minut, secunda
+
     def show_inbox_popup(self):
         # Creează un QWidget care va afișa lista de mesaje
         if hasattr(self, 'inbox_popup') and self.inbox_popup.isVisible():
@@ -168,8 +176,10 @@ class StatusBar(QFrame):
         self.popup_inbox(text, color)
 
     def popup_inbox(self, text, color):
+        hour,minut, sec = self.time_sec_h()
+        msg = f"[{hour}:{minut}:{sec}] {text}"
         # Creează un QLabel care va funcționa ca popup pe fereastra principală (self.main)
-        self.popup_label = QLabel(text, self.main)  # Adaugă pe self.main, nu pe self (status bar)
+        self.popup_label = QLabel(msg, self.main)  # Adaugă pe self.main, nu pe self (status bar)
         self.popup_label.setFont(self.font)
         self.popup_label.setStyleSheet(
             f"background-color: rgba(0, 0, 0, 80); color: {color}; border-radius: 5px; padding: 5px;"
@@ -189,7 +199,7 @@ class StatusBar(QFrame):
         # Afișează și ridică popup-ul deasupra altor elemente
         self.popup_label.raise_()
         self.popup_label.show()
-        self.msg_log.append(text)
+        self.msg_log.append(msg)
         self.msg_colors.append(color)
 
         # Folosește un timer pentru a ascunde popup-ul după 3 secunde
