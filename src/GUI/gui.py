@@ -49,10 +49,6 @@ class MainView(QMainWindow):
                 "session": {
                     "opened_folder": "",
                     "opened_file": ""
-                },
-                "credits": {
-                    "username": "",
-                    "password": ""
                 }
             }
             with open('config.json', 'w') as file:
@@ -153,7 +149,7 @@ class MainView(QMainWindow):
         version_action = QAction("Version", self)
         version_action.triggered.connect(self.open_version_win)
         home_menu.addAction(version_action)
-        check_for_updates_action = QAction("Check for updates", self)
+        check_for_updates_action = QAction("Check for updates (BETA)", self)
         check_for_updates_action.triggered.connect(self.update_core)
         home_menu.addAction(check_for_updates_action)
         log_action = QAction("Change log", self)
@@ -321,7 +317,7 @@ class MainView(QMainWindow):
         paint_action.triggered.connect(self.paint_core)
         utility_menu.addAction(paint_action)
         utility_menu.addSeparator()
-        pbinfo_tools_action = QAction("Submit code", self)
+        pbinfo_tools_action = QAction("Pbinfo submit code", self)
         pbinfo_tools_action.triggered.connect(self.pbinfo_tools_core)
         utility_menu.addAction(pbinfo_tools_action)
         kilo_tools_action = QAction("Kilonova tools", self)
@@ -338,7 +334,7 @@ class MainView(QMainWindow):
         menubar.addMenu(utility_menu)
 
     def update_core(self):
-        internal.check_for_updates()
+        internal.check_for_updates(self.status_bar)
 
     def auth_details(self):
         author_info = "// Author: \n// School: \n// Date: \n// Specific algorithm:\n"

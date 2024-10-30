@@ -3,6 +3,7 @@ from PySide6.QtGui import QPixmap, QMouseEvent, QFont, QEnterEvent
 from PySide6.QtCore import Qt, QTimer
 from Tools import scrap
 from datetime import datetime, timedelta
+from datetime import datetime
 
 class StatusBar(QFrame):
     def __init__(self, text_widget, theme, main):
@@ -31,25 +32,25 @@ class StatusBar(QFrame):
 
     def setup_ui(self):
         font_size = 12
-        font = QFont("Arial", font_size)
+        self.font = QFont("Arial", font_size)
 
         self.new_version_label = QLabel("New version available", self)
-        self.new_version_label.setFont(font)
+        self.new_version_label.setFont(self.font)
         self.new_version_label.setStyleSheet("background-color: green; color: black;")
 
         self.num_stats_label = QLabel("Lines: 0, Words: 0 ", self)
-        self.num_stats_label.setFont(font)
+        self.num_stats_label.setFont(self.font)
         self.num_stats_label.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
         self.num_stats_label.setStyleSheet(f"color: {self.theme['text_color']};")
 
         self.status_label = QLabel(self.text, self)
-        self.status_label.setFont(font)
+        self.status_label.setFont(self.font)
         self.status_label.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
         self.status_label.setStyleSheet(f"color: {self.theme['text_color']};")
 
         # Setup server status label
         self.server_status = QLabel("Server: none", self)
-        self.server_status.setFont(font)
+        self.server_status.setFont(self.font)
         self.server_status.setAlignment(Qt.AlignVCenter | Qt.AlignRight)
         self.server_status.setStyleSheet(f"color: {self.theme['text_color']};")
 
@@ -69,7 +70,7 @@ class StatusBar(QFrame):
 
         # Timer setup (move to the left)
         self.timer = QLabel("00:00:00", self)
-        self.timer.setFont(font)
+        self.timer.setFont(self.font)
         self.timer.setStyleSheet(f"color: {self.theme['text_color']};")
         self.timer.setCursor(Qt.PointingHandCursor)
 
@@ -119,6 +120,13 @@ class StatusBar(QFrame):
             self.server_icon.setPixmap(new_pixmap)
             self.show_inbox_popup()
 
+    def time_sec_h(self):
+        acum = datetime.now()
+        ora = acum.hour
+        minut = acum.minute
+        secunda = acum.second
+        return ora, minut, secunda
+
     def show_inbox_popup(self):
         # Creează un QWidget care va afișa lista de mesaje
         if hasattr(self, 'inbox_popup') and self.inbox_popup.isVisible():
@@ -134,6 +142,7 @@ class StatusBar(QFrame):
         # Adaugă fiecare mesaj din msg_log într-un QLabel
         for i, message in enumerate(reversed(self.msg_log)):  # Afișează mesajele în ordinea inversă
             msg_label = QLabel(message)
+            msg_label.setFont(self.font)
             msg_label.setStyleSheet(f"color: {self.msg_colors[-(i+1)]};")  # Aplica culoarea corespunzătoare
             layout.addWidget(msg_label)
 
@@ -167,8 +176,11 @@ class StatusBar(QFrame):
         self.popup_inbox(text, color)
 
     def popup_inbox(self, text, color):
+        hour,minute, sec = self.time_sec_h()
+        msg = f"[{hour}:{minute:02}:{sec:02}] {text}"
         # Creează un QLabel care va funcționa ca popup pe fereastra principală (self.main)
-        self.popup_label = QLabel(text, self.main)  # Adaugă pe self.main, nu pe self (status bar)
+        self.popup_label = QLabel(msg, self.main)  # Adaugă pe self.main, nu pe self (status bar)
+        self.popup_label.setFont(self.font)
         self.popup_label.setStyleSheet(
             f"background-color: rgba(0, 0, 0, 80); color: {color}; border-radius: 5px; padding: 5px;"
         )
@@ -187,7 +199,7 @@ class StatusBar(QFrame):
         # Afișează și ridică popup-ul deasupra altor elemente
         self.popup_label.raise_()
         self.popup_label.show()
-        self.msg_log.append(text)
+        self.msg_log.append(msg)
         self.msg_colors.append(color)
 
         # Folosește un timer pentru a ascunde popup-ul după 3 secunde

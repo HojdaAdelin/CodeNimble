@@ -40,12 +40,16 @@ def main():
             source = os.path.join(extract_path, item)
             destination = os.path.join(".", item)
 
-            if os.path.isdir(source):
-                if os.path.exists(destination):
-                    shutil.rmtree(destination)
-                shutil.move(source, destination)
-            else:
-                shutil.move(source, destination)
+            try:
+                if os.path.isdir(source):
+                    if os.path.exists(destination):
+                        shutil.rmtree(destination)
+                    shutil.move(source, destination)
+                else:
+                    shutil.move(source, destination)
+                print(f"Successfully updated: {item}")
+            except Exception as e:
+                print(f"Failed to update {item}: {e}")
 
         os.remove(zip_path)
         shutil.rmtree(extract_path)

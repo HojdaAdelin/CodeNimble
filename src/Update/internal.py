@@ -18,7 +18,7 @@ def get_current_version():
     return "2.0"
 
 
-def check_for_updates():
+def check_for_updates(status_bar):
     current_version = get_current_version()
     print(f"Current version: {current_version}")
 
@@ -34,6 +34,7 @@ def check_for_updates():
             print(f"New version available: {latest_version}")
             update() 
         else:
+            status_bar.toggle_inbox_icon(f"Current version: {current_version}\nYou already have the latest version.")
             print("You already have the latest version.")
 
     except Exception as e:

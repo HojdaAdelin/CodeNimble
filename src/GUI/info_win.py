@@ -3,9 +3,12 @@ from PySide6.QtGui import QIcon, QFont, QColor
 from PySide6.QtCore import Qt
 import sys
 from Tools import scrap
+import json
 
 def get_current_version():
-    return "2.1.1"
+    with open("config.json", "r") as f:
+            config_data = json.load(f)    
+    return config_data.get("version")
 
 class VersionWindow(QWidget):
     def __init__(self, theme=None):
@@ -18,7 +21,7 @@ class VersionWindow(QWidget):
         self.setWindowIcon(QIcon("images/logo.ico"))
         
         # Dimensiunile ferestrei
-        self.setFixedSize(300, 100)
+        self.setFixedSize(350, 100)
         
         # Setare layout
         layout = QVBoxLayout()

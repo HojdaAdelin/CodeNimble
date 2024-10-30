@@ -1,10 +1,13 @@
-# Version 2.1.1
+# Version 2.1.5
 
 ### Added:
 
 1. Monokai & winter themes
 2. New inbox messages
 3. Update system(BETA)
+4. Time in inbox
+5. Documentation in right panel
+6. New folder for app data -> app_data_
 
 ### Fixed/Changes:
 
@@ -14,6 +17,7 @@
 4. Go to line, find & replace redesign
 5. Fixed some interfaces exit when close the main instance
 6. Changed autocompletion keywords & highlighter
+7. Redesign for template & theme interfaces
 
 # Version 2.1
 

@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import (
-    QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox
+    QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox, QSpacerItem
 )
 
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QFont
 import threading 
 import json
 from GUI import fetch_window
@@ -22,7 +23,7 @@ class RightPanel(QWidget):
         self.setLayout(self.main_layout)
 
         self.functions = QComboBox(self)
-        self.functions.addItems(["Testing", "Submit code", "Server"])
+        self.functions.addItems(["Testing", "Documentation", "Server"])
         self.functions.setItemText
         self.functions.currentIndexChanged.connect(self.toggle_tabs)
         self.main_layout.addWidget(self.functions)
@@ -141,11 +142,33 @@ class RightPanel(QWidget):
         # Adăugăm widget-ul „Server” în stacked_widget
         self.stacked_widget.addWidget(self.server_widget)
 
-        # Submit code
-        self.submit_widget = QWidget()
-        self.submit_layout = QVBoxLayout(self.submit_widget)
-        self.submit_widget.setLayout(self.submit_layout)
-        self.stacked_widget.addWidget(self.submit_widget)
+        # Documentation
+        self.documentation_widget = QWidget()
+        self.documenation_layout = QVBoxLayout(self.documentation_widget)
+        self.documentation_widget.setLayout(self.documenation_layout)
+
+        self.documentation_title = QLabel("Documentation", self)
+        self.documentation_title.setFont(QFont("Consolas", 16, QFont.Bold))
+        self.documenation_layout.addWidget(self.documentation_title, alignment=Qt.AlignHCenter | Qt.AlignTop)
+
+        self.autocomplete_label_bold = QLabel("Autocomplete keywords:", self)
+        self.autocomplete_label_bold.setFont(QFont("Consolas", 14, QFont.Bold))
+        self.documenation_layout.addWidget(self.autocomplete_label_bold, alignment=Qt.AlignLeft | Qt.AlignTop)
+
+        self.autocomplete_label_normal = QLabel("Type one of the following keywords with CAPS then hit ENTER: CPP, FOR, INT, IF, WHILE.", self)
+        self.autocomplete_label_normal.setFont(QFont("Consolas", 12))
+        self.autocomplete_label_normal.setWordWrap(True)  
+        self.documenation_layout.addWidget(self.autocomplete_label_normal, alignment=Qt.AlignLeft | Qt.AlignTop)
+
+        self.autocomplete_label_tip = QLabel("Tip: You can change the default counter of the FOR loop using FOR-your new counter.", self)
+        self.autocomplete_label_tip.setFont(QFont("Consolas", 14, QFont.Bold))
+        self.autocomplete_label_tip.setWordWrap(True)  
+        self.documenation_layout.addWidget(self.autocomplete_label_tip, alignment=Qt.AlignLeft | Qt.AlignTop)
+
+        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.documenation_layout.addItem(spacer)
+
+        self.stacked_widget.addWidget(self.documentation_widget)
         
         # Aplicarea temei
         self.apply_theme(self.theme)
@@ -158,7 +181,7 @@ class RightPanel(QWidget):
         if curr_funct == 0:
             self.show_testing_tab()
         elif curr_funct == 1:
-            self.show_submit_tab()
+            self.show_documentation_tab()
         elif curr_funct == 2:
             self.show_server_tab()
 
@@ -223,8 +246,8 @@ class RightPanel(QWidget):
     def show_server_tab(self):
         self.stacked_widget.setCurrentWidget(self.server_widget)
 
-    def show_submit_tab(self):
-        self.stacked_widget.setCurrentWidget(self.submit_widget)
+    def show_documentation_tab(self):
+        self.stacked_widget.setCurrentWidget(self.documentation_widget)
 
     def diff_core(self):
         self.diff_win = diff.OutputComparator(self, self.theme)
