@@ -3,14 +3,10 @@
     "font_size": "20px",
     "editor_font_size": "20",
     "profile_name": "user",
-    "theme": "neutral-green",
-    "version": "2.1.5",
+    "theme": "dark",
+    "version": "2.2",
     "session": {
         "opened_folder": "",
         "opened_file": ""
-    },
-    "credits": {
-        "username": "",
-        "password": ""
     }
 }

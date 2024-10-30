@@ -7,6 +7,7 @@
 3. Update system(BETA)
 4. Time in inbox
 5. Documentation in right panel
+6. New folder for app data -> app_data_
 
 ### Fixed/Changes:
 

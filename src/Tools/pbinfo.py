@@ -93,10 +93,13 @@ class PbinfoInterface(QMainWindow):
 
         self.password.setEchoMode(QLineEdit.Password)
 
-        if self.config.get("credits", {}).get("username"):
-            self.username.setText(self.config["credits"]["username"])
-        if self.config.get("credits", {}).get("password"):
-            self.password.setText(self.config["credits"]["password"])
+        with open('app_data_/data.json', 'r') as file:
+                self.credits = json.load(file)
+        
+        if self.credits.get("pbinfo", {}).get("username"):
+            self.username.setText(self.credits["pbinfo"]["username"])
+        if self.credits.get("pbinfo", {}).get("password"):
+            self.password.setText(self.credits["pbinfo"]["password"])
 
         layout.addWidget(self.username, 1, 0, Qt.AlignLeft)
         layout.addWidget(self.password, 1, 1, Qt.AlignCenter)
@@ -286,11 +289,11 @@ class PbinfoInterface(QMainWindow):
         solution_id = self.submit_solution(local_ip)
         self.sol_id.setText(f"Solution ID: {solution_id}")
         self.fetch_solution_score(solution_id)
-        with open('config.json', 'r') as config_file:
+        with open('app_data_/data.json', 'r') as config_file:
             config_data = json.load(config_file)
-        config_data["credits"]["username"] = self.login_payload['user']
-        config_data["credits"]["password"] = self.login_payload['parola']
-        with open('config.json', 'w') as config_file:
+        config_data["pbinfo"]["username"] = self.login_payload['user']
+        config_data["pbinfo"]["password"] = self.login_payload['parola']
+        with open('app_data_/data.json', 'w') as config_file:
             json.dump(config_data, config_file, indent=4)
 
     def get_textbox_code(self):

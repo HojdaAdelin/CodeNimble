@@ -43,16 +43,10 @@ def main():
             try:
                 if os.path.isdir(source):
                     if os.path.exists(destination):
-                        # Copiază fiecare fișier în parte pentru a suprascrie doar fișierele individuale
-                        for root, _, files in os.walk(source):
-                            dest_dir = os.path.join(destination, os.path.relpath(root, source))
-                            os.makedirs(dest_dir, exist_ok=True)
-                            for file in files:
-                                shutil.copy2(os.path.join(root, file), dest_dir)
-                    else:
-                        shutil.copytree(source, destination)  # Copiază dacă nu există
+                        shutil.rmtree(destination)
+                    shutil.move(source, destination)
                 else:
-                    shutil.copy2(source, destination)  # Suprascrie fișierul existent
+                    shutil.move(source, destination)
                 print(f"Successfully updated: {item}")
             except Exception as e:
                 print(f"Failed to update {item}: {e}")
