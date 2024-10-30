@@ -33,21 +33,25 @@ class ThemeManager:
                     background-color: {tm['background_color']};
                 }}
                 QPushButton {{
-                    background-color: {tm['button_color']};
-                    color: {tm['text_color']};
+                        background-color: {tm.get("button_color")};
+                        color: {tm.get("text_color")};
+                        padding: 5px;
+                        border: 1px solid {tm.get('border_color')};
                 }}
                 QPushButton:hover {{
-                    background-color: {tm['button_hover_color']};
+                    background-color: {tm.get("button_hover_color")};
                 }}
                 QLineEdit {{
-                    background-color: {tm['editor_background']};
-                    color: {tm['editor_foreground']};
-                    border: 1px solid {tm['border_color']};
+                    background-color: {tm.get("editor_background")};
+                    color: {tm.get("editor_foreground")};
+                    border: 1px solid {tm.get("border_color")};
+                    padding: 5px;
                 }}
                 QPlainTextEdit {{
-                    background-color: {tm['editor_background']};
-                    color: {tm['editor_foreground']};
-                    border: 1px solid {tm['border_color']};
+                    background-color: {tm.get("editor_background")};
+                    color: {tm.get("editor_foreground")};
+                    border: 1px solid {tm.get("border_color")};
+                    padding: 5px;
                 }}
                 QListWidget {{
                     background-color: {tm['editor_background']};

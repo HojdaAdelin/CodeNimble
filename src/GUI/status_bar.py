@@ -176,8 +176,8 @@ class StatusBar(QFrame):
         self.popup_inbox(text, color)
 
     def popup_inbox(self, text, color):
-        hour,minut, sec = self.time_sec_h()
-        msg = f"[{hour}:{minut}:{sec}] {text}"
+        hour,minute, sec = self.time_sec_h()
+        msg = f"[{hour}:{minute:02}:{sec:02}] {text}"
         # Creează un QLabel care va funcționa ca popup pe fereastra principală (self.main)
         self.popup_label = QLabel(msg, self.main)  # Adaugă pe self.main, nu pe self (status bar)
         self.popup_label.setFont(self.font)

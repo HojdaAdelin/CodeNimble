@@ -86,21 +86,25 @@ def apply_theme(widget, theme):
 
     widget.setStyleSheet(f"""
         QPushButton {{
-            background-color: {theme['button_color']};
-            color: {theme['text_color']};
+                background-color: {theme.get("button_color")};
+                color: {theme.get("text_color")};
+                padding: 5px;
+                border: 1px solid {theme.get('border_color')};
         }}
         QPushButton:hover {{
-            background-color: {theme['button_hover_color']};
+            background-color: {theme.get("button_hover_color")};
         }}
         QLineEdit {{
-            background-color: {theme['editor_background']};
-            color: {theme['editor_foreground']};
-            border: 1px solid {theme['border_color']};
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
         }}
         QPlainTextEdit {{
-            background-color: {theme['editor_background']};
-            color: {theme['editor_foreground']};
-            border: 1px solid {theme['border_color']};
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
         }}
         QListWidget {{
             background-color: {theme['editor_background']};
