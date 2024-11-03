@@ -1,4 +1,14 @@
-# Version 2.1.5
+# Version 2.5.0
+
+### Added:
+
+1. New theme light-fire
+
+### Fixed/Changes:
+
+1. New highlighter color for: light, dark, ocean, dark-blue themes
+
+# Version 2.2
 
 ### Added:
 

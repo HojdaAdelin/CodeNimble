@@ -45,7 +45,6 @@ class MainView(QMainWindow):
                 "editor_font_size": "20",
                 "profile_name": "user",
                 "theme": "dark",
-                "version": "",
                 "session": {
                     "opened_folder": "",
                     "opened_file": ""
