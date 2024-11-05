@@ -10,6 +10,7 @@ from GUI import fetch_window
 from GUI import diff
 from Server import server
 from Server import client
+from Tools import pbinfo
 
 class RightPanel(QWidget):
     def __init__(self, theme,win, *args, **kwargs):
@@ -23,7 +24,7 @@ class RightPanel(QWidget):
         self.setLayout(self.main_layout)
 
         self.functions = QComboBox(self)
-        self.functions.addItems(["Testing", "Documentation", "Server"])
+        self.functions.addItems(["Testing","Submit code", "Documentation", "Server"])
         self.functions.setItemText
         self.functions.currentIndexChanged.connect(self.toggle_tabs)
         self.main_layout.addWidget(self.functions)
@@ -97,11 +98,6 @@ class RightPanel(QWidget):
         self.server_widget = QWidget()
         self.server_layout = QVBoxLayout(self.server_widget)
         self.server_widget.setLayout(self.server_layout)
-        # Separator pentru grupul de butonae
-        self.separator = QFrame(self)
-        self.separator.setFrameShape(QFrame.HLine)
-        self.separator.setFrameShadow(QFrame.Sunken)
-        self.server_layout.addWidget(self.separator)
         # Password
         self.password_entry = QLineEdit(self)
         self.password_entry.setPlaceholderText("Password")
@@ -170,6 +166,50 @@ class RightPanel(QWidget):
 
         self.stacked_widget.addWidget(self.documentation_widget)
         
+        # Submit code
+
+        self.submit_code = QWidget()
+        self.submit_code_layout = QVBoxLayout(self.submit_code)
+        self.submit_code.setLayout(self.submit_code_layout)
+        
+        self.submit_platform = QComboBox(self)
+        self.submit_platform.addItems(["Pbinfo"])
+        self.submit_platform.setCurrentText("Pbinfo")
+        self.submit_code_layout.addWidget(self.submit_platform, alignment=Qt.AlignTop)
+        self.username = QLineEdit(self)
+        self.username.setPlaceholderText("Username")
+        self.submit_code_layout.addWidget(self.username, alignment=Qt.AlignTop)
+        self.password = QLineEdit(self)
+        self.password.setPlaceholderText("Password")
+        self.password.setEchoMode(QLineEdit.Password)
+        self.submit_code_layout.addWidget(self.password, alignment=Qt.AlignTop)
+        self.problem_id = QLineEdit(self)
+        self.problem_id.setPlaceholderText("Problem ID")
+        self.submit_code_layout.addWidget(self.problem_id, alignment=Qt.AlignTop)
+        self.submit_button = QPushButton("Submit", self)
+        self.submit_button.clicked.connect(self.submit_core)
+        self.submit_code_layout.addWidget(self.submit_button, alignment=Qt.AlignTop)
+
+        # From config
+        with open('app_data_/data.json', 'r') as file:
+                self.credits = json.load(file)
+        if self.credits.get("pbinfo", {}).get("username"):
+            self.username.setText(self.credits["pbinfo"]["username"])
+        if self.credits.get("pbinfo", {}).get("password"):
+            self.password.setText(self.credits["pbinfo"]["password"])
+
+        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.submit_code_layout.addItem(spacer)
+
+        self.result_label = QLabel("Score: ", self)
+        self.result_label.setFont(QFont("Consolas", 14, QFont.Bold))
+        self.submit_code_layout.addWidget(self.result_label, alignment=Qt.AlignBottom | Qt.AlignLeft)
+        self.source_id_label = QLabel("Source ID: ", self)
+        self.source_id_label.setFont(QFont("Consolas", 14, QFont.Bold))
+        self.submit_code_layout.addWidget(self.source_id_label, alignment=Qt.AlignBottom | Qt.AlignLeft)
+
+        self.stacked_widget.addWidget(self.submit_code)
+
         # Aplicarea temei
         self.apply_theme(self.theme)
         with open('config.json', 'r') as file:
@@ -181,8 +221,10 @@ class RightPanel(QWidget):
         if curr_funct == 0:
             self.show_testing_tab()
         elif curr_funct == 1:
-            self.show_documentation_tab()
+            self.show_submit_pbinfo_tab()
         elif curr_funct == 2:
+            self.show_documentation_tab()
+        elif curr_funct == 3:
             self.show_server_tab()
 
     def start_server_option(self):
@@ -237,8 +279,28 @@ class RightPanel(QWidget):
             self.entry.clear()
             self.append_to_textbox(f"You: {message}")
 
+    def submit_core(self):
+        if self.username.text().strip() == "":
+            QMessageBox.warning(self, "Code Nimble - Warning", "Username is empty!")
+            return
+        if self.password.text().strip() == "":
+            QMessageBox.warning(self, "Code Nimble - Warning", "Password is empty")
+            return
+        if self.problem_id.text().strip() == "":
+            QMessageBox.warning(self, "Code Nimble - Warning", "ID is empty!")
+            return
+        if self.win.editor.toPlainText().strip() == "":
+            QMessageBox.warning(self, "Code Nimble - Warning", "Source is empty!")
+            return
+        
+        self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
+        self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
+
     def append_to_textbox(self, message):
         self.server_textbox.appendPlainText(message)
+
+    def show_submit_pbinfo_tab(self):
+        self.stacked_widget.setCurrentWidget(self.submit_code)
 
     def show_testing_tab(self):
         self.stacked_widget.setCurrentWidget(self.testing_widget)
@@ -270,10 +332,16 @@ class RightPanel(QWidget):
                                      font-size: 14px;
                                      padding: 4px;
                                      """)
+        self.submit_platform.setStyleSheet(f"""
+                                     color: {theme.get('text_color')};
+                                     background-color: {theme.get('editor_background')};
+                                     border: 1px solid {theme.get('border_color')};
+                                     font-size: 14px;
+                                     padding: 4px;
+                                     """)
         self.input_label.setStyleSheet(f"color: {theme.get('text_color')};")
         self.output_label.setStyleSheet(f"color: {theme.get('text_color')};")
         self.expected_label.setStyleSheet(f"color: {theme.get('text_color')};")
-        self.separator.setStyleSheet(f"background-color: {theme.get('separator_color')};")
         self.input_box.setStyleSheet(f"""
             background-color: {theme.get("editor_background")};
             color: {theme.get("editor_foreground")};
@@ -308,6 +376,27 @@ class RightPanel(QWidget):
             padding: 5px;
         """)
 
+        self.username.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+
+        self.password.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+
+        self.problem_id.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+
         button_style = f"""
             QPushButton {{
                 background-color: {theme.get("button_color")};
@@ -325,3 +414,4 @@ class RightPanel(QWidget):
         self.connect_button.setStyleSheet(button_style)
         self.disconnect_button.setStyleSheet(button_style)
         self.start_server.setStyleSheet(button_style)
+        self.submit_button.setStyleSheet(button_style)

@@ -3,6 +3,7 @@
 ### Added:
 
 1. New theme light-fire
+2. Added a new menu in right panel "Submit code" that will host the submit function on platforms
 
 ### Fixed/Changes:
 

@@ -316,8 +316,8 @@ class MainView(QMainWindow):
         paint_action.triggered.connect(self.paint_core)
         utility_menu.addAction(paint_action)
         utility_menu.addSeparator()
-        pbinfo_tools_action = QAction("Pbinfo submit code", self)
-        pbinfo_tools_action.triggered.connect(self.pbinfo_tools_core)
+        pbinfo_tools_action = QAction("Quick submit", self)
+        #pbinfo_tools_action.triggered.connect(self.pbinfo_tools_core)
         utility_menu.addAction(pbinfo_tools_action)
         kilo_tools_action = QAction("Kilonova tools", self)
         kilo_tools_action.triggered.connect(self.kilo_tools_core)
@@ -348,9 +348,11 @@ class MainView(QMainWindow):
     def reset_session_core(self):
         session.reset_session()
 
+    """
     def pbinfo_tools_core(self):
         self.pbinfo_win = pbinfo.PbinfoInterface(self.editor, self.theme, self.config,parent=self)
         self.pbinfo_win.show()
+    """
 
     def kilo_tools_core(self):
         self.kilo_win = kilo_tools.Kilotools(self.theme,parent=self)

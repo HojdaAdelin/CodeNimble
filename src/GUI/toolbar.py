@@ -8,7 +8,7 @@ class ToolBar(QWidget):
         # Layout
         self.layout = QVBoxLayout(self)
         self.setLayout(self.layout)
-        self.submit_button = QPushButton(self, text="Submit code", clicked=self.submit_core)
+        self.submit_button = QPushButton(self, text="Quick submit", clicked=self.submit_core)
         self.layout.addWidget(self.submit_button)
         self.apply_theme(self.theme)
 
