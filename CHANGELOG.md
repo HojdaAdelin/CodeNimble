@@ -8,6 +8,7 @@
 ### Fixed/Changes:
 
 1. New highlighter color for: light, dark, ocean, dark-blue themes
+2. Fixed autocompletion templates in editor
 
 # Version 2.2
 
