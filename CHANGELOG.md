@@ -4,6 +4,7 @@
 
 1. New theme light-fire
 2. Added a new menu in right panel "Submit code" that will host the submit function on platforms
+3. Extended the functionality of the Testing tab by adding up to 5 test sets
 
 ### Fixed/Changes:
 

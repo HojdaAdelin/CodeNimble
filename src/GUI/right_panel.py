@@ -33,67 +33,90 @@ class RightPanel(QWidget):
         self.stacked_widget = QStackedWidget()
         self.main_layout.addWidget(self.stacked_widget)
         
-        # Crearea tab-ului „Testing”
+
+
+
+        # Testing tab
         self.testing_widget = QWidget()
         self.testing_layout = QGridLayout(self.testing_widget)
         self.testing_widget.setLayout(self.testing_layout)
-        
+
         self.layout = self.testing_layout
         self.layout.setContentsMargins(10, 10, 10, 10)
         self.layout.setSpacing(10)
-        
+
         self.layout.setColumnStretch(0, 1)
-        self.layout.setRowStretch(0, 0)
-        self.layout.setRowStretch(1, 1)
-        self.layout.setRowStretch(2, 0)
-        self.layout.setRowStretch(3, 1)
-        self.layout.setRowStretch(4, 0)
-        self.layout.setRowStretch(5, 1)
-        self.layout.setRowStretch(6, 0)
-        self.layout.setRowStretch(7, 0)
+        self.layout.setRowStretch(0, 0)  # Pentru combo box
+        self.layout.setRowStretch(1, 0)  # Pentru label input
+        self.layout.setRowStretch(2, 1)  # Pentru input box
+        self.layout.setRowStretch(3, 0)  # Pentru label output
+        self.layout.setRowStretch(4, 1)  # Pentru output box
+        self.layout.setRowStretch(5, 0)  # Pentru label expected
+        self.layout.setRowStretch(6, 1)  # Pentru expected box
+        self.layout.setRowStretch(7, 0)  # Pentru butonul diff
+        self.layout.setRowStretch(8, 0)  # Pentru butonul fetch
+
+        # Dicționar pentru stocarea test case-urilor
+        self.test_cases = {
+            "Test Case 1": {"input": "", "output": "", "expected": ""},
+            "Test Case 2": {"input": "", "output": "", "expected": ""},
+            "Test Case 3": {"input": "", "output": "", "expected": ""},
+            "Test Case 4": {"input": "", "output": "", "expected": ""},
+            "Test Case 5": {"input": "", "output": "", "expected": ""}
+        }
+
+        # Combo box pentru selectarea test case-ului
+        self.test_selector = QComboBox(self)
+        self.test_selector.addItems(list(self.test_cases.keys()))
+        self.test_selector.currentTextChanged.connect(self.change_test_case)
+        self.layout.addWidget(self.test_selector, 0, 0)
 
         # Label-ul pentru input
         self.input_label = QLabel("Input", self)
-        self.layout.addWidget(self.input_label, 0, 0, Qt.AlignHCenter)
+        self.layout.addWidget(self.input_label, 1, 0, Qt.AlignHCenter)
 
         # Textbox pentru input
         self.input_box = QTextEdit(self)
         self.input_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        self.layout.addWidget(self.input_box, 1, 0)
+        self.input_box.textChanged.connect(lambda: self.save_current_state("input"))
+        self.layout.addWidget(self.input_box, 2, 0)
 
         # Label-ul pentru output
         self.output_label = QLabel("Output", self)
-        self.layout.addWidget(self.output_label, 2, 0, Qt.AlignHCenter)
+        self.layout.addWidget(self.output_label, 3, 0, Qt.AlignHCenter)
 
         # Textbox pentru output
         self.output_box = QTextEdit(self)
         self.output_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.layout.addWidget(self.output_box, 3, 0)
+        self.output_box.textChanged.connect(lambda: self.save_current_state("output"))
+        self.layout.addWidget(self.output_box, 4, 0)
 
         # Label-ul pentru expected output
         self.expected_label = QLabel("Expected Output", self)
-        self.layout.addWidget(self.expected_label, 4, 0, Qt.AlignHCenter)
+        self.layout.addWidget(self.expected_label, 5, 0, Qt.AlignHCenter)
 
         # Textbox pentru expected output
         self.expected_box = QTextEdit(self)
         self.expected_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        self.layout.addWidget(self.expected_box, 5, 0)
+        self.expected_box.textChanged.connect(lambda: self.save_current_state("expected"))
+        self.layout.addWidget(self.expected_box, 6, 0)
 
         # Butonul pentru comparare
         self.diff = QPushButton("Output comparator", self, clicked=self.diff_core)
         self.diff.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.layout.addWidget(self.diff, 6, 0)
+        self.layout.addWidget(self.diff, 7, 0)
 
         # Butonul pentru fetch
         self.fetch = QPushButton("Fetch test cases", self, clicked=self.fetch_core)
         self.fetch.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.layout.addWidget(self.fetch, 7, 0)
+        self.layout.addWidget(self.fetch, 8, 0)
 
-        # Adăugăm widget-ul „Testing” în stacked_widget
+        # Adăugăm widget-ul „Testing" în stacked_widget
         self.stacked_widget.addWidget(self.testing_widget)
         
+
+
+
         # Crearea tab-ului „Server”
         self.server_widget = QWidget()
         self.server_layout = QVBoxLayout(self.server_widget)
@@ -215,6 +238,21 @@ class RightPanel(QWidget):
         with open('config.json', 'r') as file:
             self.config = json.load(file)
         self.user_name = self.config.get('profile_name')
+
+    def save_current_state(self, field):
+        current_test = self.test_selector.currentText()
+        if field == "input":
+            self.test_cases[current_test]["input"] = self.input_box.toPlainText()
+        elif field == "output":
+            self.test_cases[current_test]["output"] = self.output_box.toPlainText()
+        elif field == "expected":
+            self.test_cases[current_test]["expected"] = self.expected_box.toPlainText()
+
+    def change_test_case(self, test_case):
+        # Încărcăm datele salvate pentru test case-ul selectat
+        self.input_box.setText(self.test_cases[test_case]["input"])
+        self.output_box.setText(self.test_cases[test_case]["output"])
+        self.expected_box.setText(self.test_cases[test_case]["expected"])
 
     def toggle_tabs(self):
         curr_funct = self.functions.currentIndex()
@@ -370,6 +408,13 @@ class RightPanel(QWidget):
             padding: 5px;
         """)
         self.password_entry.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+
+        self.test_selector.setStyleSheet(f"""
             background-color: {theme.get("editor_background")};
             color: {theme.get("editor_foreground")};
             border: 1px solid {theme.get("border_color")};
