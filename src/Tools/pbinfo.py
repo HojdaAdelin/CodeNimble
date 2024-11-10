@@ -9,7 +9,6 @@ import asyncio
 from aiortc import RTCPeerConnection
 import time
 
-
 class PbinfoInterface(QMainWindow):
     BASE_URL = 'https://new.pbinfo.ro'
     LOGIN_PAGE_URL = f"{BASE_URL}/login"
@@ -18,21 +17,10 @@ class PbinfoInterface(QMainWindow):
     SUBMIT_URL = 'https://new.pbinfo.ro/probleme/incarcare-solutie/1'
     SOLUTION_URL_TEMPLATE = 'https://new.pbinfo.ro/json/solutie/'
 
-    def __init__(self, text, theme=None, config=None,parent=None, *args, **kwargs):
-        super().__init__(parent,*args, **kwargs)
-        
-        self.theme = theme or {}
-        self.config = config or {}
-        self.apply_theme(self.theme)
-        
-        self.setWindowTitle("Code Nimble - Pbinfo tools")
-        self.setGeometry(100, 100, 650, 550)
-        self.setWindowIcon(QIcon("images/logo.ico"))
-        self.setFixedSize(650, 550)
-        
-        self.text = text
-        
-        self.init_ui()
+    def __init__(self, source_id, result,*args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.source_id_label = source_id
+        self.result = result   
         self.login_payload = {
             'user': '',  # completare
             'parola': ''  # completare
@@ -46,105 +34,13 @@ class PbinfoInterface(QMainWindow):
             'id_runda': '0'
         }
 
-    def apply_theme(self, theme):
-        stylesheet = f"""
-            QWidget {{
-                background-color: {theme.get('background_color', '#333')};
-                color: {theme.get('text_color', '#fff')};
-            }}
-            QPushButton {{
-                background-color: {theme.get('button_color', '#555')};
-                color: {theme.get('button_text_color', '#fff')};
-                padding: 5px;
-                border: 1px solid {theme.get('border_color')};
-            }}
-            QPushButton:hover {{
-                background-color: {theme.get('button_hover_color', '#777')};
-            }}
-            QLineEdit, QTextEdit {{
-                background-color: {theme.get('editor_background', '#333')};
-                color: {theme.get('text_color', '#fff')};
-                border: 1px solid {theme.get("border_color")};
-                padding: 5px;
-            }}
-        """
-        self.setStyleSheet(stylesheet)
-
-    def init_ui(self):
-        central_widget = QWidget(self)
-        self.setCentralWidget(central_widget)
-        layout = QGridLayout(central_widget)
-
-        # Labels
-        username_label = QLabel("Username")
-        username_label.setFont(QFont("Arial", 14))
-        password_label = QLabel("Password")
-        password_label.setFont(QFont("Arial", 14))
-        problem_id_label = QLabel("Problem ID")
-        problem_id_label.setFont(QFont("Arial", 14))
-        layout.addWidget(username_label, 0, 0, Qt.AlignLeft)
-        layout.addWidget(password_label, 0, 1, Qt.AlignCenter)
-        layout.addWidget(problem_id_label, 0, 2, Qt.AlignRight)
-
-        # Entries
-        self.username = QLineEdit()
-        self.password = QLineEdit()
-        self.problem_id = QLineEdit()
-
-        self.password.setEchoMode(QLineEdit.Password)
-
-        with open('app_data_/data.json', 'r') as file:
-                self.credits = json.load(file)
+    def unit(self, username, password, problem_id, source):
         
-        if self.credits.get("pbinfo", {}).get("username"):
-            self.username.setText(self.credits["pbinfo"]["username"])
-        if self.credits.get("pbinfo", {}).get("password"):
-            self.password.setText(self.credits["pbinfo"]["password"])
 
-        layout.addWidget(self.username, 1, 0, Qt.AlignLeft)
-        layout.addWidget(self.password, 1, 1, Qt.AlignCenter)
-        layout.addWidget(self.problem_id, 1, 2, Qt.AlignRight)
-
-        # Buttons
-        self.mode1 = QPushButton("Copy from editor")
-        self.mode1.clicked.connect(self.get_textbox_code)
-        layout.addWidget(self.mode1, 2, 1, Qt.AlignCenter)
-
-        # Textbox
-        self.textbox = QTextEdit()
-        layout.addWidget(self.textbox, 3, 0, 1, 3)
-
-        # Submit Button
-        self.submit = QPushButton("Submit")
-        self.submit.clicked.connect(self.unit)
-        layout.addWidget(self.submit, 4, 1, Qt.AlignCenter)
-
-        # Solution ID and Score Labels
-        self.sol_id = QLabel("Solution ID:")
-        self.sol_id.setFont(QFont("Arial", 14))
-        self.score_result = QLabel("Score:")
-        self.score_result.setFont(QFont("Arial", 14))
-        layout.addWidget(self.sol_id, 5, 0, Qt.AlignLeft)
-        layout.addWidget(self.score_result, 5, 2, Qt.AlignRight)
-
-    def unit(self):
-        if self.username.text().strip() == "":
-            QMessageBox.warning(self, "Code Nimble - Warning", "Username is empty!")
-            return
-        if self.password.text().strip() == "":
-            QMessageBox.warning(self, "Code Nimble - Warning", "Password is empty")
-            return
-        if self.problem_id.text().strip() == "":
-            QMessageBox.warning(self, "Code Nimble - Warning", "ID is empty!")
-            return
-        if self.textbox.toPlainText().strip() == "":
-            QMessageBox.warning(self, "Code Nimble - Warning", "Code is empty!")
-            return
-
-        self.login_payload['user'] = self.username.text().strip()
-        self.login_payload['parola'] = self.password.text().strip()
-        self.submit_payload['id'] = self.problem_id.text().strip()
-        self.submit_payload['sursa'] = self.textbox.toPlainText()
+        self.login_payload['user'] = username
+        self.login_payload['parola'] = password
+        self.submit_payload['id'] = problem_id
+        self.submit_payload['sursa'] = source
 
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
@@ -250,10 +146,10 @@ class PbinfoInterface(QMainWindow):
 
                 if status == 'complete':
                     score = response_json['sursa']['scor']
-                    self.score_result.setText(f"Score: {score}")
+                    self.result.setText(f"Score: {score}")
                     break
                 else:
-                    self.score_result.setText("Score: Evaluating...")
+                    self.result.setText("Score: Evaluating...")
 
                 time.sleep(5)  # Așteaptă 5 secunde înainte de a reîncerca
 
@@ -287,7 +183,7 @@ class PbinfoInterface(QMainWindow):
             return
         local_ip = await self.get_local_ip()
         solution_id = self.submit_solution(local_ip)
-        self.sol_id.setText(f"Solution ID: {solution_id}")
+        self.source_id_label.setText(f"Solution ID: {solution_id}")
         self.fetch_solution_score(solution_id)
         with open('app_data_/data.json', 'r') as config_file:
             config_data = json.load(config_file)
@@ -295,8 +191,3 @@ class PbinfoInterface(QMainWindow):
         config_data["pbinfo"]["password"] = self.login_payload['parola']
         with open('app_data_/data.json', 'w') as config_file:
             json.dump(config_data, config_file, indent=4)
-
-    def get_textbox_code(self):
-        self.textbox.clear()
-        content = self.text.toPlainText()
-        self.textbox.setPlainText(content)

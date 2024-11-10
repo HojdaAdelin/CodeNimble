@@ -2,13 +2,12 @@
 
 ## Supported Versions
 
-### Since september 2024 the newest version of this software will be FULLY supported. However older versions will get support for a limited time. 
+### Since november 2024 the newest version of this software will be FULLY supported until a new update will come.
 
 | Version | Supported          | Support time |
 | ------- | ------------------ | ------------ |
-| 2.0     | :white_check_mark: | Until new update |
-| 1.5     | :white_check_mark: | 29.11.2024   |
-| < 1.5     | ❌ |               
+| Latest version     | :white_check_mark: | Until new update |
+| Older versions     | ❌ |    |             
 
 ## Reporting a Vulnerability
 

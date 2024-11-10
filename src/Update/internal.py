@@ -5,9 +5,9 @@ import sys
 import requests
 
 def get_current_version():
-    if os.path.exists("config.json"):
+    if os.path.exists("app_data_/version.json"):
         try:
-            with open("config.json", "r") as f:
+            with open("app_data_/version.json", "r") as f:
                 config_data = json.load(f)
             
             version = config_data.get("version")

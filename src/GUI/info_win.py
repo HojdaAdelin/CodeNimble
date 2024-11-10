@@ -6,7 +6,7 @@ from Tools import scrap
 import json
 
 def get_current_version():
-    with open("config.json", "r") as f:
+    with open("app_data_/version.json", "r") as f:
             config_data = json.load(f)    
     return config_data.get("version")
 

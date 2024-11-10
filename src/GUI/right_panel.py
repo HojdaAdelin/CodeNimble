@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox, QSpacerItem
+    QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox, QSpacerItem, QCheckBox
 )
 
 from PySide6.QtCore import Qt
@@ -10,6 +10,7 @@ from GUI import fetch_window
 from GUI import diff
 from Server import server
 from Server import client
+from Tools import pbinfo
 
 class RightPanel(QWidget):
     def __init__(self, theme,win, *args, **kwargs):
@@ -23,7 +24,7 @@ class RightPanel(QWidget):
         self.setLayout(self.main_layout)
 
         self.functions = QComboBox(self)
-        self.functions.addItems(["Testing", "Documentation", "Server"])
+        self.functions.addItems(["Testing","Submit code", "Documentation", "Server", "Settings"])
         self.functions.setItemText
         self.functions.currentIndexChanged.connect(self.toggle_tabs)
         self.main_layout.addWidget(self.functions)
@@ -32,76 +33,94 @@ class RightPanel(QWidget):
         self.stacked_widget = QStackedWidget()
         self.main_layout.addWidget(self.stacked_widget)
         
-        # Crearea tab-ului „Testing”
+
+
+
+        # Testing tab
         self.testing_widget = QWidget()
         self.testing_layout = QGridLayout(self.testing_widget)
         self.testing_widget.setLayout(self.testing_layout)
-        
+
         self.layout = self.testing_layout
         self.layout.setContentsMargins(10, 10, 10, 10)
         self.layout.setSpacing(10)
-        
+
         self.layout.setColumnStretch(0, 1)
-        self.layout.setRowStretch(0, 0)
-        self.layout.setRowStretch(1, 1)
-        self.layout.setRowStretch(2, 0)
-        self.layout.setRowStretch(3, 1)
-        self.layout.setRowStretch(4, 0)
-        self.layout.setRowStretch(5, 1)
-        self.layout.setRowStretch(6, 0)
-        self.layout.setRowStretch(7, 0)
+        self.layout.setRowStretch(0, 0)  # Pentru combo box
+        self.layout.setRowStretch(1, 0)  # Pentru label input
+        self.layout.setRowStretch(2, 1)  # Pentru input box
+        self.layout.setRowStretch(3, 0)  # Pentru label output
+        self.layout.setRowStretch(4, 1)  # Pentru output box
+        self.layout.setRowStretch(5, 0)  # Pentru label expected
+        self.layout.setRowStretch(6, 1)  # Pentru expected box
+        self.layout.setRowStretch(7, 0)  # Pentru butonul diff
+        self.layout.setRowStretch(8, 0)  # Pentru butonul fetch
+
+        # Dicționar pentru stocarea test case-urilor
+        self.test_cases = {
+            "Test Case 1": {"input": "", "output": "", "expected": ""},
+            "Test Case 2": {"input": "", "output": "", "expected": ""},
+            "Test Case 3": {"input": "", "output": "", "expected": ""},
+            "Test Case 4": {"input": "", "output": "", "expected": ""},
+            "Test Case 5": {"input": "", "output": "", "expected": ""}
+        }
+
+        # Combo box pentru selectarea test case-ului
+        self.test_selector = QComboBox(self)
+        self.test_selector.addItems(list(self.test_cases.keys()))
+        self.test_selector.currentTextChanged.connect(self.change_test_case)
+        self.layout.addWidget(self.test_selector, 0, 0)
 
         # Label-ul pentru input
         self.input_label = QLabel("Input", self)
-        self.layout.addWidget(self.input_label, 0, 0, Qt.AlignHCenter)
+        self.layout.addWidget(self.input_label, 1, 0, Qt.AlignHCenter)
 
         # Textbox pentru input
         self.input_box = QTextEdit(self)
         self.input_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        self.layout.addWidget(self.input_box, 1, 0)
+        self.input_box.textChanged.connect(lambda: self.save_current_state("input"))
+        self.layout.addWidget(self.input_box, 2, 0)
 
         # Label-ul pentru output
         self.output_label = QLabel("Output", self)
-        self.layout.addWidget(self.output_label, 2, 0, Qt.AlignHCenter)
+        self.layout.addWidget(self.output_label, 3, 0, Qt.AlignHCenter)
 
         # Textbox pentru output
         self.output_box = QTextEdit(self)
         self.output_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.layout.addWidget(self.output_box, 3, 0)
+        self.output_box.textChanged.connect(lambda: self.save_current_state("output"))
+        self.layout.addWidget(self.output_box, 4, 0)
 
         # Label-ul pentru expected output
         self.expected_label = QLabel("Expected Output", self)
-        self.layout.addWidget(self.expected_label, 4, 0, Qt.AlignHCenter)
+        self.layout.addWidget(self.expected_label, 5, 0, Qt.AlignHCenter)
 
         # Textbox pentru expected output
         self.expected_box = QTextEdit(self)
         self.expected_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        self.layout.addWidget(self.expected_box, 5, 0)
+        self.expected_box.textChanged.connect(lambda: self.save_current_state("expected"))
+        self.layout.addWidget(self.expected_box, 6, 0)
 
         # Butonul pentru comparare
         self.diff = QPushButton("Output comparator", self, clicked=self.diff_core)
         self.diff.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.layout.addWidget(self.diff, 6, 0)
+        self.layout.addWidget(self.diff, 7, 0)
 
         # Butonul pentru fetch
         self.fetch = QPushButton("Fetch test cases", self, clicked=self.fetch_core)
         self.fetch.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.layout.addWidget(self.fetch, 7, 0)
+        self.layout.addWidget(self.fetch, 8, 0)
 
-        # Adăugăm widget-ul „Testing” în stacked_widget
+        # Adăugăm widget-ul „Testing" în stacked_widget
         self.stacked_widget.addWidget(self.testing_widget)
         
+
+
+
         # Crearea tab-ului „Server”
         self.server_widget = QWidget()
         self.server_layout = QVBoxLayout(self.server_widget)
         self.server_widget.setLayout(self.server_layout)
-        # Separator pentru grupul de butonae
-        self.separator = QFrame(self)
-        self.separator.setFrameShape(QFrame.HLine)
-        self.separator.setFrameShadow(QFrame.Sunken)
-        self.server_layout.addWidget(self.separator)
         # Password
         self.password_entry = QLineEdit(self)
         self.password_entry.setPlaceholderText("Password")
@@ -147,43 +166,133 @@ class RightPanel(QWidget):
         self.documenation_layout = QVBoxLayout(self.documentation_widget)
         self.documentation_widget.setLayout(self.documenation_layout)
 
-        self.documentation_title = QLabel("Documentation", self)
-        self.documentation_title.setFont(QFont("Consolas", 16, QFont.Bold))
-        self.documenation_layout.addWidget(self.documentation_title, alignment=Qt.AlignHCenter | Qt.AlignTop)
+        # Text box pentru documentatie
+        self.documentation_textbox = QTextEdit(self)
+        self.documentation_textbox.setReadOnly(True)  # Setăm să fie doar pentru citire
+        self.documentation_textbox.setFont(QFont("Consolas", 12))
+        self.documentation_textbox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.documentation_textbox.setMinimumHeight(200)  # Poți ajusta valoarea dacă este necesar
 
-        self.autocomplete_label_bold = QLabel("Autocomplete keywords:", self)
-        self.autocomplete_label_bold.setFont(QFont("Consolas", 14, QFont.Bold))
-        self.documenation_layout.addWidget(self.autocomplete_label_bold, alignment=Qt.AlignLeft | Qt.AlignTop)
+        # Setăm textul complet al documentației
+        self.documentation_textbox.setHtml("""
+            <h1 style="font-size:16pt; font-weight:bold; text-align:center;">Documentation</h1>
+            <p><span style="font-size:14pt; font-weight:bold;">Autocomplete keywords:</span></p>
+            <p>Type one of the following keywords with CAPS then hit ENTER: CPP, FOR, INT, IF, WHILE.</p>
+            <p><span style="font-size:14pt; font-weight:bold;">Tip:</span> You can change the default counter of the FOR loop using FOR-your new counter.</p>
+        """)
 
-        self.autocomplete_label_normal = QLabel("Type one of the following keywords with CAPS then hit ENTER: CPP, FOR, INT, IF, WHILE.", self)
-        self.autocomplete_label_normal.setFont(QFont("Consolas", 12))
-        self.autocomplete_label_normal.setWordWrap(True)  
-        self.documenation_layout.addWidget(self.autocomplete_label_normal, alignment=Qt.AlignLeft | Qt.AlignTop)
-
-        self.autocomplete_label_tip = QLabel("Tip: You can change the default counter of the FOR loop using FOR-your new counter.", self)
-        self.autocomplete_label_tip.setFont(QFont("Consolas", 14, QFont.Bold))
-        self.autocomplete_label_tip.setWordWrap(True)  
-        self.documenation_layout.addWidget(self.autocomplete_label_tip, alignment=Qt.AlignLeft | Qt.AlignTop)
-
-        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self.documenation_layout.addItem(spacer)
+        self.documenation_layout.addWidget(self.documentation_textbox)
 
         self.stacked_widget.addWidget(self.documentation_widget)
         
-        # Aplicarea temei
-        self.apply_theme(self.theme)
+        # Submit code
+
+        self.submit_code = QWidget()
+        self.submit_code_layout = QVBoxLayout(self.submit_code)
+        self.submit_code.setLayout(self.submit_code_layout)
+        
+        self.submit_platform = QComboBox(self)
+        self.submit_platform.addItems(["Pbinfo"])
+        self.submit_platform.setCurrentText("Pbinfo")
+        self.submit_code_layout.addWidget(self.submit_platform, alignment=Qt.AlignTop)
+        self.username = QLineEdit(self)
+        self.username.setPlaceholderText("Username")
+        self.submit_code_layout.addWidget(self.username, alignment=Qt.AlignTop)
+        self.password = QLineEdit(self)
+        self.password.setPlaceholderText("Password")
+        self.password.setEchoMode(QLineEdit.Password)
+        self.submit_code_layout.addWidget(self.password, alignment=Qt.AlignTop)
+        self.problem_id = QLineEdit(self)
+        self.problem_id.setPlaceholderText("Problem ID")
+        self.submit_code_layout.addWidget(self.problem_id, alignment=Qt.AlignTop)
+        self.submit_button = QPushButton("Submit", self)
+        self.submit_button.clicked.connect(self.submit_core)
+        self.submit_code_layout.addWidget(self.submit_button, alignment=Qt.AlignTop)
+
+        # From config
+        with open('app_data_/data.json', 'r') as file:
+                self.credits = json.load(file)
+        if self.credits.get("pbinfo", {}).get("username"):
+            self.username.setText(self.credits["pbinfo"]["username"])
+        if self.credits.get("pbinfo", {}).get("password"):
+            self.password.setText(self.credits["pbinfo"]["password"])
+
+        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.submit_code_layout.addItem(spacer)
+
+        self.result_label = QLabel("Score: ", self)
+        self.result_label.setFont(QFont("Consolas", 14, QFont.Bold))
+        self.submit_code_layout.addWidget(self.result_label, alignment=Qt.AlignBottom | Qt.AlignLeft)
+        self.source_id_label = QLabel("Source ID: ", self)
+        self.source_id_label.setFont(QFont("Consolas", 14, QFont.Bold))
+        self.submit_code_layout.addWidget(self.source_id_label, alignment=Qt.AlignBottom | Qt.AlignLeft)
+
+        self.stacked_widget.addWidget(self.submit_code)
+
+        # Settings tab
         with open('config.json', 'r') as file:
             self.config = json.load(file)
+        
+
+        self.settings = QWidget()
+        self.settings_layout = QVBoxLayout(self.settings)
+        self.settings.setLayout(self.settings_layout)
+        val = self.config['startup']['pre_template']
+        self.pre_template = QCheckBox("Startup template", self)
+        if val == "0":
+            self.pre_template.setChecked(True)
+        self.settings_layout.addWidget(self.pre_template, alignment=Qt.AlignTop)
+        self.pre_template_items = QComboBox(self)
+        self.pre_template_items.addItems(["C++", "C++ Competitive", "C", "Java", "Html"])
+        self.settings_layout.addWidget(self.pre_template_items, alignment=Qt.AlignTop)
+
+        self.editor_font_label = QLabel("Editor font", self)
+        self.editor_font_label.setFont(QFont("Consolas", 12))
+        self.settings_layout.addWidget(self.editor_font_label, alignment=Qt.AlignTop)
+        self.editor_font = QLineEdit(self)
+        self.editor_font.setText(self.config["editor_font_size"])
+        self.settings_layout.addWidget(self.editor_font, alignment=Qt.AlignTop)
+
+        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.settings_layout.addItem(spacer)
+
+        self.save_button = QPushButton("Save", self)
+        self.save_button.clicked.connect(self.save_settings)
+        self.settings_layout.addWidget(self.save_button, alignment=Qt.AlignBottom)
+        
+        self.stacked_widget.addWidget(self.settings)
+
+        # Aplicarea temei
+        self.apply_theme(self.theme)
         self.user_name = self.config.get('profile_name')
+
+    def save_current_state(self, field):
+        current_test = self.test_selector.currentText()
+        if field == "input":
+            self.test_cases[current_test]["input"] = self.input_box.toPlainText()
+        elif field == "output":
+            self.test_cases[current_test]["output"] = self.output_box.toPlainText()
+        elif field == "expected":
+            self.test_cases[current_test]["expected"] = self.expected_box.toPlainText()
+
+    def change_test_case(self, test_case):
+        # Încărcăm datele salvate pentru test case-ul selectat
+        self.input_box.setText(self.test_cases[test_case]["input"])
+        self.output_box.setText(self.test_cases[test_case]["output"])
+        self.expected_box.setText(self.test_cases[test_case]["expected"])
 
     def toggle_tabs(self):
         curr_funct = self.functions.currentIndex()
         if curr_funct == 0:
             self.show_testing_tab()
         elif curr_funct == 1:
-            self.show_documentation_tab()
+            self.show_submit_pbinfo_tab()
         elif curr_funct == 2:
+            self.show_documentation_tab()
+        elif curr_funct == 3:
             self.show_server_tab()
+        elif curr_funct == 4:
+            self.show_settings_tab()
 
     def start_server_option(self):
         if self.password_entry.text() == "":
@@ -237,8 +346,43 @@ class RightPanel(QWidget):
             self.entry.clear()
             self.append_to_textbox(f"You: {message}")
 
+    def submit_core(self):
+        if self.username.text().strip() == "":
+            QMessageBox.warning(self, "Code Nimble - Warning", "Username is empty!")
+            return
+        if self.password.text().strip() == "":
+            QMessageBox.warning(self, "Code Nimble - Warning", "Password is empty")
+            return
+        if self.problem_id.text().strip() == "":
+            QMessageBox.warning(self, "Code Nimble - Warning", "ID is empty!")
+            return
+        if self.win.editor.toPlainText().strip() == "":
+            QMessageBox.warning(self, "Code Nimble - Warning", "Source is empty!")
+            return
+        
+        self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
+        self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
+
+    def save_settings(self):
+        self.config['editor_font_size'] = self.editor_font.text().strip()
+        if self.pre_template.isChecked():
+            self.config['startup']['pre_template'] = "0"
+            self.config['startup']['template'] = self.pre_template_items.currentText().strip()
+        else:
+            self.config['startup']['pre_template'] = "1"
+            self.config['startup']['template'] = ""
+        with open('config.json', 'w') as file:
+            json.dump(self.config, file,indent=4)
+        self.win.re_zoom(self.editor_font.text().strip())
+
     def append_to_textbox(self, message):
         self.server_textbox.appendPlainText(message)
+
+    def show_settings_tab(self):
+        self.stacked_widget.setCurrentWidget(self.settings)
+
+    def show_submit_pbinfo_tab(self):
+        self.stacked_widget.setCurrentWidget(self.submit_code)
 
     def show_testing_tab(self):
         self.stacked_widget.setCurrentWidget(self.testing_widget)
@@ -270,10 +414,16 @@ class RightPanel(QWidget):
                                      font-size: 14px;
                                      padding: 4px;
                                      """)
+        self.submit_platform.setStyleSheet(f"""
+                                     color: {theme.get('text_color')};
+                                     background-color: {theme.get('editor_background')};
+                                     border: 1px solid {theme.get('border_color')};
+                                     font-size: 14px;
+                                     padding: 4px;
+                                     """)
         self.input_label.setStyleSheet(f"color: {theme.get('text_color')};")
         self.output_label.setStyleSheet(f"color: {theme.get('text_color')};")
         self.expected_label.setStyleSheet(f"color: {theme.get('text_color')};")
-        self.separator.setStyleSheet(f"background-color: {theme.get('separator_color')};")
         self.input_box.setStyleSheet(f"""
             background-color: {theme.get("editor_background")};
             color: {theme.get("editor_foreground")};
@@ -301,7 +451,64 @@ class RightPanel(QWidget):
             border: 1px solid {theme.get("border_color")};
             padding: 5px;
         """)
+        self.pre_template_items.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+        self.pre_template.setStyleSheet(f"""
+            QCheckBox {{
+                color: {theme.get("text_color")};  /* Culoarea textului */
+                font-size: 16px;  /* Dimensiunea fontului */
+            }}
+            QCheckBox::indicator {{
+                border: 2px solid {theme.get("border_color")};  /* Bordura casetei de bifare */
+                width: 16px;  /* Lățimea casetei */
+                height: 16px;  /* Înălțimea casetei */
+                
+            }}
+            QCheckBox::indicator:checked {{
+                background-color: {theme.get("button_hover_color")};  /* Culoarea de fundal când este bifată */
+                border: 2px solid {theme.get("border_color")};  /* Bordura când este bifată */
+            }}
+            
+        """)
+        
         self.password_entry.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+        self.editor_font.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+        self.test_selector.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+
+        self.username.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+
+        self.password.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+
+        self.problem_id.setStyleSheet(f"""
             background-color: {theme.get("editor_background")};
             color: {theme.get("editor_foreground")};
             border: 1px solid {theme.get("border_color")};
@@ -325,3 +532,5 @@ class RightPanel(QWidget):
         self.connect_button.setStyleSheet(button_style)
         self.disconnect_button.setStyleSheet(button_style)
         self.start_server.setStyleSheet(button_style)
+        self.submit_button.setStyleSheet(button_style)
+        self.save_button.setStyleSheet(button_style)

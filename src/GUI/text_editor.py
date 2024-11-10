@@ -111,7 +111,7 @@ class CodeEditor(QPlainTextEdit):
         self.font = QFont("Courier", font_size)
         self.setFont(self.font)
         self.suggestion_manager.set_completer_font_size(font_size-5)
-
+        
     def apply_theme(self, theme):
         highlight_color = theme.get("highlight_color", "#ffff99")
         self.highlight_color = QColor(highlight_color)
@@ -299,47 +299,34 @@ class CodeEditor(QPlainTextEdit):
             "INT": "int () {\n\n}",
             "CPP": "#include <bits/stdc++.h>\n\nusing namespace std;\n\nint main() {\n\n    return 0;\n}"
         }
-        if current_line in completions or current_line.startswith("FOR-"):
-            # Obținem codul de completare de bază
-            if current_line in completions:
-                code = completions[current_line]
-            elif current_line.startswith("FOR-"):
-                # Extragem litera variabilei (de exemplu FOR-J => litera va fi 'J')
-                variable = current_line.split('-')[1] if len(current_line.split('-')) > 1 else 'i'
-                code = re.sub(r'\bi\b', variable.lower(), completions["FOR"])
-            
-            # Ștergem linia curentă și inserăm șablonul
+
+        if current_line.strip().startswith("FOR-"):
+            variable = current_line.split('-')[1] if len(current_line.split('-')) > 1 else 'i'
+            code = re.sub(r'\bi\b', variable.lower(), completions["FOR"])
+
             cursor.select(QTextCursor.BlockUnderCursor)
             cursor.removeSelectedText()
             cursor.insertText(code)
-
-            # Poziționăm cursorul la începutul blocului pentru a edita după inserție
-            cursor.movePosition(QTextCursor.StartOfBlock)
-
-            # Comportament specific pentru fiecare comandă
-            if current_line == "IF":
-                cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-            elif current_line.startswith("FOR"):
-                # Mutăm cursorul pentru a ajunge la prima poziție de editare (după 'n')
-                pos = code.index("n")  # Poziția lui 'n' în for(int i = 1; i <= n; i++) {...}
-                cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.Right, QTextCursor.MoveAnchor, pos + 1)  # Mutăm la poziția lui 'n'
-            elif current_line == "WHILE":
-                cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-            elif current_line == "INT":
-                cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-            elif current_line == "CPP":
-                cursor.movePosition(QTextCursor.StartOfBlock)
-                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
-            
-            # Setăm cursorul la poziția corectă pentru utilizator
             self.setTextCursor(cursor)
             return
 
-        # Check if the cursor is between brackets
+        for keyword, code_template in completions.items():
+            keyword_position = current_line.rfind(keyword)
+            if keyword_position != -1 and cursor.positionInBlock() == keyword_position + len(keyword):
+                code = code_template
+
+                # Ștergem doar keyword-ul și inserăm codul de completare
+                cursor.setPosition(cursor.block().position() + keyword_position, QTextCursor.KeepAnchor)
+                cursor.removeSelectedText()
+                cursor.insertText(code)
+
+                # Setăm cursorul pentru utilizator
+                cursor.movePosition(QTextCursor.StartOfBlock)
+                cursor.movePosition(QTextCursor.EndOfLine, QTextCursor.KeepAnchor)
+                self.setTextCursor(cursor)
+                return
+
+        # Dacă cursorul este între paranteze
         if self.isCursorBetweenBrackets(cursor):
             super().keyPressEvent(QKeyEvent(QEvent.KeyPress, Qt.Key_Return, Qt.NoModifier))
             self.insertPlainText(indent + "    ")

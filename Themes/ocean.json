@@ -17,11 +17,11 @@
     "status_bar_background": "#2A5674", 
     "ctn_words": "#3D6A82", 
 
-    "keyword_color": "#C678DD", 
-    "string_color": "#98C379", 
-    "comment_color": "#717a8a", 
-    "include_color": "#717a8a", 
-    "parenthesis_color": "#e06c75", 
-    "number_color": "#d19a66", 
-    "symbol_color": "#56b6c2"
+    "keyword_color": "#87CEEB",
+    "string_color": "#5EC17F",
+    "comment_color": "#67839A",
+    "include_color": "#67839A",
+    "parenthesis_color": "#FF7F7F",
+    "number_color": "#D3A06A",
+    "symbol_color": "#5BA5CF"
 }
