@@ -166,26 +166,22 @@ class RightPanel(QWidget):
         self.documenation_layout = QVBoxLayout(self.documentation_widget)
         self.documentation_widget.setLayout(self.documenation_layout)
 
-        self.documentation_title = QLabel("Documentation", self)
-        self.documentation_title.setFont(QFont("Consolas", 16, QFont.Bold))
-        self.documenation_layout.addWidget(self.documentation_title, alignment=Qt.AlignHCenter | Qt.AlignTop)
+        # Text box pentru documentatie
+        self.documentation_textbox = QTextEdit(self)
+        self.documentation_textbox.setReadOnly(True)  # Setăm să fie doar pentru citire
+        self.documentation_textbox.setFont(QFont("Consolas", 12))
+        self.documentation_textbox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.documentation_textbox.setMinimumHeight(200)  # Poți ajusta valoarea dacă este necesar
 
-        self.autocomplete_label_bold = QLabel("Autocomplete keywords:", self)
-        self.autocomplete_label_bold.setFont(QFont("Consolas", 14, QFont.Bold))
-        self.documenation_layout.addWidget(self.autocomplete_label_bold, alignment=Qt.AlignLeft | Qt.AlignTop)
+        # Setăm textul complet al documentației
+        self.documentation_textbox.setHtml("""
+            <h1 style="font-size:16pt; font-weight:bold; text-align:center;">Documentation</h1>
+            <p><span style="font-size:14pt; font-weight:bold;">Autocomplete keywords:</span></p>
+            <p>Type one of the following keywords with CAPS then hit ENTER: CPP, FOR, INT, IF, WHILE.</p>
+            <p><span style="font-size:14pt; font-weight:bold;">Tip:</span> You can change the default counter of the FOR loop using FOR-your new counter.</p>
+        """)
 
-        self.autocomplete_label_normal = QLabel("Type one of the following keywords with CAPS then hit ENTER: CPP, FOR, INT, IF, WHILE.", self)
-        self.autocomplete_label_normal.setFont(QFont("Consolas", 12))
-        self.autocomplete_label_normal.setWordWrap(True)  
-        self.documenation_layout.addWidget(self.autocomplete_label_normal, alignment=Qt.AlignLeft | Qt.AlignTop)
-
-        self.autocomplete_label_tip = QLabel("Tip: You can change the default counter of the FOR loop using FOR-your new counter.", self)
-        self.autocomplete_label_tip.setFont(QFont("Consolas", 14, QFont.Bold))
-        self.autocomplete_label_tip.setWordWrap(True)  
-        self.documenation_layout.addWidget(self.autocomplete_label_tip, alignment=Qt.AlignLeft | Qt.AlignTop)
-
-        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-        self.documenation_layout.addItem(spacer)
+        self.documenation_layout.addWidget(self.documentation_textbox)
 
         self.stacked_widget.addWidget(self.documentation_widget)
         

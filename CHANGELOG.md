@@ -10,6 +10,7 @@
 
 1. New highlighter color for: light, dark, ocean, dark-blue themes
 2. Fixed autocompletion templates in editor
+3. Fixed documentation bug
 
 # Version 2.2
 
