@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox, QSpacerItem
+    QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox, QSpacerItem, QCheckBox
 )
 
 from PySide6.QtCore import Qt
@@ -24,7 +24,7 @@ class RightPanel(QWidget):
         self.setLayout(self.main_layout)
 
         self.functions = QComboBox(self)
-        self.functions.addItems(["Testing","Submit code", "Documentation", "Server"])
+        self.functions.addItems(["Testing","Submit code", "Documentation", "Server", "Settings"])
         self.functions.setItemText
         self.functions.currentIndexChanged.connect(self.toggle_tabs)
         self.main_layout.addWidget(self.functions)
@@ -229,10 +229,41 @@ class RightPanel(QWidget):
 
         self.stacked_widget.addWidget(self.submit_code)
 
-        # Aplicarea temei
-        self.apply_theme(self.theme)
+        # Settings tab
         with open('config.json', 'r') as file:
             self.config = json.load(file)
+        
+
+        self.settings = QWidget()
+        self.settings_layout = QVBoxLayout(self.settings)
+        self.settings.setLayout(self.settings_layout)
+        val = self.config['startup']['pre_template']
+        self.pre_template = QCheckBox("Startup template", self)
+        if val == "0":
+            self.pre_template.setChecked(True)
+        self.settings_layout.addWidget(self.pre_template, alignment=Qt.AlignTop)
+        self.pre_template_items = QComboBox(self)
+        self.pre_template_items.addItems(["C++", "C++ Competitive", "C", "Java", "Html"])
+        self.settings_layout.addWidget(self.pre_template_items, alignment=Qt.AlignTop)
+
+        self.editor_font_label = QLabel("Editor font", self)
+        self.editor_font_label.setFont(QFont("Consolas", 12))
+        self.settings_layout.addWidget(self.editor_font_label, alignment=Qt.AlignTop)
+        self.editor_font = QLineEdit(self)
+        self.editor_font.setText(self.config["editor_font_size"])
+        self.settings_layout.addWidget(self.editor_font, alignment=Qt.AlignTop)
+
+        spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.settings_layout.addItem(spacer)
+
+        self.save_button = QPushButton("Save", self)
+        self.save_button.clicked.connect(self.save_settings)
+        self.settings_layout.addWidget(self.save_button, alignment=Qt.AlignBottom)
+        
+        self.stacked_widget.addWidget(self.settings)
+
+        # Aplicarea temei
+        self.apply_theme(self.theme)
         self.user_name = self.config.get('profile_name')
 
     def save_current_state(self, field):
@@ -260,6 +291,8 @@ class RightPanel(QWidget):
             self.show_documentation_tab()
         elif curr_funct == 3:
             self.show_server_tab()
+        elif curr_funct == 4:
+            self.show_settings_tab()
 
     def start_server_option(self):
         if self.password_entry.text() == "":
@@ -330,8 +363,23 @@ class RightPanel(QWidget):
         self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
         self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
 
+    def save_settings(self):
+        self.config['editor_font_size'] = self.editor_font.text().strip()
+        if self.pre_template.isChecked():
+            self.config['startup']['pre_template'] = "0"
+            self.config['startup']['template'] = self.pre_template_items.currentText().strip()
+        else:
+            self.config['startup']['pre_template'] = "1"
+            self.config['startup']['template'] = ""
+        with open('config.json', 'w') as file:
+            json.dump(self.config, file,indent=4)
+        self.win.re_zoom(self.editor_font.text().strip())
+
     def append_to_textbox(self, message):
         self.server_textbox.appendPlainText(message)
+
+    def show_settings_tab(self):
+        self.stacked_widget.setCurrentWidget(self.settings)
 
     def show_submit_pbinfo_tab(self):
         self.stacked_widget.setCurrentWidget(self.submit_code)
@@ -403,13 +451,42 @@ class RightPanel(QWidget):
             border: 1px solid {theme.get("border_color")};
             padding: 5px;
         """)
+        self.pre_template_items.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
+        self.pre_template.setStyleSheet(f"""
+            QCheckBox {{
+                color: {theme.get("text_color")};  /* Culoarea textului */
+                font-size: 16px;  /* Dimensiunea fontului */
+            }}
+            QCheckBox::indicator {{
+                border: 2px solid {theme.get("border_color")};  /* Bordura casetei de bifare */
+                width: 16px;  /* Lățimea casetei */
+                height: 16px;  /* Înălțimea casetei */
+                
+            }}
+            QCheckBox::indicator:checked {{
+                background-color: {theme.get("button_hover_color")};  /* Culoarea de fundal când este bifată */
+                border: 2px solid {theme.get("border_color")};  /* Bordura când este bifată */
+            }}
+            
+        """)
+        
         self.password_entry.setStyleSheet(f"""
             background-color: {theme.get("editor_background")};
             color: {theme.get("editor_foreground")};
             border: 1px solid {theme.get("border_color")};
             padding: 5px;
         """)
-
+        self.editor_font.setStyleSheet(f"""
+            background-color: {theme.get("editor_background")};
+            color: {theme.get("editor_foreground")};
+            border: 1px solid {theme.get("border_color")};
+            padding: 5px;
+        """)
         self.test_selector.setStyleSheet(f"""
             background-color: {theme.get("editor_background")};
             color: {theme.get("editor_foreground")};
@@ -456,3 +533,4 @@ class RightPanel(QWidget):
         self.disconnect_button.setStyleSheet(button_style)
         self.start_server.setStyleSheet(button_style)
         self.submit_button.setStyleSheet(button_style)
+        self.save_button.setStyleSheet(button_style)

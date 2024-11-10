@@ -48,6 +48,10 @@ class MainView(QMainWindow):
                 "session": {
                     "opened_folder": "",
                     "opened_file": ""
+                },
+                "startup": {
+                    "pre_template": "1",
+                    "template": ""
                 }
             }
             with open('config.json', 'w') as file:
@@ -332,6 +336,9 @@ class MainView(QMainWindow):
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
 
+    def re_zoom(self, val):
+        self.config["editor_font_size"] = val
+        self.editor.apply_settings()
     def update_core(self):
         internal.check_for_updates(self.status_bar)
 

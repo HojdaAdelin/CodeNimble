@@ -7,5 +7,9 @@
     "session": {
         "opened_folder": "",
         "opened_file": ""
+    },
+    "startup": {
+        "pre_template": "1",
+        "template": ""
     }
 }

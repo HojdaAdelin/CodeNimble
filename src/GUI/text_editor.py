@@ -111,7 +111,7 @@ class CodeEditor(QPlainTextEdit):
         self.font = QFont("Courier", font_size)
         self.setFont(self.font)
         self.suggestion_manager.set_completer_font_size(font_size-5)
-
+        
     def apply_theme(self, theme):
         highlight_color = theme.get("highlight_color", "#ffff99")
         self.highlight_color = QColor(highlight_color)
