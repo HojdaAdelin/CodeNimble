@@ -6,6 +6,7 @@
 2. Added a new menu in right panel "Submit code" that will host the submit function on platforms
 3. Extended the functionality of the Testing tab by adding up to 5 test sets
 4. Settings tab in right panel
+5. Pre template on startup
 
 ### Fixed/Changes:
 

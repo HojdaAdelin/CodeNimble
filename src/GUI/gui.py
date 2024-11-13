@@ -135,6 +135,7 @@ class MainView(QMainWindow):
         # Aplicarea temei "dark"
         self.load_theme()
         session.session_engine(self)
+        self.pre_template_core()
 
 
     def create_menu(self):
@@ -335,6 +336,20 @@ class MainView(QMainWindow):
         menubar.addMenu(template_menu)
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
+
+    def pre_template_core(self):
+        if self.config["startup"]["pre_template"] == "0" and self.config["startup"]["template"] != "":
+            template = self.config["startup"]["template"]
+            if (template == "C++"):
+                self.cpp_template_core()
+            elif (template == "C"):
+                self.c_template_core()
+            elif (template == "Java"):
+                self.java_template_core()
+            elif (template == "Html"):
+                self.html_template_core()
+            elif (template == "C++ Competitive"):
+                self.comp_template_core()
 
     def re_zoom(self, val):
         self.config["editor_font_size"] = val
