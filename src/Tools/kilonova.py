@@ -23,7 +23,7 @@ BASE_URL = 'https://kilonova.ro'
 LOGIN_URL = f"{BASE_URL}/api/auth/login"
 SUBMIT_URL = f"{BASE_URL}/api/submissions/submit"
 
-def login_and_submit(username, password, filepath, problem_id, language="cpp17"):
+def login_and_submit(win_base, username, password, filepath, problem_id, language="cpp17"):
     
     with requests.Session() as session:
         
@@ -42,11 +42,11 @@ def login_and_submit(username, password, filepath, problem_id, language="cpp17")
 
         # Verifică dacă autentificarea a fost cu succes și extrage token-ul
         if response.status_code == 200:
-            print("Autentificare reușită!")
+            win_base.win.status_bar.toggle_inbox_icon("Auth successfully!")
             headers["Authorization"] = response.json()["data"]
         else:
-            print("Eroare la autentificare:", response.status_code, response.text)
-            return  # Opresc execuția dacă autentificarea eșuează
+            win_base.win.status_bar.toggle_inbox_icon(f"Auth error: {response.status_code}, {response.text}")
+            return  
 
         # Deschide fișierul și construiește payload-ul pentru trimitere
         with open(filepath, 'rb') as file:
@@ -60,5 +60,9 @@ def login_and_submit(username, password, filepath, problem_id, language="cpp17")
 
             submit_response = session.post(SUBMIT_URL, data=submit_payload, files=files, headers=headers)
         
+        if submit_response.status_code == 200:
+            win_base.win.status_bar.toggle_inbox_icon("Submitted code successfully!")
+        else:
+            win_base.win.status_bar.toggle_inbox_icon(f"Error: {submit_response.text}")
         print("Status Submit:", submit_response.status_code)
         print("Response Submit:", submit_response.text)
