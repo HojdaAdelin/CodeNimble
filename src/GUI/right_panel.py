@@ -213,10 +213,8 @@ class RightPanel(QWidget):
         # From config
         with open('app_data_/data.json', 'r') as file:
                 self.credits = json.load(file)
-        if self.credits.get("pbinfo", {}).get("username"):
-            self.username.setText(self.credits["pbinfo"]["username"])
-        if self.credits.get("pbinfo", {}).get("password"):
-            self.password.setText(self.credits["pbinfo"]["password"])
+        self.toggle_platforms()
+        self.submit_platform.currentIndexChanged.connect(self.toggle_platforms)
 
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.submit_code_layout.addItem(spacer)
@@ -224,7 +222,7 @@ class RightPanel(QWidget):
         self.result_label = QLabel("Score: ", self)
         self.result_label.setFont(QFont("Consolas", 14, QFont.Bold))
         self.submit_code_layout.addWidget(self.result_label, alignment=Qt.AlignBottom | Qt.AlignLeft)
-        self.source_id_label = QLabel("Source ID: ", self)
+        self.source_id_label = QLabel("Solution ID: ", self)
         self.source_id_label.setFont(QFont("Consolas", 14, QFont.Bold))
         self.submit_code_layout.addWidget(self.source_id_label, alignment=Qt.AlignBottom | Qt.AlignLeft)
 
@@ -266,6 +264,14 @@ class RightPanel(QWidget):
         # Aplicarea temei
         self.apply_theme(self.theme)
         self.user_name = self.config.get('profile_name')
+
+    def toggle_platforms(self):
+        if self.submit_platform.currentIndex() == 1:
+            self.username.setText(self.credits["pbinfo"]["username"])
+            self.password.setText(self.credits["pbinfo"]["password"])
+        elif self.submit_platform.currentIndex() == 0:
+            self.username.setText(self.credits["kilonova"]["username"])
+            self.password.setText(self.credits["kilonova"]["password"])
 
     def save_current_state(self, field):
         current_test = self.test_selector.currentText()

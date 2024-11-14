@@ -1,7 +1,10 @@
+from time import sleep
 import requests
 from bs4 import BeautifulSoup
 import requests
 import sys
+import json
+import os
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -42,7 +45,6 @@ def login_and_submit(win_base, username, password, filepath, problem_id, languag
 
         # Verifică dacă autentificarea a fost cu succes și extrage token-ul
         if response.status_code == 200:
-            win_base.win.status_bar.toggle_inbox_icon("Auth successfully!")
             headers["Authorization"] = response.json()["data"]
         else:
             win_base.win.status_bar.toggle_inbox_icon(f"Auth error: {response.status_code}, {response.text}")
@@ -61,6 +63,24 @@ def login_and_submit(win_base, username, password, filepath, problem_id, languag
             submit_response = session.post(SUBMIT_URL, data=submit_payload, files=files, headers=headers)
         
         if submit_response.status_code == 200:
+            with open('app_data_/data.json', 'r') as file:
+                user_login = json.load(file)
+            user_login['kilonova']['username'] = username
+            user_login['kilonova']['password'] = password
+            with open('app_data_/data.json', 'w') as file:
+                json.dump(user_login, file, indent=4)
+
+            response_json = submit_response.json()
+            solution_id = response_json.get("data")
+            win_base.source_id_label.setText(f"Solution ID: {solution_id}")
+            sleep(1)
+            SOLUTION_URL = f"{BASE_URL}/api/submissions/getByID?id={solution_id}"
+            solution_response = session.get(SOLUTION_URL, headers=headers)
+            solution_response.raise_for_status()
+            solution_json = solution_response.json()
+            score = solution_json.get("data", {}).get("score")
+            win_base.result_label.setText(f"Score: {score}")
+
             win_base.win.status_bar.toggle_inbox_icon("Submitted code successfully!")
         else:
             win_base.win.status_bar.toggle_inbox_icon(f"Error: {submit_response.text}")

@@ -11,7 +11,6 @@ from GUI import tab_bar
 from GUI import right_panel
 from GUI import paint
 from GUI import kilo_tools
-from GUI import toolbar
 from Core import run
 from Core import templates
 from Core import web
@@ -98,10 +97,7 @@ class MainView(QMainWindow):
         self.left_panel.setMinimumWidth(250) 
         self.left_panel.setMaximumWidth(400)
 
-        self.tool_bar = toolbar.ToolBar(self.theme, self)
-
         self.left_layout.addWidget(self.tree_view)
-        self.left_layout.addWidget(self.tool_bar)
         self.splitter.addWidget(self.left_panel)
 
         # Configurarea editorului de cod
@@ -342,9 +338,6 @@ class MainView(QMainWindow):
         paint_action.triggered.connect(self.paint_core)
         utility_menu.addAction(paint_action)
         utility_menu.addSeparator()
-        pbinfo_tools_action = QAction("Quick submit", self)
-        #pbinfo_tools_action.triggered.connect(self.pbinfo_tools_core)
-        utility_menu.addAction(pbinfo_tools_action)
         kilo_tools_action = QAction("Kilonova tools", self)
         kilo_tools_action.triggered.connect(self.kilo_tools_core)
         utility_menu.addAction(kilo_tools_action)
@@ -551,7 +544,6 @@ class MainView(QMainWindow):
         self.tree_view.apply_theme(self.theme)
         self.right_panel.apply_theme(self.theme)
         self.tab_bar.apply_stylesheet(self.theme)
-        self.tool_bar.apply_theme(self.theme)
         self.splitter.setStyleSheet(f"""
             QSplitter::handle {{
                 background-color: {self.theme['background_color']};
