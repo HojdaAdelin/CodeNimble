@@ -7,6 +7,7 @@
 3. Extended the functionality of the Testing tab by adding up to 5 test sets
 4. Settings tab in right panel
 5. Pre template on startup
+6. Competitive companion support
 
 ### Fixed/Changes:
 
