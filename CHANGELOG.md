@@ -1,5 +1,9 @@
 # Version 2.5.0
 
+### Major updates
+
+1. Kilonova.ro submit function -> submit code directly from this application
+
 ### Added:
 
 1. New theme light-fire

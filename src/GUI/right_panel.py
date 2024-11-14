@@ -11,6 +11,7 @@ from GUI import diff
 from Server import server
 from Server import client
 from Tools import pbinfo
+from Tools import kilonova
 
 class RightPanel(QWidget):
     def __init__(self, theme,win, *args, **kwargs):
@@ -192,8 +193,8 @@ class RightPanel(QWidget):
         self.submit_code.setLayout(self.submit_code_layout)
         
         self.submit_platform = QComboBox(self)
-        self.submit_platform.addItems(["Pbinfo"])
-        self.submit_platform.setCurrentText("Pbinfo")
+        self.submit_platform.addItems(["Kilonova", "Pbinfo"])
+        self.submit_platform.setCurrentText("Kilonova")
         self.submit_code_layout.addWidget(self.submit_platform, alignment=Qt.AlignTop)
         self.username = QLineEdit(self)
         self.username.setPlaceholderText("Username")
@@ -212,10 +213,8 @@ class RightPanel(QWidget):
         # From config
         with open('app_data_/data.json', 'r') as file:
                 self.credits = json.load(file)
-        if self.credits.get("pbinfo", {}).get("username"):
-            self.username.setText(self.credits["pbinfo"]["username"])
-        if self.credits.get("pbinfo", {}).get("password"):
-            self.password.setText(self.credits["pbinfo"]["password"])
+        self.toggle_platforms()
+        self.submit_platform.currentIndexChanged.connect(self.toggle_platforms)
 
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.submit_code_layout.addItem(spacer)
@@ -223,7 +222,7 @@ class RightPanel(QWidget):
         self.result_label = QLabel("Score: ", self)
         self.result_label.setFont(QFont("Consolas", 14, QFont.Bold))
         self.submit_code_layout.addWidget(self.result_label, alignment=Qt.AlignBottom | Qt.AlignLeft)
-        self.source_id_label = QLabel("Source ID: ", self)
+        self.source_id_label = QLabel("Solution ID: ", self)
         self.source_id_label.setFont(QFont("Consolas", 14, QFont.Bold))
         self.submit_code_layout.addWidget(self.source_id_label, alignment=Qt.AlignBottom | Qt.AlignLeft)
 
@@ -266,6 +265,14 @@ class RightPanel(QWidget):
         self.apply_theme(self.theme)
         self.user_name = self.config.get('profile_name')
 
+    def toggle_platforms(self):
+        if self.submit_platform.currentIndex() == 1:
+            self.username.setText(self.credits["pbinfo"]["username"])
+            self.password.setText(self.credits["pbinfo"]["password"])
+        elif self.submit_platform.currentIndex() == 0:
+            self.username.setText(self.credits["kilonova"]["username"])
+            self.password.setText(self.credits["kilonova"]["password"])
+
     def save_current_state(self, field):
         current_test = self.test_selector.currentText()
         if field == "input":
@@ -282,6 +289,7 @@ class RightPanel(QWidget):
         self.expected_box.setText(self.test_cases[test_case]["expected"])
 
     def toggle_tabs(self):
+        
         curr_funct = self.functions.currentIndex()
         if curr_funct == 0:
             self.show_testing_tab()
@@ -348,20 +356,23 @@ class RightPanel(QWidget):
 
     def submit_core(self):
         if self.username.text().strip() == "":
-            QMessageBox.warning(self, "Code Nimble - Warning", "Username is empty!")
+            self.win.status_bar.toggle_inbox_icon("Submit tools - Username is empty!", "orange")
             return
         if self.password.text().strip() == "":
-            QMessageBox.warning(self, "Code Nimble - Warning", "Password is empty")
+            self.win.status_bar.toggle_inbox_icon("Submit tools - Password is empty!", "orange")
             return
         if self.problem_id.text().strip() == "":
-            QMessageBox.warning(self, "Code Nimble - Warning", "ID is empty!")
+            self.win.status_bar.toggle_inbox_icon("Submit tools - ID is empty!", "orange")
             return
         if self.win.editor.toPlainText().strip() == "":
-            QMessageBox.warning(self, "Code Nimble - Warning", "Source is empty!")
+            self.win.status_bar.toggle_inbox_icon("Submit tools - Source is empty!", "orange")
             return
         
-        self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
-        self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
+        if self.submit_platform.currentIndex() == 0:
+            kilonova.login_and_submit(self, self.username.text().strip(), self.password.text().strip(), self.win.file_manager.get_opened_filename(),self.problem_id.text().strip())
+        elif self.submit_platform.currentIndex() == 0:
+            self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
+            self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
 
     def save_settings(self):
         self.config['editor_font_size'] = self.editor_font.text().strip()

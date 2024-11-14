@@ -27,11 +27,11 @@ class Kilotools(QMainWindow):
     def gui(self):
 
         self.contest_label = QLabel(f"Latest contest: {self.contest_name}", self)
-        self.contest_label.setFont(QFont("Arial", 16))
+        self.contest_label.setFont(QFont("Arial", 12))
         self.contest_label.setAlignment(Qt.AlignCenter)
         self.contest_label.setGeometry(50, 50, 500, 50)
 
         self.contest_status_label = QLabel(f"Status: {self.contest_info}", self)
-        self.contest_status_label.setFont(QFont("Arial", 16))
+        self.contest_status_label.setFont(QFont("Arial", 12))
         self.contest_status_label.setAlignment(Qt.AlignCenter)
         self.contest_status_label.setGeometry(50, 120, 500, 50)
