@@ -1,10 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
+import requests
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
 
 custom_header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
 }
-    
+
 def contest_info():
     BASE_URL = 'https://kilonova.ro/contests?page=official'
     response = requests.get(BASE_URL, headers=custom_header)
@@ -14,3 +18,47 @@ def contest_info():
     status_paragraph = first_container.find('p', string=lambda t: t and t.startswith('Status:'))
     contest_status = ' '.join(status_paragraph.text.split()).replace('Status: ', '')
     return contest_name, contest_status
+
+BASE_URL = 'https://kilonova.ro'
+LOGIN_URL = f"{BASE_URL}/api/auth/login"
+SUBMIT_URL = f"{BASE_URL}/api/submissions/submit"
+
+def login_and_submit(username, password, filepath, problem_id, language="cpp17"):
+    
+    with requests.Session() as session:
+        
+        login_payload = {
+            'username': username,
+            'password': password
+        }
+
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0',
+            'Authorization': ''
+        }
+
+        # Trimite cererea de login
+        response = session.post(LOGIN_URL, data=login_payload, headers=headers)
+
+        # Verifică dacă autentificarea a fost cu succes și extrage token-ul
+        if response.status_code == 200:
+            print("Autentificare reușită!")
+            headers["Authorization"] = response.json()["data"]
+        else:
+            print("Eroare la autentificare:", response.status_code, response.text)
+            return  # Opresc execuția dacă autentificarea eșuează
+
+        # Deschide fișierul și construiește payload-ul pentru trimitere
+        with open(filepath, 'rb') as file:
+            files = {
+                'code': (filepath, file),  # Nume și fișierul propriu-zis
+            }
+            submit_payload = {
+                'problem_id': problem_id,
+                'language': language,
+            }
+
+            submit_response = session.post(SUBMIT_URL, data=submit_payload, files=files, headers=headers)
+        
+        print("Status Submit:", submit_response.status_code)
+        print("Response Submit:", submit_response.text)
