@@ -374,6 +374,7 @@ class RightPanel(QWidget):
         with open('config.json', 'w') as file:
             json.dump(self.config, file,indent=4)
         self.win.re_zoom(self.editor_font.text().strip())
+        self.win.status_bar.toggle_inbox_icon("Settings saved!")
 
     def append_to_textbox(self, message):
         self.server_textbox.appendPlainText(message)

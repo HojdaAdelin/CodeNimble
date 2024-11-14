@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QSplitter, QMainWindow, QMenu, QVBoxLayout, QWidget
 from PySide6.QtGui import QIcon, QAction, QTextCursor
-from PySide6.QtCore import Qt, QCoreApplication
+from PySide6.QtCore import Qt, QCoreApplication, QTimer
 import json
 from GUI import text_editor
 from GUI import info_win
@@ -23,8 +23,11 @@ from Core import theme_manager
 from Core import session
 from Tools import pbinfo
 from Update import internal
+from Server import competitive_companion
 import sys
 import os
+import threading
+import time
 
 class MainView(QMainWindow):
     def __init__(self):
@@ -135,8 +138,27 @@ class MainView(QMainWindow):
         # Aplicarea temei "dark"
         self.load_theme()
         session.session_engine(self)
+        self.pre_template_core()
+        # Competitive companion core
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.check_for_test_case)
+        self.timer.start(1000)
+        self.storage_test_cases = None
 
-
+    def check_for_test_case(self):
+        test_case = competitive_companion.get_received_test_case()
+        if self.storage_test_cases == test_case:
+            return
+        if test_case is not None:
+            self.storage_test_cases = test_case
+            self.input_data, self.output_data = test_case
+            self.right_panel.input_box.clear()
+            self.right_panel.input_box.setPlainText(self.input_data)
+            self.right_panel.expected_box.clear()
+            self.right_panel.expected_box.setPlainText(self.output_data)
+            self.timer.stop()
+            QTimer.singleShot(1000, self.timer.start)
+                
     def create_menu(self):
         menubar = self.menuBar()
         # Crearea meniurilor și acțiunilor
@@ -335,6 +357,20 @@ class MainView(QMainWindow):
         menubar.addMenu(template_menu)
         menubar.addMenu(textures_menu)
         menubar.addMenu(utility_menu)
+
+    def pre_template_core(self):
+        if self.config["startup"]["pre_template"] == "0" and self.config["startup"]["template"] != "":
+            template = self.config["startup"]["template"]
+            if (template == "C++"):
+                self.cpp_template_core()
+            elif (template == "C"):
+                self.c_template_core()
+            elif (template == "Java"):
+                self.java_template_core()
+            elif (template == "Html"):
+                self.html_template_core()
+            elif (template == "C++ Competitive"):
+                self.comp_template_core()
 
     def re_zoom(self, val):
         self.config["editor_font_size"] = val
