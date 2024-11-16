@@ -1,0 +1,6 @@
+requests
+PySide6
+flask
+beautifulsoup4
+asyncio
+aiortc

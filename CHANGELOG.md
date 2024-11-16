@@ -12,12 +12,14 @@
 4. Settings tab in right panel
 5. Pre template on startup
 6. Competitive companion support
+7. New README
 
 ### Fixed/Changes:
 
 1. New highlighter color for: light, dark, ocean, dark-blue themes
 2. Fixed autocompletion templates in editor
 3. Fixed documentation bug
+4. Github API connection errors
 
 # Version 2.2
 

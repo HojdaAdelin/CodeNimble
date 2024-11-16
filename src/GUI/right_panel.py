@@ -108,7 +108,7 @@ class RightPanel(QWidget):
         self.layout.addWidget(self.diff, 7, 0)
 
         # Butonul pentru fetch
-        self.fetch = QPushButton("Fetch test cases", self, clicked=self.fetch_core)
+        self.fetch = QPushButton("Offline fetch test cases", self, clicked=self.fetch_core)
         self.fetch.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.layout.addWidget(self.fetch, 8, 0)
 
