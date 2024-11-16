@@ -33,9 +33,9 @@
 Below are screenshots showcasing the app's interface and features:
 
 <div style="display: flex; justify-content: center; gap: 10px;">
-  <img src="images/ss.png" alt="Screenshot 1" width="30%">
-  <img src="images/ss2.png" alt="Screenshot 2" width="30%">
-  <img src="images/ss3.png" alt="Screenshot 3" width="30%">
+  <img src="images/ss.png" alt="Screenshot 1" width="45%">
+  <img src="images/ss2.png" alt="Screenshot 2" width="45%">
+  <img src="images/ss3.png" alt="Screenshot 3" width="45%">
 </div>
 
 ---
