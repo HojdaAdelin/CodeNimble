@@ -12,6 +12,7 @@
 4. Settings tab in right panel
 5. Pre template on startup
 6. Competitive companion support
+7. New README
 
 ### Fixed/Changes:
 
