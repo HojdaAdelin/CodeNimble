@@ -20,6 +20,7 @@
 2. Fixed autocompletion templates in editor
 3. Fixed documentation bug
 4. Github API connection errors
+5. Pre-input run button in testing tab instead of in-app fetch 
 
 # Version 2.2
 
