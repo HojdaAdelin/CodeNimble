@@ -362,9 +362,10 @@ class RightPanel(QWidget):
         
         if self.submit_platform.currentIndex() == 0:
             kilonova.login_and_submit(self, self.username.text().strip(), self.password.text().strip(), self.win.file_manager.get_opened_filename(),self.problem_id.text().strip())
-        elif self.submit_platform.currentIndex() == 0:
-            self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
-            self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
+        elif self.submit_platform.currentIndex() == 1:
+            self.win.status_bar.toggle_inbox_icon("Pbinfo tools - Indisponible at the moment!", "red")
+            #self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
+            #self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
 
     def save_settings(self):
         self.config['editor_font_size'] = self.editor_font.text().strip()
