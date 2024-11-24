@@ -6,7 +6,6 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 import threading 
 import json
-from GUI import fetch_window
 from GUI import diff
 from Server import server
 from Server import client
@@ -107,10 +106,10 @@ class RightPanel(QWidget):
         self.diff.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.layout.addWidget(self.diff, 7, 0)
 
-        # Butonul pentru fetch
-        self.fetch = QPushButton("Offline fetch test cases", self, clicked=self.fetch_core)
-        self.fetch.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.layout.addWidget(self.fetch, 8, 0)
+        # pre_input_button
+        self.pre_input_button = QPushButton("Run with pre-input", self, clicked=self.win.pre_input_run_core)
+        self.pre_input_button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.layout.addWidget(self.pre_input_button, 8, 0)
 
         # Adăugăm widget-ul „Testing" în stacked_widget
         self.stacked_widget.addWidget(self.testing_widget)
@@ -245,13 +244,6 @@ class RightPanel(QWidget):
         self.pre_template_items.addItems(["C++", "C++ Competitive", "C", "Java", "Html"])
         self.settings_layout.addWidget(self.pre_template_items, alignment=Qt.AlignTop)
 
-        self.editor_font_label = QLabel("Editor font", self)
-        self.editor_font_label.setFont(QFont("Consolas", 12))
-        self.settings_layout.addWidget(self.editor_font_label, alignment=Qt.AlignTop)
-        self.editor_font = QLineEdit(self)
-        self.editor_font.setText(self.config["editor_font_size"])
-        self.settings_layout.addWidget(self.editor_font, alignment=Qt.AlignTop)
-
         spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
         self.settings_layout.addItem(spacer)
 
@@ -370,9 +362,10 @@ class RightPanel(QWidget):
         
         if self.submit_platform.currentIndex() == 0:
             kilonova.login_and_submit(self, self.username.text().strip(), self.password.text().strip(), self.win.file_manager.get_opened_filename(),self.problem_id.text().strip())
-        elif self.submit_platform.currentIndex() == 0:
-            self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
-            self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
+        elif self.submit_platform.currentIndex() == 1:
+            self.win.status_bar.toggle_inbox_icon("Pbinfo tools - Indisponible at the moment!", "red")
+            #self.submit_interface = pbinfo.PbinfoInterface(self.source_id_label, self.result_label)
+            #self.submit_interface.unit(self.username.text().strip(), self.password.text().strip(), self.problem_id.text().strip(), self.win.editor.toPlainText().strip())
 
     def save_settings(self):
         self.config['editor_font_size'] = self.editor_font.text().strip()
@@ -408,10 +401,6 @@ class RightPanel(QWidget):
     def diff_core(self):
         self.diff_win = diff.OutputComparator(self, self.theme)
         self.diff_win.show()
-
-    def fetch_core(self):
-        self.fetch_win = fetch_window.FetchWindow(self, self.theme)
-        self.fetch_win.show()
 
     def apply_theme(self, theme):
         self.theme = theme
@@ -493,12 +482,6 @@ class RightPanel(QWidget):
             border: 1px solid {theme.get("border_color")};
             padding: 5px;
         """)
-        self.editor_font.setStyleSheet(f"""
-            background-color: {theme.get("editor_background")};
-            color: {theme.get("editor_foreground")};
-            border: 1px solid {theme.get("border_color")};
-            padding: 5px;
-        """)
         self.test_selector.setStyleSheet(f"""
             background-color: {theme.get("editor_background")};
             color: {theme.get("editor_foreground")};
@@ -539,7 +522,7 @@ class RightPanel(QWidget):
             }}
         """
         self.diff.setStyleSheet(button_style)
-        self.fetch.setStyleSheet(button_style)
+        self.pre_input_button.setStyleSheet(button_style)
         self.send_button.setStyleSheet(button_style)
         self.connect_button.setStyleSheet(button_style)
         self.disconnect_button.setStyleSheet(button_style)
