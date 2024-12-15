@@ -1,0 +1,27 @@
+{
+    "background_color": "#1A1F29", 
+    "treeview_background": "#1A1F29",
+    "text_color": "#B0BEC5", 
+    "button_color": "#2E3440", 
+    "button_hover_color": "#3B4252", 
+    "border_color": "#4C566A", 
+    "item_hover_background_color": "#3B4252", 
+    "item_hover_text_color": "#B0BEC5", 
+    "separator_color": "#4C566A", 
+    "highlight_color": "#2E3440", 
+    "line_number_background": "#2C313C", 
+    "line_number_text_color": "#81A1C1", 
+    "editor_background": "#2C313C", 
+    "editor_foreground": "#B0BEC5", 
+    "selection_background_color": "#434C5E", 
+    "status_bar_background": "#2E3440", 
+    "ctn_words": "#4C566A", 
+
+    "keyword_color": "#81A1C1",
+    "string_color": "#A3BE8C",
+    "comment_color": "#5C6370",
+    "include_color": "#5C6370",
+    "parenthesis_color": "#BF616A",
+    "number_color": "#D08770",
+    "symbol_color": "#88C0D0"
+}
