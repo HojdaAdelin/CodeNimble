@@ -1,0 +1,17 @@
+test/
+*.cfg
+*.spec
+build/
+dist
+build_info/self_build.md
+.vscode
+template.cpp
+*.log
+*.exe
+template.in
+template.out
+Templates
+profile.txt
+session_file.txt
+recent_dir.txt
+Snippets
