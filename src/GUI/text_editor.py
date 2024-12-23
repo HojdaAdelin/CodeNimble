@@ -487,4 +487,3 @@ class CPPHighlighter(QSyntaxHighlighter):
             for match in re.finditer(pattern, text):
                 start, end = match.span()
                 self.setFormat(start, end - start, format)
-
