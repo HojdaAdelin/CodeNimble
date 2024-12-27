@@ -254,6 +254,13 @@ class CodeEditor(QPlainTextEdit):
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
                 current_item = self.completer.popup().currentIndex().data()
                 if current_item:
+                    cursor = self.textCursor()
+                    cursor.select(QTextCursor.WordUnderCursor)
+                    current_word = cursor.selectedText()
+                    if current_item == current_word:
+                        self.completer.popup().hide()
+                        event.accept()
+                        return
                     self.insert_completion(current_item)
                     self.completer.popup().hide()
                     event.accept()
