@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import (
     QWidget, QLabel, QTextEdit, QPushButton, QGridLayout, QSizePolicy, QStackedWidget, QPlainTextEdit, QVBoxLayout, QLineEdit, QFrame, QHBoxLayout, QMessageBox, QComboBox, QSpacerItem, QCheckBox
 )
-
+from cryptography.fernet import Fernet
+import base64
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
 import threading 
@@ -212,6 +213,7 @@ class RightPanel(QWidget):
         # From config
         with open('app_data_/data.json', 'r') as file:
                 self.credits = json.load(file)
+        
         self.toggle_platforms()
         self.submit_platform.currentIndexChanged.connect(self.toggle_platforms)
 
@@ -257,13 +259,45 @@ class RightPanel(QWidget):
         self.apply_theme(self.theme)
         self.user_name = self.config.get('profile_name')
 
+    def safe_key(self, key: bytes, filename: str) -> bytes:
+        with open(filename, 'wb') as file:
+            file.write(key)
+
+    def  load_key(self, filename: str) -> bytes:
+        with open(filename, 'rb') as file:
+            return file.read()
+
     def toggle_platforms(self):
+        try:
+            key = self.load_key("app_data_/secret.key")
+        except FileNotFoundError:
+            key = Fernet.generate_key()
+            self.safe_key(key, "app_data_/secret.key")
+
+        fernet = Fernet(key)
         if self.submit_platform.currentIndex() == 1:
-            self.username.setText(self.credits["pbinfo"]["username"])
-            self.password.setText(self.credits["pbinfo"]["password"])
+            if self.credits["pbinfo"].get("username") and self.credits["pbinfo"].get("password"):
+                self.username.setText(
+                    fernet.decrypt(base64.urlsafe_b64decode(self.credits["pbinfo"]["username"])).decode('utf-8')
+                )
+                self.password.setText(
+                    fernet.decrypt(base64.urlsafe_b64decode(self.credits["pbinfo"]["password"])).decode('utf-8')
+                )
+            else:
+                self.username.setText("")
+                self.password.setText("")
         elif self.submit_platform.currentIndex() == 0:
-            self.username.setText(self.credits["kilonova"]["username"])
-            self.password.setText(self.credits["kilonova"]["password"])
+            if self.credits["kilonova"].get("username") and self.credits["kilonova"].get("password"):
+                self.username.setText(
+                    fernet.decrypt(base64.urlsafe_b64decode(self.credits["kilonova"]["username"])).decode('utf-8')
+                )
+                self.password.setText(
+                    fernet.decrypt(base64.urlsafe_b64decode(self.credits["kilonova"]["password"])).decode('utf-8')
+                )
+            else:
+                self.username.setText("")
+                self.password.setText("")
+
 
     def save_current_state(self, field):
         current_test = self.test_selector.currentText()

@@ -13,7 +13,7 @@ class SuggestionManager:
             "struct", "switch", "typedef", "union", "unsigned", "void", "volatile",
             "class", "namespace", "try", "catch", "throw", "public", "private", "protected",
             "virtual", "friend", "operator", "template", "this", "new", "delete","vector",
-            "queue", "map", "unordered_map"
+            "queue", "map", "unordered_map", "pair"
         ]
         self.functions = [
             "cout", "cin", "endl", "printf", "scanf", "malloc", "free", "memcpy", "strlen", "strchr", "strcmp"
@@ -254,6 +254,13 @@ class CodeEditor(QPlainTextEdit):
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
                 current_item = self.completer.popup().currentIndex().data()
                 if current_item:
+                    cursor = self.textCursor()
+                    cursor.select(QTextCursor.WordUnderCursor)
+                    current_word = cursor.selectedText()
+                    if current_item == current_word:
+                        self.completer.popup().hide()
+                        event.accept()
+                        return
                     self.insert_completion(current_item)
                     self.completer.popup().hide()
                     event.accept()
@@ -477,7 +484,7 @@ class CPPHighlighter(QSyntaxHighlighter):
         comment_format.setForeground(QColor(self.theme.get("comment_color", "#5C6370")))
         self.add_mapping(r'\/\/.*', comment_format)
         self.add_mapping(r'\/\*.*?\*\/', comment_format)  # Comentarii de tip bloc
-        self.add_mapping(r'\#.*', comment_format)
+        #self.add_mapping(r'\#.*', comment_format)
 
     def add_mapping(self, pattern, format):
         self._mappings[pattern] = format
@@ -487,4 +494,3 @@ class CPPHighlighter(QSyntaxHighlighter):
             for match in re.finditer(pattern, text):
                 start, end = match.span()
                 self.setFormat(start, end - start, format)
-

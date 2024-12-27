@@ -15,3 +15,5 @@ profile.txt
 session_file.txt
 recent_dir.txt
 Snippets
+src/**/__pycache__/
+app_data_/secret.key
