@@ -13,7 +13,7 @@ class SuggestionManager:
             "struct", "switch", "typedef", "union", "unsigned", "void", "volatile",
             "class", "namespace", "try", "catch", "throw", "public", "private", "protected",
             "virtual", "friend", "operator", "template", "this", "new", "delete","vector",
-            "queue", "map", "unordered_map"
+            "queue", "map", "unordered_map", "pair"
         ]
         self.functions = [
             "cout", "cin", "endl", "printf", "scanf", "malloc", "free", "memcpy", "strlen", "strchr", "strcmp"
@@ -484,7 +484,7 @@ class CPPHighlighter(QSyntaxHighlighter):
         comment_format.setForeground(QColor(self.theme.get("comment_color", "#5C6370")))
         self.add_mapping(r'\/\/.*', comment_format)
         self.add_mapping(r'\/\*.*?\*\/', comment_format)  # Comentarii de tip bloc
-        self.add_mapping(r'\#.*', comment_format)
+        #self.add_mapping(r'\#.*', comment_format)
 
     def add_mapping(self, pattern, format):
         self._mappings[pattern] = format

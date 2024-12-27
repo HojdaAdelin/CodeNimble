@@ -1,5 +1,9 @@
 # Version 2.6.0
 
+### Added:
+
+1. Encryption for username & password in app_data_
+
 ### Fixed/Changes:
 
 1. Improved github repo structure

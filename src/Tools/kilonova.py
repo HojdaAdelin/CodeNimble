@@ -5,10 +5,20 @@ import requests
 import sys
 import json
 import os
+from cryptography.fernet import Fernet
+import base64
 
 custom_header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
 }
+
+def safe_key(key: bytes, filename: str) -> bytes:
+        with open(filename, 'wb') as file:
+            file.write(key)
+
+def  load_key(filename: str) -> bytes:
+        with open(filename, 'rb') as file:
+            return file.read()
 
 def contest_info():
     BASE_URL = 'https://kilonova.ro/contests?page=official'
@@ -60,11 +70,19 @@ def login_and_submit(win_base, username, password, filepath, problem_id, languag
 
             submit_response = session.post(SUBMIT_URL, data=submit_payload, files=files, headers=headers)
         
+        try:
+            key = load_key("app_data_/secret.key")
+        except FileNotFoundError:
+            key = Fernet.generate_key()
+            safe_key(key, "app_data_/secret.key")
+        fernet = Fernet(key)
         if submit_response.status_code == 200:
             with open('app_data_/data.json', 'r') as file:
                 user_login = json.load(file)
-            user_login['kilonova']['username'] = username
-            user_login['kilonova']['password'] = password
+            username_encrypted = base64.urlsafe_b64encode(fernet.encrypt(username.encode('utf-8'))).decode('utf-8')
+            password_encrypted = base64.urlsafe_b64encode(fernet.encrypt(password.encode('utf-8'))).decode('utf-8')
+            user_login['kilonova']['username'] = username_encrypted
+            user_login['kilonova']['password'] = password_encrypted
             with open('app_data_/data.json', 'w') as file:
                 json.dump(user_login, file, indent=4)
 
