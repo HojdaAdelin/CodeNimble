@@ -10,7 +10,7 @@ from aiortc import RTCPeerConnection
 import time
 
 class PbinfoInterface(QMainWindow):
-    BASE_URL = 'https://new.pbinfo.ro'
+    BASE_URL = 'https://www.pbinfo.ro'
     LOGIN_PAGE_URL = f"{BASE_URL}/login"
     LOGIN_URL = f'{BASE_URL}/ajx-module/php-login.php'
     PROBLEM_URL = 'https://new.pbinfo.ro/probleme/1/sum'

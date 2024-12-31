@@ -34,6 +34,13 @@ class StatusBar(QFrame):
         font_size = 12
         self.font = QFont("Arial", font_size)
 
+        self.separator1 = QFrame(self)
+        self.separator1.setFrameShape(QFrame.VLine)
+        self.separator2 = QFrame(self)
+        self.separator2.setFrameShape(QFrame.VLine)
+        self.separator3 = QFrame(self)
+        self.separator3.setFrameShape(QFrame.VLine)
+        
         self.new_version_label = QLabel("New version available", self)
         self.new_version_label.setFont(self.font)
         self.new_version_label.setStyleSheet("background-color: green; color: black;")
@@ -61,7 +68,7 @@ class StatusBar(QFrame):
         self.server_icon.setPixmap(pixmap)
         self.server_icon.setStyleSheet(f"background-color: {self.based_color};")
 
-        image_path = "images/run.png"  # Actualizează calea dacă este necesar
+        image_path = "images/test-run.png"  # Actualizează calea dacă este necesar
         pixmap = QPixmap(image_path).scaled(20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.run_img = QLabel(self)
         self.run_img.setPixmap(pixmap)
@@ -78,13 +85,16 @@ class StatusBar(QFrame):
         layout = QHBoxLayout(self)
         layout.addWidget(self.new_version_label)
         layout.addWidget(self.timer)
-        layout.addStretch()  # Spacer to push the following elements to the right
+        layout.addStretch() 
         layout.addWidget(self.server_icon)
+        layout.addWidget(self.separator3)
         layout.addWidget(self.server_status)
+        layout.addWidget(self.separator2)
         layout.addWidget(self.run_img)
+        layout.addWidget(self.separator1)
         layout.addWidget(self.num_stats_label)
         layout.addWidget(self.status_label)
-        layout.setContentsMargins(5, 0, 5, 0)  # Adaugă margini pentru a evita lipirea elementelor de marginea barei
+        layout.setContentsMargins(5, 2, 5, 2)  # Adaugă margini pentru a evita lipirea elementelor de marginea barei
         self.setLayout(layout)
 
         # Connections
@@ -104,6 +114,9 @@ class StatusBar(QFrame):
 
     def apply_theme(self, theme):
         self.setStyleSheet(f"background-color: {theme['status_bar_background']};")
+        self.separator1.setStyleSheet(f"color: {theme['text_color']}; width: 2px;")
+        self.separator2.setStyleSheet(f"color: {theme['text_color']}; width: 2px;")
+        self.separator3.setStyleSheet(f"color: {theme['text_color']}; width: 2px;")
         self.status_label.setStyleSheet(f"color: {theme['text_color']};")
         self.num_stats_label.setStyleSheet(f"color: {theme['text_color']};")
         self.server_status.setStyleSheet(f"color: {theme['text_color']};")
@@ -179,7 +192,7 @@ class StatusBar(QFrame):
         hour,minute, sec = self.time_sec_h()
         msg = f"[{hour}:{minute:02}:{sec:02}] {text}"
         # Creează un QLabel care va funcționa ca popup pe fereastra principală (self.main)
-        self.popup_label = QLabel(msg, self.main)  # Adaugă pe self.main, nu pe self (status bar)
+        self.popup_label = QLabel(msg, self.main)  
         self.popup_label.setFont(self.font)
         self.popup_label.setStyleSheet(
             f"background-color: rgba(0, 0, 0, 80); color: {color}; border-radius: 5px; padding: 5px;"

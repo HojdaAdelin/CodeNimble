@@ -3,6 +3,7 @@
 ### Added:
 
 1. Encryption for username & password in app_data_
+2. New style for status bar
 
 ### Fixed/Changes:
 
