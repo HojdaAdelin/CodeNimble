@@ -16,6 +16,11 @@
     "selection_background_color": "#a31919", 
     "status_bar_background": "#2d0707", 
     "ctn_words": "#3b0b0b", 
+    "minimap": {
+        "background": "#3b0b0b",
+        "text": "#ffffff",
+        "highlight": "#7f0f0f" 
+    },
 
     "user_type_color": "#ff9900",
     "function_color": "#ff4da3",

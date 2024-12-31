@@ -1,7 +1,8 @@
-from PySide6.QtWidgets import QSplitter, QMainWindow, QMenu, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QSplitter, QMainWindow, QMenu, QVBoxLayout, QWidget, QHBoxLayout
 from PySide6.QtGui import QIcon, QAction, QTextCursor
-from PySide6.QtCore import Qt, QCoreApplication, QTimer
+from PySide6.QtCore import Qt, QTimer
 import json
+from GUI import minimap
 from GUI import text_editor
 from GUI import info_win
 from GUI import profile
@@ -20,13 +21,10 @@ from Core import misc_manager
 from Core import view_manager
 from Core import theme_manager
 from Core import session
-from Tools import pbinfo
 from Update import internal
 from Server import competitive_companion
 import sys
 import os
-import threading
-import time
 
 class MainView(QMainWindow):
     def __init__(self):
@@ -110,7 +108,18 @@ class MainView(QMainWindow):
         self.container_layout.setContentsMargins(0, 0, 0, 0)
         self.container_layout.setSpacing(0)
         self.container_layout.addWidget(self.tab_bar)
-        self.container_layout.addWidget(self.editor)
+        # Editor + minimap
+        self.minimap = minimap.MiniMap(self.editor, self.theme)
+        self.editor_map = QHBoxLayout()
+        self.editor_map.setContentsMargins(0, 0, 0, 0)
+        self.editor_map.setSpacing(0)
+        self.editor_map.addWidget(self.editor)
+        self.editor_map.addWidget(self.minimap)
+        self.container_layout.addLayout(self.editor_map)
+        # Minimap config
+        self.editor.textChanged.connect(self.minimap.update)
+        self.editor.verticalScrollBar().valueChanged.connect(self.minimap.update)
+        #self.container_layout.addWidget(self.editor)
         self.edit_manager = edit_manager.EditManager(self.editor)
         self.splitter.addWidget(self.container)
 
@@ -539,6 +548,7 @@ class MainView(QMainWindow):
     def load_theme(self):
         font_family = self.config.get('font_family', 'Consolas')
         font_size = self.config.get('font_size', '18px')
+        self.minimap.setTheme(self.theme['minimap'])
         self.editor.apply_theme(self.theme)
         self.status_bar.apply_theme(self.theme)
         self.tree_view.apply_theme(self.theme)
