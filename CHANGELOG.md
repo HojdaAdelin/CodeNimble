@@ -10,6 +10,9 @@
     - user data type
     - numeric sufix
     - new colors
+4. New autocompleter style
+5. Multi-cursor editing
+6. Minimap
 
 ### Fixed/Changes:
 

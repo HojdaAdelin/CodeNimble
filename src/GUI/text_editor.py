@@ -49,15 +49,33 @@ class SuggestionManager:
         
         # Aplicare stil CSS
         self.completer.popup().setStyleSheet(f"""
-              QListView {{
+            QListView {{
                 background-color: {theme['treeview_background']};
                 color: {theme['text_color']};
+                border-radius: 8px;
+                border: 1px solid {theme['border_color']};
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                padding: 4px;
+            }}
+            QListView::item {{
+                padding: 6px 10px;
             }}
             QListView::item:selected {{
                 background-color: {theme['item_hover_background_color']};
                 color: {theme['item_hover_text_color']};
+                border-radius: 6px;
+                transition: all 0.2s ease-in-out;
+            }}
+            QListView::item:hover {{
+                background-color: {theme['item_hover_background_color']};
+            }}
+            QListView::separator {{
+                background-color: {theme['separator_color']};
+                height: 1px;
+                margin: 4px 0;
             }}
         """)
+
 
     def insert_completion(self, completion, text_cursor):
         extra = len(completion) - len(self.completer.completionPrefix())
@@ -105,6 +123,9 @@ class CodeEditor(QPlainTextEdit):
         self.highlight_current_line()
         self.setTabStopDistance(self.fontMetrics().horizontalAdvance(' ') * 4)
 
+        self.multi_cursors = []  # Lista pentru cursori suplimentari
+        self.setAttribute(Qt.WA_InputMethodEnabled, True)
+
     def apply_settings(self):
         font_size_str = self.config.get("editor_font_size", "10px")
         font_size = int(font_size_str)
@@ -130,6 +151,16 @@ class CodeEditor(QPlainTextEdit):
 
         space = 3 + self.fontMetrics().horizontalAdvance('9') * digits
         return space
+
+    # Multi line cursor
+    def mousePressEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier:  
+            cursor = self.cursorForPosition(event.pos())
+            self.multi_cursors.append(cursor)  
+            self.viewport().update()  
+        else:
+            self.multi_cursors = []  
+            super().mousePressEvent(event)
 
     # Code suggestions
 
@@ -250,6 +281,23 @@ class CodeEditor(QPlainTextEdit):
 
 
     def keyPressEvent(self, event):
+        if self.multi_cursors:  
+            if event.key() in (
+                Qt.Key_Up, Qt.Key_Down, Qt.Key_PageUp, Qt.Key_PageDown,
+                Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab, Qt.Key_Backspace,
+                Qt.Key_Z
+            ) or (event.modifiers() == Qt.ControlModifier and event.key() in (Qt.Key_C, Qt.Key_V, Qt.Key_A, Qt.Key_Z)):
+                super().keyPressEvent(event)
+                return
+            new_cursors = [] 
+            for cursor in self.multi_cursors:
+                cursor.beginEditBlock()
+                cursor.insertText(event.text()) 
+                cursor.endEditBlock()
+                new_cursors.append(cursor)  
+            self.multi_cursors = new_cursors 
+            self.viewport().update()
+            return
         if self.completer and self.completer.popup().isVisible():
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
                 current_item = self.completer.popup().currentIndex().data()
@@ -290,7 +338,6 @@ class CodeEditor(QPlainTextEdit):
             self.update_completion()
             return
 
-        # Altele (de exemplu, săgețile)
         super().keyPressEvent(event)
         self.update_completion()
 
