@@ -10,6 +10,7 @@
     - user data type
     - numeric sufix
     - new colors
+4. New autocompleter style
 
 ### Fixed/Changes:
 

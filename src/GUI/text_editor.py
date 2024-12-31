@@ -49,15 +49,33 @@ class SuggestionManager:
         
         # Aplicare stil CSS
         self.completer.popup().setStyleSheet(f"""
-              QListView {{
+            QListView {{
                 background-color: {theme['treeview_background']};
                 color: {theme['text_color']};
+                border-radius: 8px;
+                border: 1px solid {theme['border_color']};
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                padding: 4px;
+            }}
+            QListView::item {{
+                padding: 6px 10px;
             }}
             QListView::item:selected {{
                 background-color: {theme['item_hover_background_color']};
                 color: {theme['item_hover_text_color']};
+                border-radius: 6px;
+                transition: all 0.2s ease-in-out;
+            }}
+            QListView::item:hover {{
+                background-color: {theme['item_hover_background_color']};
+            }}
+            QListView::separator {{
+                background-color: {theme['separator_color']};
+                height: 1px;
+                margin: 4px 0;
             }}
         """)
+
 
     def insert_completion(self, completion, text_cursor):
         extra = len(completion) - len(self.completer.completionPrefix())
