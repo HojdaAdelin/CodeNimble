@@ -17,6 +17,9 @@
     "status_bar_background": "#1e1e1e",
     "ctn_words": "#2a2a2a",
         
+    "user_type_color": "#ff9900",
+    "function_color": "#15b345",
+    "preprocessor_color": "##61AFEF",
     "keyword_color": "#8bc34a",     
     "string_color": "#b2ff59",      
     "comment_color": "#7f7f7f",     

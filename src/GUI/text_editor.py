@@ -442,55 +442,85 @@ class CPPHighlighter(QSyntaxHighlighter):
         self.theme = theme
         self._mappings.clear()
         self.setup_highlighting()
-        self.rehighlight()  # Reaplică evidențierea pentru a reflecta schimbările de temă
+        self.rehighlight()
 
     def setup_highlighting(self):
-        # Format pentru #include
+        # Format pentru directive de preprocesor
+        preprocessor_format = QTextCharFormat()
+        preprocessor_format.setForeground(QColor(self.theme.get("preprocessor_color", "#61AFEF")))
+        self.add_mapping(r'#\b(?:define|ifdef|ifndef|endif|undef|if|elif|else|pragma|include)\b.*', preprocessor_format)
+
+        # Format pentru #include cu <...> sau "..."
         include_format = QTextCharFormat()
         include_format.setForeground(QColor(self.theme.get("include_color", "#5C6370")))
-        self.add_mapping(r'#include\s*[<"].*?[">]', include_format)
+        self.add_mapping(r'#include\s*[<"].*?[>"]', include_format)
 
         # Format pentru keyword-uri
         keyword_format = QTextCharFormat()
         keyword_format.setForeground(QColor(self.theme.get("keyword_color", "#C678DD")))
-        keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin|short|import|print|printf|max|min|strchr|strlen|strcmp)\b'
+        keywords = r'\b(?:class|return|if|else|for|while|switch|case|break|continue|namespace|public|private|protected|void|int|float|double|char|bool|const|static|virtual|override|explicit|vector|cout|cin|short|long|signed|unsigned|struct|sizeof|typedef|using|throw|try|catch|default|goto)\b'
         self.add_mapping(keywords, keyword_format)
 
-        # Format pentru simboluri
+        # Format pentru simboluri și operatori
         symbol_format = QTextCharFormat()
         symbol_format.setForeground(QColor(self.theme.get("symbol_color", "#56b6c2")))
-        self.add_mapping(r'[\-*%&|^!~<>=?:;]', symbol_format)
+        self.add_mapping(r'[()\[\]{}]|[\-*%&|^!~<>=?:;,+]', symbol_format)
 
-        # Format pentru cifre
+        # Format pentru numere
         number_format = QTextCharFormat()
         number_format.setForeground(QColor(self.theme.get("number_color", "#d19a66")))
-        self.add_mapping(r'\b\d+\b', number_format)
-
-        # Format pentru paranteze
-        parenthesis_format = QTextCharFormat()
-        parenthesis_format.setForeground(QColor(self.theme.get("parenthesis_color", "#e06c75")))
-        self.add_mapping(r'[()\[\]{}]', parenthesis_format)
+        self.add_mapping(r'\b\d+(\.\d+)?(f|F|L|ULL|ll|u|U|l)?\b', number_format)
 
         # Format pentru stringuri între ghilimele
         string_format = QTextCharFormat()
         string_format.setForeground(QColor(self.theme.get("string_color", "#98C379")))
-        self.add_mapping(r'\".*?\"', string_format)
+        self.add_mapping(r'".*?"', string_format)
 
         # Format pentru stringuri între apostroafe
-        self.add_mapping(r'\'[^\'\n]*\'', string_format)
+        self.add_mapping(r"""'[^'\n]*'""", string_format)
 
-        # Format pentru comentarii
+        # Format pentru comentarii single-line
         comment_format = QTextCharFormat()
         comment_format.setForeground(QColor(self.theme.get("comment_color", "#5C6370")))
         self.add_mapping(r'\/\/.*', comment_format)
-        self.add_mapping(r'\/\*.*?\*\/', comment_format)  # Comentarii de tip bloc
-        #self.add_mapping(r'\#.*', comment_format)
+
+        # Format pentru comentarii bloc
+        self.comment_block_format = comment_format
+
+        # Format pentru identificatori de funcții
+        function_format = QTextCharFormat()
+        function_format.setForeground(QColor(self.theme.get("function_color", "#E5C07B")))
+        self.add_mapping(r'\b[A-Za-z_]\w*(?=\s*\()', function_format)
+
+        # Format pentru tipuri de date definite de utilizator
+        user_type_format = QTextCharFormat()
+        user_type_format.setForeground(QColor(self.theme.get("user_type_color", "#D19A66")))
+        self.add_mapping(r'\b(?:class|struct)\s+([A-Za-z_]\w*)', user_type_format)
 
     def add_mapping(self, pattern, format):
         self._mappings[pattern] = format
 
     def highlightBlock(self, text):
+        # Evidențierea bazată pe regex
         for pattern, format in self._mappings.items():
             for match in re.finditer(pattern, text):
                 start, end = match.span()
                 self.setFormat(start, end - start, format)
+
+        # Evidențierea comentariilor bloc multi-linie
+        self.setCurrentBlockState(0)
+        start_index = 0 if self.previousBlockState() != 1 else 0
+
+        while start_index >= 0:
+            start_index = text.find('/*', start_index)
+            if start_index == -1:
+                break
+
+            end_index = text.find('*/', start_index + 2)
+            if end_index == -1:
+                self.setFormat(start_index, len(text) - start_index, self.comment_block_format)
+                self.setCurrentBlockState(1)
+                break
+            else:
+                self.setFormat(start_index, end_index - start_index + 2, self.comment_block_format)
+                start_index = end_index + 2
