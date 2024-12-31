@@ -13,6 +13,7 @@
 4. New autocompleter style
 5. Multi-cursor editing
 6. Minimap
+7. Navigation to the definition
 
 ### Fixed/Changes:
 

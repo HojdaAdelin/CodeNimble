@@ -1,5 +1,5 @@
 import re
-from PySide6.QtCore import Slot, Qt, QRect, QSize, QEvent
+from PySide6.QtCore import Slot, Qt, QRect, QSize, QEvent, QRegularExpression
 from PySide6.QtGui import QColor, QPainter, QTextFormat, QFont, QTextCharFormat, QSyntaxHighlighter, QKeyEvent, QTextCursor
 from PySide6.QtWidgets import QPlainTextEdit, QWidget, QTextEdit, QListView, QCompleter
 
@@ -126,6 +126,8 @@ class CodeEditor(QPlainTextEdit):
         self.multi_cursors = []  # Lista pentru cursori suplimentari
         self.setAttribute(Qt.WA_InputMethodEnabled, True)
 
+        self.function_definitions = {} # Dictionar pentru a mapa numele funcțiilor la locațiile lor
+
     def apply_settings(self):
         font_size_str = self.config.get("editor_font_size", "10px")
         font_size = int(font_size_str)
@@ -154,13 +156,34 @@ class CodeEditor(QPlainTextEdit):
 
     # Multi line cursor
     def mousePressEvent(self, event):
-        if event.modifiers() == Qt.ControlModifier:  
+        if event.modifiers() == Qt.ControlModifier:
             cursor = self.cursorForPosition(event.pos())
-            self.multi_cursors.append(cursor)  
-            self.viewport().update()  
+            cursor.select(QTextCursor.WordUnderCursor)
+            word = cursor.selectedText()
+
+            if word in self.function_definitions:
+                definition_cursor = QTextCursor(self.document())
+                definition_cursor.setPosition(self.function_definitions[word])
+                self.setTextCursor(definition_cursor)
+                self.centerCursor()
+                return 
+
+            self.multi_cursors.append(cursor)
+            self.viewport().update()
         else:
-            self.multi_cursors = []  
+            self.multi_cursors = []
             super().mousePressEvent(event)
+    
+    def parseFunctions(self):
+        self.function_definitions.clear()
+        regex = QRegularExpression(r"^\s*(?:void|int|float|double|char|bool)\s+(\w+)\s*\(.*\)\s*\{")
+        block = self.document().begin()
+        while block.isValid():
+            match = regex.match(block.text())
+            if match.hasMatch():
+                function_name = match.captured(1)
+                self.function_definitions[function_name] = block.position()
+            block = block.next()
 
     # Code suggestions
 
@@ -297,6 +320,7 @@ class CodeEditor(QPlainTextEdit):
                 new_cursors.append(cursor)  
             self.multi_cursors = new_cursors 
             self.viewport().update()
+            self.parseFunctions()
             return
         if self.completer and self.completer.popup().isVisible():
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
@@ -327,19 +351,23 @@ class CodeEditor(QPlainTextEdit):
 
         if event.key() in {Qt.Key_Return, Qt.Key_Enter}:
             self.handleNewLine()
+            self.parseFunctions()
             return
 
         if event.key() in {Qt.Key_ParenLeft, Qt.Key_BracketLeft, Qt.Key_BraceLeft, 34, 39}:
             self.insertCompletion(event.key())
+            self.parseFunctions()
             return
 
         if event.key() == Qt.Key_Backspace and not event.modifiers():
             self.handleBackspace()
             self.update_completion()
+            self.parseFunctions()
             return
 
         super().keyPressEvent(event)
         self.update_completion()
+        self.parseFunctions()
 
     def handleNewLine(self):
         cursor = self.textCursor()
