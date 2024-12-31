@@ -123,6 +123,9 @@ class CodeEditor(QPlainTextEdit):
         self.highlight_current_line()
         self.setTabStopDistance(self.fontMetrics().horizontalAdvance(' ') * 4)
 
+        self.multi_cursors = []  # Lista pentru cursori suplimentari
+        self.setAttribute(Qt.WA_InputMethodEnabled, True)
+
     def apply_settings(self):
         font_size_str = self.config.get("editor_font_size", "10px")
         font_size = int(font_size_str)
@@ -148,6 +151,16 @@ class CodeEditor(QPlainTextEdit):
 
         space = 3 + self.fontMetrics().horizontalAdvance('9') * digits
         return space
+
+    # Multi line cursor
+    def mousePressEvent(self, event):
+        if event.modifiers() == Qt.ControlModifier:  
+            cursor = self.cursorForPosition(event.pos())
+            self.multi_cursors.append(cursor)  
+            self.viewport().update()  
+        else:
+            self.multi_cursors = []  
+            super().mousePressEvent(event)
 
     # Code suggestions
 
@@ -268,6 +281,23 @@ class CodeEditor(QPlainTextEdit):
 
 
     def keyPressEvent(self, event):
+        if self.multi_cursors:  
+            if event.key() in (
+                Qt.Key_Up, Qt.Key_Down, Qt.Key_PageUp, Qt.Key_PageDown,
+                Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab, Qt.Key_Backspace,
+                Qt.Key_Z
+            ) or (event.modifiers() == Qt.ControlModifier and event.key() in (Qt.Key_C, Qt.Key_V, Qt.Key_A, Qt.Key_Z)):
+                super().keyPressEvent(event)
+                return
+            new_cursors = [] 
+            for cursor in self.multi_cursors:
+                cursor.beginEditBlock()
+                cursor.insertText(event.text()) 
+                cursor.endEditBlock()
+                new_cursors.append(cursor)  
+            self.multi_cursors = new_cursors 
+            self.viewport().update()
+            return
         if self.completer and self.completer.popup().isVisible():
             if event.key() in (Qt.Key_Enter, Qt.Key_Return, Qt.Key_Tab):
                 current_item = self.completer.popup().currentIndex().data()
@@ -308,7 +338,6 @@ class CodeEditor(QPlainTextEdit):
             self.update_completion()
             return
 
-        # Altele (de exemplu, săgețile)
         super().keyPressEvent(event)
         self.update_completion()
 

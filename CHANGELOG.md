@@ -11,6 +11,7 @@
     - numeric sufix
     - new colors
 4. New autocompleter style
+5. Multi-cursor editing
 
 ### Fixed/Changes:
 
