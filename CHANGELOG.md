@@ -4,6 +4,12 @@
 
 1. Encryption for username & password in app_data_
 2. New style for status bar
+3. Major highlighter update:
+    - preprocessor mapping
+    - functions 
+    - user data type
+    - numeric sufix
+    - new colors
 
 ### Fixed/Changes:
 
