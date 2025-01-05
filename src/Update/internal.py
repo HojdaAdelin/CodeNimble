@@ -32,7 +32,7 @@ def check_for_updates(status_bar):
 
         if latest_version and latest_version > current_version:
             print(f"New version available: {latest_version}")
-            update() 
+            #update() 
         else:
             status_bar.toggle_inbox_icon(f"Current version: {current_version}\nYou already have the latest version.")
             print("You already have the latest version.")
